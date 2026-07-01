@@ -1,2 +1,49 @@
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
+// Brand colors
+$brand-blue: #183D6A;
+$brand-gold: #98732B;
+$brand-cream: #F3EACE;
+
+// Navbar hover
+.nav-hover {
+    border-top: 3px solid transparent;
+    border-radius: 6px;
+    transition: border-color 0.3s ease, color 0.3s ease;
+    &:hover {
+        color: $brand-cream !important;
+        border-top-color: $brand-cream;
+    }
+}
+.nav-hover.nav-active {
+    color: $brand-cream !important;
+    border-top-color: $brand-cream;
+}
+
+// Toggler blanc sur fond sombre
+.navbar-toggler-white {
+    filter: invert(1);
+}
+
+// Footer
+.footer-social {
+    transition: color 0.3s ease, transform 0.2s ease;
+    &:hover {
+        color: $brand-gold !important;
+        transform: translateY(-2px);
+    }
+}
+.footer-link {
+    transition: color 0.3s ease;
+    &:hover {
+        color: $brand-gold !important;
+    }
+}
+.footer-partner {
+    transition: filter 0.3s ease, opacity 0.3s ease;
+    &:hover {
+        filter: none !important;
+        opacity: 1 !important;
+    }
+}

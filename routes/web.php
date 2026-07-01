@@ -14,14 +14,16 @@ use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\UserController;
 
-// Routes publiques
 Route::get('/', [AcceuilController::class, 'index'])->name('home');
 Route::get('/vote', [PublicVoteController::class, 'index'])->name('public.vote');
+Route::post('/vote', [PublicVoteController::class, 'store'])->name('public.vote.store');
+Route::get('/vote/merci', [PublicVoteController::class, 'merci'])->name('public.vote.merci');
+Route::post('/vote/webhook/kkiapay', [PublicVoteController::class, 'webhookKkiapay'])->name('public.vote.webhook.kkiapay');
+Route::post('/vote/webhook/fedapay', [PublicVoteController::class, 'webhookFedapay'])->name('public.vote.webhook.fedapay');
 Route::get('/medias', [PublicMediaController::class, 'index'])->name('public.medias');
 Route::get('/contact', [PublicContactController::class, 'index'])->name('public.contact');
 Route::post('/contact', [PublicContactController::class, 'store'])->name('public.contact.store');
 
-// Routes admin (protégées par auth)
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('candidats', CandidatController::class);
     Route::resource('votes', VoteController::class)->except(['create', 'store', 'edit']);
@@ -32,3 +34,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('contacts', ContactController::class)->except(['create', 'store', 'edit', 'update']);
     Route::resource('users', UserController::class);
 });
+
+// Dashboard + Profile
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';

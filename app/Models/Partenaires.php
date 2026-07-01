@@ -24,7 +24,7 @@ class Partenaires extends Model
 
     public function getLogoUrlAttribute(): string
     {
-        return $this->logo ? asset('storage/logos/' . $this->logo) : '';
+        return $this->logo ? asset('storage/' . $this->logo) : '';
     }
 
     public function scopeOrdered(Builder $query): Builder
