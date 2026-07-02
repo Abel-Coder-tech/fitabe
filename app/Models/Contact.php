@@ -10,7 +10,7 @@ class Contact extends Model
     protected $fillable = [
         'nom',
         'email',
-        'sujet',
+        'objet',
         'message',
         'lu',
     ];
@@ -20,6 +20,11 @@ class Contact extends Model
         return [
             'lu' => 'boolean',
         ];
+    }
+
+    public function getSujetAttribute(): ?string
+    {
+        return $this->objet;
     }
 
     public function scopeNonLu(Builder $query): Builder

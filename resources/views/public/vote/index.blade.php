@@ -5,10 +5,10 @@
 @push('styles')
 <style>
     :root {
-        --vote-brown: #2C1810;
-        --vote-gold: #98732b;
-        --vote-gold-light: #B8923D;
-        --vote-cream: #f3eace;
+        --vote-brown: #3E1E05;
+        --vote-gold: #9B4D07;
+        --vote-gold-light: #CA7B05;
+        --vote-cream: #E3D5AD;
     }
 
     .candidate-card {
@@ -20,7 +20,7 @@
     }
     .candidate-card:hover {
         transform: translateY(-6px);
-        box-shadow: 0 8px 28px rgba(152,115,43,0.12);
+        box-shadow: 0 8px 28px rgba(160,132,92,0.12);
     }
     .candidate-card .card-img-top {
         height: 260px;
@@ -33,8 +33,8 @@
     }
 
     .filter-btn {
-        border: 2px solid var(--vote-gold);
-        color: var(--vote-gold);
+        border: 2px solid var(--vote-gold-light);
+        color: var(--vote-gold-light);
         background: transparent;
         transition: all 0.2s;
         font-weight: 600;
@@ -43,7 +43,7 @@
     }
     .filter-btn:hover,
     .filter-btn.active {
-        background: var(--vote-gold);
+        background: var(--vote-gold-light);
         color: #fff;
     }
 
@@ -133,37 +133,17 @@
     }
 
     .hero-vote {
-        background: var(--vote-cream);
-        padding: 3.5rem 0;
         position: relative;
         overflow: hidden;
-    }
-    .hero-vote .hero-img-wrap {
-        position: relative;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 8px 32px rgba(44,24,16,0.08);
-    }
-    .hero-vote .hero-img-wrap img {
-        width: 100%;
-        height: 380px;
-        object-fit: cover;
-        display: block;
-    }
-    .hero-vote .hero-img-wrap::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 50%;
-        background: linear-gradient(transparent, rgba(44,24,16,0.06));
+        padding: 5rem 0;
+        background: linear-gradient(135deg, rgba(62,30,5,0.88) 0%, rgba(62,30,5,0.65) 50%, rgba(62,30,5,0.4) 100%), url('{{ asset('images/votes/hero_votant.jpg') }}') no-repeat center center;
+        background-size: cover;
     }
     .hero-vote h1 {
-        color: var(--vote-brown);
+        color: #fff;
     }
     .hero-vote .hero-sub {
-        color: rgba(44,24,16,0.65);
+        color: rgba(227,213,173,0.85);
     }
     .hero-vote .price-badge {
         display: inline-block;
@@ -176,14 +156,14 @@
     }
     .hero-vote .btn-vote {
         background: transparent;
-        border: 2px solid var(--vote-gold);
-        color: var(--vote-gold);
+        border: 2px solid #E3D5AD;
+        color: #E3D5AD;
         font-weight: 700;
         transition: all 0.25s;
     }
     .hero-vote .btn-vote:hover {
-        background: var(--vote-gold);
-        color: #fff;
+        background: #E3D5AD;
+        color: #3E1E05;
     }
     .hero-vote .countdown-wrap {
         background: var(--vote-brown);
@@ -205,19 +185,19 @@
 {{-- ==================== HERO ==================== --}}
 <section class="hero-vote">
     <div class="container">
-        <div class="row align-items-center g-4 g-lg-5">
-            <div class="col-lg-6">
-                <p class="small fw-semibold mb-2" style="color: var(--vote-gold); letter-spacing: 2px; text-transform: uppercase;">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+                <p class="small fw-semibold mb-2" style="color: #CA7B05; letter-spacing: 2px; text-transform: uppercase;">
                     <i class="bi bi-star-fill me-1"></i> Édition {{ date('Y') }}
                 </p>
                 <h1 class="display-4 fw-bold mb-3">
                     Votez pour votre<br>
-                    <span style="color: var(--vote-gold);">candidat préféré</span>
+                    <span style="color: #CA7B05;">candidat préféré</span>
                 </h1>
-                <p class="lead hero-sub mb-4" style="max-width: 480px;">
+                <p class="lead hero-sub mb-4 mx-auto" style="max-width: 540px;">
                     Soutenez les talents du FITAB. Chaque voix compte pour aider votre artiste favori à remporter le concours.
                 </p>
-                <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
+                <div class="d-flex flex-wrap align-items-center justify-content-center gap-3 mb-4">
                     <span class="price-badge">
                         <i class="bi bi-ticket-perforated me-2"></i>
                         <strong>{{ number_format($prixDuVote, 0, ',', ' ') }} FCFA</strong> le vote
@@ -247,15 +227,39 @@
                             <div class="label">Sec</div>
                         </div>
                     </div>
-                    <div class="small" id="cd-expired" style="display:none;color:var(--vote-gold);">
+                    <div class="small" id="cd-expired" style="display:none;color:#CA7B05;">
                         <i class="bi bi-hourglass-split me-1"></i> Clos
                     </div>
                 </div>
                 @endif
             </div>
-            <div class="col-lg-6">
-                <div class="hero-img-wrap">
-                    <img src="{{ asset('images/votes/hero_votant.jpg') }}" alt="FITAB">
+        </div>
+    </div>
+</section>
+
+{{-- ==================== BARRE D'ÉTAPES ==================== --}}
+<section class="py-4" style="background: #fdfaf5;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="d-flex align-items-center">
+                    <div class="text-center flex-fill">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white mb-1" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">1</div>
+                        <div class="small fw-semibold mt-1" style="color: #9B4D07;">Choisissez</div>
+                        <div class="small text-muted" style="font-size: 0.75rem;">votre candidat</div>
+                    </div>
+                    <div class="flex-grow-1 mx-2" style="height: 2px; background: #E3D5AD;"></div>
+                    <div class="text-center flex-fill">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white mb-1" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">2</div>
+                        <div class="small fw-semibold mt-1" style="color: #9B4D07;">Entrez</div>
+                        <div class="small text-muted" style="font-size: 0.75rem;">le nombre de votes</div>
+                    </div>
+                    <div class="flex-grow-1 mx-2" style="height: 2px; background: #E3D5AD;"></div>
+                    <div class="text-center flex-fill">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white mb-1" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">3</div>
+                        <div class="small fw-semibold mt-1" style="color: #9B4D07;">Payez</div>
+                        <div class="small text-muted" style="font-size: 0.75rem;">Mobile Money / Carte</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -266,7 +270,7 @@
 <section class="py-4 bg-light" id="candidats">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center gap-2">
-            <span class="fw-semibold me-2" style="color: var(--vote-brown);">Catégorie :</span>
+            <span class="fw-semibold me-2" style="color: var(--vote-gold);">Catégorie :</span>
             <button class="btn filter-btn active" data-filter="all">Tous</button>
             @foreach($categories as $cat)
                 <button class="btn filter-btn" data-filter="{{ Str::slug($cat) }}">{{ $cat }}</button>
@@ -295,7 +299,7 @@
         @else
             @foreach($candidats as $categorie => $candidatsCategorie)
             <div class="categorie-group mb-5" data-categorie="{{ Str::slug($categorie) }}">
-                <h3 class="h4 mb-4" style="color: var(--vote-brown); border-left: 4px solid var(--vote-gold); padding-left: 1rem;">
+                <h3 class="h4 mb-4" style="color: var(--vote-gold); border-left: 4px solid var(--vote-gold); padding-left: 1rem;">
                     {{ $categorie }}
                 </h3>
                 <div class="row g-4">
@@ -353,7 +357,7 @@
                         <div class="step-dot" id="step-dot-2">2</div>
                         <div class="step-dot" id="step-dot-3">3</div>
                     </div>
-                    <h5 class="fw-bold mb-0" style="color: var(--vote-brown);" id="voteModalTitle">
+                    <h5 class="fw-bold mb-0" style="color: var(--vote-gold);" id="voteModalTitle">
                         Voter pour <span id="candidatNameDisplay"></span>
                     </h5>
                     <p class="small text-muted mt-1" id="voteModalSubtitle">Étape 1 — Quantité &amp; informations</p>
@@ -473,6 +477,39 @@
     </div>
 </div>
 @endif
+
+{{-- ==================== RÈGLEMENT ==================== --}}
+<section class="py-4" style="background: #fdfaf5;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="text-center">
+                    <h6 class="fw-bold mb-1" style="color: #9B4D07;"><i class="bi bi-file-text me-1"></i> Règlement du vote</h6>
+                    <p class="small text-muted mb-3">Consultez les conditions générales de participation et de vote du FITAB 2026.</p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button class="btn btn-sm px-3 fw-semibold" style="background: #9B4D07; color: #fff;" type="button" data-bs-toggle="collapse" data-bs-target="#reglementCollapse">
+                            <i class="bi bi-eye me-1"></i> Lire
+                        </button>
+                        <a href="{{ asset('storage/documents/reglement-fitab-2026.pdf') }}" class="btn btn-sm px-3 fw-semibold" style="border: 2px solid #9B4D07; color: #9B4D07;" target="_blank">
+                            <i class="bi bi-download me-1"></i> Télécharger (PDF)
+                        </a>
+                    </div>
+                    <div class="collapse mt-3 text-start" id="reglementCollapse">
+                        <div class="p-4 rounded-3" style="background: #fff; border: 1px solid #E3D5AD;">
+                            <h6 class="fw-bold mb-3" style="color: #9B4D07;">Conditions de participation</h6>
+                            <p class="small mb-2">1. Le vote est ouvert à toute personne physique âgée d'au moins 18 ans.</p>
+                            <p class="small mb-2">2. Chaque vote est payant au tarif de <strong>{{ number_format($prixDuVote, 0, ',', ' ') }} FCFA</strong> l'unité.</p>
+                            <p class="small mb-2">3. Le nombre de votes par personne n'est pas limité.</p>
+                            <p class="small mb-2">4. Les votes sont définitifs et non remboursables.</p>
+                            <p class="small mb-2">5. Le paiement s'effectue via Kkiapay ou Fedapay (Mobile Money ou Carte bancaire).</p>
+                            <p class="small mb-0">6. Tout vote frauduleux entraîne l'annulation des votes concernés.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 @endsection
 

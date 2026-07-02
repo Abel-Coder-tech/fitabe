@@ -7,26 +7,27 @@
 .media-card { transition: transform .3s ease, box-shadow .3s ease; }
 .media-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.1) !important; }
 .media-thumb { width: 100%; height: 100%; object-fit: cover; }
-.media-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(24,61,106,0.5); opacity: 0; transition: opacity .3s ease; }
+.media-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(62,30,5,0.5); opacity: 0; transition: opacity .3s ease; }
 .media-card:hover .media-overlay { opacity: 1; }
-.ratio-1x1 .media-overlay { background: rgba(24,61,106,0.4); }
+.ratio-1x1 .media-overlay { background: rgba(62,30,5,0.4); }
+.btn-fitab-outline.active { background: var(--fitab-orange-light); color: #fff; }
 </style>
 {{-- ==================== HERO ==================== --}}
 <section class="d-flex align-items-center bg-white" style="min-height: 220px;">
     <div class="container text-center py-4">
-        <h1 class="fw-bold display-6 mb-2" style="color: #183D6A;">Médiathèque</h1>
-        <p class="mb-0" style="color: #183D6A; max-width: 500px; margin: 0 auto;">Explorez les photos et vidéos du Festival International des Talents Artistiques du Bénin.</p>
+        <h1 class="fw-bold display-6 mb-2" style="color: #9B4D07;">Médiathèque</h1>
+        <p class="mb-0" style="color: #5F2B0C; max-width: 500px; margin: 0 auto;">Explorez les photos et vidéos du Festival International des Talents Artistiques du Bénin.</p>
     </div>
 </section>
 
 {{-- ==================== FILTRES ==================== --}}
-<section class="py-3" style="background-color: #f8f8f8;">
+<section class="py-3 section-light">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center gap-3">
             <div class="btn-group btn-group-sm" role="group" id="filterType">
-                <button type="button" class="btn btn-outline-secondary active" data-filter="all">Tous</button>
-                <button type="button" class="btn btn-outline-secondary" data-filter="photo">Photos</button>
-                <button type="button" class="btn btn-outline-secondary" data-filter="video">Vidéos</button>
+                <button type="button" class="btn btn-fitab-outline btn-sm active" data-filter="all">Tous</button>
+                <button type="button" class="btn btn-fitab-outline btn-sm" data-filter="photo">Photos</button>
+                <button type="button" class="btn btn-fitab-outline btn-sm" data-filter="video">Vidéos</button>
             </div>
             @if ($annees->count() > 1)
             <select id="filterAnnee" class="form-select form-select-sm" style="width: auto;">
@@ -45,7 +46,7 @@
 <section class="py-5 bg-white" id="section-photos">
     <div class="container">
         <div class="d-flex align-items-center justify-content-between mb-4">
-            <h3 class="fw-bold mb-0" style="color: #183D6A;">Galerie Photos</h3>
+            <h3 class="fw-bold mb-0" style="color: #9B4D07;">Galerie Photos</h3>
             <span class="small text-muted">{{ $photos->count() }} photo{{ $photos->count() > 1 ? 's' : '' }}</span>
         </div>
         <div class="row g-3" id="photosGrid">
@@ -61,9 +62,9 @@
                     @if ($media->titre || $media->annee)
                     <div class="card-body py-2 px-3">
                         @if ($media->titre)
-                        <small class="fw-medium d-block text-truncate" style="color: #183D6A;">{{ $media->titre }}</small>
+                        <small class="fw-medium d-block text-truncate" style="color: #9B4D07;">{{ $media->titre }}</small>
                         @endif
-                        <span class="badge fw-normal" style="background-color: #F3EACE; color: #183D6A; font-size: 0.65rem;">{{ $media->annee }}</span>
+                        <span class="badge fw-normal" style="background-color: #E3D5AD; color: #9B4D07; font-size: 0.65rem;">{{ $media->annee }}</span>
                     </div>
                     @endif
                 </div>
@@ -80,7 +81,7 @@
     <div class="container">
         <hr class="m-0">
         <div class="text-center position-relative" style="margin-top: -12px;">
-            <span class="bg-white px-4 fw-semibold small" style="color: #98732B;">Espace Vidéo</span>
+            <span class="bg-white px-4 fw-semibold small" style="color: #CA7B05;">Espace Vidéo</span>
         </div>
     </div>
 </section>
@@ -91,7 +92,7 @@
 <section class="py-5 bg-white" id="section-videos">
     <div class="container">
         <div class="d-flex align-items-center justify-content-between mb-4">
-            <h3 class="fw-bold mb-0" style="color: #183D6A;">Espace Vidéo</h3>
+            <h3 class="fw-bold mb-0" style="color: #9B4D07;">Espace Vidéo</h3>
             <span class="small text-muted">{{ $videos->count() }} vidéo{{ $videos->count() > 1 ? 's' : '' }}</span>
         </div>
         <div class="row g-3" id="videosGrid">
@@ -107,9 +108,9 @@
                     @if ($media->titre || $media->annee)
                     <div class="card-body py-2 px-3">
                         @if ($media->titre)
-                        <small class="fw-medium d-block text-truncate" style="color: #183D6A;">{{ $media->titre }}</small>
+                        <small class="fw-medium d-block text-truncate" style="color: #9B4D07;">{{ $media->titre }}</small>
                         @endif
-                        <span class="badge fw-normal" style="background-color: #F3EACE; color: #183D6A; font-size: 0.65rem;">{{ $media->annee }}</span>
+                        <span class="badge fw-normal" style="background-color: #E3D5AD; color: #9B4D07; font-size: 0.65rem;">{{ $media->annee }}</span>
                     </div>
                     @endif
                 </div>
@@ -124,7 +125,7 @@
 @if (!$photos->count() && !$videos->count())
 <section class="py-5 bg-white">
     <div class="container text-center py-5">
-        <i class="bi bi-images fs-1" style="color: #98732B;"></i>
+        <i class="bi bi-images fs-1" style="color: #CA7B05;"></i>
         <p class="text-muted mt-3 mb-0">Aucun média publié pour le moment.</p>
     </div>
 </section>

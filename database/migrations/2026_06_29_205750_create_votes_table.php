@@ -6,26 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('candidat_id')->constrained('candidats')->cascadeOnDelete();
-            $table->string('votant_nom', 150)->nullable();
-            $table->string('votant_email', 150)->nullable();
-            $table->string('votant_telephone', 50)->nullable();
-            $table->enum('statut', ['en_attente', 'confirme', 'rejete'])->default('en_attente');
-            $table->string('ip_address', 45)->nullable();
+            $table->foreignId('candidate_id')
+                  ->constrained('candidates')
+                  ->cascadeOnDelete();
+            $table->string('transaction_id', 100)->unique();
+            $table->unsignedSmallInteger('quantite');
+            $table->unsignedInteger('montant');
+            $table->string('telephone', 20)->nullable();
+            $table->enum('moyen_paiement', ['mtn', 'moov', 'carte'])->nullable();
+            $table->enum('statut', ['en_attente', 'confirme', 'echoue'])->default('en_attente');
+            $table->timestamp('webhook_recu_le')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('votes');

@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\ParametreController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', [AcceuilController::class, 'index'])->name('home');
 Route::get('/vote', [PublicVoteController::class, 'index'])->name('public.vote');
@@ -36,9 +37,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 });
 
 // Dashboard + Profile
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/admin', function () {
+    return redirect()->route('dashboard');
+})->middleware('auth');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');

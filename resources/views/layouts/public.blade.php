@@ -9,12 +9,82 @@
     <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     @vite(['resources/css/app.scss', 'resources/js/app.js'])
+    <style>
+        :root {
+            --fitab-brown: #3E1E05;
+            --fitab-brown-light: #5F2B0C;
+            --fitab-orange: #9B4D07;
+            --fitab-orange-light: #CA7B05;
+            --fitab-cream: #E3D5AD;
+            --fitab-bg: #fdfaf5;
+        }
+        body { background-color: var(--fitab-bg); color: #2c2c2c; }
+        h1, h2, h3, h4, h5, h6 { color: var(--fitab-orange); }
+        .text-muted-custom { color: #5F2B0C; }
+        a { color: var(--fitab-orange); transition: color 0.2s; }
+        a:hover { color: var(--fitab-orange-light); }
+
+        .btn-fitab {
+            background: var(--fitab-orange);
+            color: #fff;
+            font-weight: 600;
+            transition: all 0.25s;
+        }
+        .btn-fitab:hover {
+            background: var(--fitab-orange-light);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+        .btn-fitab-outline {
+            background: transparent;
+            border: 2px solid var(--fitab-orange);
+            color: var(--fitab-orange);
+            font-weight: 600;
+        }
+        .btn-fitab-outline:hover {
+            background: var(--fitab-orange);
+            color: #fff;
+        }
+        .btn-fitab-ghost {
+            background: transparent;
+            border: 2px solid var(--fitab-cream);
+            color: var(--fitab-cream);
+            font-weight: 600;
+        }
+        .btn-fitab-ghost:hover {
+            background: var(--fitab-cream);
+            color: var(--fitab-brown);
+        }
+
+        .section-light { background: #fff; }
+        .section-dark { background: var(--fitab-brown); }
+
+        .nav-hover { position: relative; }
+        .nav-hover::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--fitab-orange-light);
+            transition: width 0.25s;
+        }
+        .nav-hover:hover::after,
+        .nav-hover.nav-active::after { width: 70%; }
+        .navbar-toggler-icon-fitab {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23E3D5AD' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        .footer-link { transition: color 0.2s; }
+        .footer-link:hover { color: var(--fitab-orange-light) !important; }
+    </style>
     @stack('styles')
 </head>
 <body>
 
     {{-- ==================== NAVBAR ==================== --}}
-    <nav class="navbar navbar-expand-lg fixed-top" style="background-color: rgba(24,61,106,0.92); backdrop-filter: blur(10px);">
+    <nav class="navbar navbar-expand-lg fixed-top" style="background-color: rgba(62,30,5,0.95); backdrop-filter: blur(10px);">
         <div class="container">
 
             <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
@@ -23,27 +93,32 @@
             </a>
 
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon navbar-toggler-white"></span>
+                <span class="navbar-toggler-icon navbar-toggler-icon-fitab"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto gap-lg-2">
+                <ul class="navbar-nav ms-auto gap-lg-2 align-items-lg-center">
                     <li class="nav-item">
-                        <a class="nav-link text-white fw-medium nav-hover {{ request()->routeIs('home') ? 'nav-active' : '' }}"
+                        <a class="nav-link fw-medium nav-hover {{ request()->routeIs('home') ? 'nav-active' : '' }}"
+                           style="color: #E3D5AD;"
                            href="{{ route('home') }}">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white fw-medium nav-hover {{ request()->routeIs('public.medias') ? 'nav-active' : '' }}"
+                        <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.medias') ? 'nav-active' : '' }}"
+                           style="color: #E3D5AD;"
                            href="{{ route('public.medias') }}">Médiathèque</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white fw-medium nav-hover {{ request()->routeIs('public.vote') ? 'nav-active' : '' }}"
-                           href="{{ route('public.vote') }}">Voter</a>
+                        <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.vote') ? 'nav-active' : '' }}"
+                           style="color: #E3D5AD;"
+                           href="{{ route('public.vote') }}">Vote</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white fw-medium nav-hover {{ request()->routeIs('public.contact') ? 'nav-active' : '' }}"
+                        <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.contact') ? 'nav-active' : '' }}"
+                           style="color: #E3D5AD;"
                            href="{{ route('public.contact') }}">Contact</a>
                     </li>
+                   
                 </ul>
             </div>
 
@@ -76,22 +151,22 @@
     </main>
 
     {{-- ==================== FOOTER ==================== --}}
-    <footer class="text-white pt-5 pb-3" style="background-color: #12263a;">
+    <footer class="pt-5 pb-3" style="background-color: #3E1E05; color: #E3D5AD;">
         <div class="container">
 
             {{-- Newsletter --}}
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-8">
-                    <div class="bg-dark rounded-3 p-4 p-md-5 border border-secondary border-opacity-25">
+                    <div class="rounded-3 p-4 p-md-5" style="background-color: rgba(0,0,0,0.2);">
                         <div class="row align-items-center g-3">
                             <div class="col-md-5">
-                                <h5 class="fw-bold mb-1">Restez informé</h5>
-                                <p class="text-white-50 small mb-0">Recevez les actualités du festival</p>
+                                <h5 class="fw-bold mb-1" style="color: #E3D5AD;">Restez informé</h5>
+                                <p class="small mb-0" style="color: rgba(227,213,173,0.7);">Recevez les actualités du festival</p>
                             </div>
                             <div class="col-md-7">
                                 <form class="d-flex gap-2">
-                                    <input type="email" class="form-control bg-black text-white border-secondary" placeholder="Votre adresse e-mail">
-                                    <button type="submit" class="btn fw-semibold px-4 text-nowrap text-white border-0" style="background-color: #98732B;">S'abonner</button>
+                                    <input type="email" class="form-control" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(227,213,173,0.3); color: #E3D5AD;" placeholder="Votre adresse e-mail">
+                                    <button type="submit" class="btn fw-semibold px-4 text-nowrap border-0" style="background: #CA7B05; color: #fff;">S'abonner</button>
                                 </form>
                             </div>
                         </div>
@@ -107,17 +182,17 @@
                     <div class="d-flex align-items-center gap-2 mb-3">
                         <img src="{{ asset('images/logo.png') }}" alt="FITAB" height="40"
                              onerror="this.style.display='none'">
-                        <span class="fw-bold fs-5">{{ config('app.name', 'FITAB') }}</span>
+                        <span class="fw-bold fs-5" style="color: #E3D5AD;">{{ config('app.name', 'FITAB') }}</span>
                     </div>
-                    <p class="text-white-50 small lh-lg">
+                    <p class="small lh-lg" style="color: rgba(227,213,173,0.65);">
                         Festival International des Talents Artistiques du Bénin.<br>
                         Théâtre, Danse, Musique, Percussion et Art Visuel.
                     </p>
                     <div class="d-flex gap-3 mt-3">
-                        <a href="#" class="text-white-50 text-decoration-none fs-5 footer-social"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-white-50 text-decoration-none fs-5 footer-social"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-white-50 text-decoration-none fs-5 footer-social"><i class="bi bi-youtube"></i></a>
-                        <a href="#" class="text-white-50 text-decoration-none fs-5 footer-social"><i class="bi bi-tiktok"></i></a>
+                        <a href="#" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6);"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6);"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6);"><i class="bi bi-youtube"></i></a>
+                        <a href="#" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6);"><i class="bi bi-tiktok"></i></a>
                     </div>
                 </div>
 
@@ -125,38 +200,38 @@
                 <div class="col-12 col-lg-7 offset-lg-1">
                     <div class="row gy-4">
                         <div class="col-6 col-lg-4">
-                            <h6 class="fw-bold mb-3 text-uppercase small" style="color: #98732B; letter-spacing: 1.5px;">Navigation</h6>
+                            <h6 class="fw-bold mb-3 text-uppercase small" style="color: #CA7B05; letter-spacing: 1.5px;">Navigation</h6>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="{{ route('home') }}" class="text-white-50 text-decoration-none small footer-link">Accueil</a></li>
-                                <li class="mb-2"><a href="{{ route('public.medias') }}" class="text-white-50 text-decoration-none small footer-link">Médiathèque</a></li>
-                                <li class="mb-2"><a href="{{ route('public.vote') }}" class="text-white-50 text-decoration-none small footer-link">Vote</a></li>
-                                <li class="mb-2"><a href="{{ route('public.contact') }}" class="text-white-50 text-decoration-none small footer-link">Contact</a></li>
+                                <li class="mb-2"><a href="{{ route('home') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Accueil</a></li>
+                                <li class="mb-2"><a href="{{ route('public.medias') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Médiathèque</a></li>
+                                <li class="mb-2"><a href="{{ route('public.vote') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Vote</a></li>
+                                <li class="mb-2"><a href="{{ route('public.contact') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Contact</a></li>
                             </ul>
                         </div>
 
                         <div class="col-6 col-lg-4">
-                            <h6 class="fw-bold mb-3 text-uppercase small" style="color: #98732B; letter-spacing: 1.5px;">Support</h6>
+                            <h6 class="fw-bold mb-3 text-uppercase small" style="color: #CA7B05; letter-spacing: 1.5px;">Support</h6>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none small footer-link">Conditions générales</a></li>
-                                <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none small footer-link">Politique de confidentialité</a></li>
-                                <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none small footer-link">Mentions légales</a></li>
-                                <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none small footer-link">Aide au vote</a></li>
+                                <li class="mb-2"><a href="#" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Conditions générales</a></li>
+                                <li class="mb-2"><a href="#" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Politique de confidentialité</a></li>
+                                <li class="mb-2"><a href="#" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Mentions légales</a></li>
+                                <li class="mb-2"><a href="#" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Aide au vote</a></li>
                             </ul>
                         </div>
 
                         <div class="col-12 col-lg-4">
-                            <h6 class="fw-bold mb-3 text-uppercase small" style="color: #98732B; letter-spacing: 1.5px;">Contact</h6>
-                            <ul class="list-unstyled text-white-50 small">
+                            <h6 class="fw-bold mb-3 text-uppercase small" style="color: #CA7B05; letter-spacing: 1.5px;">Contact</h6>
+                            <ul class="list-unstyled small" style="color: rgba(227,213,173,0.65);">
                                 <li class="mb-2 d-flex gap-2">
-                                    <i class="bi bi-telephone-fill mt-1" style="color: #98732B;"></i>
+                                    <i class="bi bi-telephone-fill mt-1" style="color: #CA7B05;"></i>
                                     <span>+229 01 66 16 75 88</span>
                                 </li>
                                 <li class="mb-2 d-flex gap-2">
-                                    <i class="bi bi-envelope-fill mt-1" style="color: #98732B;"></i>
+                                    <i class="bi bi-envelope-fill mt-1" style="color: #CA7B05;"></i>
                                     <span>eyissobur@gmail.com</span>
                                 </li>
                                 <li class="mb-2 d-flex gap-2">
-                                    <i class="bi bi-geo-alt-fill mt-1" style="color: #98732B;"></i>
+                                    <i class="bi bi-geo-alt-fill mt-1" style="color: #CA7B05;"></i>
                                     <span>Porto-Novo, Bénin</span>
                                 </li>
                             </ul>
@@ -164,18 +239,16 @@
                     </div>
                 </div>
 
-
-
             </div>
 
-            <hr class="border-secondary mt-5 mb-4">
+            <hr class="mt-5 mb-4" style="border-color: rgba(227,213,173,0.2);">
 
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-                <p class="text-white-50 small mb-0">
+                <p class="small mb-0" style="color: rgba(227,213,173,0.5);">
                     &copy; {{ date('Y') }} {{ config('app.name', 'FITAB') }} — STRATEGE MEDIAS EVENTS. Tous droits réservés.
                 </p>
-                <p class="text-white-50 small mb-0">
-                    Développé par <a href="#" class="text-warning text-decoration-none footer-link">Noctam Communication</a>
+                <p class="small mb-0" style="color: rgba(227,213,173,0.5);">
+                    Développé par <a href="#" class="text-decoration-none" style="color: #CA7B05;">Noctam Communication</a>
                 </p>
             </div>
 
