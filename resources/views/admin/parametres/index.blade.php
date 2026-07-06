@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+{{-- En-tête --}}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h3">Paramètres</h1>
     <a href="{{ route('admin.parametres.create') }}" class="btn btn-primary">
@@ -8,6 +9,7 @@
     </a>
 </div>
 
+{{-- Liste des paramètres --}}
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
@@ -23,10 +25,10 @@
                 <tbody>
                     @forelse ($parametres as $parametre)
                         <tr>
-                            <td>{{ $parametre->id }}</td>
-                            <td><code>{{ $parametre->cle }}</code></td>
-                            <td class="text-break" style="max-width: 400px;">{{ $parametre->valeur }}</td>
-                            <td class="d-flex gap-2">
+                            <td data-label="ID">{{ $parametre->id }}</td>
+                            <td data-label="Clé"><code>{{ $parametre->cle }}</code></td>
+                            <td data-label="Valeur" class="text-break" style="max-width: 400px;">{{ $parametre->valeur }}</td>
+                            <td data-label="Actions" class="d-flex gap-2">
                                 <a href="{{ route('admin.parametres.edit', $parametre) }}" class="btn btn-sm btn-warning">
                                     <i class="bi bi-pencil"></i>
                                 </a>
@@ -41,13 +43,14 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center text-muted">Aucun paramètre trouvé.</td>
+                            <td colspan="4" class="text-center py-4 text-muted">Aucun paramètre trouvé.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
+        {{-- Pagination --}}
         <div class="d-flex justify-content-center">
             {{ $parametres->links() }}
         </div>

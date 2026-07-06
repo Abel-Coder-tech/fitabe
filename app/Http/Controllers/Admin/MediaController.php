@@ -4,39 +4,54 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Medias;
-use App\Models\Candidats;
 use Illuminate\Http\Request;
 
 class MediaController extends Controller
 {
+    // Affiche la liste paginée des médias
     public function index()
     {
-        $medias = Medias::with('candidat')->latest()->paginate(20);
+        $medias = Medias::orderBy('ordre_affichage', 'asc')->paginate(20);
         return view('admin.media.index', compact('medias'));
     }
 
+    // Affiche le formulaire de création
     public function create()
     {
-        $candidats = Candidats::all();
-        return view('admin.media.create', compact('candidats'));
+        return view('admin.media.create');
     }
 
+    // Enregistre un nouveau média (photo ou vidéo)
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'type' => 'required|in:photo,video',
             'titre' => 'nullable|string|max:200',
-            'type' => 'required|string|max:50',
-            'fichier' => 'required|file|max:10240',
-            'candidat_id' => 'nullable|exists:candidats,id',
+            'description' => 'nullable|string',
+            'fichier' => 'nullable|file|max:10240',
+            'lien_youtube' => 'nullable|string|max:255',
+            'annee_edition' => 'nullable|string|max:10',
+            'ordre_affichage' => 'nullable|integer|min:0',
         ], [
             'type.required' => 'Le type de média est requis.',
-            'fichier.required' => 'Le fichier est requis.',
+            'type.in' => 'Le type doit être photo ou video.',
             'fichier.file' => 'Le fichier doit être un fichier valide.',
             'fichier.max' => 'Le fichier ne doit pas dépasser 10 Mo.',
-            'candidat_id.exists' => 'Le candidat sélectionné n\'existe pas.',
         ]);
 
-        $validated['url'] = $request->file('fichier')->store('medias', 'public');
+        if ($request->type === 'photo') {
+            $request->validate(['fichier' => 'required|file|max:10240'], [
+                'fichier.required' => 'Le fichier photo est requis.',
+            ]);
+            $validated['url'] = $request->file('fichier')->store('medias', 'public');
+            $validated['lien_youtube'] = null;
+        } else {
+            $request->validate(['lien_youtube' => 'required|string|max:255'], [
+                'lien_youtube.required' => 'Le lien YouTube est requis.',
+            ]);
+            $validated['url'] = null;
+        }
+
         unset($validated['fichier']);
 
         Medias::create($validated);
@@ -44,34 +59,44 @@ class MediaController extends Controller
         return to_route('admin.medias.index')->with('success', 'Média ajouté avec succès.');
     }
 
+    // Affiche le détail d'un média
     public function show(Medias $media)
     {
-        $media->load('candidat');
-        return view('admin.media.show', compact('media'));
+        return view('admin.medias.show', compact('medias'));
     }
 
+    // Affiche le formulaire d'édition
     public function edit(Medias $media)
     {
-        $candidats = Candidats::all();
-        return view('admin.media.edit', compact('media', 'candidats'));
+        return view('admin.medias.edit', compact('medias'));
     }
 
+    // Met à jour un média existant
     public function update(Request $request, Medias $media)
     {
         $validated = $request->validate([
+            'type' => 'required|in:photo,video',
             'titre' => 'nullable|string|max:200',
-            'type' => 'required|string|max:50',
+            'description' => 'nullable|string',
             'fichier' => 'nullable|file|max:10240',
-            'candidat_id' => 'nullable|exists:candidats,id',
+            'lien_youtube' => 'nullable|string|max:255',
+            'annee_edition' => 'nullable|string|max:10',
+            'ordre_affichage' => 'nullable|integer|min:0',
         ], [
             'type.required' => 'Le type de média est requis.',
+            'type.in' => 'Le type doit être photo ou video.',
             'fichier.file' => 'Le fichier doit être un fichier valide.',
             'fichier.max' => 'Le fichier ne doit pas dépasser 10 Mo.',
-            'candidat_id.exists' => 'Le candidat sélectionné n\'existe pas.',
         ]);
 
-        if ($request->hasFile('fichier')) {
-            $validated['url'] = $request->file('fichier')->store('medias', 'public');
+        if ($request->type === 'photo') {
+            if ($request->hasFile('fichier')) {
+                $validated['url'] = $request->file('fichier')->store('medias', 'public');
+            }
+            $validated['lien_youtube'] = null;
+        } else {
+            $validated['url'] = null;
+            $validated['lien_youtube'] = $request->lien_youtube;
         }
         unset($validated['fichier']);
 
@@ -80,9 +105,10 @@ class MediaController extends Controller
         return to_route('admin.medias.index')->with('success', 'Média mis à jour avec succès.');
     }
 
+    // Supprime un média
     public function destroy(Medias $media)
     {
-        $media->delete();
+        $media->forceDelete();
         return to_route('admin.medias.index')->with('success', 'Média supprimé avec succès.');
     }
 }

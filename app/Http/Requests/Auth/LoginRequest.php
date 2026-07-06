@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Lang;
 
 class LoginRequest extends FormRequest
 {
@@ -46,7 +47,9 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => Lang::has('auth.failed')
+                    ? trans('auth.failed')
+                    : 'These credentials do not match our records.',
             ]);
         }
 
@@ -69,10 +72,12 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
+            'email' => Lang::has('auth.throttle')
+                ? trans('auth.throttle', [
+                    'seconds' => $seconds,
+                    'minutes' => ceil($seconds / 60),
+                ])
+                : sprintf('Too many login attempts. Please try again in %d seconds.', $seconds),
         ]);
     }
 

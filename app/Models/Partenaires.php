@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Partenaires extends Model
 {
+    // Champs assignables en masse
     protected $fillable = [
         'nom',
         'logo',
@@ -22,11 +23,13 @@ class Partenaires extends Model
         ];
     }
 
+    // Accesseur : URL complète du logo
     public function getLogoUrlAttribute(): string
     {
         return $this->logo ? asset('storage/' . $this->logo) : '';
     }
 
+    // Scope : trié par ordre d'affichage
     public function scopeOrdered(Builder $query): Builder
     {
         return $query->orderBy('ordre');

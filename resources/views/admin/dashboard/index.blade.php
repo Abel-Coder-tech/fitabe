@@ -85,7 +85,7 @@
     <div class="col-6 col-md-3">
         <a href="{{ route('admin.candidats.create') }}" class="text-decoration-none">
             <div class="card quick-card p-3 text-center h-100 border-0">
-                <div class="quick-icon mx-auto mb-2" style="background: #e8f5e9; color: #2e7d32;">
+                <div class="quick-icon mx-auto mb-2" style="background: #fef0e0; color: #9B4D07;">
                     <i class="bi bi-person-plus-fill"></i>
                 </div>
                 <span class="small fw-semibold" style="color: #9B4D07;">Ajouter candidat</span>
@@ -95,7 +95,7 @@
     <div class="col-6 col-md-3">
         <a href="{{ route('admin.medias.create') }}" class="text-decoration-none">
             <div class="card quick-card p-3 text-center h-100 border-0">
-                <div class="quick-icon mx-auto mb-2" style="background: #e3f2fd; color: #1565c0;">
+                <div class="quick-icon mx-auto mb-2" style="background: #fef0e0; color: #CA7B05;">
                     <i class="bi bi-plus-circle-fill"></i>
                 </div>
                 <span class="small fw-semibold" style="color: #9B4D07;">Ajouter média</span>
@@ -105,7 +105,7 @@
     <div class="col-6 col-md-3">
         <a href="{{ route('admin.partenaires.create') }}" class="text-decoration-none">
             <div class="card quick-card p-3 text-center h-100 border-0">
-                <div class="quick-icon mx-auto mb-2" style="background: #fff3e0; color: #e65100;">
+                <div class="quick-icon mx-auto mb-2" style="background: #fef0e0; color: #9B4D07;">
                     <i class="bi bi-building-add"></i>
                 </div>
                 <span class="small fw-semibold" style="color: #9B4D07;">Ajouter partenaire</span>
@@ -115,7 +115,7 @@
     <div class="col-6 col-md-3">
         <a href="{{ route('admin.programmes.create') }}" class="text-decoration-none">
             <div class="card quick-card p-3 text-center h-100 border-0">
-                <div class="quick-icon mx-auto mb-2" style="background: #fce4ec; color: #c62828;">
+                <div class="quick-icon mx-auto mb-2" style="background: #fef0e0; color: #CA7B05;">
                     <i class="bi bi-calendar-plus-fill"></i>
                 </div>
                 <span class="small fw-semibold" style="color: #9B4D07;">Ajouter programme</span>
@@ -130,7 +130,7 @@
         <div class="card stat-card p-3 border-0">
             <div class="d-flex justify-content-between align-items-start mb-2">
                 <span class="small text-muted">Votes confirmés</span>
-                <div class="stat-icon" style="background: #e8f5e9; color: #2e7d32;">
+                <div class="stat-icon" style="background: #fef0e0; color: #2e7d32;">
                     <i class="bi bi-check-circle-fill"></i>
                 </div>
             </div>

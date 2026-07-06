@@ -5,15 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
+    // Affiche le formulaire de modification du profil
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -21,9 +20,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
+    // Met à jour les informations du profil
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
@@ -37,9 +34,28 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    /**
-     * Delete the user's account.
-     */
+    // Exporte les données personnelles au format JSON
+    public function export(Request $request): Response
+    {
+        $user = $request->user();
+        $data = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'created_at' => $user->created_at->toIso8601String(),
+            'updated_at' => $user->updated_at->toIso8601String(),
+        ];
+
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        $filename = 'donnees-compte-' . date('Y-m-d') . '.json';
+
+        return response($json, 200, [
+            'Content-Type' => 'application/json',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+    }
+
+    // Supprime le compte utilisateur
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [

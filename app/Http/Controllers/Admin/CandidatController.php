@@ -21,24 +21,31 @@ class CandidatController extends Controller
 
     public function store(Request $request)
     {
-        $messages = [
-            'nom.required' => 'Le nom du candidat est requis.',
-            'nom.max' => 'Le nom ne doit pas dépasser :max caractères.',
-            'categorie.required' => 'La catégorie est requise.',
-            'categorie.max' => 'La catégorie ne doit pas dépasser :max caractères.',
-            'numero_scene.integer' => 'Le numéro de scène doit être un nombre entier.',
-            'photo.image' => 'Le fichier doit être une image.',
-            'photo.max' => 'L\'image ne doit pas dépasser 2 Mo.',
-        ];
-
         $validated = $request->validate([
             'nom' => 'required|string|max:150',
             'nom_scene' => 'nullable|string|max:150',
             'categorie' => 'required|string|max:100',
             'numero_scene' => 'nullable|integer',
-            'photo' => 'nullable|image|max:2048',
-            'biographie' => 'nullable|string',
-        ], $messages);
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'biographie' => 'nullable|string|max:500',
+        ],
+        [
+            'nom.required' => 'Le nom est obligatoire.',
+            'nom.max' => 'Le nom ne doit pas dépasser 150 caractères.',
+            'nom_scene.max' => 'Le nom de scène ne doit pas dépasser 150 caractères.',
+            'categorie.required' => 'La catégorie est requise.',
+            'categorie.max' => 'La catégorie ne doit pas dépasser 100 caractères.',
+            'numero_scene.integer' => 'Le numéro de scène doit être un entier.',
+            'photo.image' => 'Le fichier doit être une image.',
+            'photo.mimes' => 'Le fichier doit être au format jpeg, png, jpg ou gif.',
+            'photo.required' => 'La photo est obligatoire.',
+            'photo.max' => 'La taille maximal de l\'image ne doit pas dépasser 2 Mo.',
+            'biographie.string' => 'La biographie doit être une chaîne de caractères.', 
+            'biographie.max' => 'La biographie ne doit pas dépasser 500 caractères.',
+        ]
+        
+        );
+
 
         if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('photos', 'public');
@@ -61,24 +68,30 @@ class CandidatController extends Controller
 
     public function update(Request $request, Candidats $candidat)
     {
-        $messages = [
-            'nom.required' => 'Le nom du candidat est requis.',
-            'nom.max' => 'Le nom ne doit pas dépasser :max caractères.',
-            'categorie.required' => 'La catégorie est requise.',
-            'categorie.max' => 'La catégorie ne doit pas dépasser :max caractères.',
-            'numero_scene.integer' => 'Le numéro de scène doit être un nombre entier.',
-            'photo.image' => 'Le fichier doit être une image.',
-            'photo.max' => 'L\'image ne doit pas dépasser 2 Mo.',
-        ];
-
-        $validated = $request->validate([
+       $validated = $request->validate([
             'nom' => 'required|string|max:150',
             'nom_scene' => 'nullable|string|max:150',
             'categorie' => 'required|string|max:100',
             'numero_scene' => 'nullable|integer',
-            'photo' => 'nullable|image|max:2048',
-            'biographie' => 'nullable|string',
-        ], $messages);
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'biographie' => 'nullable|string|max:500',
+        ],
+        [
+            'nom.required' => 'Le nom est obligatoire.',
+            'nom.max' => 'Le nom ne doit pas dépasser 150 caractères.',
+            'nom_scene.max' => 'Le nom de scène ne doit pas dépasser 150 caractères.',
+            'categorie.required' => 'La catégorie est requise.',
+            'categorie.max' => 'La catégorie ne doit pas dépasser 100 caractères.',
+            'numero_scene.integer' => 'Le numéro de scène doit être un entier.',
+            'photo.image' => 'Le fichier doit être une image.',
+            'photo.mimes' => 'Le fichier doit être au format jpeg, png, jpg ou gif.',
+            'photo.required' => 'La photo est obligatoire.',
+            'photo.max' => 'La taille maximal de l\'image ne doit pas dépasser 2 Mo.',
+            'biographie.string' => 'La biographie doit être une chaîne de caractères.', 
+            'biographie.max' => 'La biographie ne doit pas dépasser 500 caractères.',
+        ]
+        
+        );
 
         if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('photos', 'public');
@@ -91,7 +104,7 @@ class CandidatController extends Controller
 
     public function destroy(Candidats $candidat)
     {
-        $candidat->delete();
+        $candidat->forceDelete();
         return to_route('admin.candidats.index')->with('success', 'Candidat supprimé avec succès.');
     }
 }

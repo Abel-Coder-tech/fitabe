@@ -10,7 +10,7 @@ class ParametreController extends Controller
 {
     public function index()
     {
-        $parametres = Parametres::paginate(20);
+        $parametres = Parametres::query()->paginate(20);
         return view('admin.parametres.index', compact('parametres'));
     }
 
@@ -37,12 +37,12 @@ class ParametreController extends Controller
 
     public function show(Parametres $parametre)
     {
-        return view('admin.parametres.show', compact('parametre'));
+        return view('admin.parametres.show', compact('parametres'));
     }
 
     public function edit(Parametres $parametre)
     {
-        return view('admin.parametres.edit', compact('parametre'));
+        return view('admin.parametres.edit', compact('parametres'));
     }
 
     public function update(Request $request, Parametres $parametre)
@@ -63,7 +63,7 @@ class ParametreController extends Controller
 
     public function destroy(Parametres $parametre)
     {
-        $parametre->delete();
+        $parametre->forceDelete();
         return to_route('admin.parametres.index')->with('success', 'Paramètre supprimé avec succès.');
     }
 }

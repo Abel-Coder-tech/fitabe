@@ -6,11 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Candidats;
 use App\Models\Parametres;
 use App\Models\Votes;
+use App\Services\ResultatService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class VoteController extends Controller
 {
+    // Injection du service de résultats
+    public function __construct(
+        protected ResultatService $resultatService
+    ) {}
+
+    // Page publique de vote avec candidats et paramètres
     public function index()
     {
         $voteMode = Parametres::where('cle', 'vote_mode')->value('valeur') ?? 'off';
@@ -38,8 +45,14 @@ class VoteController extends Controller
         ));
     }
 
+    // Soumet un vote (vérifie mode, valide, crée)
     public function store(Request $request)
     {
+        $voteMode = Parametres::where('cle', 'vote_mode')->value('valeur') ?? 'off';
+        if ($voteMode !== 'active') {
+            return response()->json(['success' => false, 'message' => 'Le vote est fermé.'], 403);
+        }
+
         $prixDuVote = (int) (Parametres::where('cle', 'prix_du_vote')->value('valeur') ?? 100);
 
         $validated = $request->validate([
@@ -69,6 +82,7 @@ class VoteController extends Controller
         ]);
     }
 
+    // Webhook de confirmation Kkiapay
     public function webhookKkiapay(Request $request)
     {
         $transactionId = $request->input('transaction_id');
@@ -85,6 +99,7 @@ class VoteController extends Controller
         return response()->json(['success' => true]);
     }
 
+    // Webhook de confirmation Fedapay
     public function webhookFedapay(Request $request)
     {
         $transactionId = $request->input('transaction_id');
@@ -101,6 +116,34 @@ class VoteController extends Controller
         return response()->json(['success' => true]);
     }
 
+    // Met à jour les paramètres de vote et génère les résultats si clôture
+    public function updateSettings(Request $request)
+    {
+        if ($request->user()->role !== 'super_admin') {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'vote_mode' => 'required|in:active,off,cloture',
+            'prix_du_vote' => 'required|integer|min:50',
+            'vote_deadline' => 'nullable|date',
+            'afficher_compteur' => 'nullable|in:0,1',
+        ]);
+
+        Parametres::updateOrCreate(['cle' => 'vote_mode'], ['valeur' => $data['vote_mode']]);
+        Parametres::updateOrCreate(['cle' => 'prix_du_vote'], ['valeur' => (string) $data['prix_du_vote']]);
+        Parametres::updateOrCreate(['cle' => 'vote_deadline'], ['valeur' => $data['vote_deadline'] ?? '']);
+        Parametres::updateOrCreate(['cle' => 'afficher_compteur'], ['valeur' => $data['afficher_compteur'] ?? '0']);
+
+        if ($data['vote_mode'] === 'cloture') {
+            $annee = $data['annee_resultats'] ?? date('Y');
+            $this->resultatService->generer($annee);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    // Page de remerciement après un vote
     public function merci(Request $request)
     {
         $vote = null;

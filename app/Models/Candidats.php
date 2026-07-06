@@ -11,12 +11,12 @@ class Candidats extends Model
 {
     use HasFactory;
 
+    // Champs assignables en masse
     protected $fillable = [
-
-        'nom', 'nom_scene', 'categorie', 'numero_scene', 'photo', 'biographie', 'nombre_votes',
-
+        'nom', 'categorie', 'numero_scene', 'photo', 'biographie', 'nombre_votes',
     ];
 
+    // Casts des attributs
     protected function casts(): array
     {
         return [
@@ -25,16 +25,19 @@ class Candidats extends Model
         ];
     }
 
+    // Relation : votes du candidat
     public function votes(): HasMany
     {
         return $this->hasMany(Votes::class, 'candidat_id');
     }
 
+    // Relation : médias associés
     public function medias(): HasMany
     {
         return $this->hasMany(Medias::class, 'candidat_id');
     }
 
+    // Scope : votes confirmés uniquement
     public function confirmerVotes(): HasMany
     {
         return $this->votes()->where('statut', 'confirme');
@@ -42,19 +45,22 @@ class Candidats extends Model
 
     public function getDisplayNameAttribute(): string
     {
-        return $this->nom_scene ?? $this->nom;
+        return $this->nom;
     }
 
+    // Accesseur : URL complète de la photo
     public function getPhotoUrlAttribute(): string
     {
-        return asset('storage/photos/' . $this->photo);
+        return $this->photo ? asset('storage/' . $this->photo) : '';
     }
 
+    // Incrémente le compteur de votes
     public function getIncrementeVotes(int $quantite): void
     {
         $this->increment('nombre_votes', $quantite, []);
     }
 
+    // Accesseur : rang dans la catégorie
     public function getRankAttribute(): ?int
     {
         return static::where('categorie', '=', $this->categorie, 'and')
@@ -62,11 +68,13 @@ class Candidats extends Model
             ->count() + 1;
     }
 
+    // Scope : filtre par catégorie
     public function scopeByCategory(Builder $query, string $categorie): Builder
     {
         return $query->where('categorie', $categorie);
     }
 
+    // Scope : trié par nombre de votes décroissant
     public function scopeOrderedByVotes(Builder $query): Builder
     {
         return $query->orderByDesc('nombre_votes');

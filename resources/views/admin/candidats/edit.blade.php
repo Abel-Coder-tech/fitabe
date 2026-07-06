@@ -3,8 +3,10 @@
 @section('title', 'Modifier un candidat')
 
 @section('content')
+{{-- Titre --}}
 <h1 class="mb-4">Modifier : {{ $candidat->nom }}</h1>
 
+{{-- Formulaire de modification --}}
 <form method="POST" action="{{ route('admin.candidats.update', $candidat) }}" enctype="multipart/form-data">
     @csrf @method('PUT')
     <div class="row">
@@ -13,12 +15,6 @@
             <input type="text" name="nom" class="form-control @error('nom') is-invalid @enderror" value="{{ old('nom', $candidat->nom) }}" required>
             @error('nom') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
-        <div class="col-md-6 mb-3">
-            <label class="form-label">Nom de scène</label>
-            <input type="text" name="nom_scene" class="form-control" value="{{ old('nom_scene', $candidat->nom_scene) }}">
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Catégorie</label>
             <input type="text" name="categorie" class="form-control @error('categorie') is-invalid @enderror" value="{{ old('categorie', $candidat->categorie) }}" required>

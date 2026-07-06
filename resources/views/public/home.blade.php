@@ -28,10 +28,6 @@
                     </a>
                 </div>
 
-                <div class="mt-3 small" style="color: rgba(227,213,173,0.7);">
-                    <i class="bi bi-calendar-event me-1" style="color: #CA7B05;"></i> Novembre 2026
-                </div>
-
                 <div class="d-flex flex-wrap gap-4 mt-4" style="color: rgba(227,213,173,0.7);">
                     <div><i class="bi bi-people-fill me-1" style="color: #CA7B05;"></i> 15+ Artistes</div>
                     <div><i class="bi bi-trophy-fill me-1" style="color: #CA7B05;"></i> 5 Catégories</div>
@@ -71,11 +67,13 @@
 .accordion-button:focus { box-shadow: none !important; }
 .accordion-button::after { margin-left: 0; }
 .partenaires-track-wrapper { overflow: hidden; width: 100%; }
-.partenaires-track { display: flex; gap: 2rem; width: max-content; animation: scrollPartenaires 20s linear infinite; }
-.partenaires-track:hover { animation-play-state: paused; }
+.partenaires-track { display: flex; gap: 2rem; width: max-content; }
+.partenaires-track.scroll { animation: scrollPartenaires 20s linear infinite; }
+.partenaires-track.scroll:hover { animation-play-state: paused; }
+.partenaires-track.centered { width: 100%; justify-content: center; }
 .partenaire-item { flex-shrink: 0; display: flex; align-items: center; justify-content: center; height: 120px; }
-.partenaire-logo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; filter: grayscale(0.6); opacity: 0.8; border: 3px solid #e8e8e8; transition: filter .3s, opacity .3s, transform .3s, border-color .3s; }
-.partenaire-logo:hover { filter: grayscale(0); opacity: 1; transform: scale(1.08); border-color: #CA7B05; }
+.partenaire-logo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #e8e8e8; transition: transform .3s, border-color .3s; }
+.partenaire-logo:hover { transform: scale(1.25); border-color: #CA7B05; }
 @keyframes scrollPartenaires { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 </style>
 
@@ -133,15 +131,17 @@
                     @php
                         $items = [
                             ['img' => 'cat1', 'angle' => 90,  'label' => 'Théatre',       'pos' => 'top'],
-                            ['img' => 'cat2', 'angle' => 18,  'label' => 'Percussion',      'pos' => 'right'],
-                            ['img' => 'cat3', 'angle' => 306, 'label' => 'Musique',         'pos' => 'right'],
-                            ['img' => 'cat4', 'angle' => 234, 'label' => 'Danse',    'pos' => 'left'],
-                            ['img' => 'cat5', 'angle' => 162, 'label' => 'Art visuel',    'pos' => 'left'],
+                            ['img' => 'cat2', 'angle' => 30,  'label' => 'Percussion',      'pos' => 'right'],
+                            ['img' => 'cat3', 'angle' => 330, 'label' => 'Musique',         'pos' => 'right'],
+                            ['img' => 'cat4', 'angle' => 270, 'label' => 'Danse',    'pos' => 'bottom'],
+                            ['img' => 'cat5', 'angle' => 210, 'label' => 'Art visuel',    'pos' => 'left'],
+                            ['img' => 'cat6', 'angle' => 150, 'label' => 'Styliste Modéliste', 'pos' => 'left'],
                         ];
                         $labelStyles = [
-                            'top'   => 'bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 8px; text-align: center;',
-                            'right' => 'left: 100%; top: 50%; transform: translateY(-50%); margin-left: 8px;',
-                            'left'  => 'right: 100%; top: 50%; transform: translateY(-50%); margin-right: 8px; text-align: right;',
+                            'top'    => 'bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 8px; text-align: center;',
+                            'right'  => 'left: 100%; top: 50%; transform: translateY(-50%); margin-left: 8px;',
+                            'bottom' => 'top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px; text-align: center;',
+                            'left'   => 'right: 100%; top: 50%; transform: translateY(-50%); margin-right: 8px; text-align: right;',
                         ];
                     @endphp
                     @foreach ($items as $item)
@@ -158,33 +158,6 @@
     </div>
 </section>
 
-{{-- ==================== APPEL À CANDIDATURES ==================== --}}
-<section class="py-5 section-dark">
-    <div class="container py-4">
-        <div class="row align-items-center g-4">
-            <div class="col-lg-7">
-                <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Appel à candidatures</span>
-                <h2 class="display-6 fw-bold mt-2 mb-3" style="color: #E3D5AD;">
-                    Êtes-vous styliste <span style="color: #CA7B05;">ou modéliste</span> ?
-                </h2>
-                <p class="mb-4" style="color: rgba(227,213,173,0.75); line-height: 1.8; max-width: 540px;">
-                    Nous recrutons des talents de la mode pour participer au FITAB 2026. 
-                    Si vous avez une passion pour le stylisme ou le modélisme, 
-                    soumettez votre candidature et tentez de faire partie de l'aventure.
-                </p>
-                <a href="#" target="_blank" rel="noopener" class="btn btn-fitab btn-lg px-5 py-3 fw-semibold">
-                    <i class="bi bi-send me-2"></i>Postuler maintenant
-                </a>
-            </div>
-            <div class="col-lg-5 text-center">
-                <div class="p-4 rounded-4 d-inline-block" style="border: 2px dashed rgba(202,123,5,0.4);">
-                    <i class="bi bi-scissors" style="color: #CA7B05; font-size: 4rem;"></i>
-                    <div class="small mt-2" style="color: rgba(227,213,173,0.6);">Concours de mode</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 {{-- ==================== PROGRAMME ==================== --}}
 <section class="py-5" style="background-color: #fdfaf5;">
@@ -257,25 +230,27 @@
 </section>
 
 {{-- ==================== PARTENAIRES ==================== --}}
-<section class="py-5 section-dark text-center">
+<section class="py-5 bg-white text-center">
     <div class="container">
         <div class="text-center mb-4">
             <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Partenaires</span>
-            <h2 class="fw-bold mt-2" style="color: #E3D5AD;">Nos partenaires</h2>
+            <h2 class="fw-bold mt-2" style="color: #3E1E05;">Nos partenaires</h2>
         </div>
         @if ($partenaires->count())
         <div class="partenaires-track-wrapper">
-            <div class="partenaires-track">
+            <div class="partenaires-track {{ $partenaires->count() > 1 ? 'scroll' : 'centered' }}">
                 @foreach ($partenaires as $p)
                 <div class="partenaire-item">
                     <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}" class="partenaire-logo">
                 </div>
                 @endforeach
+                @if ($partenaires->count() > 1)
                 @foreach ($partenaires as $p)
                 <div class="partenaire-item">
                     <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}" class="partenaire-logo">
                 </div>
                 @endforeach
+                @endif
             </div>
         </div>
         @endif

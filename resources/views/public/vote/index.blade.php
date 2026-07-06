@@ -15,16 +15,47 @@
         border: none;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer;
-        border-radius: 12px;
+        border-radius: 16px;
         overflow: hidden;
     }
     .candidate-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 8px 28px rgba(160,132,92,0.12);
     }
-    .candidate-card .card-img-top {
-        height: 260px;
+    .candidate-card .candidat-photo {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
         object-fit: cover;
+        border: 3px solid #fff;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        margin-top: -45px;
+        position: relative;
+        z-index: 1;
+    }
+    .candidate-card .candidat-num {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(62,30,5,0.85);
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 20px;
+        z-index: 2;
+        letter-spacing: 0.3px;
+    }
+    .candidate-card .candidat-cover {
+        height: 110px;
+        background: linear-gradient(135deg, #3E1E05, #9B4D07);
+        position: relative;
+    }
+    .candidate-card .candidat-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.35;
     }
     .candidate-card .vote-count {
         font-size: 1.1rem;
@@ -44,37 +75,6 @@
     .filter-btn:hover,
     .filter-btn.active {
         background: var(--vote-gold-light);
-        color: #fff;
-    }
-
-    .step-indicator {
-        display: flex;
-        justify-content: center;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-    }
-    .step-dot {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 0.9rem;
-        border: 2px solid #dee2e6;
-        color: #adb5bd;
-        background: #fff;
-        transition: all 0.3s;
-    }
-    .step-dot.active {
-        border-color: var(--vote-gold);
-        background: var(--vote-gold);
-        color: #fff;
-    }
-    .step-dot.done {
-        border-color: #198754;
-        background: #198754;
         color: #fff;
     }
 
@@ -305,30 +305,50 @@
                 <div class="row g-4">
                     @foreach($candidatsCategorie as $candidat)
                         <div class="col-sm-6 col-md-4 col-lg-3">
-                            <div class="card candidate-card h-100 shadow-sm">
+                            <div class="card candidate-card h-100 shadow-sm text-center">
+                                {{-- Cover band + "Candidat N°X" badge --}}
+                                <div class="candidat-cover">
+                                    
+                                    @if($candidat->numero_scene)
+                                        <span class="candidat-num">Candidat N°{{ $candidat->numero_scene }}</span>
+                                    @endif
+                                </div>
+                                {{-- Circular photo --}}
                                 @if($candidat->photo)
-                                    <img src="{{ $candidat->photo_url }}" class="card-img-top" alt="{{ $candidat->display_name }}">
+                                    <img src="{{ $candidat->photo_url }}" class="candidat-photo mx-auto" alt="{{ $candidat->display_name }}">
                                 @else
-                                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center text-white" style="height:260px;">
-                                        <i class="bi bi-person fs-1"></i>
+                                    <div class="candidat-photo mx-auto d-flex align-items-center justify-content-center bg-light" style="border-radius:50%; width:90px; height:90px; margin-top:-45px; border:3px solid #fff; box-shadow:0 3px 12px rgba(0,0,0,0.08);">
+                                        <i class="bi bi-person fs-3 text-muted"></i>
                                     </div>
                                 @endif
-                                <div class="card-body text-center d-flex flex-column">
-                                    <h5 class="fw-bold mb-1">{{ $candidat->display_name }}</h5>
-                                    @if($candidat->numero_scene)
-                                        <span class="small text-muted mb-2">#{{ $candidat->numero_scene }}</span>
+                                <div class="card-body d-flex flex-column px-3 pt-2 pb-3">
+                                    {{-- Name + stage name --}}
+                                    <h6 class="fw-bold mb-0" style="color: var(--vote-brown);">{{ $candidat->display_name }}</h6>
+                                    {{-- Motivation / biographie (truncated) --}}
+                                    @if($candidat->biographie)
+                                        <p class="small text-muted mb-2 mt-1" style="font-style: italic; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                            {{ \Illuminate\Support\Str::limit($candidat->biographie, 80) }}
+                                        </p>
                                     @endif
-                                    <p class="vote-count mt-auto mb-2">
+                                    {{-- Vote count --}}
+                                    <p class="vote-count mb-2 mt-auto">
                                         <i class="bi bi-heart-fill" style="color: var(--vote-gold);"></i>
                                         {{ $candidat->votes_count ?? 0 }} vote(s)
                                     </p>
+                                    {{-- Buttons --}}
                                     @if($voteMode === 'active')
-                                        <button type="button" class="btn w-100 text-white fw-semibold" style="background: var(--vote-gold);"
-                                                onclick="ouvrirVote({{ $candidat->id }}, '{{ addslashes($candidat->display_name) }}', '{{ $candidat->photo_url }}')">
-                                            Voter <i class="bi bi-check-circle ms-1"></i>
-                                        </button>
+                                        <div class="d-flex gap-2">
+                                            <button type="button" class="btn flex-fill text-white fw-semibold btn-sm" style="background: var(--vote-gold); border-radius: 50px;"
+                                                    onclick='ouvrirVote({{ $candidat->id }}, {!! json_encode($candidat->display_name) !!}, {!! json_encode($candidat->photo_url) !!}, {{ $candidat->votes_count ?? 0 }}, {!! json_encode($candidat->categorie ?? '') !!}, {!! json_encode(Str::limit($candidat->biographie ?? '', 120)) !!})'>
+                                                Voter <i class="bi bi-check-circle ms-1"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm fw-semibold" style="border: 2px solid var(--vote-gold-light); color: var(--vote-gold-light); border-radius: 50px; flex: 0 0 auto; padding: 0.25rem 0.8rem;"
+                                                    onclick='partagerCandidat({{ $candidat->id }}, {!! json_encode($candidat->display_name) !!})'>
+                                                <i class="bi bi-share-fill"></i>
+                                            </button>
+                                        </div>
                                     @else
-                                        <button type="button" class="btn btn-secondary w-100" disabled>
+                                        <button type="button" class="btn btn-secondary w-100 btn-sm" disabled style="border-radius: 50px;">
                                             Vote fermé
                                         </button>
                                     @endif
@@ -343,140 +363,7 @@
     </div>
 </section>
 
-{{-- ==================== MODAL VOTE (3 étapes) ==================== --}}
-@if($voteMode === 'active')
-<div class="modal fade" id="voteModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content border-0 rounded-4 overflow-hidden">
-
-            {{-- En-tête --}}
-            <div class="modal-header border-bottom-0 pb-0" style="background: var(--vote-cream);">
-                <div class="w-100 text-center">
-                    <div class="step-indicator">
-                        <div class="step-dot active" id="step-dot-1">1</div>
-                        <div class="step-dot" id="step-dot-2">2</div>
-                        <div class="step-dot" id="step-dot-3">3</div>
-                    </div>
-                    <h5 class="fw-bold mb-0" style="color: var(--vote-gold);" id="voteModalTitle">
-                        Voter pour <span id="candidatNameDisplay"></span>
-                    </h5>
-                    <p class="small text-muted mt-1" id="voteModalSubtitle">Étape 1 — Quantité &amp; informations</p>
-                </div>
-                <button type="button" class="btn-close position-absolute top-0 end-0 mt-3 me-3" data-bs-dismiss="modal"></button>
-            </div>
-
-            <div class="modal-body p-4">
-
-                {{-- Candidat résumé --}}
-                <div class="d-flex align-items-center gap-3 mb-4 p-3 rounded-3 bg-light">
-                    <img id="candidatPhotoPreview" src="" alt="" class="rounded-circle" width="56" height="56" style="object-fit:cover;">
-                    <div>
-                        <strong id="candidatNameMini" class="d-block"></strong>
-                        <small class="text-muted" id="candidatPriceInfo"></small>
-                    </div>
-                </div>
-
-                <form id="voteForm" method="POST">
-                    @csrf
-                    <input type="hidden" name="candidat_id" id="voteCandidatId">
-                    <input type="hidden" name="payment_method" id="votePaymentMethod">
-
-                    {{-- STEP 1 : Quantité + infos votant --}}
-                    <div class="vote-step active" id="step-1">
-                        <div class="mb-3">
-                            <label for="quantite" class="form-label fw-semibold">Nombre de votes</label>
-                            <div class="input-group">
-                                <button class="btn btn-outline-secondary" type="button" onclick="changerQte(-1)">−</button>
-                                <input type="number" class="form-control text-center fw-bold" id="quantite" name="quantite" value="1" min="1" max="100" required>
-                                <button class="btn btn-outline-secondary" type="button" onclick="changerQte(1)">+</button>
-                            </div>
-                            <div class="form-text mt-2">
-                                Prix unitaire : <strong>{{ number_format($prixDuVote, 0, ',', ' ') }} FCFA</strong> &mdash;
-                                Total : <strong id="totalDisplay">{{ number_format($prixDuVote, 0, ',', ' ') }} FCFA</strong>
-                            </div>
-                        </div>
-
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <label for="votant_nom" class="form-label fw-semibold">Nom complet <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="votant_nom" name="votant_nom" required placeholder="Votre nom et prénom">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="votant_email" class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="votant_email" name="votant_email" required placeholder="vous@exemple.com">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="votant_telephone" class="form-label fw-semibold">Téléphone <span class="text-danger">*</span></label>
-                                <input type="tel" class="form-control" id="votant_telephone" name="votant_telephone" required placeholder="+229 61 00 00 00">
-                            </div>
-                        </div>
-
-                        <div class="text-end mt-4">
-                            <button type="button" class="btn text-white px-4 fw-semibold" style="background: var(--vote-gold);" onclick="allerStep(2)">
-                                Suivant <i class="bi bi-arrow-right ms-1"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    {{-- STEP 2 : Choix du mode de paiement --}}
-                    <div class="vote-step" id="step-2">
-                        <p class="text-center text-muted mb-4">Choisissez votre moyen de paiement</p>
-                        <div class="row g-3 justify-content-center">
-                            <div class="col-6 col-md-4">
-                                <div class="payment-option" data-method="kkiapay" onclick="choisirPaiement(this, 'kkiapay')">
-                                    <img src="https://kkiapay.me/images/logo.png" alt="Kkiapay" onerror="this.style.display='none'">
-                                    <div class="fw-semibold small">Kkiapay</div>
-                                    <small class="text-muted">Mobile Money, Carte</small>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4">
-                                <div class="payment-option" data-method="fedapay" onclick="choisirPaiement(this, 'fedapay')">
-                                    <img src="https://fedapay.com/assets/logo.svg" alt="Fedapay" onerror="this.style.display='none'">
-                                    <div class="fw-semibold small">Fedapay</div>
-                                    <small class="text-muted">Mobile Money, Carte</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-between mt-4">
-                            <button type="button" class="btn btn-outline-secondary px-3" onclick="allerStep(1)">
-                                <i class="bi bi-arrow-left me-1"></i> Retour
-                            </button>
-                            <button type="button" class="btn text-white px-4 fw-semibold" style="background: var(--vote-gold);" onclick="allerStep(3)" id="btnStep2">
-                                Payer <i class="bi bi-credit-card ms-1"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    {{-- STEP 3 : Paiement --}}
-                    <div class="vote-step" id="step-3">
-                        <div class="text-center py-3">
-                            <div class="spinner-border mb-3 text-primary" role="status" id="paymentSpinner">
-                                <span class="visually-hidden">Chargement...</span>
-                            </div>
-                            <p class="fw-semibold" id="paymentStepText">Initialisation du paiement...</p>
-                            <p class="small text-muted" id="paymentStepDetail">Montant à payer : <strong id="paymentMontant"></strong></p>
-                        </div>
-
-                        <div id="fedapayRedirectNotice" class="alert alert-info text-center" style="display:none;">
-                            <i class="bi bi-box-arrow-up-right me-1"></i>
-                            Redirection vers Fedapay...
-                        </div>
-
-                        <div class="d-flex justify-content-between mt-3">
-                            <button type="button" class="btn btn-outline-secondary px-3" onclick="allerStep(2)" id="btnStep3Back">
-                                <i class="bi bi-arrow-left me-1"></i> Retour
-                            </button>
-                        </div>
-                    </div>
-
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div>
-@endif
+@include('public.vote.modal')
 
 {{-- ==================== RÈGLEMENT ==================== --}}
 <section class="py-4" style="background: #fdfaf5;">
@@ -528,7 +415,7 @@ let etat = {
 };
 
 // ==================== OUVERTURE ====================
-function ouvrirVote(id, nom, photo) {
+function ouvrirVote(id, nom, photo, votesCount, categorie, bio) {
     etat.candidatId = id;
     etat.candidatNom = nom;
     etat.candidatPhoto = photo;
@@ -539,12 +426,17 @@ function ouvrirVote(id, nom, photo) {
     document.getElementById('voteCandidatId').value = id;
     document.getElementById('candidatNameDisplay').textContent = nom;
     document.getElementById('candidatNameMini').textContent = nom;
-    document.getElementById('candidatPriceInfo').textContent = '{{ number_format($prixDuVote, 0, ",", " ") }} FCFA / vote';
+    document.getElementById('candidatCategoryInfo').textContent = categorie || '';
+    document.getElementById('candidatVoteCount').innerHTML = '<i class="bi bi-heart-fill" style="color: #9B4D07;"></i> ' + (votesCount || 0) + ' vote' + ((votesCount || 0) > 1 ? 's' : '');
+    document.getElementById('candidatBio').textContent = bio || '';
     document.getElementById('candidatPhotoPreview').src = photo || '{{ asset("images/default-user.png") }}';
+    document.getElementById('step2CandidatNom').textContent = nom;
+    // Pré-remplir les champs votant (cachés)
+    document.getElementById('votant_nom').value = 'Anonyme';
+    document.getElementById('votant_email').value = 'anonyme@vote.fitab';
+    document.getElementById('votant_telephone').value = '0000000000';
     document.getElementById('quantite').value = 1;
-    document.getElementById('votant_nom').value = '';
-    document.getElementById('votant_email').value = '';
-    document.getElementById('votant_telephone').value = '';
+    setTimeout(function() { changerQte(0); }, 10);
     document.getElementById('votePaymentMethod').value = '';
     majTotal();
 
@@ -562,39 +454,51 @@ function changerQte(delta) {
     const input = document.getElementById('quantite');
     let val = parseInt(input.value) + delta;
     if (val < 1) val = 1;
-    if (val > 100) val = 100;
     input.value = val;
+    // Désactiver le bouton − à 1
+    const btnMoins = document.getElementById('btnMoins');
+    if (btnMoins) {
+        btnMoins.style.opacity = val <= 1 ? '0.3' : '1';
+        btnMoins.style.pointerEvents = val <= 1 ? 'none' : 'auto';
+    }
+    majTotal();
+}
+
+function saisirQte(input) {
+    let val = parseInt(input.value);
+    if (isNaN(val) || val < 1) { input.value = 1; val = 1; }
+    const btnMoins = document.getElementById('btnMoins');
+    if (btnMoins) {
+        btnMoins.style.opacity = val <= 1 ? '0.3' : '1';
+        btnMoins.style.pointerEvents = val <= 1 ? 'none' : 'auto';
+    }
     majTotal();
 }
 
 function majTotal() {
     const qte = parseInt(document.getElementById('quantite').value) || 1;
     const total = qte * etat.prixUnitaire;
-    document.getElementById('totalDisplay').textContent = total.toLocaleString('fr-FR') + ' FCFA';
+    document.getElementById('totalDisplay').textContent = total.toLocaleString('fr-FR');
+    const step2Total = document.getElementById('step2Total');
+    if (step2Total) step2Total.textContent = total.toLocaleString('fr-FR') + ' FCFA';
+    const step2Qte = document.getElementById('step2Quantite');
+    if (step2Qte) step2Qte.textContent = qte + ' vote' + (qte > 1 ? 's' : '');
+}
+
+// ==================== PAIEMENT DIRECT (1 agrégateur) ====================
+function payerDirect(method) {
+    etat.paymentMethod = method;
+    document.getElementById('votePaymentMethod').value = method;
+    allerStep(3);
 }
 
 // ==================== ÉTAPES ====================
 function reinitSteps() {
     document.querySelectorAll('.vote-step').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.step-dot').forEach(el => { el.classList.remove('active', 'done'); });
 }
 
 function allerStep(n, skipValidation) {
     if (!skipValidation) {
-        if (n === 2) {
-            // Step 1 → 2: validate step 1 fields
-            const nom = document.getElementById('votant_nom').value.trim();
-            const email = document.getElementById('votant_email').value.trim();
-            const tel = document.getElementById('votant_telephone').value.trim();
-            if (!nom || !email || !tel) {
-                alert('Veuillez remplir tous les champs (Nom, Email, Téléphone).');
-                return;
-            }
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                alert('Veuillez entrer un email valide.');
-                return;
-            }
-        }
         if (n === 3) {
             const method = etat.paymentMethod;
             if (!method) {
@@ -607,20 +511,6 @@ function allerStep(n, skipValidation) {
     reinitSteps();
     etat.step = n;
     document.getElementById('step-' + n).classList.add('active');
-
-    for (let i = 1; i <= 3; i++) {
-        const dot = document.getElementById('step-dot-' + i);
-        dot.classList.remove('active', 'done');
-        if (i < n) dot.classList.add('done');
-        else if (i === n) dot.classList.add('active');
-    }
-
-    const subtitles = {
-        1: 'Étape 1 — Quantité & informations',
-        2: 'Étape 2 — Choix du moyen de paiement',
-        3: 'Étape 3 — Paiement sécurisé',
-    };
-    document.getElementById('voteModalSubtitle').textContent = subtitles[n] || '';
 
     if (n === 3) {
         lancerPaiement();
@@ -689,6 +579,18 @@ async function lancerPaiement() {
     }
 }
 
+function fallbackSuccess(voteId) {
+    document.getElementById('paymentSpinner').style.display = 'none';
+    document.getElementById('paymentSuccessIcon').style.display = 'block';
+    document.getElementById('paymentStepText').textContent = 'Votre vote a bien été enregistré !';
+    document.getElementById('paymentStepText').style.color = '#198754';
+    document.getElementById('paymentStepDetail').innerHTML = 'Merci pour votre participation.';
+    document.getElementById('btnStep3Back').disabled = true;
+    setTimeout(function() {
+        window.location.href = '{{ route("public.vote.merci") }}?vote_id=' + voteId;
+    }, 1500);
+}
+
 function ouvrirKkiapay(voteId, montant) {
     const apiKey = '{{ $kkiapayKey }}';
     if (!apiKey) {
@@ -739,10 +641,6 @@ function ouvrirFedapay(voteId, montant) {
     window.location.href = checkoutUrl;
 }
 
-function fallbackSuccess(voteId) {
-    window.location.href = '{{ route("public.vote.merci") }}?vote_id=' + voteId;
-}
-
 // ==================== COMPTEUR ====================
 (function() {
     const deadline = @json($voteDeadline ?? null);
@@ -775,6 +673,18 @@ function fallbackSuccess(voteId) {
     maj();
     setInterval(maj, 1000);
 })();
+
+// ==================== PARTAGER ====================
+function partagerCandidat(id, nom) {
+    const url = window.location.href.split('#')[0].split('?')[0] + '?candidat=' + id;
+    if (navigator.share) {
+        navigator.share({ title: nom, text: 'Votez pour ' + nom + ' au FITAB !', url: url });
+    } else {
+        navigator.clipboard.writeText(url).then(function() {
+            alert('Lien copié ! Partagez-le pour soutenir ' + nom);
+        });
+    }
+}
 
 // ==================== FILTRES CATÉGORIES ====================
 document.addEventListener('DOMContentLoaded', function() {

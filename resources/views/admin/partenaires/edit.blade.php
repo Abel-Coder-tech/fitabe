@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+{{-- En-tête --}}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h3">Modifier le partenaire</h1>
     <a href="{{ route('admin.partenaires.index') }}" class="btn btn-secondary">
@@ -8,6 +9,7 @@
     </a>
 </div>
 
+{{-- Formulaire de modification --}}
 <div class="card">
     <div class="card-body">
         <form action="{{ route('admin.partenaires.update', $partenaire) }}" method="POST" enctype="multipart/form-data">
@@ -49,14 +51,6 @@
                 <label for="description" class="form-label">Description</label>
                 <textarea name="description" id="description" rows="4" class="form-control @error('description') is-invalid @enderror">{{ old('description', $partenaire->description) }}</textarea>
                 @error('description')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label for="ordre" class="form-label">Ordre</label>
-                <input type="number" name="ordre" id="ordre" class="form-control @error('ordre') is-invalid @enderror" value="{{ old('ordre', $partenaire->ordre) }}">
-                @error('ordre')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>

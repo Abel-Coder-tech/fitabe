@@ -1,15 +1,31 @@
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 
-// Brand colors
-$brand-brown: #3E1E05;
-$brand-orange: #9B4D07;
-$brand-orange-light: #CA7B05;
-$brand-cream: #E3D5AD;
-.footer-partner {
-    transition: filter 0.3s ease, opacity 0.3s ease;
+// Navbar hover
+.nav-hover {
+    position: relative;
+    transition: color 0.3s ease;
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 50%;
+        width: 0;
+        height: 3px;
+        background: #ffc107;
+        transition: width 0.3s ease, left 0.3s ease;
+        transform: translateX(-50%);
+    }
     &:hover {
-        filter: none !important;
-        opacity: 1 !important;
+        color: #ffc107 !important;
+        &::before {
+            width: 80%;
+        }
+    }
+}
+.nav-hover.nav-active {
+    color: #ffc107 !important;
+    &::before {
+        width: 80%;
+        left: 50%;
     }
 }
