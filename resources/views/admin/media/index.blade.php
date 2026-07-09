@@ -38,10 +38,10 @@
                 </td>
                 <td data-label="Actions">
                     <div class="d-flex gap-1">
-                        <a href="{{ route('admin.medias.edit', $media) }}" class="btn btn-sm btn-warning">Modifier</a>
+                        <a href="{{ route('admin.medias.edit', $media) }}" class="btn btn-sm btn-warning" title="Modifier"><i class="bi bi-pencil-fill"></i></a>
                         <form action="{{ route('admin.medias.destroy', $media) }}" method="POST" class="d-inline" onsubmit="return confirm('Confirmer la suppression ?')">
                             @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-danger">Supprimer</button>
+                            <button class="btn btn-sm btn-danger" title="Supprimer"><i class="bi bi-trash-fill"></i></button>
                         </form>
                     </div>
                 </td>

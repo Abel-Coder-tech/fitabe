@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Merci pour votre vote - ' . config('app.name', 'Fitabe'))
+@section('title', 'Merci pour votre ovation - ' . config('app.name', 'Fitabe'))
 
 @push('styles')
 <style>
@@ -19,7 +19,7 @@
                 <div class="merci-icon mb-3">
                     <i class="bi bi-check-circle-fill"></i>
                 </div>
-                <h1 class="fw-bold mb-3" style="color: #9B4D07;">Merci pour votre vote !</h1>
+                <h1 class="fw-bold mb-3" style="color: #9B4D07;">Merci pour votre ovation !</h1>
                 <p class="lead text-muted mb-4">
                     Votre soutien compte énormément pour les artistes du FITAB.
                 </p>
@@ -33,7 +33,7 @@
                                 @endif
                                 <div class="text-start">
                                     <strong class="d-block">{{ $vote->candidat?->display_name ?? 'Candidat' }}</strong>
-                                    <small class="text-muted">{{ $vote->quantite }} vote(s) • {{ number_format($vote->montant, 0, ',', ' ') }} FCFA</small>
+                                    <small class="text-muted">{{ $vote->quantite }} ovation(s) • {{ number_format($vote->montant, 0, ',', ' ') }} FCFA</small>
                                 </div>
                             </div>
                             <hr>
@@ -50,7 +50,7 @@
 
                 <div class="d-flex justify-content-center gap-3">
                     <a href="{{ route('public.vote') }}" class="btn btn-fitab-outline fw-semibold px-4 rounded-pill">
-                        <i class="bi bi-arrow-left me-1"></i> Retour au vote
+                        <i class="bi bi-arrow-left me-1"></i> Retour aux ovations
                     </a>
                     <a href="{{ route('home') }}" class="btn btn-fitab fw-semibold px-4 rounded-pill">
                         Accueil

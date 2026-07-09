@@ -21,10 +21,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Parametres::insert([
-            ['cle' => 'vote_mode', 'valeur' => 'off', 'created_at' => now(), 'updated_at' => now()],
-            ['cle' => 'vote_deadline', 'valeur' => '2026-07-31 23:59:59', 'created_at' => now(), 'updated_at' => now()],
-            ['cle' => 'prix_du_vote', 'valeur' => '100', 'created_at' => now(), 'updated_at' => now()],
+            ['cle' => 'date_debut_vote', 'valeur' => '2026-08-01 00:00:00', 'created_at' => now(), 'updated_at' => now()],
+            ['cle' => 'date_fin_vote', 'valeur' => '2026-11-22 23:59:00', 'created_at' => now(), 'updated_at' => now()],
             ['cle' => 'afficher_compteur', 'valeur' => '1', 'created_at' => now(), 'updated_at' => now()],
         ]);
+
+        $this->call(ProgrammeSeeder::class);
     }
 }

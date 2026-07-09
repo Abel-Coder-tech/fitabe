@@ -18,21 +18,37 @@
         {{-- Formulaire de notation --}}
         <form method="POST" action="{{ route('admin.resultats.update', $resultat) }}">
             @csrf @method('PUT')
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Note du jury <small class="text-muted">(sur 20)</small></label>
-                <input type="number" name="note_jury" class="form-control @error('note_jury') is-invalid @enderror"
-                       value="{{ old('note_jury', $resultat->note_jury) }}" step="0.5" min="0" max="20">
-                @error('note_jury') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            <p class="small text-muted mb-3">Pondérations selon le règlement : technique 30 %, originalité 25 %, présence 30 %, ovation 15 %.</p>
+            <div class="row g-2 mb-3">
+                <div class="col-4">
+                    <label class="form-label fw-semibold small">Technique <small class="text-muted">/20</small></label>
+                    <input type="number" name="note_technique" class="form-control form-control-sm @error('note_technique') is-invalid @enderror"
+                           value="{{ old('note_technique', $resultat->note_technique) }}" step="0.5" min="0" max="20">
+                </div>
+                <div class="col-4">
+                    <label class="form-label fw-semibold small">Originalité <small class="text-muted">/20</small></label>
+                    <input type="number" name="note_originalite" class="form-control form-control-sm @error('note_originalite') is-invalid @enderror"
+                           value="{{ old('note_originalite', $resultat->note_originalite) }}" step="0.5" min="0" max="20">
+                </div>
+                <div class="col-4">
+                    <label class="form-label fw-semibold small">Présence <small class="text-muted">/20</small></label>
+                    <input type="number" name="note_presence" class="form-control form-control-sm @error('note_presence') is-invalid @enderror"
+                           value="{{ old('note_presence', $resultat->note_presence) }}" step="0.5" min="0" max="20">
+                </div>
             </div>
 
             {{-- Aperçu du score final --}}
-            @if ($resultat->note_jury !== null && $resultat->score_public !== null)
+            @if ($resultat->note_technique !== null && $resultat->note_originalite !== null && $resultat->note_presence !== null && $resultat->score_public !== null)
                 <div class="p-3 rounded-3 mb-3" style="background: #fdfaf5; border: 1px solid #E3D5AD;">
                     <small class="text-muted d-block">Aperçu du score final</small>
-                    <div class="d-flex justify-content-between mt-1">
-                        <span>Note jury (60%) : <strong>{{ $resultat->note_jury }}</strong></span>
-                        <span>Score public (40%) : <strong>{{ $resultat->score_public }}</strong></span>
-                        <span>Final : <strong style="color: #9B4D07;">{{ $resultat->score_final }}</strong></span>
+                    <div class="d-flex justify-content-between mt-1 small">
+                        <span>Technique (30%) : <strong>{{ $resultat->note_technique }}</strong></span>
+                        <span>Originalité (25%) : <strong>{{ $resultat->note_originalite }}</strong></span>
+                        <span>Présence (30%) : <strong>{{ $resultat->note_presence }}</strong></span>
+                        <span>Ovation (15%) : <strong>{{ $resultat->score_public }}</strong></span>
+                    </div>
+                    <div class="mt-2 text-end">
+                        <span class="fw-bold" style="color: #9B4D07;">Final : {{ $resultat->score_final }}</span>
                     </div>
                 </div>
             @endif

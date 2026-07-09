@@ -62,13 +62,13 @@ class MediaController extends Controller
     // Affiche le détail d'un média
     public function show(Medias $media)
     {
-        return view('admin.medias.show', compact('medias'));
+        return view('admin.media.show', compact('media'));
     }
 
     // Affiche le formulaire d'édition
     public function edit(Medias $media)
     {
-        return view('admin.medias.edit', compact('medias'));
+        return view('admin.media.edit', compact('media'));
     }
 
     // Met à jour un média existant

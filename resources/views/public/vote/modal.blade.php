@@ -7,8 +7,7 @@
             {{-- En-tête simple --}}
             <div class="px-4 pt-4 pb-3 position-relative" style="background: linear-gradient(135deg, #3E1E05, #9B4D07);">
                 <h5 class="fw-bold text-white mb-0 text-center" id="voteModalTitle">
-                    Voter pour <span id="candidatNameDisplay"></span>
-                </h5>
+                    Ovationner <span id="candidatNameDisplay"></span>                </h5>
                 <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 mt-3 me-3" data-bs-dismiss="modal"></button>
             </div>
 
@@ -33,12 +32,24 @@
                                  style="width: 200px; height: 200px; object-fit: cover; border: 4px solid #E3D5AD;">
                             <div class="mt-3">
                                 <div class="fw-bold" style="font-size: 1.25rem; color: #3E1E05;" id="candidatNameMini"></div>
-                                <span class="badge mt-1 px-3 py-1" id="candidatCategoryInfo"
-                                      style="background: #9B4D07; font-weight: 500;"></span>
+                                <div class="d-flex align-items-center justify-content-center gap-2 mt-1">
+                                    <span class="badge px-3 py-1" id="candidatCategoryInfo"
+                                          style="background: #9B4D07; font-weight: 500;"></span>
+                                    <span class="badge px-3 py-1" id="candidatNumero"
+                                          style="background: #3E1E05; font-weight: 500; letter-spacing: 0.5px;"></span>
+                                </div>
                                 <div class="small mt-2" id="candidatVoteCount"
                                      style="color: #CA7B05;"></div>
                                 <div class="small text-muted mt-2 px-3" id="candidatBio"
                                      style="font-style: italic; line-height: 1.4;"></div>
+                            </div>
+                        </div>
+
+                        {{-- Info présélections --}}
+                        <div class="px-2 mb-3">
+                            <div class="p-2 rounded-3 text-center" style="background: #fdfaf5; border-left: 3px solid #9B4D07; font-size: 0.75rem;">
+                                <i class="bi bi-megaphone-fill me-1" style="color: #CA7B05;"></i>
+                                <span style="color: #5F2B0C;">L'entrée aux présélections est libre et gratuite. Les ovations sont un critère officiel de sélection.</span>
                             </div>
                         </div>
 
@@ -47,7 +58,7 @@
                         {{-- Compteur votes --}}
                         <div class="text-center mb-3">
                             <label class="fw-semibold mb-2 d-block small" style="color: #3E1E05;">
-                                Nombre de votes
+                                Nombre d'ovations
                             </label>
                             <div class="d-inline-flex align-items-center gap-3">
                                 <button type="button" onclick="changerQte(-1)"
@@ -91,6 +102,15 @@
                     {{-- STEP 2 : Choix agrégateur --}}
                     <div class="vote-step" id="step-2">
 
+                        {{-- Photo candidat --}}
+                        <div class="text-center mb-3">
+                            <img id="step2CandidatPhoto"
+                                 src=""
+                                 alt=""
+                                 class="rounded-4 shadow mx-auto d-block"
+                                 style="width: 200px; height: 200px; object-fit: cover; border: 4px solid #E3D5AD;">
+                        </div>
+
                         {{-- Titre moyen de paiement --}}
                         <div class="text-center mb-4">
                             <h6 class="fw-bold mb-0" style="color: #3E1E05;">
@@ -105,7 +125,7 @@
                              style="background: #fdfaf5; border: 1px solid #E3D5AD;">
                             <div>
                                 <small class="text-muted d-block" id="step2CandidatNom"></small>
-                                <strong id="step2Quantite" style="color: #3E1E05;">1 vote</strong>
+                                <strong id="step2Quantite" style="color: #3E1E05;">1 ovation</strong>
                             </div>
                             <strong id="step2Total" style="color: #9B4D07; font-size: 1.1rem;">
                                 {{ number_format($prixDuVote, 0, ',', ' ') }} FCFA

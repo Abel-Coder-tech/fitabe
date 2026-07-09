@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Programmes;
+use App\Models\ProgrammeDate;
 use Illuminate\Http\Request;
 
 class ProgrammeController extends Controller
 {
     public function index()
     {
-        $programmes = Programmes::ordered()->paginate(20);
+        $programmes = Programmes::ordered()->withCount('dates')->paginate(20);
         return view('admin.programmes.index', compact('programmes'));
     }
 
@@ -33,6 +34,8 @@ class ProgrammeController extends Controller
         $validated = $request->validate([
             'titre' => 'required|string|max:200',
             'description' => 'nullable|string',
+            'icone' => 'nullable|string|max:50',
+            'couleur_bordure' => 'nullable|string|max:7',
             'date_programme' => 'required|date',
             'lieu' => 'nullable|string|max:255',
             'categorie' => 'nullable|string|max:100',
@@ -40,18 +43,22 @@ class ProgrammeController extends Controller
             'est_actif' => 'nullable|boolean',
         ], $messages);
 
-        Programmes::create($validated);
+        $programme = Programmes::create($validated);
+
+        $this->syncDates($programme, $request);
 
         return to_route('admin.programmes.index')->with('success', 'Programme créé avec succès.');
     }
 
     public function show(Programmes $programme)
     {
+        $programme->load('dates');
         return view('admin.programmes.show', compact('programme'));
     }
 
     public function edit(Programmes $programme)
     {
+        $programme->load('dates');
         return view('admin.programmes.edit', compact('programme'));
     }
 
@@ -69,6 +76,8 @@ class ProgrammeController extends Controller
         $validated = $request->validate([
             'titre' => 'required|string|max:200',
             'description' => 'nullable|string',
+            'icone' => 'nullable|string|max:50',
+            'couleur_bordure' => 'nullable|string|max:7',
             'date_programme' => 'required|date',
             'lieu' => 'nullable|string|max:255',
             'categorie' => 'nullable|string|max:100',
@@ -77,6 +86,7 @@ class ProgrammeController extends Controller
         ], $messages);
 
         $programme->update($validated);
+        $this->syncDates($programme, $request);
 
         return to_route('admin.programmes.index')->with('success', 'Programme mis à jour avec succès.');
     }
@@ -85,5 +95,40 @@ class ProgrammeController extends Controller
     {
         $programme->delete();
         return to_route('admin.programmes.index')->with('success', 'Programme supprimé avec succès.');
+    }
+
+    private function syncDates(Programmes $programme, Request $request): void
+    {
+        if (!$request->has('dates_date')) {
+            return;
+        }
+
+        $existingIds = $programme->dates()->pluck('id')->toArray();
+        $submittedIds = [];
+
+        foreach ($request->input('dates_date') as $i => $date) {
+            if (empty($date)) {
+                continue;
+            }
+            $data = [
+                'titre' => $request->input("dates_titre.$i"),
+                'date' => $date,
+                'lieu' => $request->input("dates_lieu.$i"),
+                'ordre' => $request->input("dates_ordre.$i", 0),
+            ];
+
+            if ($id = $request->input("dates_id.$i")) {
+                $submittedIds[] = (int) $id;
+                ProgrammeDate::where('id', $id)->where('programme_id', $programme->id)->update($data);
+            } else {
+                $sd = $programme->dates()->create($data);
+                $submittedIds[] = $sd->id;
+            }
+        }
+
+        $toDelete = array_diff($existingIds, $submittedIds);
+        if (!empty($toDelete)) {
+            ProgrammeDate::whereIn('id', $toDelete)->delete();
+        }
     }
 }

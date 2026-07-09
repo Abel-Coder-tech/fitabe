@@ -33,6 +33,9 @@ class ResultatService
                         'candidat_photo' => $candidat->photo,
                         'nombre_votes' => $candidat->nombre_votes,
                         'note_jury' => null,
+                        'note_technique' => null,
+                        'note_originalite' => null,
+                        'note_presence' => null,
                         'score_public' => null,
                         'score_final' => null,
                     ]

@@ -76,7 +76,7 @@
 @endpush
 
 @section('page-title', 'Tableau de bord')
-@section('page-subtitle', 'Édition 2026 • Votes en cours')
+@section('page-subtitle', 'Édition 2026 • Ovations en cours')
 
 @section('content')
 
@@ -129,13 +129,13 @@
     <div class="col-md-4">
         <div class="card stat-card p-3 border-0">
             <div class="d-flex justify-content-between align-items-start mb-2">
-                <span class="small text-muted">Votes confirmés</span>
+                <span class="small text-muted">Ovations confirmées</span>
                 <div class="stat-icon" style="background: #fef0e0; color: #2e7d32;">
                     <i class="bi bi-check-circle-fill"></i>
                 </div>
             </div>
             <div class="h2 fw-bold mb-0" style="color: #3E1E05;">{{ number_format($votesConfirmes, 0, ',', ' ') }}</div>
-            <small class="text-muted">Total des votes validés</small>
+            <small class="text-muted">Total des ovations validées</small>
         </div>
     </div>
     <div class="col-md-4">
@@ -171,7 +171,7 @@
     <div class="col-lg-7">
         <div class="card border-0 rounded-4 h-100">
             <div class="card-header bg-transparent border-bottom d-flex align-items-center justify-content-between px-4 py-3">
-                <span class="fw-semibold" style="color: #9B4D07;">Votes par catégorie</span>
+                <span class="fw-semibold" style="color: #9B4D07;">Ovations par catégorie</span>
                 <i class="bi bi-bar-chart-fill" style="color: #9B4D07;"></i>
             </div>
             <div class="card-body px-4 py-3">
@@ -191,7 +191,7 @@
                 @empty
                     <div class="text-center text-muted py-4">
                         <i class="bi bi-inbox fs-3 d-block mb-2"></i>
-                        <small>Aucun vote pour le moment.</small>
+                        <small>Aucune ovation pour le moment.</small>
                     </div>
                 @endforelse
             </div>
@@ -207,7 +207,7 @@
                 <div class="d-flex align-items-center gap-2">
                     <span class="fw-semibold" style="color: #9B4D07;">Mode du site</span>
                     @if($voteMode === 'active')
-                        <span class="badge rounded-pill" style="background: #2e7d32; font-size: 0.65rem;">Votes actifs</span>
+                        <span class="badge rounded-pill" style="background: #2e7d32; font-size: 0.65rem;">Ovations actives</span>
                     @elseif($voteMode === 'off')
                         <span class="badge rounded-pill bg-secondary" style="font-size: 0.65rem;">Hors-événement</span>
                     @else
@@ -219,11 +219,11 @@
             <div class="card-body px-4 py-3">
                 <div class="d-flex gap-2 mb-3">
                     <span class="mode-toggle {{ $voteMode === 'off' ? 'active' : '' }}">Hors-événement</span>
-                    <span class="mode-toggle {{ $voteMode === 'active' ? 'active' : '' }}">Vote actif</span>
+                    <span class="mode-toggle {{ $voteMode === 'active' ? 'active' : '' }}">Ovation active</span>
                     <span class="mode-toggle {{ $voteMode === 'closed' ? 'active' : '' }}">Clôturé</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-color: #f0f0f0 !important;">
-                    <small class="text-muted">Prix du vote</small>
+                    <small class="text-muted">Prix de l'ovation</small>
                     <div class="d-flex align-items-center gap-2">
                         <span class="fw-semibold" style="color: #3E1E05;">{{ number_format((int)$prixDuVote, 0, ',', ' ') }} FCFA</span>
                         <i class="bi bi-pencil" style="color: #9B4D07; font-size: 0.8rem; cursor: pointer;"></i>
@@ -232,7 +232,7 @@
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-color: #f0f0f0 !important;">
                     <small class="text-muted">Date de clôture</small>
                     <div class="d-flex align-items-center gap-2">
-                        <span class="fw-semibold" style="color: #3E1E05; font-size: 0.85rem;">{{ $voteDeadline ? \Carbon\Carbon::parse($voteDeadline)->format('d/m/Y H:i') : '—' }}</span>
+                        <span class="fw-semibold" style="color: #3E1E05; font-size: 0.85rem;">{{ isset($dateFin) && $dateFin ? \Carbon\Carbon::parse($dateFin)->format('d/m/Y H:i') : '—' }}</span>
                         <i class="bi bi-pencil" style="color: #9B4D07; font-size: 0.8rem; cursor: pointer;"></i>
                     </div>
                 </div>
@@ -282,7 +282,7 @@
                 <thead class="text-muted small" style="background: #f9f9fb;">
                     <tr>
                         <th class="px-4 py-3 fw-semibold">Candidat</th>
-                        <th class="px-4 py-3 fw-semibold">Votes</th>
+                        <th class="px-4 py-3 fw-semibold">Ovations</th>
                         <th class="px-4 py-3 fw-semibold">Montant</th>
                         <th class="px-4 py-3 fw-semibold">Passerelle</th>
                         <th class="px-4 py-3 fw-semibold">Moyen</th>

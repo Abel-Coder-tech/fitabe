@@ -68,11 +68,17 @@
                 <a href="#securite" class="settings-nav-link" data-section="securite">
                     <i class="bi bi-shield-lock"></i> Sécurité
                 </a>
+                <a href="#preferences" class="settings-nav-link" data-section="preferences">
+                    <i class="bi bi-sliders"></i> Préférences
+                </a>
                 <a href="#utilisateurs" class="settings-nav-link" data-section="utilisateurs">
                     <i class="bi bi-people"></i> Utilisateurs
                 </a>
                 <a href="#facturation" class="settings-nav-link" data-section="facturation">
                     <i class="bi bi-credit-card"></i> Facturation
+                </a>
+                <a href="#logs" class="settings-nav-link" data-section="logs">
+                    <i class="bi bi-activity"></i> Activité
                 </a>
                 <a href="#danger" class="settings-nav-link" data-section="danger" style="color: #dc3545;">
                     <i class="bi bi-exclamation-triangle"></i> Zone danger
@@ -95,9 +101,23 @@
 
         {{-- Section Sécurité --}}
         <div class="settings-section" id="section-securite">
-            <div class="card border-0 rounded-4 shadow-sm">
+            <div class="card border-0 rounded-4 shadow-sm mb-4">
                 <div class="card-body p-4">
                     @include('profile.partials.update-password-form')
+                </div>
+            </div>
+            <div class="card border-0 rounded-4 shadow-sm">
+                <div class="card-body p-4">
+                    @include('profile.partials.sessions')
+                </div>
+            </div>
+        </div>
+
+        {{-- Section Préférences --}}
+        <div class="settings-section" id="section-preferences">
+            <div class="card border-0 rounded-4 shadow-sm">
+                <div class="card-body p-4">
+                    @include('profile.partials.preferences')
                 </div>
             </div>
         </div>
@@ -181,6 +201,15 @@
                     </div>
                 </div>
             @endif
+        </div>
+
+        {{-- Section Activité --}}
+        <div class="settings-section" id="section-logs">
+            <div class="card border-0 rounded-4 shadow-sm">
+                <div class="card-body p-4">
+                    @include('profile.partials.activity-logs')
+                </div>
+            </div>
         </div>
 
         {{-- Section Zone danger --}}

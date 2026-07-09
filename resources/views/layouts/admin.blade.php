@@ -6,7 +6,7 @@
     <title>@yield('title', 'Administration - ' . config('app.name', 'Fitabe'))</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
-    <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     @vite(['resources/css/app.scss', 'resources/js/app.js'])
     <style>
@@ -183,7 +183,7 @@
             <div class="small text-uppercase px-2 mb-2" style="color: rgba(255,255,255,0.3); font-size: 0.65rem; letter-spacing: 1.5px;">Principal</div>
             <ul class="nav flex-column gap-1">
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 {{ $navClass('dashboard') }}" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 {{ $navClass('admin.dashboard') }}" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
                         <i class="bi bi-grid-1x2-fill" style="width: 18px;"></i> Tableau de bord
                     </a>
                 </li>
@@ -194,7 +194,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.votes.index') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 {{ $navClass('admin.votes') }}" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
-                        <i class="bi bi-check-circle-fill" style="width: 18px;"></i> Votes
+                        <i class="bi bi-check-circle-fill" style="width: 18px;"></i> Ovations
                     </a>
                 </li>
             </ul>
@@ -218,7 +218,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.partenaires.index') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 {{ $navClass('admin.partenaires') }}" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
-                        <i class="bi bi-handshake" style="width: 18px;"></i> Partenaires
+                        <i class="bi bi-building" style="width: 18px;"></i> Partenaires
                     </a>
                 </li>
                 <li class="nav-item">
@@ -264,7 +264,7 @@
                 </button>
                 <div class="topbar-title">
                     <h5 class="fw-bold mb-0" style="color: #9B4D07;">@yield('page-title', 'Tableau de bord')</h5>
-                    <small class="text-muted">@yield('page-subtitle', 'Édition 2026 • Votes en cours')</small>
+                    <small class="text-muted">@yield('page-subtitle', 'Édition 2026 • Ovations en cours')</small>
                 </div>
             </div>
             <div class="d-flex align-items-center gap-3">

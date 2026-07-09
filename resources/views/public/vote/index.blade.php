@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Vote - ' . config('app.name', 'Fitabe'))
+@section('title', 'Ovation - ' . config('app.name', 'Fitabe'))
 
 @push('styles')
 <style>
@@ -136,7 +136,7 @@
         position: relative;
         overflow: hidden;
         padding: 5rem 0;
-        background: linear-gradient(135deg, rgba(62,30,5,0.88) 0%, rgba(62,30,5,0.65) 50%, rgba(62,30,5,0.4) 100%), url('{{ asset('images/votes/hero_votant.jpg') }}') no-repeat center center;
+        background: linear-gradient(135deg, rgba(62,30,5,0.88) 0%, rgba(62,30,5,0.65) 50%, rgba(62,30,5,0.4) 100%), url('{{ asset('images/hero.jpg') }}') no-repeat center center;
         background-size: cover;
     }
     .hero-vote h1 {
@@ -191,7 +191,7 @@
                     <i class="bi bi-star-fill me-1"></i> Édition {{ date('Y') }}
                 </p>
                 <h1 class="display-4 fw-bold mb-3">
-                    Votez pour votre<br>
+                    Ovationnez votre<br>
                     <span style="color: #CA7B05;">candidat préféré</span>
                 </h1>
                 <p class="lead hero-sub mb-4 mx-auto" style="max-width: 540px;">
@@ -200,38 +200,55 @@
                 <div class="d-flex flex-wrap align-items-center justify-content-center gap-3 mb-4">
                     <span class="price-badge">
                         <i class="bi bi-ticket-perforated me-2"></i>
-                        <strong>{{ number_format($prixDuVote, 0, ',', ' ') }} FCFA</strong> le vote
+                        <strong>{{ number_format($prixDuVote, 0, ',', ' ') }} FCFA</strong> l'ovation
                     </span>
                     <a href="#candidats" class="btn btn-vote fw-semibold px-4 py-2 rounded-pill">
                         Voir les candidats <i class="bi bi-arrow-down ms-2"></i>
                     </a>
                 </div>
-                @if($afficherCompteur && $voteDeadline)
-                <div class="countdown-wrap d-inline-flex align-items-center gap-3">
-                    <span class="label-text"><i class="bi bi-clock me-1"></i> Fin</span>
-                    <div class="d-flex gap-1" id="countdown">
-                        <div class="countdown-item">
-                            <div class="num" id="cd-jours">00</div>
-                            <div class="label">Jours</div>
-                        </div>
-                        <div class="countdown-item">
-                            <div class="num" id="cd-heures">00</div>
-                            <div class="label">Hrs</div>
-                        </div>
-                        <div class="countdown-item">
-                            <div class="num" id="cd-minutes">00</div>
-                            <div class="label">Min</div>
-                        </div>
-                        <div class="countdown-item">
-                            <div class="num" id="cd-secondes">00</div>
-                            <div class="label">Sec</div>
-                        </div>
+
+                {{-- ==================== DATE & COMPTEUR DYNAMIQUE ==================== --}}
+                @php
+                    $now = time();
+                    $ouverture = $dateDebut ? strtotime($dateDebut) : 0;
+                    $cloture   = $dateFin ? strtotime($dateFin) : 0;
+                    $dateDebutFormatted = $dateDebut ? \Carbon\Carbon::parse($dateDebut)->locale('fr')->isoFormat('D MMMM YYYY') : '';
+                @endphp
+
+                <div class="d-flex flex-column align-items-center gap-3">
+
+                    @if($now < $ouverture)
+                    {{-- ÉTAT 1 : Avant ouverture --}}
+                    <div class="countdown-wrap d-inline-flex align-items-center gap-2 px-4 py-3">
+                        <i class="bi bi-calendar-event" style="color: #CA7B05; font-size: 1.2rem;"></i>
+                        <span style="color: #E3D5AD;">Les ovations ouvrent le <strong>{{ $dateDebutFormatted }}</strong>. Revenez soutenir vos artistes !</span>
                     </div>
-                    <div class="small" id="cd-expired" style="display:none;color:#CA7B05;">
-                        <i class="bi bi-hourglass-split me-1"></i> Clos
+
+                    @elseif($now >= $cloture)
+                    {{-- ÉTAT 3 : Après clôture --}}
+                    <div class="countdown-wrap d-inline-flex align-items-center gap-2 px-4 py-3">
+                        <i class="bi bi-hourglass-split" style="color: #CA7B05; font-size: 1.2rem;"></i>
+                        <span style="color: #E3D5AD;">Les ovations sont closes. Rendez-vous le <strong>28 novembre</strong> pour la <strong>Grande Finale</strong> — <a href="{{ route('home') }}" style="color: #CA7B05; text-decoration: underline;">Découvrez les finalistes et les résultats</a>.</span>
                     </div>
+
+                    @else
+                    {{-- ÉTAT 2 : Pendant la période d'ovations --}}
+                    <div class="countdown-wrap d-inline-flex flex-column align-items-center gap-2 px-4 py-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-clock" style="color: #CA7B05;"></i>
+                            <span style="color: #E3D5AD;">Les ovations ferment dans :</span>
+                        </div>
+                        <div class="d-flex gap-1" id="countdown">
+                            <div class="countdown-item"><div class="num" id="cd-jours">00</div><div class="label">Jours</div></div>
+                            <div class="countdown-item"><div class="num" id="cd-heures">00</div><div class="label">Hrs</div></div>
+                            <div class="countdown-item"><div class="num" id="cd-minutes">00</div><div class="label">Min</div></div>
+                            <div class="countdown-item"><div class="num" id="cd-secondes">00</div><div class="label">Sec</div></div>
+                        </div>
+                        <span style="color: #CA7B05; font-weight: 600; font-size: 0.85rem;">Ovationnez maintenant</span>
+                    </div>
+                    @endif
+
                 </div>
-                @endif
             </div>
         </div>
     </div>
@@ -241,6 +258,10 @@
 <section class="py-4" style="background: #fdfaf5;">
     <div class="container">
         <div class="row justify-content-center">
+            <div class="col-lg-8 text-center mb-3">
+                <h6 class="fw-bold mb-1" style="color: #3E1E05;"><i class="bi bi-info-circle me-1" style="color: #9B4D07;"></i> Comment ça marche ?</h6>
+                <p class="small text-muted mb-0">Ovationnez votre artiste préféré en 3 étapes simples</p>
+            </div>
             <div class="col-lg-6 col-md-8">
                 <div class="d-flex align-items-center">
                     <div class="text-center flex-fill">
@@ -252,7 +273,7 @@
                     <div class="text-center flex-fill">
                         <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white mb-1" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">2</div>
                         <div class="small fw-semibold mt-1" style="color: #9B4D07;">Entrez</div>
-                        <div class="small text-muted" style="font-size: 0.75rem;">le nombre de votes</div>
+                        <div class="small text-muted" style="font-size: 0.75rem;">le nombre d'ovations</div>
                     </div>
                     <div class="flex-grow-1 mx-2" style="height: 2px; background: #E3D5AD;"></div>
                     <div class="text-center flex-fill">
@@ -284,8 +305,8 @@
     <div class="container">
         @if($voteMode === 'off')
             <div class="alert alert-warning text-center py-4 mb-4" role="alert">
-                <h4 class="alert-heading mb-2"><i class="bi bi-clock-history"></i> Vote bientôt disponible</h4>
-                <p class="mb-0">Les votes ne sont pas encore ouverts. Revenez bientôt pour soutenir vos candidats préférés !</p>
+                <h4 class="alert-heading mb-2"><i class="bi bi-clock-history"></i> Ovation bientôt disponible</h4>
+                <p class="mb-0">Les ovations ne sont pas encore ouvertes. Revenez bientôt pour soutenir vos candidats préférés !</p>
                 <hr>
                 <p class="mb-0">En attendant, découvrez nos <a href="{{ route('public.medias') }}" class="alert-link">médias</a>.</p>
             </div>
@@ -331,16 +352,18 @@
                                         </p>
                                     @endif
                                     {{-- Vote count --}}
+                                    @if($afficherCompteur)
                                     <p class="vote-count mb-2 mt-auto">
                                         <i class="bi bi-heart-fill" style="color: var(--vote-gold);"></i>
-                                        {{ $candidat->votes_count ?? 0 }} vote(s)
+                                        {{ $candidat->votes_count ?? 0 }} ovation(s)
                                     </p>
+                                    @endif
                                     {{-- Buttons --}}
                                     @if($voteMode === 'active')
                                         <div class="d-flex gap-2">
                                             <button type="button" class="btn flex-fill text-white fw-semibold btn-sm" style="background: var(--vote-gold); border-radius: 50px;"
-                                                    onclick='ouvrirVote({{ $candidat->id }}, {!! json_encode($candidat->display_name) !!}, {!! json_encode($candidat->photo_url) !!}, {{ $candidat->votes_count ?? 0 }}, {!! json_encode($candidat->categorie ?? '') !!}, {!! json_encode(Str::limit($candidat->biographie ?? '', 120)) !!})'>
-                                                Voter <i class="bi bi-check-circle ms-1"></i>
+                                                    onclick='ouvrirVote({{ $candidat->id }}, {!! json_encode($candidat->display_name) !!}, {!! json_encode($candidat->photo_url) !!}, {{ $candidat->votes_count ?? 0 }}, {!! json_encode($candidat->categorie ?? '') !!}, {!! json_encode(Str::limit($candidat->biographie ?? '', 120)) !!}, {{ $candidat->numero_scene ?? 'null' }})'>
+                                                Offrir une ovation <i class="bi bi-check-circle ms-1"></i>
                                             </button>
                                             <button type="button" class="btn btn-sm fw-semibold" style="border: 2px solid var(--vote-gold-light); color: var(--vote-gold-light); border-radius: 50px; flex: 0 0 auto; padding: 0.25rem 0.8rem;"
                                                     onclick='partagerCandidat({{ $candidat->id }}, {!! json_encode($candidat->display_name) !!})'>
@@ -349,18 +372,18 @@
                                         </div>
                                     @else
                                         <button type="button" class="btn btn-secondary w-100 btn-sm" disabled style="border-radius: 50px;">
-                                            Vote fermé
+                                            Ovation fermée
                                         </button>
                                     @endif
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+                    </div>
                 </div>
-            </div>
+
             @endforeach
-        @endif
-    </div>
+            </div>
+        </div>
+            @endforeach
+    @endif
+</div>
 </section>
 
 @include('public.vote.modal')
@@ -371,8 +394,8 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="text-center">
-                    <h6 class="fw-bold mb-1" style="color: #9B4D07;"><i class="bi bi-file-text me-1"></i> Règlement du vote</h6>
-                    <p class="small text-muted mb-3">Consultez les conditions générales de participation et de vote du FITAB 2026.</p>
+                    <h6 class="fw-bold mb-1" style="color: #9B4D07;"><i class="bi bi-file-text me-1"></i> Règlement de l'ovation</h6>
+                    <p class="small text-muted mb-3">Consultez les conditions générales de participation et d'ovation du FITAB 2026.</p>
                     <div class="d-flex justify-content-center gap-2">
                         <button class="btn btn-sm px-3 fw-semibold" style="background: #9B4D07; color: #fff;" type="button" data-bs-toggle="collapse" data-bs-target="#reglementCollapse">
                             <i class="bi bi-eye me-1"></i> Lire
@@ -384,12 +407,12 @@
                     <div class="collapse mt-3 text-start" id="reglementCollapse">
                         <div class="p-4 rounded-3" style="background: #fff; border: 1px solid #E3D5AD;">
                             <h6 class="fw-bold mb-3" style="color: #9B4D07;">Conditions de participation</h6>
-                            <p class="small mb-2">1. Le vote est ouvert à toute personne physique âgée d'au moins 18 ans.</p>
-                            <p class="small mb-2">2. Chaque vote est payant au tarif de <strong>{{ number_format($prixDuVote, 0, ',', ' ') }} FCFA</strong> l'unité.</p>
-                            <p class="small mb-2">3. Le nombre de votes par personne n'est pas limité.</p>
-                            <p class="small mb-2">4. Les votes sont définitifs et non remboursables.</p>
-                            <p class="small mb-2">5. Le paiement s'effectue via Kkiapay ou Fedapay (Mobile Money ou Carte bancaire).</p>
-                            <p class="small mb-0">6. Tout vote frauduleux entraîne l'annulation des votes concernés.</p>
+                            <p class="small mb-2">1. L'ovation est ouverte à toute personne physique âgée d'au moins 18 ans.</p>
+                            <p class="small mb-2">2. Chaque ovation est payante au tarif de <strong>{{ number_format($prixDuVote, 0, ',', ' ') }} FCFA</strong> l'unité.</p>
+                            <p class="small mb-2">3. Le nombre d'ovations par personne n'est pas limité.</p>
+                            <p class="small mb-2">4. Les ovations sont définitives et non remboursables.</p>
+                            <p class="small mb-2">5. Le paiement s'effectue via Kkiapay (MTN Mobile Money, Moov Flooz, Carte Bancaire).</p>
+                            <p class="small mb-0">6. Toute ovation frauduleuse entraîne l'annulation des ovations concernées.</p>
                         </div>
                     </div>
                 </div>
@@ -414,8 +437,18 @@ let etat = {
     prixUnitaire: {{ $prixDuVote }},
 };
 
+// ==================== COULEURS CATÉGORIES ====================
+const categoryColors = {
+    'Théâtre': '#8B0000',
+    'Percussions': '#B8860B',
+    'Musique': '#1E6EB5',
+    'Danse Traditionnelle': '#6B3FA0',
+    'Stylisme/Modélisme': '#E67E00',
+    'Arts Visuels': '#C2185B',
+};
+
 // ==================== OUVERTURE ====================
-function ouvrirVote(id, nom, photo, votesCount, categorie, bio) {
+function ouvrirVote(id, nom, photo, votesCount, categorie, bio, numeroScene) {
     etat.candidatId = id;
     etat.candidatNom = nom;
     etat.candidatPhoto = photo;
@@ -427,13 +460,34 @@ function ouvrirVote(id, nom, photo, votesCount, categorie, bio) {
     document.getElementById('candidatNameDisplay').textContent = nom;
     document.getElementById('candidatNameMini').textContent = nom;
     document.getElementById('candidatCategoryInfo').textContent = categorie || '';
-    document.getElementById('candidatVoteCount').innerHTML = '<i class="bi bi-heart-fill" style="color: #9B4D07;"></i> ' + (votesCount || 0) + ' vote' + ((votesCount || 0) > 1 ? 's' : '');
+
+    const catBadge = document.getElementById('candidatCategoryInfo');
+    const color = categoryColors[categorie] || '#9B4D07';
+    catBadge.style.background = color;
+
+    const numEl = document.getElementById('candidatNumero');
+    if (numEl) {
+        numEl.textContent = numeroScene ? 'N°' + numeroScene : '';
+        numEl.style.display = numeroScene ? '' : 'none';
+    }
+
+    const countEl = document.getElementById('candidatVoteCount');
+    if (countEl) {
+        @if($afficherCompteur)
+        countEl.innerHTML = '<i class="bi bi-heart-fill" style="color: #9B4D07;"></i> ' + (votesCount || 0) + ' ovation' + ((votesCount || 0) > 1 ? 's' : '');
+        countEl.style.display = '';
+        @else
+        countEl.style.display = 'none';
+        @endif
+    }
+
     document.getElementById('candidatBio').textContent = bio || '';
     document.getElementById('candidatPhotoPreview').src = photo || '{{ asset("images/default-user.png") }}';
     document.getElementById('step2CandidatNom').textContent = nom;
+    document.getElementById('step2CandidatPhoto').src = photo || '{{ asset("images/default-user.png") }}';
     // Pré-remplir les champs votant (cachés)
     document.getElementById('votant_nom').value = 'Anonyme';
-    document.getElementById('votant_email').value = 'anonyme@vote.fitab';
+    document.getElementById('votant_email').value = 'anonyme@ovation.fitab';
     document.getElementById('votant_telephone').value = '0000000000';
     document.getElementById('quantite').value = 1;
     setTimeout(function() { changerQte(0); }, 10);
@@ -482,7 +536,7 @@ function majTotal() {
     const step2Total = document.getElementById('step2Total');
     if (step2Total) step2Total.textContent = total.toLocaleString('fr-FR') + ' FCFA';
     const step2Qte = document.getElementById('step2Quantite');
-    if (step2Qte) step2Qte.textContent = qte + ' vote' + (qte > 1 ? 's' : '');
+    if (step2Qte) step2Qte.textContent = qte + ' ovation' + (qte > 1 ? 's' : '');
 }
 
 // ==================== PAIEMENT DIRECT (1 agrégateur) ====================
@@ -536,7 +590,7 @@ async function lancerPaiement() {
     formData.set('candidat_id', etat.candidatId);
 
     document.getElementById('paymentSpinner').style.display = 'inline-block';
-    document.getElementById('paymentStepText').textContent = 'Enregistrement de votre vote...';
+    document.getElementById('paymentStepText').textContent = 'Enregistrement de votre ovation...';
     document.getElementById('btnStep3Back').disabled = true;
 
     try {
@@ -582,7 +636,7 @@ async function lancerPaiement() {
 function fallbackSuccess(voteId) {
     document.getElementById('paymentSpinner').style.display = 'none';
     document.getElementById('paymentSuccessIcon').style.display = 'block';
-    document.getElementById('paymentStepText').textContent = 'Votre vote a bien été enregistré !';
+    document.getElementById('paymentStepText').textContent = 'Votre ovation a bien été enregistrée !';
     document.getElementById('paymentStepText').style.color = '#198754';
     document.getElementById('paymentStepDetail').innerHTML = 'Merci pour votre participation.';
     document.getElementById('btnStep3Back').disabled = true;
@@ -615,7 +669,7 @@ function initKkiapay(apiKey, voteId, montant) {
             amount: montant,
             phone: document.getElementById('votant_telephone').value,
             email: document.getElementById('votant_email').value,
-            reason: 'Vote FITAB #' + voteId,
+            reason: 'Ovation FITAB #' + voteId,
             callback: '{{ route("public.vote.merci", ["vote_id" => "__VOTE_ID__"]) }}'.replace('__VOTE_ID__', voteId),
             data: { vote_id: voteId },
         }).open();
@@ -634,29 +688,27 @@ function ouvrirFedapay(voteId, montant) {
     const checkoutUrl = 'https://checkout.fedapay.com/v2?public_key=' + apiKey
         + '&amount=' + montant
         + '&currency=XOF'
-        + '&description=Vote+FITAB+%23' + voteId
+        + '&description=Ovation+FITAB+%23' + voteId
         + '&callback_url=' + encodeURIComponent('{{ route("public.vote.merci", ["vote_id" => "__VOTE_ID__"]) }}'.replace('__VOTE_ID__', voteId))
         + '&data[vote_id]=' + voteId;
 
     window.location.href = checkoutUrl;
 }
 
-// ==================== COMPTEUR ====================
+// ==================== COMPTEUR (état 2 uniquement) ====================
 (function() {
-    const deadline = @json($voteDeadline ?? null);
-    if (!deadline) return;
-    const target = new Date(deadline.replace(' ', 'T')).getTime();
-    if (isNaN(target)) return;
+    const el = document.getElementById('countdown');
+    if (!el) return;
+    const CLOTURE = new Date('{{ $dateFin ? date('Y-m-d\TH:i:s', strtotime($dateFin)) : '2026-11-22T23:59:00' }}').getTime();
 
     function maj() {
         const now = new Date().getTime();
-        const diff = target - now;
+        const diff = CLOTURE - now;
         if (diff <= 0) {
             document.getElementById('cd-jours').textContent = '00';
             document.getElementById('cd-heures').textContent = '00';
             document.getElementById('cd-minutes').textContent = '00';
             document.getElementById('cd-secondes').textContent = '00';
-            document.getElementById('cd-expired').style.display = 'block';
             return;
         }
         const jours = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -678,7 +730,7 @@ function ouvrirFedapay(voteId, montant) {
 function partagerCandidat(id, nom) {
     const url = window.location.href.split('#')[0].split('?')[0] + '?candidat=' + id;
     if (navigator.share) {
-        navigator.share({ title: nom, text: 'Votez pour ' + nom + ' au FITAB !', url: url });
+        navigator.share({ title: nom, text: 'Ovationnez ' + nom + ' au FITAB !', url: url });
     } else {
         navigator.clipboard.writeText(url).then(function() {
             alert('Lien copié ! Partagez-le pour soutenir ' + nom);

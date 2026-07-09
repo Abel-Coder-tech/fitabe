@@ -14,12 +14,13 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, SoftDeletes;
 
-    // Champs assignables en masse
     protected $fillable = [
         'name',
         'email',
         'password',
         'role',
+        'avatar',
+        'preferences',
     ];
 
     // Attributs masqués dans les tableaux/sérialisation
@@ -28,11 +29,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    // Casts des attributs
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
+            'preferences' => 'array',
         ];
     }
 }

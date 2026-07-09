@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Candidats;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CandidatController extends Controller
 {
@@ -24,7 +25,7 @@ class CandidatController extends Controller
         $validated = $request->validate([
             'nom' => 'required|string|max:150',
             'nom_scene' => 'nullable|string|max:150',
-            'categorie' => 'required|string|max:100',
+            'categorie' => 'required|string,',
             'numero_scene' => 'nullable|integer',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'biographie' => 'nullable|string|max:500',
@@ -34,7 +35,7 @@ class CandidatController extends Controller
             'nom.max' => 'Le nom ne doit pas dépasser 150 caractères.',
             'nom_scene.max' => 'Le nom de scène ne doit pas dépasser 150 caractères.',
             'categorie.required' => 'La catégorie est requise.',
-            'categorie.max' => 'La catégorie ne doit pas dépasser 100 caractères.',
+            'categorie.in' => 'La catégorie sélectionnée est invalide.',
             'numero_scene.integer' => 'Le numéro de scène doit être un entier.',
             'photo.image' => 'Le fichier doit être une image.',
             'photo.mimes' => 'Le fichier doit être au format jpeg, png, jpg ou gif.',
@@ -42,10 +43,7 @@ class CandidatController extends Controller
             'photo.max' => 'La taille maximal de l\'image ne doit pas dépasser 2 Mo.',
             'biographie.string' => 'La biographie doit être une chaîne de caractères.', 
             'biographie.max' => 'La biographie ne doit pas dépasser 500 caractères.',
-        ]
-        
-        );
-
+        ]);
 
         if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('photos', 'public');
@@ -71,9 +69,9 @@ class CandidatController extends Controller
        $validated = $request->validate([
             'nom' => 'required|string|max:150',
             'nom_scene' => 'nullable|string|max:150',
-            'categorie' => 'required|string|max:100',
+            'categorie' => ['required', 'string', Rule::in(['Théâtre', 'Percussions', 'Musique', 'Danse Traditionnelle', 'Stylisme/Modélisme', 'Arts Visuels'])],
             'numero_scene' => 'nullable|integer',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'biographie' => 'nullable|string|max:500',
         ],
         [
@@ -81,17 +79,14 @@ class CandidatController extends Controller
             'nom.max' => 'Le nom ne doit pas dépasser 150 caractères.',
             'nom_scene.max' => 'Le nom de scène ne doit pas dépasser 150 caractères.',
             'categorie.required' => 'La catégorie est requise.',
-            'categorie.max' => 'La catégorie ne doit pas dépasser 100 caractères.',
+            'categorie.in' => 'La catégorie sélectionnée est invalide.',
             'numero_scene.integer' => 'Le numéro de scène doit être un entier.',
             'photo.image' => 'Le fichier doit être une image.',
             'photo.mimes' => 'Le fichier doit être au format jpeg, png, jpg ou gif.',
-            'photo.required' => 'La photo est obligatoire.',
             'photo.max' => 'La taille maximal de l\'image ne doit pas dépasser 2 Mo.',
             'biographie.string' => 'La biographie doit être une chaîne de caractères.', 
             'biographie.max' => 'La biographie ne doit pas dépasser 500 caractères.',
-        ]
-        
-        );
+        ]);
 
         if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('photos', 'public');

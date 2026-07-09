@@ -7,21 +7,40 @@ use App\Models\Parametres;
 use App\Models\Votes;
 use App\Models\Candidats;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class VoteController extends Controller
 {
+    // Helper : détermine le mode vote à partir des dates uniquement
+    private function computeVoteMode($dateDebut, $dateFin)
+    {
+        if (!$dateDebut || !$dateFin) {
+            return 'off';
+        }
+        $now = Carbon::now();
+        $debut = Carbon::parse($dateDebut);
+        $fin = Carbon::parse($dateFin);
+
+        if ($now < $debut) return 'off';
+        if ($now > $fin) return 'cloture';
+        return 'active';
+    }
+
     // Affiche la liste des votes avec les paramètres
     public function index()
     {
         $votes = Votes::with('candidat')->latest()->paginate(20);
 
-        $voteMode = Parametres::where('cle', 'vote_mode')->value('valeur') ?? 'off';
-        $prixDuVote = (int) (Parametres::where('cle', 'prix_du_vote')->value('valeur') ?? 100);
-        $voteDeadline = Parametres::where('cle', 'vote_deadline')->value('valeur');
+        $prixDuVote = 100;
         $afficherCompteur = Parametres::where('cle', 'afficher_compteur')->value('valeur') === '1';
+        $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
+        $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+
+        $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
 
         return view('admin.votes.index', compact(
-            'votes', 'voteMode', 'prixDuVote', 'voteDeadline', 'afficherCompteur'
+            'votes', 'voteMode', 'prixDuVote', 'afficherCompteur',
+            'dateDebut', 'dateFin'
         ));
     }
 
@@ -29,7 +48,8 @@ class VoteController extends Controller
     public function show(Votes $vote)
     {
         $vote->load('candidat');
-        return view('admin.votes.show', compact('vote'));
+        $prixDuVote = 100;
+        return view('admin.votes.show', compact('vote', 'prixDuVote'));
     }
 
     // Met à jour le statut d'un vote et ajuste le compteur
@@ -63,5 +83,14 @@ class VoteController extends Controller
 
         $vote->delete();
         return to_route('admin.votes.index')->with('success', 'Vote supprimé.');
+    }
+
+    // Supprime TOUS les votes et réinitialise les compteurs
+    public function clearAll()
+    {
+        Votes::truncate();
+        Candidats::query()->update(['nombre_votes' => 0]);
+
+        return to_route('admin.votes.index')->with('success', 'Toutes les ovations ont été supprimées.');
     }
 }

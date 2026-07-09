@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('dashboard') }}">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('admin.dashboard') }}">
             <x-application-logo height="30" />
             <span class="fw-semibold">{{ config('app.name', 'Fitabe') }}</span>
         </a>
@@ -11,7 +11,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Tableau de bord</a>
+                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Tableau de bord</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.candidats.index') }}">Administration</a>

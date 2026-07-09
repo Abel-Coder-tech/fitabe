@@ -16,8 +16,18 @@
             @error('nom') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-md-6 mb-3">
+            <label class="form-label">Nom de scène</label>
+            <input type="text" name="nom_scene" class="form-control @error('nom_scene') is-invalid @enderror" value="{{ old('nom_scene') }}">
+            @error('nom_scene') <div class="invalid-feedback">{{ $message }}</div> @enderror
+        </div>
+        <div class="col-md-6 mb-3">
             <label class="form-label">Catégorie</label>
-            <input type="text" name="categorie" class="form-control @error('categorie') is-invalid @enderror" value="{{ old('categorie') }}" required>
+            <select name="categorie" class="form-select @error('categorie') is-invalid @enderror" required>
+                <option value="">— Sélectionner une catégorie —</option>
+                @foreach (\App\Models\Candidats::CATEGORIES as $cat)
+                    <option value="{{ $cat }}" {{ old('categorie') === $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                @endforeach
+            </select>
             @error('categorie') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-md-6 mb-3">

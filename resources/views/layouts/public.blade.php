@@ -6,7 +6,7 @@
     <title>@yield('title', config('app.name', 'Fitabe'))</title>
     <meta name="description" content="@yield('description', 'Soutenez vos artistes préférés au FITAB. Théâtre, Danse, Musique, Percussion et Art visuel.')">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
-    <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     @vite(['resources/css/app.scss', 'resources/js/app.js'])
     <style>
@@ -111,7 +111,7 @@
                     <li class="nav-item">
                         <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.vote') ? 'nav-active' : '' }}"
                            style="color: #E3D5AD;"
-                           href="{{ route('public.vote') }}">Vote</a>
+                           href="{{ route('public.vote') }}">Ovation</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.contact') ? 'nav-active' : '' }}"
@@ -189,10 +189,10 @@
                         Théâtre, Danse, Musique, Percussion et Art Visuel.
                     </p>
                     <div class="d-flex gap-3 mt-3">
-                        <a href="#" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6);"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6);"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6);"><i class="bi bi-youtube"></i></a>
-                        <a href="#" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6);"><i class="bi bi-tiktok"></i></a>
+                        <a href="https://www.facebook.com/share/1WhHoPqx9H/" target="_blank" rel="noopener" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6); hover: color: #CA7B05;"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com/fitab_talents_artistiques_pn/" target="_blank" rel="noopener" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6); hover: color: #CA7B05;"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.youtube.com/@TalentsArtistiques" target="_blank" rel="noopener" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6); hover: color: #CA7B05;"><i class="bi bi-youtube"></i></a>
+                        <a href="https://www.tiktok.com/@fitab_talent_artistique" target="_blank" rel="noopener" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6); hover: color: #CA7B05;"><i class="bi bi-tiktok"></i></a>
                     </div>
                 </div>
 
@@ -204,7 +204,7 @@
                             <ul class="list-unstyled">
                                 <li class="mb-2"><a href="{{ route('home') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Accueil</a></li>
                                 <li class="mb-2"><a href="{{ route('public.medias') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Médiathèque</a></li>
-                                <li class="mb-2"><a href="{{ route('public.vote') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Vote</a></li>
+                                <li class="mb-2"><a href="{{ route('public.vote') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Ovation</a></li>
                                 <li class="mb-2"><a href="{{ route('public.contact') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Contact</a></li>
                             </ul>
                         </div>
@@ -212,10 +212,10 @@
                         <div class="col-6 col-lg-4">
                             <h6 class="fw-bold mb-3 text-uppercase small" style="color: #CA7B05; letter-spacing: 1.5px;">Support</h6>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="#" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Conditions générales</a></li>
-                                <li class="mb-2"><a href="#" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Politique de confidentialité</a></li>
-                                <li class="mb-2"><a href="#" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Mentions légales</a></li>
-                                <li class="mb-2"><a href="#" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Aide au vote</a></li>
+<li class="mb-2"><a href="{{ route('public.cgu') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Conditions générales</a></li>
+<li class="mb-2"><a href="{{ route('public.confidentialite') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Politique de confidentialité</a></li>
+                                <li class="mb-2"><a href="{{ route('public.mentions-legales') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Mentions légales</a></li>
+                                <li class="mb-2"><a href="{{ route('public.reglement') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Règlement</a></li>
                             </ul>
                         </div>
 
@@ -223,16 +223,16 @@
                             <h6 class="fw-bold mb-3 text-uppercase small" style="color: #CA7B05; letter-spacing: 1.5px;">Contact</h6>
                             <ul class="list-unstyled small" style="color: rgba(227,213,173,0.65);">
                                 <li class="mb-2 d-flex gap-2">
-                                    <i class="bi bi-telephone-fill mt-1" style="color: #CA7B05;"></i>
-                                    <span>+229 01 66 16 75 88</span>
+                                    <i class="bi bi-whatsapp mt-1" style="color: #CA7B05;"></i>
+                                    <a href="https://wa.me/2290166167588" target="_blank" rel="noopener" style="color: rgba(227,213,173,0.65); text-decoration: none;">+229 01 66 16 75 88</a>
                                 </li>
                                 <li class="mb-2 d-flex gap-2">
                                     <i class="bi bi-envelope-fill mt-1" style="color: #CA7B05;"></i>
-                                    <span>eyissobur@gmail.com</span>
+                                    <span>strategemediaevents@gmail.com</span>
                                 </li>
                                 <li class="mb-2 d-flex gap-2">
                                     <i class="bi bi-geo-alt-fill mt-1" style="color: #CA7B05;"></i>
-                                    <span>Porto-Novo, Bénin</span>
+                                    <span>Agbokou Centre Social, Porto-Novo, Bénin</span>
                                 </li>
                             </ul>
                         </div>

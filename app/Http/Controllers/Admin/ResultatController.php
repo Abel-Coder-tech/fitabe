@@ -35,25 +35,23 @@ class ResultatController extends Controller
         return view('admin.resultats.edit', compact('resultat'));
     }
 
-    // Met à jour la note jury et recalcule le score final
+    // Met à jour les notes jury et recalcule le score final
     public function update(Request $request, Resultat $resultat)
     {
         $validated = $request->validate([
-            'note_jury' => 'nullable|numeric|min:0|max:20',
-        ], 
-        [
-            'note_jury.numeric' => 'La note du jury doit être un nombre.',
-            'note_jury.min' => 'La note du jury ne peut pas être inférieure à :min.',
-            'note_jury.max' => 'La note du jury ne peut pas dépasser :max.',
+            'note_technique' => 'nullable|numeric|min:0|max:20',
+            'note_originalite' => 'nullable|numeric|min:0|max:20',
+            'note_presence' => 'nullable|numeric|min:0|max:20',
         ]);
-    
 
-        $resultat->note_jury = $validated['note_jury'];
+        $resultat->note_technique = $validated['note_technique'];
+        $resultat->note_originalite = $validated['note_originalite'];
+        $resultat->note_presence = $validated['note_presence'];
         $resultat->recalculerScoreFinal();
         $resultat->save();
 
         return to_route('admin.resultats.show', $resultat->annee_edition)
-            ->with('success', 'Note jury mise à jour.');
+            ->with('success', 'Notes jury mises à jour.');
     }
 
     // Régénère tous les résultats pour une édition

@@ -8,6 +8,7 @@ use App\Models\Candidats;
 use App\Models\Contact;
 use App\Models\Parametres;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -30,9 +31,19 @@ class DashboardController extends Controller
 
         $messagesRecents = Contact::latest()->take(5)->get();
 
-        $voteMode = Parametres::where('cle', 'vote_mode')->value('valeur') ?? 'off';
-        $prixDuVote = Parametres::where('cle', 'prix_du_vote')->value('valeur') ?? '100';
-        $voteDeadline = Parametres::where('cle', 'vote_deadline')->value('valeur');
+        $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
+        $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+        if ($dateDebut && $dateFin) {
+            $now = Carbon::now();
+            $debut = Carbon::parse($dateDebut);
+            $fin = Carbon::parse($dateFin);
+            if ($now < $debut) $voteMode = 'off';
+            elseif ($now > $fin) $voteMode = 'cloture';
+            else $voteMode = 'active';
+        } else {
+            $voteMode = 'off';
+        }
+        $prixDuVote = 100;
 
         $totalVotes = $votesParCategorie->sum('total');
 
@@ -40,7 +51,7 @@ class DashboardController extends Controller
             'votesConfirmes', 'messagesNonLus', 'totalRecettes',
             'votesParCategorie', 'totalVotes',
             'dernieresTransactions', 'messagesRecents',
-            'voteMode', 'prixDuVote', 'voteDeadline'
+            'voteMode', 'prixDuVote', 'dateFin'
         ));
     }
 }

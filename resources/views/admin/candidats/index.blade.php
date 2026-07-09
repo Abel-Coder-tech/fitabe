@@ -16,8 +16,10 @@
         <tr>
             <th>#</th>
             <th>Nom</th>
+            <th>Nom de scène</th>
+            <th>N° passage</th>
             <th>Catégorie</th>
-            <th>Votes</th>
+            <th>Ovations</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -26,8 +28,10 @@
             <tr>
                 <td data-label="#">{{ $candidat->id }}</td>
                 <td data-label="Nom">{{ $candidat->nom }}</td>
+                <td data-label="Nom de scène">{{ $candidat->nom_scene ?? '-' }}</td>
+                <td data-label="N° passage">{{ $candidat->numero_scene ?? '-' }}</td>
                 <td data-label="Catégorie">{{ $candidat->categorie }}</td>
-                <td data-label="Votes">{{ $candidat->nombre_votes }}</td>
+                <td data-label="Ovations">{{ $candidat->nombre_votes }}</td>
                 <td data-label="Actions">
                     <div class="d-flex gap-1">
                         <a href="{{ route('admin.candidats.edit', $candidat) }}" class="btn btn-sm btn-warning">Modifier</a>
@@ -39,7 +43,7 @@
                 </td>
             </tr>
         @empty
-            <tr><td colspan="5" class="text-center py-4 text-muted">Aucun candidat.</td></tr>
+            <tr><td colspan="7" class="text-center py-4 text-muted">Aucun candidat.</td></tr>
         @endforelse
     </tbody>
 </table>

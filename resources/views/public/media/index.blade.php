@@ -19,10 +19,10 @@
 </style>
 
 {{-- ==================== HERO ==================== --}}
-<section class="d-flex align-items-center bg-white" style="min-height: 220px;">
-    <div class="container text-center py-4">
-        <h1 class="fw-bold display-6 mb-2" style="color: #9B4D07;">Médiathèque</h1>
-        <p class="mb-0" style="color: #5F2B0C; max-width: 500px; margin: 0 auto;">Explorez les photos et vidéos du Festival International des Talents Artistiques du Bénin.</p>
+<section class="d-flex align-items-center justify-content-center" style="min-height: 220px; background: linear-gradient(135deg, #3E1E05 0%, #9B4D07 50%, #3E1E05 100%);">
+    <div class="container text-center">
+        <h1 class="fw-bold display-6 mb-2" style="color: #E3D5AD;">Médiathèque</h1>
+        <p class="mb-0" style="color: rgba(227,213,173,0.8); max-width: 500px; margin: 0 auto;">Explorez les photos et vidéos du Festival International des Talents Artistiques du Bénin.</p>
     </div>
 </section>
 
@@ -401,7 +401,7 @@
                     }
                     html += '<div class="flex-grow-1">';
                     html += '<strong style="color: #3E1E05;">' + r.candidat_nom + '</strong>';
-                    html += '<small class="d-block text-muted">' + r.nombre_votes + ' votes' + (r.score_final ? ' · Score : ' + r.score_final : '') + '</small>';
+                    html += '<small class="d-block text-muted">' + r.nombre_votes + ' ovations' + (r.score_final ? ' · Score : ' + r.score_final : '') + '</small>';
                     html += '</div></div>';
                 });
                 html += '</div></div>';

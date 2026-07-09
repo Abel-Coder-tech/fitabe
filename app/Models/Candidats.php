@@ -11,6 +11,15 @@ class Candidats extends Model
 {
     use HasFactory;
 
+    const CATEGORIES = [
+        'Théâtre',
+        'Percussions',
+        'Musique',
+        'Danse Traditionnelle',
+        'Stylisme/Modélisme',
+        'Arts Visuels',
+    ];
+
     // Champs assignables en masse
     protected $fillable = [
         'nom', 'categorie', 'numero_scene', 'photo', 'biographie', 'nombre_votes',

@@ -9,6 +9,7 @@ use App\Models\Votes;
 use App\Services\ResultatService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class VoteController extends Controller
 {
@@ -17,13 +18,29 @@ class VoteController extends Controller
         protected ResultatService $resultatService
     ) {}
 
+    // Helper : détermine le mode vote à partir des dates uniquement
+    private function computeVoteMode($dateDebut, $dateFin)
+    {
+        if (!$dateDebut || !$dateFin) {
+            return 'off';
+        }
+        $now = Carbon::now();
+        $debut = Carbon::parse($dateDebut);
+        $fin = Carbon::parse($dateFin);
+
+        if ($now < $debut) return 'off';
+        if ($now > $fin) return 'cloture';
+        return 'active';
+    }
+
     // Page publique de vote avec candidats et paramètres
     public function index()
     {
-        $voteMode = Parametres::where('cle', 'vote_mode')->value('valeur') ?? 'off';
-        $prixDuVote = (int) (Parametres::where('cle', 'prix_du_vote')->value('valeur') ?? 100);
-        $voteDeadline = Parametres::where('cle', 'vote_deadline')->value('valeur');
-        $afficherCompteur = Parametres::where('cle', 'afficher_compteur')->value('valeur') === '1';
+        $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
+        $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+        $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
+
+        $prixDuVote = 100;
 
         $categories = Candidats::select('categorie')
             ->distinct()
@@ -38,22 +55,26 @@ class VoteController extends Controller
 
         $kkiapayKey = Parametres::where('cle', 'kkiapay_public_key')->value('valeur') ?? '';
         $fedapayKey = Parametres::where('cle', 'fedapay_public_key')->value('valeur') ?? '';
+        $afficherCompteur = Parametres::where('cle', 'afficher_compteur')->value('valeur') === '1';
 
         return view('public.vote.index', compact(
-            'candidats', 'categories', 'voteMode', 'prixDuVote', 'voteDeadline', 'afficherCompteur',
-            'kkiapayKey', 'fedapayKey'
+            'candidats', 'categories', 'voteMode', 'prixDuVote',
+            'kkiapayKey', 'fedapayKey', 'afficherCompteur',
+            'dateDebut', 'dateFin'
         ));
     }
 
     // Soumet un vote (vérifie mode, valide, crée)
     public function store(Request $request)
     {
-        $voteMode = Parametres::where('cle', 'vote_mode')->value('valeur') ?? 'off';
+        $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
+        $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+        $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
         if ($voteMode !== 'active') {
             return response()->json(['success' => false, 'message' => 'Le vote est fermé.'], 403);
         }
 
-        $prixDuVote = (int) (Parametres::where('cle', 'prix_du_vote')->value('valeur') ?? 100);
+        $prixDuVote = 100;
 
         $validated = $request->validate([
             'candidat_id' => 'required|exists:candidats,id',
@@ -124,19 +145,19 @@ class VoteController extends Controller
         }
 
         $data = $request->validate([
-            'vote_mode' => 'required|in:active,off,cloture',
-            'prix_du_vote' => 'required|integer|min:50',
-            'vote_deadline' => 'nullable|date',
+            'date_debut_vote' => 'nullable|date',
+            'date_fin_vote' => 'nullable|date|after_or_equal:date_debut_vote',
             'afficher_compteur' => 'nullable|in:0,1',
         ]);
 
-        Parametres::updateOrCreate(['cle' => 'vote_mode'], ['valeur' => $data['vote_mode']]);
-        Parametres::updateOrCreate(['cle' => 'prix_du_vote'], ['valeur' => (string) $data['prix_du_vote']]);
-        Parametres::updateOrCreate(['cle' => 'vote_deadline'], ['valeur' => $data['vote_deadline'] ?? '']);
+        Parametres::updateOrCreate(['cle' => 'date_debut_vote'], ['valeur' => $data['date_debut_vote'] ?? '']);
+        Parametres::updateOrCreate(['cle' => 'date_fin_vote'], ['valeur' => $data['date_fin_vote'] ?? '']);
         Parametres::updateOrCreate(['cle' => 'afficher_compteur'], ['valeur' => $data['afficher_compteur'] ?? '0']);
 
-        if ($data['vote_mode'] === 'cloture') {
-            $annee = $data['annee_resultats'] ?? date('Y');
+        $now = Carbon::now();
+        $fin = $data['date_fin_vote'] ? Carbon::parse($data['date_fin_vote']) : null;
+        if ($fin && $now > $fin) {
+            $annee = $request->input('annee_resultats', date('Y'));
             $this->resultatService->generer($annee);
         }
 

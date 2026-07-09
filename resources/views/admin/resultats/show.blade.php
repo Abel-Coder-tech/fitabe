@@ -35,8 +35,10 @@
                     <tr>
                         <th>#</th>
                         <th>Candidat</th>
-                        <th>Votes</th>
-                        <th>Note Jury</th>
+                        <th>Ovations</th>
+                        <th>Technique</th>
+                        <th>Originalité</th>
+                        <th>Présence</th>
                         <th>Score Public</th>
                         <th>Score Final</th>
                         <th>Action</th>
@@ -55,7 +57,9 @@
                                 </div>
                             </td>
                             <td>{{ $r->nombre_votes }}</td>
-                            <td>{{ $r->note_jury ?? '-' }}</td>
+                            <td>{{ $r->note_technique ?? '-' }}</td>
+                            <td>{{ $r->note_originalite ?? '-' }}</td>
+                            <td>{{ $r->note_presence ?? '-' }}</td>
                             <td>{{ $r->score_public ?? '-' }}</td>
                             <td><strong>{{ $r->score_final ?? '-' }}</strong></td>
                             <td>
