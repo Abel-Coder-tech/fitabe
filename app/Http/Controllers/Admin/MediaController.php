@@ -28,7 +28,7 @@ class MediaController extends Controller
             'type' => 'required|in:photo,video',
             'titre' => 'nullable|string|max:200',
             'description' => 'nullable|string',
-            'fichier' => 'nullable|file|max:10240',
+            'fichier' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,mp4,mov,avi|max:10240',
             'lien_youtube' => 'nullable|string|max:255',
             'annee_edition' => 'nullable|string|max:10',
             'ordre_affichage' => 'nullable|integer|min:0',
@@ -36,13 +36,12 @@ class MediaController extends Controller
             'type.required' => 'Le type de média est requis.',
             'type.in' => 'Le type doit être photo ou video.',
             'fichier.file' => 'Le fichier doit être un fichier valide.',
+            'fichier.mimes' => 'Le fichier doit être une image (jpeg, png, gif, webp) ou une vidéo (mp4, mov, avi).',
             'fichier.max' => 'Le fichier ne doit pas dépasser 10 Mo.',
         ]);
 
         if ($request->type === 'photo') {
-            $request->validate(['fichier' => 'required|file|max:10240'], [
-                'fichier.required' => 'Le fichier photo est requis.',
-            ]);
+            $request->validate(['fichier' => 'required|file|mimes:jpeg,png,jpg,gif,webp|max:10240'], ['fichier.required' => 'Le fichier photo est requis.']);
             $validated['url'] = $request->file('fichier')->store('medias', 'public');
             $validated['lien_youtube'] = null;
         } else {
@@ -78,7 +77,7 @@ class MediaController extends Controller
             'type' => 'required|in:photo,video',
             'titre' => 'nullable|string|max:200',
             'description' => 'nullable|string',
-            'fichier' => 'nullable|file|max:10240',
+            'fichier' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,mp4,mov,avi|max:10240',
             'lien_youtube' => 'nullable|string|max:255',
             'annee_edition' => 'nullable|string|max:10',
             'ordre_affichage' => 'nullable|integer|min:0',

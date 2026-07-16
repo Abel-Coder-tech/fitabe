@@ -21,13 +21,13 @@ require __DIR__.'/auth.php';
 
 Route::get('/', [AcceuilController::class, 'index'])->name('home');
 Route::get('/vote', [PublicVoteController::class, 'index'])->name('public.vote');
-Route::post('/vote', [PublicVoteController::class, 'store'])->name('public.vote.store');
+Route::post('/vote', [PublicVoteController::class, 'store'])->name('public.vote.store')->middleware('throttle:10,1');
 Route::get('/vote/merci', [PublicVoteController::class, 'merci'])->name('public.vote.merci');
-Route::post('/vote/settings', [PublicVoteController::class, 'updateSettings'])->name('public.vote.settings');
+Route::post('/vote/settings', [PublicVoteController::class, 'updateSettings'])->name('public.vote.settings')->middleware(['auth', 'role:super_admin', 'throttle:30,1']);
 Route::post('/webhook/fedapay', [PublicVoteController::class, 'webhookFedapay'])->name('public.vote.webhook.fedapay');
 Route::get('/medias', [PublicMediaController::class, 'index'])->name('public.medias');
 Route::get('/contact', [PublicContactController::class, 'index'])->name('public.contact');
-Route::post('/contact', [PublicContactController::class, 'store'])->name('public.contact.store');
+Route::post('/contact', [PublicContactController::class, 'store'])->name('public.contact.store')->middleware('throttle:5,1');
 Route::view('/mentions-legales', 'public.mentions-legales')->name('public.mentions-legales');
 Route::view('/confidentialite', 'public.confidentialite')->name('public.confidentialite');
 Route::view('/cgu', 'public.cgu')->name('public.cgu');

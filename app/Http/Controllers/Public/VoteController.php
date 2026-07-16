@@ -105,22 +105,23 @@ class VoteController extends Controller
     // Webhook de confirmation Fedapay (appelé par Fedapay après un paiement)
     public function webhookFedapay(Request $request)
     {
-        // Récupère la clé secrète du webhook depuis la config
+        // Vérification obligatoire de la signature HMAC-SHA256
         $webhookSecret = config('services.fedapay.webhook_secret');
+        if (!$webhookSecret) {
+            Log::critical('Fedapay webhook : FEDAPAY_WEBHOOK_SECRET non configuré');
+            return response()->json(['success' => false, 'message' => 'Configuration webhook manquante'], 500);
+        }
 
-        // Vérification de la signature HMAC-SHA256 si une clé est configurée
-        if ($webhookSecret) {
-            $signature = $request->header('X-Fedapay-Signature');
-            $rawBody = $request->getContent();
-            $expected = hash_hmac('sha256', $rawBody, $webhookSecret);
+        $signature = $request->header('X-Fedapay-Signature');
+        $rawBody = $request->getContent();
+        $expected = hash_hmac('sha256', $rawBody, $webhookSecret);
 
-            if (!$signature || !hash_equals($expected, $signature)) {
-                Log::warning('Fedapay webhook : signature invalide', [
-                    'expected' => $expected,
-                    'received' => $signature,
-                ]);
-                return response()->json(['success' => false, 'message' => 'Signature invalide'], 403);
-            }
+        if (!$signature || !hash_equals($expected, $signature)) {
+            Log::warning('Fedapay webhook : signature invalide', [
+                'expected' => $expected,
+                'received' => $signature,
+            ]);
+            return response()->json(['success' => false, 'message' => 'Signature invalide'], 403);
         }
 
         // Parse le payload JSON envoyé par Fedapay
@@ -163,14 +164,11 @@ class VoteController extends Controller
     // Met à jour les paramètres de vote et génère les résultats si clôture
     public function updateSettings(Request $request)
     {
-        if ($request->user()->role !== 'super_admin') {
-            abort(403);
-        }
-
         $data = $request->validate([
             'date_debut_vote' => 'nullable|date',
             'date_fin_vote' => 'nullable|date|after_or_equal:date_debut_vote',
             'afficher_compteur' => 'nullable|in:0,1',
+            'annee_resultats' => 'nullable|string|max:4',
         ]);
 
         Parametres::updateOrCreate(['cle' => 'date_debut_vote'], ['valeur' => $data['date_debut_vote'] ?? '']);
@@ -187,7 +185,7 @@ class VoteController extends Controller
         return response()->json(['success' => true]);
     }
 
-    // Page de remerciement après un vote (appelée par le callback Fedapay)
+    // Page de remerciement après un vote
     public function merci(Request $request)
     {
         $vote = null;
@@ -196,16 +194,8 @@ class VoteController extends Controller
         if ($request->query('vote_id')) {
             $vote = Votes::with('candidat')->find($request->query('vote_id'));
 
-            // Si Fedapay nous renvoie un statut "approved" dans l'URL de callback,
-            // on confirme immédiatement le vote (au cas où le webhook n'est pas encore passé)
-            if ($vote && $vote->statut === 'en_attente') {
-                $callbackStatus = $request->query('status');
-                if ($callbackStatus === 'approved') {
-                    $transactionId = $request->query('transaction_id') ?: 'fedapay_cb_' . $vote->id;
-                    $vote->marquerConfirme($transactionId, 'fedapay');
-                }
-            }
-
+            // Ne JAMAIS confirmer un vote depuis les paramètres GET.
+            // Seul le webhook Fedapay peut confirmer un paiement.
             if ($vote) {
                 $statut = $vote->statut;
             }
