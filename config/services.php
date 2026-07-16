@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    // Fedapay — passerelle de paiement pour les ovations
+    'fedapay' => [
+        'public_key' => env('FEDAPAY_PUBLIC_KEY'),
+        'secret_key' => env('FEDAPAY_SECRET_KEY'),
+        'webhook_secret' => env('FEDAPAY_WEBHOOK_SECRET'),
+        'mode' => env('FEDAPAY_MODE', 'live'), // live | test
+    ],
+
 ];

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Parametres;
 use App\Models\Votes;
 use App\Models\Candidats;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class VoteController extends Controller
@@ -22,7 +21,7 @@ class VoteController extends Controller
         $fin = Carbon::parse($dateFin);
 
         if ($now < $debut) return 'off';
-        if ($now > $fin) return 'cloture';
+        if ($now >= $fin) return 'cloture';
         return 'active';
     }
 
@@ -52,31 +51,13 @@ class VoteController extends Controller
         return view('admin.votes.show', compact('vote', 'prixDuVote'));
     }
 
-    // Met à jour le statut d'un vote et ajuste le compteur
-    public function update(Request $request, Votes $vote)
-    {
-        $validated = $request->validate([
-            'statut' => 'required|in:en_attente,confirme,rejete',
-        ], [
-            'statut.required' => 'Le statut est requis.',
-            'statut.in' => 'Le statut sélectionné est invalide.',
-        ]);
-
-        $ancien_statut = $vote->statut;
-        $vote->update($validated);
-
-        if ($ancien_statut === 'confirme' && $validated['statut'] !== 'confirme') {
-            $vote->candidat->decrement('nombre_votes');
-        } elseif ($ancien_statut !== 'confirme' && $validated['statut'] === 'confirme') {
-            $vote->candidat->increment('nombre_votes');
-        }
-
-        return to_route('admin.votes.index')->with('success', 'Vote mis à jour.');
-    }
-
-    // Supprime un vote et décrémente le compteur si confirmé
+    // Supprime un vote (super_admin uniquement)
     public function destroy(Votes $vote)
     {
+        if (request()->user()->role !== 'super_admin') {
+            abort(403, 'Seul un super administrateur peut supprimer une ovation.');
+        }
+
         if ($vote->statut === 'confirme') {
             $vote->candidat->decrement('nombre_votes');
         }

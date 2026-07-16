@@ -24,7 +24,6 @@ Route::get('/vote', [PublicVoteController::class, 'index'])->name('public.vote')
 Route::post('/vote', [PublicVoteController::class, 'store'])->name('public.vote.store');
 Route::get('/vote/merci', [PublicVoteController::class, 'merci'])->name('public.vote.merci');
 Route::post('/vote/settings', [PublicVoteController::class, 'updateSettings'])->name('public.vote.settings');
-Route::post('/webhook/kkiapay', [PublicVoteController::class, 'webhookKkiapay'])->name('public.vote.webhook.kkiapay');
 Route::post('/webhook/fedapay', [PublicVoteController::class, 'webhookFedapay'])->name('public.vote.webhook.fedapay');
 Route::get('/medias', [PublicMediaController::class, 'index'])->name('public.medias');
 Route::get('/contact', [PublicContactController::class, 'index'])->name('public.contact');
@@ -35,23 +34,35 @@ Route::view('/cgu', 'public.cgu')->name('public.cgu');
 Route::view('/reglement', 'public.reglement')->name('public.reglement');
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    // Dashboard — accessible à tous les rôles authentifiés
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Contenu éditorial — accessible à tous les rôles
     Route::resource('candidats', CandidatController::class);
-    Route::resource('votes', VoteController::class)->except(['create', 'store', 'edit']);
-    Route::post('votes/clear-all', [VoteController::class, 'clearAll'])->name('votes.clearAll');
+    Route::post('candidats/note-jury', [CandidatController::class, 'updateNoteJury'])->name('candidats.note-jury');
     Route::resource('programmes', ProgrammeController::class);
     Route::resource('partenaires', PartenaireController::class);
-    Route::resource('parametres', ParametreController::class);
     Route::resource('medias', MediaController::class);
     Route::resource('contacts', ContactController::class)->except(['create', 'store', 'edit', 'update']);
-    Route::resource('users', UserController::class);
+
+    // Votes — consultation et mise à jour de statut pour tous, clearAll réservé super_admin
+    Route::get('votes', [VoteController::class, 'index'])->name('votes.index');
+    Route::get('votes/{vote}', [VoteController::class, 'show'])->name('votes.show');
+    Route::delete('votes/{vote}', [VoteController::class, 'destroy'])->name('votes.destroy');
+    Route::post('votes/clear-all', [VoteController::class, 'clearAll'])->name('votes.clearAll')->middleware('role:super_admin');
+
+    // Résultats — consultation et édition pour tous, régénération réservée super_admin
     Route::prefix('resultats')->name('resultats.')->controller(ResultatController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{annee}', 'show')->name('show');
         Route::get('/{resultat}/edit', 'edit')->name('edit');
         Route::put('/{resultat}', 'update')->name('update');
-        Route::post('/regenerer/{annee}', 'regenerer')->name('regenerer');
+        Route::post('/regenerer/{annee}', 'regenerer')->name('regenerer')->middleware('role:super_admin');
     });
+
+    // Administration sensible — réservé super_admin
+    Route::resource('parametres', ParametreController::class)->middleware('role:super_admin');
+    Route::resource('users', UserController::class)->middleware('role:super_admin');
 });
 
 Route::middleware('auth')->group(function () {

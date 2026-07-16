@@ -35,7 +35,7 @@
                                 <li><strong>Hébergeur :</strong> o2switch</li>
                                 <li><strong>Développement :</strong> Noctam Communication — Amos AHOUANVOEKE Ferdinand Kayodé</li>
                                 <li><strong>Contact :</strong> <a href="mailto:noctamcom@gmail.com" style="color: #9B4D07;">noctamcom@gmail.com</a> / +229 01 62 83 66 29</li>
-                                <li><strong>Paiement :</strong> Kkiapay (MTN Mobile Money, Moov Flooz, Carte Bancaire)</li>
+                                <li><strong>Paiement :</strong> Fedapay (MTN Mobile Money, Moov Flooz, Orange Money)</li>
                             </ul>
 
                             <h6 class="fw-bold mt-4 mb-2">Propriété intellectuelle</h6>

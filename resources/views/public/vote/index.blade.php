@@ -17,39 +17,31 @@
         cursor: pointer;
         border-radius: 16px;
         overflow: hidden;
+        max-width: 290px;
+        margin-inline: auto;
     }
     .candidate-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 8px 28px rgba(160,132,92,0.12);
-    }
-    .candidate-card .candidat-photo {
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 3px solid #fff;
-        box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-        margin-top: -45px;
-        position: relative;
-        z-index: 1;
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(62,30,5,0.18);
     }
     .candidate-card .candidat-num {
         position: absolute;
-        top: 10px;
-        left: 10px;
+        top: 12px;
+        left: 12px;
         background: rgba(62,30,5,0.85);
         color: #fff;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         font-weight: 700;
-        padding: 3px 10px;
+        padding: 4px 12px;
         border-radius: 20px;
         z-index: 2;
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
-        height: 110px;
+        height: 240px;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
+        overflow: hidden;
     }
     .candidate-card .candidat-cover img {
         width: 100%;
@@ -57,8 +49,14 @@
         object-fit: cover;
         opacity: 0.35;
     }
+    .candidate-card .candidat-cover .photo-principale {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 1;
+    }
     .candidate-card .vote-count {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 700;
         color: var(--vote-brown);
     }
@@ -194,6 +192,21 @@
                     Ovationnez votre<br>
                     <span style="color: #CA7B05;">candidat préféré</span>
                 </h1>
+                @php
+                    $now = time();
+                    $ouverture = $dateDebut ? strtotime($dateDebut) : 0;
+                    $cloture   = $dateFin ? strtotime($dateFin) : 0;
+                    $dateDebutFormatted = $dateDebut ? \Carbon\Carbon::parse($dateDebut)->locale('fr')->isoFormat('D MMMM YYYY') : '';
+                @endphp
+
+                @if($now >= $cloture)
+                {{-- ÉTAT : Après clôture — message simple, pas de contenu vote --}}
+                <p class="lead hero-sub mb-0 mx-auto" style="max-width: 540px;">
+                    La clôture des ovations a eu lieu. Revenez bientôt pour découvrir les résultats.
+                </p>
+
+                @else
+                {{-- Avant ou pendant les ovations --}}
                 <p class="lead hero-sub mb-4 mx-auto" style="max-width: 540px;">
                     Soutenez les talents du FITAB. Chaque voix compte pour aider votre artiste favori à remporter le concours.
                 </p>
@@ -207,14 +220,6 @@
                     </a>
                 </div>
 
-                {{-- ==================== DATE & COMPTEUR DYNAMIQUE ==================== --}}
-                @php
-                    $now = time();
-                    $ouverture = $dateDebut ? strtotime($dateDebut) : 0;
-                    $cloture   = $dateFin ? strtotime($dateFin) : 0;
-                    $dateDebutFormatted = $dateDebut ? \Carbon\Carbon::parse($dateDebut)->locale('fr')->isoFormat('D MMMM YYYY') : '';
-                @endphp
-
                 <div class="d-flex flex-column align-items-center gap-3">
 
                     @if($now < $ouverture)
@@ -222,13 +227,6 @@
                     <div class="countdown-wrap d-inline-flex align-items-center gap-2 px-4 py-3">
                         <i class="bi bi-calendar-event" style="color: #CA7B05; font-size: 1.2rem;"></i>
                         <span style="color: #E3D5AD;">Les ovations ouvrent le <strong>{{ $dateDebutFormatted }}</strong>. Revenez soutenir vos artistes !</span>
-                    </div>
-
-                    @elseif($now >= $cloture)
-                    {{-- ÉTAT 3 : Après clôture --}}
-                    <div class="countdown-wrap d-inline-flex align-items-center gap-2 px-4 py-3">
-                        <i class="bi bi-hourglass-split" style="color: #CA7B05; font-size: 1.2rem;"></i>
-                        <span style="color: #E3D5AD;">Les ovations sont closes. Rendez-vous le <strong>28 novembre</strong> pour la <strong>Grande Finale</strong> — <a href="{{ route('home') }}" style="color: #CA7B05; text-decoration: underline;">Découvrez les finalistes et les résultats</a>.</span>
                     </div>
 
                     @else
@@ -249,6 +247,7 @@
                     @endif
 
                 </div>
+                @endif
             </div>
         </div>
     </div>
@@ -310,6 +309,11 @@
                 <hr>
                 <p class="mb-0">En attendant, découvrez nos <a href="{{ route('public.medias') }}" class="alert-link">médias</a>.</p>
             </div>
+        @elseif($voteMode === 'cloture')
+            <div class="alert alert-secondary text-center py-4 mb-4" role="alert">
+                <h4 class="alert-heading mb-2"><i class="bi bi-trophy-fill"></i> Ovations clôturées</h4>
+                <p class="mb-0">Les ovations sont maintenant terminées. Consultez les résultats ci-dessous.</p>
+            </div>
         @endif
 
         @if($candidats->isEmpty())
@@ -318,55 +322,41 @@
                 Aucun candidat inscrit pour le moment.
             </div>
         @else
-            @foreach($candidats as $categorie => $candidatsCategorie)
-            <div class="categorie-group mb-5" data-categorie="{{ Str::slug($categorie) }}">
-                <h3 class="h4 mb-4" style="color: var(--vote-gold); border-left: 4px solid var(--vote-gold); padding-left: 1rem;">
-                    {{ $categorie }}
-                </h3>
-                <div class="row g-4">
-                    @foreach($candidatsCategorie as $candidat)
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <div class="card candidate-card h-100 shadow-sm text-center">
-                                {{-- Cover band + "Candidat N°X" badge --}}
-                                <div class="candidat-cover">
-                                    
-                                    @if($candidat->numero_scene)
-                                        <span class="candidat-num">Candidat N°{{ $candidat->numero_scene }}</span>
-                                    @endif
-                                </div>
-                                {{-- Circular photo --}}
+            <div class="row g-4">
+                @foreach($candidats as $candidat)
+                    <div class="col-sm-6 col-lg-3 candidat-col" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
+                        <div class="card candidate-card h-100 shadow-sm">
+                            <div class="candidat-cover">
                                 @if($candidat->photo)
-                                    <img src="{{ $candidat->photo_url }}" class="candidat-photo mx-auto" alt="{{ $candidat->display_name }}">
-                                @else
-                                    <div class="candidat-photo mx-auto d-flex align-items-center justify-content-center bg-light" style="border-radius:50%; width:90px; height:90px; margin-top:-45px; border:3px solid #fff; box-shadow:0 3px 12px rgba(0,0,0,0.08);">
-                                        <i class="bi bi-person fs-3 text-muted"></i>
-                                    </div>
+                                    <img src="{{ $candidat->photo_url }}" class="photo-principale" alt="{{ $candidat->display_name }}">
                                 @endif
-                                <div class="card-body d-flex flex-column px-3 pt-2 pb-3">
-                                    {{-- Name + stage name --}}
-                                    <h6 class="fw-bold mb-0" style="color: var(--vote-brown);">{{ $candidat->display_name }}</h6>
-                                    {{-- Motivation / biographie (truncated) --}}
-                                    @if($candidat->biographie)
-                                        <p class="small text-muted mb-2 mt-1" style="font-style: italic; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-                                            {{ \Illuminate\Support\Str::limit($candidat->biographie, 80) }}
-                                        </p>
-                                    @endif
-                                    {{-- Vote count --}}
-                                    @if($afficherCompteur)
-                                    <p class="vote-count mb-2 mt-auto">
-                                        <i class="bi bi-heart-fill" style="color: var(--vote-gold);"></i>
-                                        {{ $candidat->votes_count ?? 0 }} ovation(s)
+                                @if($candidat->numero_scene)
+                                    <span class="candidat-num">N°{{ $candidat->numero_scene }}</span>
+                                @endif
+                            </div>
+                            <div class="card-body d-flex flex-column px-3 pb-3 pt-3">
+                                <h6 class="fw-bold mb-1 text-center" style="color: var(--vote-brown);">{{ $candidat->display_name }}</h6>
+                                @if($candidat->biographie)
+                                    <p class="small text-muted mb-2 text-center" style="line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                        {{ \Illuminate\Support\Str::limit($candidat->biographie, 80) }}
                                     </p>
-                                    @endif
-                                    {{-- Buttons --}}
+                                @endif
+                                @if($afficherCompteur)
+                                    <p class="vote-count text-center mb-2">
+                                        <i class="bi bi-heart-fill" style="color: var(--vote-gold);"></i>
+                                        {{ $candidat->votes_sum_quantite ?? 0 }} ovation(s)
+                                    </p>
+                                @endif
+                                <hr class="my-2" style="border-color: #f0e6d6; opacity: 0.6;">
+                                <div class="d-flex flex-column gap-2">
                                     @if($voteMode === 'active')
                                         <div class="d-flex gap-2">
-                                            <button type="button" class="btn flex-fill text-white fw-semibold btn-sm" style="background: var(--vote-gold); border-radius: 50px;"
-                                                    onclick='ouvrirVote({{ $candidat->id }}, {!! json_encode($candidat->display_name) !!}, {!! json_encode($candidat->photo_url) !!}, {{ $candidat->votes_count ?? 0 }}, {!! json_encode($candidat->categorie ?? '') !!}, {!! json_encode(Str::limit($candidat->biographie ?? '', 120)) !!}, {{ $candidat->numero_scene ?? 'null' }})'>
-                                                Offrir une ovation <i class="bi bi-check-circle ms-1"></i>
+                                            <button type="button" class="btn text-white fw-semibold btn-sm flex-fill" style="background: var(--vote-gold); border-radius: 50px;"
+                                                    onclick='ouvrirVote({{ $candidat->id }}, {!! json_encode($candidat->display_name, JSON_HEX_APOS) !!}, {!! json_encode($candidat->photo_url, JSON_HEX_APOS) !!}, {{ $candidat->votes_sum_quantite ?? 0 }}, {!! json_encode($candidat->categorie ?? '', JSON_HEX_APOS) !!}, {!! json_encode(Str::limit($candidat->biographie ?? '', 120), JSON_HEX_APOS) !!}, {!! json_encode($candidat->numero_scene) !!})'>
+                                                Ovationner <i class="bi bi-check-circle ms-1"></i>
                                             </button>
                                             <button type="button" class="btn btn-sm fw-semibold" style="border: 2px solid var(--vote-gold-light); color: var(--vote-gold-light); border-radius: 50px; flex: 0 0 auto; padding: 0.25rem 0.8rem;"
-                                                    onclick='partagerCandidat({{ $candidat->id }}, {!! json_encode($candidat->display_name) !!})'>
+                                                    onclick='partagerCandidat({{ $candidat->id }}, {!! json_encode($candidat->display_name, JSON_HEX_APOS) !!})'>
                                                 <i class="bi bi-share-fill"></i>
                                             </button>
                                         </div>
@@ -375,14 +365,13 @@
                                             Ovation fermée
                                         </button>
                                     @endif
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-            @endforeach
+                @endforeach
             </div>
-        </div>
-            @endforeach
-    @endif
+        @endif
 </div>
 </section>
 
@@ -411,13 +400,24 @@
                             <p class="small mb-2">2. Chaque ovation est payante au tarif de <strong>{{ number_format($prixDuVote, 0, ',', ' ') }} FCFA</strong> l'unité.</p>
                             <p class="small mb-2">3. Le nombre d'ovations par personne n'est pas limité.</p>
                             <p class="small mb-2">4. Les ovations sont définitives et non remboursables.</p>
-                            <p class="small mb-2">5. Le paiement s'effectue via Kkiapay (MTN Mobile Money, Moov Flooz, Carte Bancaire).</p>
+                            <p class="small mb-2">5. Le paiement s'effectue via Fedapay (MTN Mobile Money, Moov Flooz, Orange Money).</p>
                             <p class="small mb-0">6. Toute ovation frauduleuse entraîne l'annulation des ovations concernées.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+{{-- Section appel à l'action --}}
+<section class="py-5 bg-light text-center">
+    <div class="container">
+        <h2 class="fw-bold mb-3" style="color: #3E1E05;">Prêt à vivre l'expérience FITAB ?</h2>
+        <p class="mb-4" style="color: #5F2B0C;">Rejoignez-nous pour célébrer la culture, la créativité et le talent du Grand Porto-Novo.</p>
+        <a href="{{ route('public.contact') }}" class="btn btn-fitab btn-lg px-4 py-3 border-0 shadow-sm">
+            <i class="bi bi-calendar-event me-2"></i>Dévenir partenaire ou sponsor
+        </a>
     </div>
 </section>
 
@@ -449,58 +449,67 @@ const categoryColors = {
 
 // ==================== OUVERTURE ====================
 function ouvrirVote(id, nom, photo, votesCount, categorie, bio, numeroScene) {
-    etat.candidatId = id;
-    etat.candidatNom = nom;
-    etat.candidatPhoto = photo;
-    etat.step = 1;
-    etat.paymentMethod = null;
-    etat.voteId = null;
+    try {
+        etat.candidatId = id;
+        etat.candidatNom = nom;
+        etat.candidatPhoto = photo;
+        etat.step = 1;
+        etat.paymentMethod = null;
+        etat.voteId = null;
 
-    document.getElementById('voteCandidatId').value = id;
-    document.getElementById('candidatNameDisplay').textContent = nom;
-    document.getElementById('candidatNameMini').textContent = nom;
-    document.getElementById('candidatCategoryInfo').textContent = categorie || '';
+        document.getElementById('voteCandidatId').value = id;
+        document.getElementById('candidatNameDisplay').textContent = nom;
+        document.getElementById('candidatNameMini').textContent = nom;
+        document.getElementById('candidatCategoryInfo').textContent = categorie || '';
 
-    const catBadge = document.getElementById('candidatCategoryInfo');
-    const color = categoryColors[categorie] || '#9B4D07';
-    catBadge.style.background = color;
+        const catBadge = document.getElementById('candidatCategoryInfo');
+        const color = categoryColors[categorie] || '#9B4D07';
+        catBadge.style.background = color;
 
-    const numEl = document.getElementById('candidatNumero');
-    if (numEl) {
-        numEl.textContent = numeroScene ? 'N°' + numeroScene : '';
-        numEl.style.display = numeroScene ? '' : 'none';
+        const numEl = document.getElementById('candidatNumero');
+        if (numEl) {
+            numEl.textContent = numeroScene ? 'N°' + numeroScene : '';
+            numEl.style.display = numeroScene ? '' : 'none';
+        }
+
+        const countEl = document.getElementById('candidatVoteCount');
+        if (countEl) {
+            @if($afficherCompteur)
+            countEl.innerHTML = '<i class="bi bi-heart-fill" style="color: #9B4D07;"></i> ' + (votesCount || 0) + ' ovation' + ((votesCount || 0) > 1 ? 's' : '');
+            countEl.style.display = '';
+            @else
+            countEl.style.display = 'none';
+            @endif
+        }
+
+        document.getElementById('candidatBio').textContent = bio || '';
+        document.getElementById('candidatPhotoPreview').src = photo || '{{ asset("images/default-user.png") }}';
+        document.getElementById('step2CandidatNom').textContent = nom;
+        document.getElementById('step2CandidatPhoto').src = photo || '{{ asset("images/default-user.png") }}';
+
+        document.getElementById('votant_nom').value = 'Anonyme';
+        document.getElementById('votant_email').value = 'anonyme@ovation.fitab';
+        document.getElementById('votant_telephone').value = '0000000000';
+        document.getElementById('quantite').value = 1;
+        setTimeout(function() { changerQte(0); }, 10);
+        document.getElementById('votePaymentMethod').value = '';
+        majTotal();
+
+        document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'));
+
+        const modalEl = document.getElementById('voteModal');
+        if (!modalEl) {
+            console.error('Modal #voteModal introuvable dans le DOM');
+            return;
+        }
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+
+        reinitSteps();
+        allerStep(1, true);
+    } catch (e) {
+        console.error('Erreur ouvrirVote:', e);
     }
-
-    const countEl = document.getElementById('candidatVoteCount');
-    if (countEl) {
-        @if($afficherCompteur)
-        countEl.innerHTML = '<i class="bi bi-heart-fill" style="color: #9B4D07;"></i> ' + (votesCount || 0) + ' ovation' + ((votesCount || 0) > 1 ? 's' : '');
-        countEl.style.display = '';
-        @else
-        countEl.style.display = 'none';
-        @endif
-    }
-
-    document.getElementById('candidatBio').textContent = bio || '';
-    document.getElementById('candidatPhotoPreview').src = photo || '{{ asset("images/default-user.png") }}';
-    document.getElementById('step2CandidatNom').textContent = nom;
-    document.getElementById('step2CandidatPhoto').src = photo || '{{ asset("images/default-user.png") }}';
-    // Pré-remplir les champs votant (cachés)
-    document.getElementById('votant_nom').value = 'Anonyme';
-    document.getElementById('votant_email').value = 'anonyme@ovation.fitab';
-    document.getElementById('votant_telephone').value = '0000000000';
-    document.getElementById('quantite').value = 1;
-    setTimeout(function() { changerQte(0); }, 10);
-    document.getElementById('votePaymentMethod').value = '';
-    majTotal();
-
-    document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'));
-
-    const modal = new bootstrap.Modal('#voteModal');
-    modal.show();
-
-    reinitSteps();
-    allerStep(1, true);
 }
 
 // ==================== QUANTITÉ ====================
@@ -616,14 +625,9 @@ async function lancerPaiement() {
         const montant = data.montant;
         document.getElementById('paymentMontant').textContent = montant.toLocaleString('fr-FR') + ' FCFA';
 
-        if (etat.paymentMethod === 'kkiapay') {
-            document.getElementById('paymentStepText').textContent = 'Ouverture de Kkiapay...';
-            ouvrirKkiapay(data.vote_id, montant);
-        } else if (etat.paymentMethod === 'fedapay') {
-            document.getElementById('paymentStepText').textContent = 'Redirection vers Fedapay...';
-            document.getElementById('fedapayRedirectNotice').style.display = 'block';
-            ouvrirFedapay(data.vote_id, montant);
-        }
+        document.getElementById('paymentStepText').textContent = 'Redirection vers Fedapay...';
+        document.getElementById('fedapayRedirectNotice').style.display = 'block';
+        ouvrirFedapay(data.vote_id, montant);
 
     } catch (err) {
         document.getElementById('paymentSpinner').style.display = 'none';
@@ -645,39 +649,6 @@ function fallbackSuccess(voteId) {
     }, 1500);
 }
 
-function ouvrirKkiapay(voteId, montant) {
-    const apiKey = '{{ $kkiapayKey }}';
-    if (!apiKey) {
-        fallbackSuccess(voteId);
-        return;
-    }
-
-    if (typeof Kkiapay === 'undefined') {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.kkiapay.me/sdk/v2/kkiapay.js';
-        script.onload = () => initKkiapay(apiKey, voteId, montant);
-        document.head.appendChild(script);
-    } else {
-        initKkiapay(apiKey, voteId, montant);
-    }
-}
-
-function initKkiapay(apiKey, voteId, montant) {
-    try {
-        new Kkiapay({
-            public_key: apiKey,
-            amount: montant,
-            phone: document.getElementById('votant_telephone').value,
-            email: document.getElementById('votant_email').value,
-            reason: 'Ovation FITAB #' + voteId,
-            callback: '{{ route("public.vote.merci", ["vote_id" => "__VOTE_ID__"]) }}'.replace('__VOTE_ID__', voteId),
-            data: { vote_id: voteId },
-        }).open();
-    } catch (e) {
-        fallbackSuccess(voteId);
-    }
-}
-
 function ouvrirFedapay(voteId, montant) {
     const apiKey = '{{ $fedapayKey }}';
     if (!apiKey) {
@@ -685,7 +656,9 @@ function ouvrirFedapay(voteId, montant) {
         return;
     }
 
-    const checkoutUrl = 'https://checkout.fedapay.com/v2?public_key=' + apiKey
+    const isLive = '{{ config('services.fedapay.mode', 'live') }}' === 'live';
+    const base = isLive ? 'https://api.fedapay.com' : 'https://sandbox-api.fedapay.com';
+    const checkoutUrl = base + '/v1/checkout?public_key=' + apiKey
         + '&amount=' + montant
         + '&currency=XOF'
         + '&description=Ovation+FITAB+%23' + voteId
@@ -741,18 +714,18 @@ function partagerCandidat(id, nom) {
 // ==================== FILTRES CATÉGORIES ====================
 document.addEventListener('DOMContentLoaded', function() {
     const filterBtns = document.querySelectorAll('.filter-btn');
-    const groupes = document.querySelectorAll('.categorie-group');
+    const colonnes = document.querySelectorAll('.candidat-col');
 
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             filterBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             const filter = this.dataset.filter;
-            groupes.forEach(g => {
-                if (filter === 'all' || g.dataset.categorie === filter) {
-                    g.style.display = 'block';
+            colonnes.forEach(col => {
+                if (filter === 'all' || col.dataset.categorie === filter) {
+                    col.style.display = '';
                 } else {
-                    g.style.display = 'none';
+                    col.style.display = 'none';
                 }
             });
         });

@@ -71,12 +71,16 @@
                 <a href="#preferences" class="settings-nav-link" data-section="preferences">
                     <i class="bi bi-sliders"></i> Préférences
                 </a>
+                @if(auth()->user()->role === 'super_admin')
                 <a href="#utilisateurs" class="settings-nav-link" data-section="utilisateurs">
                     <i class="bi bi-people"></i> Utilisateurs
                 </a>
+                @endif
+                @if(auth()->user()->role === 'super_admin')
                 <a href="#facturation" class="settings-nav-link" data-section="facturation">
                     <i class="bi bi-credit-card"></i> Facturation
                 </a>
+                @endif
                 <a href="#logs" class="settings-nav-link" data-section="logs">
                     <i class="bi bi-activity"></i> Activité
                 </a>
@@ -123,6 +127,7 @@
         </div>
 
         {{-- Section Utilisateurs --}}
+        @if(auth()->user()->role === 'super_admin')
         <div class="settings-section" id="section-utilisateurs">
             <div class="card border-0 rounded-4 shadow-sm">
                 <div class="card-header bg-transparent border-bottom d-flex align-items-center justify-content-between px-4 py-3">
@@ -183,25 +188,19 @@
                 </div>
             </div>
         </div>
+        @endif
 
+        @if(auth()->user()->role === 'super_admin')
         {{-- Section Facturation --}}
         <div class="settings-section" id="section-facturation">
-            @if(auth()->user()->role === 'super_admin')
-                <div class="card border-0 rounded-4 shadow-sm">
-                    <div class="card-body p-4 text-center" style="min-height: 200px;">
-                        <h6 class="fw-semibold" style="color: #3E1E05;">Gestion de la facturation</h6>
-                        <p class="small text-muted mb-0">Aucun abonnement actif pour le moment.</p>
-                    </div>
+            <div class="card border-0 rounded-4 shadow-sm">
+                <div class="card-body p-4 text-center" style="min-height: 200px;">
+                    <h6 class="fw-semibold" style="color: #3E1E05;">Gestion de la facturation</h6>
+                    <p class="small text-muted mb-0">Aucun abonnement actif pour le moment.</p>
                 </div>
-            @else
-                <div class="card border-0 rounded-4 shadow-sm">
-                    <div class="card-body p-4 text-center" style="min-height: 200px;">
-                        <h6 class="fw-semibold" style="color: #3E1E05;">Facturation</h6>
-                        <p class="small text-muted mb-0">Cette section est réservée aux administrateurs.</p>
-                    </div>
-                </div>
-            @endif
+            </div>
         </div>
+        @endif
 
         {{-- Section Activité --}}
         <div class="settings-section" id="section-logs">

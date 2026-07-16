@@ -142,14 +142,4 @@
     </div>
 </section>
 
-{{-- ==================== APPEL SPONSORS ==================== --}}
-<section class="py-5 text-center bg-white">
-    <div class="container">
-        <h3 class="fw-bold mb-2" style="color: #9B4D07;">Vous souhaitez soutenir le FITAB ?</h3>
-        <p class="text-muted mb-4">Devenez partenaire ou sponsor du Festival International des Talents Artistiques du Bénin.</p>
-        <a href="#formulaire" class="btn btn-lg fw-semibold px-5 py-3 border-0 btn-fitab">
-            <i class="bi bi-envelope me-2"></i>Devenir partenaire
-        </a>
-    </div>
-</section>
 @endsection

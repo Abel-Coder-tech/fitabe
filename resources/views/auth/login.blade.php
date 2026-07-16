@@ -185,10 +185,10 @@
 
             {{-- En-tête --}}
             <div class="login-header">
-                <img src="{{ asset('images/logo1.png') }}"
+                <img src="{{ asset('images/logo.png') }}"
                      alt="FITAB"
                      onerror="this.style.display='none'">
-                <div class="site-title">FITAB</div>
+              
                 <div class="site-sub">Festival International des Talents Artistiques du Bénin</div>
             </div>
 

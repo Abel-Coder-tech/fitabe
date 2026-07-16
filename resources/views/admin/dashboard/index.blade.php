@@ -167,33 +167,64 @@
 {{-- ========== 3. SECTION PRINCIPALE (DEUX COLONNES) ========== --}}
 <div class="row g-3 mb-4">
 
-    {{-- Colonne gauche : Votes par catégorie --}}
+    {{-- Colonne gauche : Résultats des ovations --}}
     <div class="col-lg-7">
         <div class="card border-0 rounded-4 h-100">
             <div class="card-header bg-transparent border-bottom d-flex align-items-center justify-content-between px-4 py-3">
-                <span class="fw-semibold" style="color: #9B4D07;">Ovations par catégorie</span>
-                <i class="bi bi-bar-chart-fill" style="color: #9B4D07;"></i>
+                <span class="fw-semibold" style="color: #9B4D07;">Résultats des ovations</span>
+                <span class="d-flex align-items-center gap-2">
+                    <small class="text-muted" style="font-size: 0.65rem;">Mait. Orig. Prés. Votes</small>
+                    <i class="bi bi-trophy-fill" style="color: #9B4D07;"></i>
+                </span>
             </div>
             <div class="card-body px-4 py-3">
-                @forelse($votesParCategorie as $cat)
-                    @php
-                        $pct = $totalVotes > 0 ? round(($cat->total / $totalVotes) * 100) : 0;
-                    @endphp
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="small fw-semibold" style="color: #3E1E05;">{{ $cat->categorie }}</span>
-                            <span class="small fw-bold" style="color: #9B4D07;">{{ number_format($cat->total, 0, ',', ' ') }}</span>
+                {{-- Filtre --}}
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                    <span class="fw-semibold small me-1" style="color: #9B4D07;">Filtrer :</span>
+                    <button class="btn btn-sm results-filter active rounded-pill" data-cat="all"
+                            style="background: #9B4D07; color: #fff; border: none; font-weight: 600;">Tous</button>
+                    @foreach($categories as $cat)
+                        <button class="btn btn-sm results-filter rounded-pill" data-cat="{{ Str::slug($cat) }}"
+                                style="background: #f0e6d6; color: #5F2B0C; border: none; font-weight: 500;">{{ $cat }}</button>
+                    @endforeach
+                </div>
+                {{-- Liste --}}
+                <div id="resultsGrid">
+                    @forelse($candidatsAvecVotes as $candidat)
+                        @php
+                            $maxCat = $maxOvationParCategorie[$candidat->categorie] ?? 1;
+                            $scoreOvation = $maxCat > 0 ? round(($candidat->votes_sum_quantite ?? 0) / $maxCat * 15, 2) : 0;
+                            $scoreJury = $candidat->score_jury;
+                            $scoreFinal = !is_null($scoreJury) ? round($scoreJury + $scoreOvation, 2) : null;
+                        @endphp
+                        <div class="result-card d-flex align-items-center justify-content-between py-2 px-2 border-bottom" style="border-color: #f0e6d6 !important;" data-cat="{{ Str::slug($candidat->categorie ?? '') }}">
+                            <div class="d-flex align-items-center gap-2 min-w-0 flex-grow-1">
+                                <span class="fw-semibold small text-truncate" style="color: #3E1E05;">{{ $candidat->display_name }}</span>
+                                <span class="badge rounded-pill fw-normal" style="background: #9B4D07; font-size: 0.6rem; flex-shrink: 0;">{{ $candidat->categorie }}</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-1 flex-shrink-0">
+                                <input type="number" step="0.1" class="form-control form-control-sm text-center note-input" data-field="note_maitrise"
+                                       style="width: 52px; border-color: #E3D5AD; font-size: 0.75rem; font-weight: 600; color: #3E1E05; padding: 0.2rem;"
+                                       placeholder="M" value="{{ $candidat->note_maitrise ?? '' }}" data-id="{{ $candidat->id }}">
+                                <input type="number" step="0.1" class="form-control form-control-sm text-center note-input" data-field="note_originalite"
+                                       style="width: 52px; border-color: #E3D5AD; font-size: 0.75rem; font-weight: 600; color: #3E1E05; padding: 0.2rem;"
+                                       placeholder="O" value="{{ $candidat->note_originalite ?? '' }}" data-id="{{ $candidat->id }}">
+                                <input type="number" step="0.1" class="form-control form-control-sm text-center note-input" data-field="note_presence"
+                                       style="width: 52px; border-color: #E3D5AD; font-size: 0.75rem; font-weight: 600; color: #3E1E05; padding: 0.2rem;"
+                                       placeholder="P" value="{{ $candidat->note_presence ?? '' }}" data-id="{{ $candidat->id }}">
+                                <span class="fw-bold ms-1" style="color: #CA7B05; min-width: 28px; text-align: right; font-size: 0.85rem;">{{ $candidat->votes_sum_quantite ?? 0 }}</span>
+                                @if(!is_null($scoreFinal))
+                                    <span class="badge rounded-pill fw-bold ms-1" style="background: #3E1E05; color: #c9a96e; font-size: 0.65rem;">{{ $scoreFinal }}/100</span>
+                                @endif
+                            </div>
                         </div>
-                        <div class="progress" style="height: 8px; background: #eee;">
-                            <div class="progress-bar" style="width: {{ $pct }}%; background: linear-gradient(90deg, #9B4D07, #CA7B05); border-radius: 4px;"></div>
+                    @empty
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                            <small>Aucun candidat inscrit.</small>
                         </div>
-                    </div>
-                @empty
-                    <div class="text-center text-muted py-4">
-                        <i class="bi bi-inbox fs-3 d-block mb-2"></i>
-                        <small>Aucune ovation pour le moment.</small>
-                    </div>
-                @endforelse
+                    @endforelse
+                </div>
             </div>
         </div>
     </div>
@@ -270,7 +301,7 @@
     </div>
 </div>
 
-{{-- ========== 4. TABLEAU DERNIÈRES TRANSACTIONS ========== --}}
+{{-- ========== 5. TABLEAU DERNIÈRES TRANSACTIONS ========== --}}
 <div class="card border-0 rounded-4">
     <div class="card-header bg-transparent border-bottom d-flex align-items-center justify-content-between px-4 py-3">
         <span class="fw-semibold" style="color: #9B4D07;">Dernières transactions</span>
@@ -303,9 +334,7 @@
                             <td class="px-4 py-3"><span class="fw-bold" style="color: #3E1E05;">{{ $vote->quantite }}</span></td>
                             <td class="px-4 py-3 fw-semibold" style="color: #3E1E05;">{{ number_format($vote->montant, 0, ',', ' ') }} FCFA</td>
                             <td class="px-4 py-3">
-                                @if($vote->payment_method === 'kkiapay')
-                                    <span class="badge rounded-pill" style="background: #e3f2fd; color: #1565c0; font-size: 0.7rem;">Kkiapay</span>
-                                @elseif($vote->payment_method === 'fedapay')
+                                @if($vote->payment_method === 'fedapay')
                                     <span class="badge rounded-pill" style="background: #fff3e0; color: #e65100; font-size: 0.7rem;">Fedapay</span>
                                 @else
                                     <span class="badge rounded-pill bg-light text-muted" style="font-size: 0.7rem;">—</span>
@@ -337,5 +366,58 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Filtre catégorie
+    const filterBtns = document.querySelectorAll('.results-filter');
+    const cards = document.querySelectorAll('.result-card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterBtns.forEach(b => {
+                b.style.background = '#f0e6d6';
+                b.style.color = '#5F2B0C';
+                b.style.fontWeight = '500';
+            });
+            this.style.background = '#9B4D07';
+            this.style.color = '#fff';
+            this.style.fontWeight = '600';
+
+            const cat = this.dataset.cat;
+            cards.forEach(card => {
+                if (cat === 'all' || card.dataset.cat === cat) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Sauvegarde notes jury (blur / Enter)
+    document.querySelectorAll('.note-input').forEach(input => {
+        input.addEventListener('blur', function() {
+            const id = this.dataset.id;
+            const field = this.dataset.field;
+            const value = this.value;
+            fetch('{{ route("admin.candidats.note-jury") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ id, field, value }),
+            }).catch(() => {});
+        });
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') this.blur();
+        });
+    });
+});
+</script>
+@endpush
 
 @endsection

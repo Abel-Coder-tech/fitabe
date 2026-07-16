@@ -78,6 +78,18 @@
         }
         .footer-link { transition: color 0.2s; }
         .footer-link:hover { color: var(--fitab-orange-light) !important; }
+
+        @media (max-width: 991.98px) {
+               .navbar-nav {
+                    text-align: center;
+                    }
+                .navbar-nav .nav-item {
+                    margin: 5px 0;
+                    }
+                .navbar-nav .nav-link {
+                    display: inline-block;
+                    }
+        }
     </style>
     @stack('styles')
 </head>

@@ -6,25 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('medias', function (Blueprint $table) {
             $table->id();
+            $table->enum('type', ['photo', 'video']);
             $table->string('titre', 200)->nullable();
-            $table->string('type', 50);
-            $table->string('url', 255);
-            $table->foreignId('candidat_id')->nullable()->constrained('candidats')->cascadeOnDelete();
-            $table->integer('taille')->nullable();
+            $table->string('chemin_fichier', 255)->nullable();
+            $table->string('lien_youtube', 255)->nullable();
+            $table->year('annee_edition')->nullable();
+            $table->unsignedTinyInteger('ordre_affichage')->default(0);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('medias');

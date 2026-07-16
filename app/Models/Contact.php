@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Builder;
 
 class Contact extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'nom',
-        'email',
-        'objet',
-        'message',
-        'lu',
+        'nom', 'email', 'objet', 'message', 'adresse_ip', 'lu',
     ];
 
     protected function casts(): array
@@ -22,12 +22,18 @@ class Contact extends Model
         ];
     }
 
-    public function getSujetAttribute(): ?string
+    public function markAsRead(): void
     {
-        return $this->objet;
+        $this->update(['lu' => true]);
     }
 
-    public function scopeNonLu(Builder $query): Builder
+    public function scopeUnread(Builder $query)
+    {
+        return $query->where('lu', false);
+    }
+
+    // Alias français : nonLu = non lu
+    public function scopeNonLu(Builder $query)
     {
         return $query->where('lu', false);
     }

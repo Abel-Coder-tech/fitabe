@@ -117,32 +117,4 @@
     </div>
 </div>
 
-<div class="detail-card">
-    <div class="detail-card-header">
-        <h5 class="mb-0 text-white">
-            <i class="bi bi-pencil-square me-2" style="color:#c9a96e;"></i> Modifier le statut
-        </h5>
-    </div>
-    <div class="detail-card-body">
-        <form action="{{ route('admin.votes.update', $vote) }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <div class="row g-3 align-items-end">
-                <div class="col-auto">
-                    <select name="statut" id="statut" class="form-select" style="border-radius:10px;border-color:rgba(202,123,5,0.2);font-size:0.85rem;min-width:160px;">
-                        <option value="en_attente" {{ old('statut', $vote->statut) == 'en_attente' ? 'selected' : '' }}>En attente</option>
-                        <option value="confirme" {{ old('statut', $vote->statut) == 'confirme' ? 'selected' : '' }}>Confirmé</option>
-                        <option value="rejete" {{ old('statut', $vote->statut) == 'rejete' ? 'selected' : '' }}>Rejeté</option>
-                    </select>
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-sm fw-bold rounded-pill px-3 border-0" style="background:#9B4D07;color:#fff;">
-                        <i class="bi bi-check-lg me-1"></i> Mettre à jour
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 @endsection

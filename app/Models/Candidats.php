@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 
 class Candidats extends Model
 {
-    use HasFactory;
+    Use HasFactory;
 
-    const CATEGORIES = [
+    // Liste officielle des catégories FITAB
+    public const CATEGORIES = [
         'Théâtre',
         'Percussions',
         'Musique',
@@ -20,33 +22,29 @@ class Candidats extends Model
         'Arts Visuels',
     ];
 
-    // Champs assignables en masse
-    protected $fillable = [
-        'nom', 'categorie', 'numero_scene', 'photo', 'biographie', 'nombre_votes',
+    Protected $fillable = [
+
+        'nom', 'nom_scene', 'categorie', 'numero_scene', 'photo', 'biographie', 'nombre_votes',
+        'note_maitrise', 'note_originalite', 'note_presence',
+
     ];
 
-    // Casts des attributs
     protected function casts(): array
     {
         return [
             'nombre_votes' => 'integer',
             'numero_scene' => 'integer',
+            'note_maitrise' => 'decimal:2',
+            'note_originalite' => 'decimal:2',
+            'note_presence' => 'decimal:2',
         ];
     }
 
-    // Relation : votes du candidat
     public function votes(): HasMany
     {
         return $this->hasMany(Votes::class, 'candidat_id');
     }
 
-    // Relation : médias associés
-    public function medias(): HasMany
-    {
-        return $this->hasMany(Medias::class, 'candidat_id');
-    }
-
-    // Scope : votes confirmés uniquement
     public function confirmerVotes(): HasMany
     {
         return $this->votes()->where('statut', 'confirme');
@@ -54,22 +52,22 @@ class Candidats extends Model
 
     public function getDisplayNameAttribute(): string
     {
-        return $this->nom;
+        return $this->nom_scene ?? $this->nom;
     }
 
-    // Accesseur : URL complète de la photo
     public function getPhotoUrlAttribute(): string
     {
-        return $this->photo ? asset('storage/' . $this->photo) : '';
+        if (! $this->photo) {
+            return '';
+        }
+        return Storage::url($this->photo);
     }
 
-    // Incrémente le compteur de votes
     public function getIncrementeVotes(int $quantite): void
     {
         $this->increment('nombre_votes', $quantite, []);
     }
 
-    // Accesseur : rang dans la catégorie
     public function getRankAttribute(): ?int
     {
         return static::where('categorie', '=', $this->categorie, 'and')
@@ -77,16 +75,27 @@ class Candidats extends Model
             ->count() + 1;
     }
 
-    // Scope : filtre par catégorie
     public function scopeByCategory(Builder $query, string $categorie): Builder
     {
         return $query->where('categorie', $categorie);
     }
 
-    // Scope : trié par nombre de votes décroissant
-    public function scopeOrderedByVotes(Builder $query): Builder
+    public function scopeOrderedByVotes(Builder $query)
     {
         return $query->orderByDesc('nombre_votes');
     }
 
+    // Score pondéré jury (sur 85) : maitrise 30% + originalite 25% + presence 30%
+    public function getScoreJuryAttribute(): ?float
+    {
+        if (is_null($this->note_maitrise) || is_null($this->note_originalite) || is_null($this->note_presence)) {
+            return null;
+        }
+        return round(
+            ($this->note_maitrise / 20 * 30) +
+            ($this->note_originalite / 20 * 25) +
+            ($this->note_presence / 20 * 30),
+            2
+        );
+    }
 }

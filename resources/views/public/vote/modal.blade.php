@@ -23,13 +23,13 @@
                     {{-- STEP 1 : Fiche candidat + quantité --}}
                     <div class="vote-step active" id="step-1">
 
-                        {{-- Photo grande + infos candidat --}}
+                        {{-- Photo + infos candidat --}}
                         <div class="text-center">
                             <img id="candidatPhotoPreview"
                                  src=""
                                  alt=""
-                                 class="rounded-4 shadow"
-                                 style="width: 200px; height: 200px; object-fit: cover; border: 4px solid #E3D5AD;">
+                                 class="rounded-3 shadow"
+                                 style="max-width: 100%; max-height: 260px; object-fit: contain;">
                             <div class="mt-3">
                                 <div class="fw-bold" style="font-size: 1.25rem; color: #3E1E05;" id="candidatNameMini"></div>
                                 <div class="d-flex align-items-center justify-content-center gap-2 mt-1">
@@ -42,14 +42,6 @@
                                      style="color: #CA7B05;"></div>
                                 <div class="small text-muted mt-2 px-3" id="candidatBio"
                                      style="font-style: italic; line-height: 1.4;"></div>
-                            </div>
-                        </div>
-
-                        {{-- Info présélections --}}
-                        <div class="px-2 mb-3">
-                            <div class="p-2 rounded-3 text-center" style="background: #fdfaf5; border-left: 3px solid #9B4D07; font-size: 0.75rem;">
-                                <i class="bi bi-megaphone-fill me-1" style="color: #CA7B05;"></i>
-                                <span style="color: #5F2B0C;">L'entrée aux présélections est libre et gratuite. Les ovations sont un critère officiel de sélection.</span>
                             </div>
                         </div>
 
@@ -104,11 +96,12 @@
 
                         {{-- Photo candidat --}}
                         <div class="text-center mb-3">
-                            <img id="step2CandidatPhoto"
-                                 src=""
-                                 alt=""
-                                 class="rounded-4 shadow mx-auto d-block"
-                                 style="width: 200px; height: 200px; object-fit: cover; border: 4px solid #E3D5AD;">
+                            <div class="rounded-3 overflow-hidden shadow mx-auto d-block" style="width: 100px; height: 100px; border: 2px solid #E3D5AD;">
+                                <img id="step2CandidatPhoto"
+                                     src=""
+                                     alt=""
+                                     style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
                         </div>
 
                         {{-- Titre moyen de paiement --}}
@@ -133,71 +126,36 @@
                         </div>
 
                         @php
-                            $kkiapayActive = !empty($kkiapayKey);
                             $fedapayActive = !empty($fedapayKey);
-                            $bothActive    = $kkiapayActive && $fedapayActive;
-                            $oneActive     = $kkiapayActive xor $fedapayActive;
-                            $noneActive    = !$kkiapayActive && !$fedapayActive;
-                            $defaultMethod = $kkiapayActive ? 'kkiapay' : ($fedapayActive ? 'fedapay' : null);
                         @endphp
 
-                        @if($bothActive)
-                            <div class="row g-3 mb-4">
-                                <div class="col-6">
-                                    <div class="payment-option h-100" data-method="kkiapay"
-                                         onclick="choisirPaiement(this, 'kkiapay')">
-                                        <img src="https://kkiapay.me/images/logo.png"
-                                             alt="Kkiapay"
-                                             onerror="this.style.display='none'">
-                                        <div class="fw-semibold small mt-2">Kkiapay</div>
-                                        <small class="text-muted">MTN · Moov · Carte</small>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="payment-option h-100" data-method="fedapay"
-                                         onclick="choisirPaiement(this, 'fedapay')">
-                                        <img src="https://fedapay.com/assets/logo.svg"
-                                             alt="Fedapay"
-                                             onerror="this.style.display='none'">
-                                        <div class="fw-semibold small mt-2">Fedapay</div>
-                                        <small class="text-muted">MTN · Moov · Carte</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between gap-2">
-                                <button type="button"
-                                        class="btn btn-outline-secondary rounded-pill px-4"
-                                        onclick="allerStep(1)">
-                                    <i class="bi bi-arrow-left me-1"></i> Retour
-                                </button>
-                                <button type="button"
-                                        class="btn fw-bold text-white rounded-pill px-4"
-                                        style="background: #9B4D07;"
-                                        onclick="allerStep(3)">
-                                    Confirmer <i class="bi bi-credit-card ms-1"></i>
-                                </button>
-                            </div>
-
-                        @elseif($oneActive)
+                        @if($fedapayActive)
                             <div class="text-center py-2 mb-4">
-                                <p class="text-muted small mb-3">
-                                    Paiement via <strong>{{ $kkiapayActive ? 'Kkiapay' : 'Fedapay' }}</strong>
+                                <div class="payment-option d-inline-block" data-method="fedapay" style="min-width: 200px;"
+                                     onclick="choisirPaiement(this, 'fedapay')">
+                                    <img src="https://fedapay.com/assets/logo.svg"
+                                         alt="Fedapay"
+                                         onerror="this.style.display='none'">
+                                    <div class="fw-semibold small mt-2">Fedapay</div>
+                                    <small class="text-muted">MTN · Moov · Orange Money</small>
+                                </div>
+                                <p class="text-muted small mt-3 mb-3">
+                                    Paiement sécurisé via Fedapay
                                 </p>
-                                <button type="button"
-                                        class="btn fw-bold text-white rounded-pill px-5 py-2"
-                                        style="background: #9B4D07;"
-                                        onclick="payerDirect('{{ $defaultMethod }}')">
-                                    Payer <i class="bi bi-credit-card ms-1"></i>
-                                </button>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button type="button"
+                                            class="btn btn-outline-secondary rounded-pill px-4"
+                                            onclick="allerStep(1)">
+                                        <i class="bi bi-arrow-left me-1"></i> Retour
+                                    </button>
+                                    <button type="button"
+                                            class="btn fw-bold text-white rounded-pill px-4"
+                                            style="background: #9B4D07;"
+                                            onclick="payerDirect('fedapay')">
+                                        Payer <i class="bi bi-credit-card ms-1"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="text-center">
-                                <button type="button"
-                                        class="btn btn-sm btn-link text-muted"
-                                        onclick="allerStep(1)">
-                                    <i class="bi bi-arrow-left me-1"></i> Retour
-                                </button>
-                            </div>
-
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-credit-card-2-front"
@@ -249,6 +207,14 @@
                     </div>
 
                 </form>
+
+                {{-- Info présélections --}}
+                <div class="px-2 mt-2">
+                    <div class="p-2 rounded-3 text-center" style="background: #fdfaf5; border-left: 3px solid #9B4D07; font-size: 0.75rem;">
+                        <i class="bi bi-megaphone-fill me-1" style="color: #CA7B05;"></i>
+                        <span style="color: #5F2B0C;">L'entrée aux présélections est libre et gratuite. Les ovations sont un critère officiel de sélection.</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

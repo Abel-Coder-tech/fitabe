@@ -18,9 +18,20 @@ class DashboardController extends Controller
         $messagesNonLus = Contact::nonLu()->count();
         $totalRecettes = Votes::confirme()->sum('montant');
 
-        $votesParCategorie = Candidats::select('categorie', DB::raw('sum(nombre_votes) as total'))
+        $votesParCategorie = Candidats::select('categorie')
+            ->withCount(['votes' => fn ($q) => $q->confirme()])
+            ->get()
             ->groupBy('categorie')
-            ->orderByDesc('total')
+            ->map(fn ($items, $cat) => (object) [
+                'categorie' => $cat,
+                'total' => $items->sum('votes_sum_quantite'),
+            ])
+            ->sortByDesc('total')
+            ->values();
+
+        $candidatsAvecVotes = Candidats::query()
+            ->withSum(['votes' => fn ($q) => $q->confirme()], 'quantite')
+            ->orderByDesc('votes_sum_quantite')
             ->get();
 
         $dernieresTransactions = Votes::with('candidat')
@@ -38,7 +49,7 @@ class DashboardController extends Controller
             $debut = Carbon::parse($dateDebut);
             $fin = Carbon::parse($dateFin);
             if ($now < $debut) $voteMode = 'off';
-            elseif ($now > $fin) $voteMode = 'cloture';
+            elseif ($now >= $fin) $voteMode = 'cloture';
             else $voteMode = 'active';
         } else {
             $voteMode = 'off';
@@ -46,12 +57,23 @@ class DashboardController extends Controller
         $prixDuVote = 100;
 
         $totalVotes = $votesParCategorie->sum('total');
+        $categories = Candidats::select('categorie')
+            ->distinct()
+            ->orderBy('categorie')
+            ->pluck('categorie');
+
+        // Meilleur score d'ovations par catégorie pour le calcul du % (sur 15)
+        $maxOvationParCategorie = $candidatsAvecVotes
+            ->groupBy('categorie')
+            ->map(fn ($items) => $items->max('votes_sum_quantite') ?? 1);
 
         return view('admin.dashboard.index', compact(
             'votesConfirmes', 'messagesNonLus', 'totalRecettes',
             'votesParCategorie', 'totalVotes',
             'dernieresTransactions', 'messagesRecents',
-            'voteMode', 'prixDuVote', 'dateFin'
+            'voteMode', 'prixDuVote', 'dateFin',
+            'candidatsAvecVotes', 'categories',
+            'maxOvationParCategorie'
         ));
     }
 }

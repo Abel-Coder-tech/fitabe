@@ -254,6 +254,17 @@
         </div>
     </div>
 </div>
+
+{{-- Section appel à l'action --}}
+<section class="py-5 bg-light text-center">
+    <div class="container">
+        <h2 class="fw-bold mb-3" style="color: #3E1E05;">Prêt à vivre l'expérience FITAB ?</h2>
+        <p class="mb-4" style="color: #5F2B0C;">Rejoignez-nous pour célébrer la culture, la créativité et le talent du Grand Porto-Novo.</p>
+        <a href="{{ route('public.contact') }}" class="btn btn-fitab btn-lg px-4 py-3 border-0 shadow-sm">
+            <i class="bi bi-calendar-event me-2"></i>Dévenir partenaire ou sponsor
+        </a>
+    </div>
+</section>
 @endsection
 
 @push('scripts')

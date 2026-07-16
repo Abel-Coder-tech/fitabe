@@ -24,7 +24,7 @@
                                 <li><strong>Identité :</strong> nom, prénom, nom de scène</li>
                                 <li><strong>Coordonnées :</strong> numéro de téléphone, adresse email</li>
                                 <li><strong>Informations artistiques :</strong> catégorie, biographie, photos, vidéos de prestation</li>
-                                <li><strong>Données de paiement :</strong> les transactions d'ovations sont traitées exclusivement par Kkiapay (prestataire certifié) — aucune donnée bancaire n'est stockée sur les serveurs du site</li>
+                                <li><strong>Données de paiement :</strong> les transactions d'ovations sont traitées exclusivement par Fedapay (prestataire certifié) — aucune donnée bancaire n'est stockée sur les serveurs du site</li>
                                 <li><strong>Données de navigation :</strong> adresse IP, pages visitées, durée de session (via outils d'analyse anonymisés)</li>
                             </ul>
 
@@ -45,7 +45,7 @@
                             <ul>
                                 <li>Protocole HTTPS avec certificat SSL Let's Encrypt — toutes les communications sont chiffrées</li>
                                 <li>Architecture Laravel sécurisée : protection contre les injections SQL, protection CSRF</li>
-                                <li>Données de paiement traitées exclusivement par Kkiapay — aucun numéro de carte bancaire, code PIN ou identifiant de paiement n'est stocké sur le serveur du site</li>
+                                <li>Données de paiement traitées exclusivement par Fedapay — aucun numéro de carte bancaire, code PIN ou identifiant de paiement n'est stocké sur le serveur du site</li>
                                 <li>Accès aux données restreint aux seules personnes habilitées de l'organisation</li>
                                 <li>Sauvegardes régulières de la base de données</li>
                             </ul>
@@ -53,7 +53,7 @@
                             <h6 class="fw-bold mt-4 mb-2">4. Partage des données</h6>
                             <p>Les données personnelles ne sont ni vendues, ni cédées à des tiers à des fins commerciales. Elles peuvent être partagées uniquement avec :</p>
                             <ul>
-                                <li><strong>Kkiapay :</strong> prestataire de paiement sécurisé pour le traitement des ovations</li>
+                                <li><strong>Fedapay :</strong> prestataire de paiement sécurisé pour le traitement des ovations</li>
                                 <li><strong>o2switch :</strong> hébergeur du site (accès technique limité aux données)</li>
                                 <li><strong>Noctam Communication :</strong> prestataire de développement web (accès limité à la maintenance)</li>
                                 <li><strong>Partenaires institutionnels du FITAB :</strong> uniquement si nécessaire à l'organisation du festival et avec le consentement préalable des personnes concernées</li>

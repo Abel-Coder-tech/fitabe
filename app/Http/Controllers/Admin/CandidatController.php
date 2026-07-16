@@ -25,7 +25,7 @@ class CandidatController extends Controller
         $validated = $request->validate([
             'nom' => 'required|string|max:150',
             'nom_scene' => 'nullable|string|max:150',
-            'categorie' => 'required|string,',
+            'categorie' => ['required', 'string', Rule::in(['Théâtre', 'Percussions', 'Musique', 'Danse Traditionnelle', 'Stylisme/Modélisme', 'Arts Visuels'])],
             'numero_scene' => 'nullable|integer',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'biographie' => 'nullable|string|max:500',
@@ -101,5 +101,20 @@ class CandidatController extends Controller
     {
         $candidat->forceDelete();
         return to_route('admin.candidats.index')->with('success', 'Candidat supprimé avec succès.');
+    }
+
+    public function updateNoteJury(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required|exists:candidats,id',
+            'field' => 'required|string|in:note_maitrise,note_originalite,note_presence',
+            'value' => 'nullable|numeric|min:0|max:20',
+        ]);
+
+        Candidats::where('id', $validated['id'])->update([
+            $validated['field'] => $validated['value'] !== '' ? $validated['value'] : null,
+        ]);
+
+        return response()->json(['success' => true]);
     }
 }

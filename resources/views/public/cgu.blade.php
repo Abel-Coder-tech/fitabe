@@ -56,7 +56,7 @@
                             <p>Le système d'ovations permet au public de soutenir financièrement les artistes en compétition. Les règles suivantes s'appliquent :</p>
                             <ul>
                                 <li>1 Ovation = 100 FCFA, montant fixe et non modifiable</li>
-                                <li>Les paiements sont effectués et sécurisés exclusivement via Kkiapay (MTN Mobile Money, Moov Flooz, Carte Bancaire)</li>
+                                <li>Les paiements sont effectués et sécurisés exclusivement via Fedapay (MTN Mobile Money, Moov Flooz, Orange Money)</li>
                                 <li>Toute ovation validée est définitive et ne peut donner lieu à aucun remboursement, sauf en cas d'erreur technique dûment constatée et validée par l'Organisation</li>
                                 <li>L'utilisateur est seul responsable de la saisie correcte du nombre d'ovations souhaité avant validation</li>
                                 <li>L'Organisation se réserve le droit de suspendre le système d'ovations en cas de suspicion de fraude ou d'anomalie technique</li>

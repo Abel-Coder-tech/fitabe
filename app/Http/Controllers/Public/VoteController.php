@@ -8,6 +8,7 @@ use App\Models\Parametres;
 use App\Models\Votes;
 use App\Services\ResultatService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
@@ -29,7 +30,7 @@ class VoteController extends Controller
         $fin = Carbon::parse($dateFin);
 
         if ($now < $debut) return 'off';
-        if ($now > $fin) return 'cloture';
+        if ($now >= $fin) return 'cloture';
         return 'active';
     }
 
@@ -48,18 +49,17 @@ class VoteController extends Controller
             ->pluck('categorie');
 
         $candidats = Candidats::query()
-            ->withCount(['votes' => fn ($q) => $q->confirme()])
-            ->orderedByVotes()
-            ->get()
-            ->groupBy('categorie');
+            ->withSum(['votes' => fn ($q) => $q->confirme()], 'quantite')
+            ->orderByDesc('votes_sum_quantite')
+            ->get();
 
-        $kkiapayKey = Parametres::where('cle', 'kkiapay_public_key')->value('valeur') ?? '';
-        $fedapayKey = Parametres::where('cle', 'fedapay_public_key')->value('valeur') ?? '';
+        $fedapayKey = config('services.fedapay.public_key')
+            ?: Parametres::where('cle', 'fedapay_public_key')->value('valeur');
         $afficherCompteur = Parametres::where('cle', 'afficher_compteur')->value('valeur') === '1';
 
         return view('public.vote.index', compact(
             'candidats', 'categories', 'voteMode', 'prixDuVote',
-            'kkiapayKey', 'fedapayKey', 'afficherCompteur',
+            'fedapayKey', 'afficherCompteur',
             'dateDebut', 'dateFin'
         ));
     }
@@ -82,13 +82,13 @@ class VoteController extends Controller
             'votant_email' => 'required|email|max:255',
             'votant_telephone' => 'required|string|max:50',
             'quantite' => 'required|integer|min:1|max:100',
-            'payment_method' => 'required|in:kkiapay,fedapay',
         ]);
 
         $montant = $prixDuVote * $validated['quantite'];
 
         $validated['montant'] = $montant;
         $validated['statut'] = 'en_attente';
+        $validated['payment_method'] = 'fedapay';
         $validated['ip_address'] = $request->ip();
 
         $vote = Votes::create($validated);
@@ -99,39 +99,62 @@ class VoteController extends Controller
             'montant' => $montant,
             'quantite' => $validated['quantite'],
             'candidat_nom' => Candidats::find($validated['candidat_id'])->display_name,
-            'payment_method' => $validated['payment_method'],
         ]);
     }
 
-    // Webhook de confirmation Kkiapay
-    public function webhookKkiapay(Request $request)
+    // Webhook de confirmation Fedapay (appelé par Fedapay après un paiement)
+    public function webhookFedapay(Request $request)
     {
-        $transactionId = $request->input('transaction_id');
-        $status = $request->input('status');
-        $voteId = $request->input('vote_id');
+        // Récupère la clé secrète du webhook depuis la config
+        $webhookSecret = config('services.fedapay.webhook_secret');
 
-        if ($status === 'success' && $voteId) {
-            $vote = Votes::find($voteId);
-            if ($vote && $vote->statut === 'en_attente') {
-                $vote->marquerConfirme($transactionId, 'kkiapay');
+        // Vérification de la signature HMAC-SHA256 si une clé est configurée
+        if ($webhookSecret) {
+            $signature = $request->header('X-Fedapay-Signature');
+            $rawBody = $request->getContent();
+            $expected = hash_hmac('sha256', $rawBody, $webhookSecret);
+
+            if (!$signature || !hash_equals($expected, $signature)) {
+                Log::warning('Fedapay webhook : signature invalide', [
+                    'expected' => $expected,
+                    'received' => $signature,
+                ]);
+                return response()->json(['success' => false, 'message' => 'Signature invalide'], 403);
             }
         }
 
-        return response()->json(['success' => true]);
-    }
+        // Parse le payload JSON envoyé par Fedapay
+        $payload = $request->json()->all();
+        $event = $payload['event'] ?? '';
+        $transaction = $payload['data']['transaction'] ?? [];
 
-    // Webhook de confirmation Fedapay
-    public function webhookFedapay(Request $request)
-    {
-        $transactionId = $request->input('transaction_id');
-        $status = $request->input('status');
-        $voteId = $request->input('vote_id');
+        // Ne traite que les transactions approuvées
+        if ($event !== 'transaction.approved' && ($transaction['status'] ?? '') !== 'approved') {
+            return response()->json(['success' => false, 'message' => 'Événement ignoré']);
+        }
 
-        if ($status === 'success' && $voteId) {
-            $vote = Votes::find($voteId);
-            if ($vote && $vote->statut === 'en_attente') {
-                $vote->marquerConfirme($transactionId, 'fedapay');
-            }
+        // Récupère l'ID de transaction et le vote_id depuis les custom_data
+        $transactionId = $transaction['id'] ?? $request->input('transaction_id');
+        $voteId = $transaction['custom_data']['vote_id'] ?? $request->input('vote_id');
+
+        if (!$voteId) {
+            Log::error('Fedapay webhook : vote_id manquant', ['payload' => $payload]);
+            return response()->json(['success' => false, 'message' => 'vote_id manquant'], 400);
+        }
+
+        // Confirme le vote
+        $vote = Votes::find($voteId);
+        if (!$vote) {
+            Log::error('Fedapay webhook : vote introuvable', ['vote_id' => $voteId]);
+            return response()->json(['success' => false, 'message' => 'Vote introuvable'], 404);
+        }
+
+        if ($vote->statut === 'en_attente') {
+            $vote->marquerConfirme($transactionId ?: 'fedapay_' . $vote->id, 'fedapay');
+            Log::info('Fedapay webhook : vote confirmé', [
+                'vote_id' => $voteId,
+                'transaction_id' => $transactionId,
+            ]);
         }
 
         return response()->json(['success' => true]);
@@ -164,14 +187,35 @@ class VoteController extends Controller
         return response()->json(['success' => true]);
     }
 
-    // Page de remerciement après un vote
+    // Page de remerciement après un vote (appelée par le callback Fedapay)
     public function merci(Request $request)
     {
         $vote = null;
+        $statut = 'en_attente';
+
         if ($request->query('vote_id')) {
             $vote = Votes::with('candidat')->find($request->query('vote_id'));
+
+            // Si Fedapay nous renvoie un statut "approved" dans l'URL de callback,
+            // on confirme immédiatement le vote (au cas où le webhook n'est pas encore passé)
+            if ($vote && $vote->statut === 'en_attente') {
+                $callbackStatus = $request->query('status');
+                if ($callbackStatus === 'approved') {
+                    $transactionId = $request->query('transaction_id') ?: 'fedapay_cb_' . $vote->id;
+                    $vote->marquerConfirme($transactionId, 'fedapay');
+                }
+            }
+
+            if ($vote) {
+                $statut = $vote->statut;
+            }
         }
 
-        return view('public.vote.merci', compact('vote'));
+        // Requête AJAX de polling → retourne JSON
+        if ($request->query('check') === '1') {
+            return response()->json(['statut' => $statut]);
+        }
+
+        return view('public.vote.merci', compact('vote', 'statut'));
     }
 }

@@ -45,9 +45,6 @@
         </div>
     </div>
 
-    <div class="position-absolute bottom-0 start-50 translate-middle-x mb-4 small animate-bounce" style="color: rgba(227,213,173,0.5);">
-        <i class="bi bi-chevron-down fs-4"></i>
-    </div>
 </div>
 
 <style>
@@ -55,37 +52,157 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(8px); }
 }
-.animate-bounce { animation: bounce 2s infinite; }
-.cat-circle { transition: border-color .3s ease; cursor: pointer; z-index: 1; }
-.cat-circle:hover { border-color: #CA7B05 !important; z-index: 10; }
-.cat-circle:hover .cat-inner { transform: scale(1.12); }
-.cat-circle:hover .cat-label { opacity: 1; }
-.cat-inner { transition: transform .3s ease; }
-.cat-label { opacity: 0; transition: opacity .3s ease; background: rgba(62,30,5,0.85); pointer-events: none; }
-.accordion-button:not(.collapsed) { background-color: #fff !important; }
-.accordion-button:focus { box-shadow: none !important; }
-.accordion-button::after { margin-left: 0; }
-.partenaires-track-wrapper { overflow: hidden; width: 100%; }
-.partenaires-track { display: flex; gap: 2rem; width: max-content; }
-.partenaires-track.scroll { animation: scrollPartenaires 20s linear infinite; }
-.partenaires-track.scroll:hover { animation-play-state: paused; }
-.partenaires-track.centered { width: 100%; justify-content: center; }
-.partenaire-item { flex-shrink: 0; display: flex; align-items: center; justify-content: center; height: 120px; }
-.partenaire-logo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #e8e8e8; transition: transform .3s, border-color .3s; }
-.partenaire-logo:hover { transform: scale(1.25); border-color: #CA7B05; }
-@keyframes scrollPartenaires { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-.accordion-button:not(.collapsed) { background: transparent !important; color: #3E1E05 !important; box-shadow: none !important; }
-.accordion-button:focus { box-shadow: none !important; }
-.accordion-button::after { position: absolute; right: 16px; }
-.accordion-button:not(.collapsed)::after { filter: none; }
-.timeline { position: relative; padding: 1rem 0; }
-.timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 3px; background: #E3D5AD; transform: translateX(-50%); }
-.timeline-item { display: flex; align-items: flex-start; margin-bottom: 1.5rem; position: relative; }
-.timeline-item:last-child { margin-bottom: 0; }
-.timeline-item .timeline-badge { flex-shrink: 0; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #9B4D07; color: #fff; font-weight: 700; font-size: 0.7rem; text-align: center; line-height: 1.2; z-index: 1; position: absolute; left: 50%; transform: translateX(-50%); }
-.timeline-item .timeline-content { width: calc(50% - 36px); padding: 0.75rem 1rem; background: #fff; border-radius: 8px; border: 1px solid rgba(202,123,5,0.15); }
-.timeline-item:nth-child(odd) .timeline-content { margin-right: auto; margin-left: 0; }
-.timeline-item:nth-child(even) .timeline-content { margin-left: auto; margin-right: 0; }
+.animate-bounce { 
+    animation: bounce 2s infinite; 
+}
+.cat-circle {
+    transition: border-color .3s ease; 
+    cursor: pointer; 
+    z-index: 1; 
+}
+.cat-circle:hover { border-color: #CA7B05 !important; 
+    z-index: 10; 
+}
+.cat-circle:hover .cat-inner { 
+    transform: scale(1.12); 
+}
+.cat-circle:hover .cat-label { 
+    opacity: 1; 
+}
+.cat-inner { 
+    transition: 
+    transform .3s ease; 
+}
+
+.cat-label { 
+    opacity: 0; 
+    transition: opacity .3s ease; 
+    background: rgba(62,30,5,0.85); 
+    pointer-events: none; 
+}
+.accordion-button:not(.collapsed) { 
+    background-color: #fff !important; 
+}
+.accordion-button:focus { 
+    box-shadow: none !important; 
+}
+.accordion-button::after { 
+    margin-left: 0; 
+}
+.partenaires-track-wrapper { 
+    overflow: hidden; 
+    width: 100%; 
+}
+.partenaires-track { 
+    display: flex; 
+    gap: 2rem; 
+    width: max-content; 
+}
+.partenaires-track.scroll { 
+    animation: scrollPartenaires 20s linear infinite; 
+}
+.partenaires-track.scroll:hover { 
+    animation-play-state: paused; 
+}
+.partenaires-track.centered { 
+    width: 100%; 
+    justify-content: center; 
+}
+.partenaire-item { 
+    flex-shrink: 0; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    height: 120px; 
+}
+.partenaire-logo { 
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 2px solid #e8e8e8; 
+    transition: transform .3s, border-color .3s; 
+}
+.partenaire-logo:hover { 
+    transform: scale(1.25); 
+    border-color: #CA7B05; 
+}
+@keyframes scrollPartenaires { 
+    0% { transform: translateX(0); } 
+100% { transform: translateX(-50%); } 
+}
+.accordion-button:not(.collapsed) { 
+    background: transparent !important; 
+    color: #3E1E05 !important; 
+    box-shadow: none !important; 
+}
+.accordion-button:focus { 
+    box-shadow: none !important; 
+}
+.accordion-button::after { 
+    position: absolute; 
+    right: 16px; 
+}
+.accordion-button:not(.collapsed)::after { 
+    filter: none; 
+}
+.timeline { 
+    position: relative; 
+    padding: 1rem 0; 
+}
+.timeline::before { 
+    content: ''; 
+    position: absolute; 
+    left: 50%; 
+    top: 0; 
+    bottom: 0; 
+    width: 3px; 
+    background: #E3D5AD; 
+    transform: translateX(-50%); 
+}
+.timeline-item { 
+    display: flex; 
+    align-items: flex-start; 
+    margin-bottom: 1.5rem; 
+    position: relative; 
+}
+.timeline-item:last-child { 
+    margin-bottom: 0; 
+}
+.timeline-item .timeline-badge { 
+    flex-shrink: 0; 
+    width: 48px; 
+    height: 48px; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    background: #9B4D07; 
+    color: #fff; 
+    font-weight: 700; 
+    font-size: 0.7rem; 
+    text-align: center; 
+    line-height: 1.2; 
+    z-index: 1; 
+    position: absolute; 
+    left: 50%; 
+    transform: translateX(-50%); 
+}
+.timeline-item .timeline-content { 
+    width: calc(50% - 36px); 
+    padding: 0.75rem 1rem; 
+    background: #fff; 
+    border-radius: 8px; 
+    border: 1px solid rgba(202,123,5,0.15); 
+}
+.timeline-item:nth-child(odd) .timeline-content { 
+    margin-right: auto; 
+    margin-left: 0; 
+}
+.timeline-item:nth-child(even) .timeline-content { 
+    margin-left: auto; 
+margin-right: 0; 
+}
 </style>
 
 {{-- ==================== PRÉSENTATION ==================== --}}
@@ -386,4 +503,5 @@
             <i class="bi bi-calendar-event me-2"></i>Dévenir partenaire ou sponsor
         </a>
     </div>
+</section>
 @endsection

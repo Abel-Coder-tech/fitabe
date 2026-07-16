@@ -52,13 +52,13 @@ class PartenaireController extends Controller
     // Affiche le détail d'un partenaire
     public function show(Partenaires $partenaire)
     {
-        return view('admin.partenaires.index', compact('partenaires'));
+        return view('admin.partenaires.index', compact('partenaire'));
     }
 
     // Affiche le formulaire d'édition
     public function edit(Partenaires $partenaire)
     {
-        return view('admin.partenaires.edit', compact('partenaires'));
+        return view('admin.partenaires.edit', compact('partenaire'));
     }
 
     // Met à jour un partenaire existant
