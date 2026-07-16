@@ -192,11 +192,13 @@
                         <i class="bi bi-people-fill" style="width: 18px;"></i> Candidats
                     </a>
                 </li>
+                @if(auth()->user()?->role === 'super_admin')
                 <li class="nav-item">
                     <a href="{{ route('admin.votes.index') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 {{ $navClass('admin.votes') }}" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
                         <i class="bi bi-check-circle-fill" style="width: 18px;"></i> Ovations
                     </a>
                 </li>
+                @endif
             </ul>
 
             <div class="small text-uppercase px-2 mt-4 mb-2" style="color: rgba(255,255,255,0.3); font-size: 0.65rem; letter-spacing: 1.5px;">Contenu</div>
@@ -242,7 +244,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST" action="{{ route('logout') }}" onsubmit="return confirm('Voulez-vous vraiment vous déconnecter ?')">
                         @csrf
                         <button type="submit" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 w-100 text-start border-0 bg-transparent" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
                             <i class="bi bi-box-arrow-right" style="width: 18px;"></i> Déconnexion
@@ -322,6 +324,49 @@
         link.addEventListener('click', function() { if (window.innerWidth < 768) close(); });
     });
 })();
+</script>
+
+<style>
+.password-toggle {
+    position: relative;
+}
+.password-toggle .form-control {
+    padding-right: 40px;
+}
+.password-toggle .bi {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    cursor: pointer;
+    font-size: 15px;
+    z-index: 5;
+}
+.password-toggle .bi:hover {
+    color: #9B4D07;
+}
+</style>
+<script>
+document.querySelectorAll('input[type="password"]').forEach(function(input) {
+    if (input.closest('.password-toggle')) return;
+    var wrapper = document.createElement('div');
+    wrapper.className = 'password-toggle';
+    input.parentNode.insertBefore(wrapper, input);
+    wrapper.appendChild(input);
+    var icon = document.createElement('i');
+    icon.className = 'bi bi-eye-slash';
+    icon.style.cssText = 'position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#aaa;cursor:pointer;font-size:15px;z-index:5;';
+    icon.onmouseenter = function() { this.style.color = '#9B4D07'; };
+    icon.onmouseleave = function() { this.style.color = '#aaa'; };
+    icon.onclick = function() {
+        var isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        this.classList.toggle('bi-eye-slash', isPassword);
+        this.classList.toggle('bi-eye', !isPassword);
+    };
+    wrapper.appendChild(icon);
+});
 </script>
 
 @stack('scripts')

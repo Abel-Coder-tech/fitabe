@@ -62,18 +62,12 @@ class DashboardController extends Controller
             ->orderBy('categorie')
             ->pluck('categorie');
 
-        // Meilleur score d'ovations par catégorie pour le calcul du % (sur 15)
-        $maxOvationParCategorie = $candidatsAvecVotes
-            ->groupBy('categorie')
-            ->map(fn ($items) => $items->max('votes_sum_quantite') ?? 1);
-
         return view('admin.dashboard.index', compact(
             'votesConfirmes', 'messagesNonLus', 'totalRecettes',
             'votesParCategorie', 'totalVotes',
             'dernieresTransactions', 'messagesRecents',
             'voteMode', 'prixDuVote', 'dateFin',
-            'candidatsAvecVotes', 'categories',
-            'maxOvationParCategorie'
+            'candidatsAvecVotes', 'categories'
         ));
     }
 }

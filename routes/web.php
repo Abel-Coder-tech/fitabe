@@ -45,18 +45,18 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('medias', MediaController::class);
     Route::resource('contacts', ContactController::class)->except(['create', 'store', 'edit', 'update']);
 
-    // Votes — consultation et mise à jour de statut pour tous, clearAll réservé super_admin
-    Route::get('votes', [VoteController::class, 'index'])->name('votes.index');
-    Route::get('votes/{vote}', [VoteController::class, 'show'])->name('votes.show');
-    Route::delete('votes/{vote}', [VoteController::class, 'destroy'])->name('votes.destroy');
+    // Votes — réservé super_admin
+    Route::get('votes', [VoteController::class, 'index'])->name('votes.index')->middleware('role:super_admin');
+    Route::get('votes/{vote}', [VoteController::class, 'show'])->name('votes.show')->middleware('role:super_admin');
+    Route::delete('votes/{vote}', [VoteController::class, 'destroy'])->name('votes.destroy')->middleware('role:super_admin');
     Route::post('votes/clear-all', [VoteController::class, 'clearAll'])->name('votes.clearAll')->middleware('role:super_admin');
 
-    // Résultats — consultation et édition pour tous, régénération réservée super_admin
+    // Résultats — consultation pour tous, édition réservée super_admin
     Route::prefix('resultats')->name('resultats.')->controller(ResultatController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{annee}', 'show')->name('show');
-        Route::get('/{resultat}/edit', 'edit')->name('edit');
-        Route::put('/{resultat}', 'update')->name('update');
+        Route::get('/{resultat}/edit', 'edit')->name('edit')->middleware('role:super_admin');
+        Route::put('/{resultat}', 'update')->name('update')->middleware('role:super_admin');
         Route::post('/regenerer/{annee}', 'regenerer')->name('regenerer')->middleware('role:super_admin');
     });
 

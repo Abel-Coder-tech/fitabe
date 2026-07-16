@@ -24,7 +24,7 @@
                         <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profil</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
-                            <form method="POST" action="{{ route('logout') }}">
+                            <form method="POST" action="{{ route('logout') }}" onsubmit="return confirm('Voulez-vous vraiment vous déconnecter ?')">
                                 @csrf
                                 <button type="submit" class="dropdown-item">Déconnexion</button>
                             </form>

@@ -26,7 +26,7 @@ class UserController extends Controller
             'name' => 'required|string|max:150',
             'email' => 'required|email|max:150|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:super_admin,editor',
+            'role' => 'required|in:editor',
         ], [
             'name.required' => 'Le nom est requis.',
             'email.required' => 'L\'email est requis.',
@@ -35,8 +35,6 @@ class UserController extends Controller
             'password.required' => 'Le mot de passe est requis.',
             'password.min' => 'Le mot de passe doit contenir au moins :min caractères.',
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
-            'role.required' => 'Le rôle est requis.',
-            'role.in' => 'Le rôle sélectionné est invalide.',
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
@@ -46,11 +44,6 @@ class UserController extends Controller
         return to_route('admin.users.index')->with('success', 'Utilisateur créé avec succès.');
     }
 
-    public function show(User $user)
-    {
-        return view('admin.users.show', compact('user'));
-    }
-
     public function edit(User $user)
     {
         return view('admin.users.edit', compact('user'));
@@ -58,11 +51,13 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        $allowedRoles = $user->role === 'super_admin' ? 'in:super_admin' : 'in:editor';
+
         $validated = $request->validate([
             'name' => 'required|string|max:150',
             'email' => ['required', 'email', 'max:150', Rule::unique('users', 'email')->ignore($user->id)],
             'password' => 'nullable|string|min:8|confirmed',
-            'role' => 'required|in:super_admin,editor',
+            'role' => 'required|' . $allowedRoles,
         ], [
             'name.required' => 'Le nom est requis.',
             'email.required' => 'L\'email est requis.',
@@ -70,8 +65,6 @@ class UserController extends Controller
             'email.unique' => 'Cet email est déjà utilisé.',
             'password.min' => 'Le mot de passe doit contenir au moins :min caractères.',
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
-            'role.required' => 'Le rôle est requis.',
-            'role.in' => 'Le rôle sélectionné est invalide.',
         ]);
 
         if ($validated['password']) {
@@ -87,6 +80,9 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        if ($user->role === 'super_admin') {
+            return to_route('admin.users.index')->with('error', 'Le compte administrateur principal ne peut pas être supprimé.');
+        }
         $user->delete();
         return to_route('admin.users.index')->with('success', 'Utilisateur supprimé avec succès.');
     }

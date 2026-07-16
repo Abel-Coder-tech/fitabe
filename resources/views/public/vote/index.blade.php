@@ -517,25 +517,31 @@ function changerQte(delta) {
     const input = document.getElementById('quantite');
     let val = parseInt(input.value) + delta;
     if (val < 1) val = 1;
+    if (val > 1000) val = 1000;
     input.value = val;
-    // Désactiver le bouton − à 1
-    const btnMoins = document.getElementById('btnMoins');
-    if (btnMoins) {
-        btnMoins.style.opacity = val <= 1 ? '0.3' : '1';
-        btnMoins.style.pointerEvents = val <= 1 ? 'none' : 'auto';
-    }
+    updateQteButtons(val);
     majTotal();
 }
 
 function saisirQte(input) {
     let val = parseInt(input.value);
     if (isNaN(val) || val < 1) { input.value = 1; val = 1; }
+    if (val > 1000) { input.value = 1000; val = 1000; }
+    updateQteButtons(val);
+    majTotal();
+}
+
+function updateQteButtons(val) {
     const btnMoins = document.getElementById('btnMoins');
     if (btnMoins) {
         btnMoins.style.opacity = val <= 1 ? '0.3' : '1';
         btnMoins.style.pointerEvents = val <= 1 ? 'none' : 'auto';
     }
-    majTotal();
+    const btnPlus = document.getElementById('btnPlus');
+    if (btnPlus) {
+        btnPlus.style.opacity = val >= 1000 ? '0.3' : '1';
+        btnPlus.style.pointerEvents = val >= 1000 ? 'none' : 'auto';
+    }
 }
 
 function majTotal() {

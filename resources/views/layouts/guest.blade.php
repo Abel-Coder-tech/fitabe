@@ -21,5 +21,37 @@
             </div>
         </div>
     </div>
+<style>
+.password-toggle { position: relative; }
+.password-toggle .form-control { padding-right: 40px; }
+.password-toggle .bi {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    color: #aaa; cursor: pointer; font-size: 15px; z-index: 5;
+}
+.password-toggle .bi:hover { color: #9B4D07; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('input[type="password"]').forEach(function(input) {
+        if (input.closest('.password-toggle')) return;
+        var wrapper = document.createElement('div');
+        wrapper.className = 'password-toggle';
+        input.parentNode.insertBefore(wrapper, input);
+        wrapper.appendChild(input);
+        var icon = document.createElement('i');
+        icon.className = 'bi bi-eye-slash';
+        icon.style.cssText = 'position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#aaa;cursor:pointer;font-size:15px;z-index:5;';
+        icon.onmouseenter = function() { this.style.color = '#9B4D07'; };
+        icon.onmouseleave = function() { this.style.color = '#aaa'; };
+        icon.onclick = function() {
+            var isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            this.classList.toggle('bi-eye-slash', isPassword);
+            this.classList.toggle('bi-eye', !isPassword);
+        };
+        wrapper.appendChild(icon);
+    });
+});
+</script>
 </body>
 </html>

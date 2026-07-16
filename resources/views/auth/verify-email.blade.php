@@ -17,7 +17,7 @@
             </x-primary-button>
         </form>
 
-        <form method="POST" action="{{ route('logout') }}">
+        <form method="POST" action="{{ route('logout') }}" onsubmit="return confirm('Voulez-vous vraiment vous déconnecter ?')">
             @csrf
             <button type="submit" class="btn btn-link text-decoration-none p-0">
                 Déconnexion

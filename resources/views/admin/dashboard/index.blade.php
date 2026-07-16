@@ -167,56 +167,33 @@
 {{-- ========== 3. SECTION PRINCIPALE (DEUX COLONNES) ========== --}}
 <div class="row g-3 mb-4">
 
-    {{-- Colonne gauche : Résultats des ovations --}}
+    {{-- Colonne gauche : Ovations par catégorie --}}
     <div class="col-lg-7">
         <div class="card border-0 rounded-4 h-100">
             <div class="card-header bg-transparent border-bottom d-flex align-items-center justify-content-between px-4 py-3">
-                <span class="fw-semibold" style="color: #9B4D07;">Résultats des ovations</span>
-                <span class="d-flex align-items-center gap-2">
-                    <small class="text-muted" style="font-size: 0.65rem;">Mait. Orig. Prés. Votes</small>
-                    <i class="bi bi-trophy-fill" style="color: #9B4D07;"></i>
-                </span>
+                <span class="fw-semibold" style="color: #9B4D07;">Ovations par catégorie</span>
+                <i class="bi bi-bar-chart-fill" style="color: #9B4D07;"></i>
             </div>
             <div class="card-body px-4 py-3">
-                {{-- Filtre --}}
-                <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-                    <span class="fw-semibold small me-1" style="color: #9B4D07;">Filtrer :</span>
-                    <button class="btn btn-sm results-filter active rounded-pill" data-cat="all"
-                            style="background: #9B4D07; color: #fff; border: none; font-weight: 600;">Tous</button>
-                    @foreach($categories as $cat)
-                        <button class="btn btn-sm results-filter rounded-pill" data-cat="{{ Str::slug($cat) }}"
-                                style="background: #f0e6d6; color: #5F2B0C; border: none; font-weight: 500;">{{ $cat }}</button>
-                    @endforeach
+                {{-- Filtre liste déroulante --}}
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="fw-semibold small" style="color: #9B4D07;">Catégorie :</span>
+                    <select class="form-select form-select-sm" id="categorieFilter" onchange="var cat=this.value;document.querySelectorAll('.result-item').forEach(function(e){e.style.display=(cat==='all'||e.dataset.cat===cat)?'':'none';})" style="max-width: 220px; border-color: #E3D5AD; border-radius: 8px;">
+                        <option value="all">Tous</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ Str::slug($cat) }}">{{ $cat }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 {{-- Liste --}}
-                <div id="resultsGrid">
+                <div id="resultsList">
                     @forelse($candidatsAvecVotes as $candidat)
-                        @php
-                            $maxCat = $maxOvationParCategorie[$candidat->categorie] ?? 1;
-                            $scoreOvation = $maxCat > 0 ? round(($candidat->votes_sum_quantite ?? 0) / $maxCat * 15, 2) : 0;
-                            $scoreJury = $candidat->score_jury;
-                            $scoreFinal = !is_null($scoreJury) ? round($scoreJury + $scoreOvation, 2) : null;
-                        @endphp
-                        <div class="result-card d-flex align-items-center justify-content-between py-2 px-2 border-bottom" style="border-color: #f0e6d6 !important;" data-cat="{{ Str::slug($candidat->categorie ?? '') }}">
-                            <div class="d-flex align-items-center gap-2 min-w-0 flex-grow-1">
+                        <div class="result-item d-flex align-items-center justify-content-between py-2 px-2 border-bottom" style="border-color: #f0e6d6 !important;" data-cat="{{ Str::slug($candidat->categorie ?? '') }}">
+                            <div class="d-flex align-items-center gap-2 min-w-0">
                                 <span class="fw-semibold small text-truncate" style="color: #3E1E05;">{{ $candidat->display_name }}</span>
                                 <span class="badge rounded-pill fw-normal" style="background: #9B4D07; font-size: 0.6rem; flex-shrink: 0;">{{ $candidat->categorie }}</span>
                             </div>
-                            <div class="d-flex align-items-center gap-1 flex-shrink-0">
-                                <input type="number" step="0.1" class="form-control form-control-sm text-center note-input" data-field="note_maitrise"
-                                       style="width: 52px; border-color: #E3D5AD; font-size: 0.75rem; font-weight: 600; color: #3E1E05; padding: 0.2rem;"
-                                       placeholder="M" value="{{ $candidat->note_maitrise ?? '' }}" data-id="{{ $candidat->id }}">
-                                <input type="number" step="0.1" class="form-control form-control-sm text-center note-input" data-field="note_originalite"
-                                       style="width: 52px; border-color: #E3D5AD; font-size: 0.75rem; font-weight: 600; color: #3E1E05; padding: 0.2rem;"
-                                       placeholder="O" value="{{ $candidat->note_originalite ?? '' }}" data-id="{{ $candidat->id }}">
-                                <input type="number" step="0.1" class="form-control form-control-sm text-center note-input" data-field="note_presence"
-                                       style="width: 52px; border-color: #E3D5AD; font-size: 0.75rem; font-weight: 600; color: #3E1E05; padding: 0.2rem;"
-                                       placeholder="P" value="{{ $candidat->note_presence ?? '' }}" data-id="{{ $candidat->id }}">
-                                <span class="fw-bold ms-1" style="color: #CA7B05; min-width: 28px; text-align: right; font-size: 0.85rem;">{{ $candidat->votes_sum_quantite ?? 0 }}</span>
-                                @if(!is_null($scoreFinal))
-                                    <span class="badge rounded-pill fw-bold ms-1" style="background: #3E1E05; color: #c9a96e; font-size: 0.65rem;">{{ $scoreFinal }}/100</span>
-                                @endif
-                            </div>
+                            <span class="fw-bold flex-shrink-0 ms-2" style="color: #CA7B05;">{{ $candidat->votes_sum_quantite ?? 0 }}</span>
                         </div>
                     @empty
                         <div class="text-center text-muted py-4">
@@ -367,57 +344,14 @@
     </div>
 </div>
 
-@push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Filtre catégorie
-    const filterBtns = document.querySelectorAll('.results-filter');
-    const cards = document.querySelectorAll('.result-card');
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            filterBtns.forEach(b => {
-                b.style.background = '#f0e6d6';
-                b.style.color = '#5F2B0C';
-                b.style.fontWeight = '500';
-            });
-            this.style.background = '#9B4D07';
-            this.style.color = '#fff';
-            this.style.fontWeight = '600';
-
-            const cat = this.dataset.cat;
-            cards.forEach(card => {
-                if (cat === 'all' || card.dataset.cat === cat) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    });
-
-    // Sauvegarde notes jury (blur / Enter)
-    document.querySelectorAll('.note-input').forEach(input => {
-        input.addEventListener('blur', function() {
-            const id = this.dataset.id;
-            const field = this.dataset.field;
-            const value = this.value;
-            fetch('{{ route("admin.candidats.note-jury") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({ id, field, value }),
-            }).catch(() => {});
-        });
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') this.blur();
-        });
+    var e = document.getElementById('categorieFilter');
+    var cat = e.value;
+    document.querySelectorAll('.result-item').forEach(function(el) {
+        el.style.display = (cat === 'all' || el.dataset.cat === cat) ? '' : 'none';
     });
 });
 </script>
-@endpush
 
 @endsection

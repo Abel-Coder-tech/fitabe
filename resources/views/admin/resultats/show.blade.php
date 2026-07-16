@@ -63,7 +63,9 @@
                             <td>{{ $r->score_public ?? '-' }}</td>
                             <td><strong>{{ $r->score_final ?? '-' }}</strong></td>
                             <td>
+                                @if(auth()->user()?->role === 'super_admin')
                                 <a href="{{ route('admin.resultats.edit', $r) }}" class="btn btn-sm btn-warning">Noter</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

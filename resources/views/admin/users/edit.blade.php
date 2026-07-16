@@ -31,11 +31,20 @@
         </div>
     </div>
     <div class="mb-3">
-        <label class="form-label">Rôle <span class="text-danger">*</span></label>
-        <select name="role" class="form-select @error('role') is-invalid @enderror" required>
-            <option value="editor" {{ old('role', $user->role) == 'editor' ? 'selected' : '' }}>Editor</option>
-            <option value="super_admin" {{ old('role', $user->role) == 'super_admin' ? 'selected' : '' }}>Super Admin</option>
-        </select>
+        <label class="form-label">Rôle</label>
+        @if($user->role === 'super_admin')
+            <input type="hidden" name="role" value="super_admin">
+            <div class="form-control bg-light" style="cursor: default;">
+                <span class="badge rounded-pill" style="background: #dc3545; font-size: 0.75rem;">Administrateur</span>
+                <small class="text-muted ms-2">Rôle réservé — non modifiable</small>
+            </div>
+        @else
+            <input type="hidden" name="role" value="editor">
+            <div class="form-control bg-light" style="cursor: default;">
+                <span class="badge rounded-pill" style="background: #0d6efd; font-size: 0.75rem;">Éditeur</span>
+                <small class="text-muted ms-2">Accès limité à la gestion des contenus</small>
+            </div>
+        @endif
         @error('role') <div class="invalid-feedback">{{ $message }}</div> @enderror
     </div>
     <button type="submit" class="btn btn-primary">Mettre à jour</button>

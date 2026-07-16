@@ -99,11 +99,13 @@
             font-size: 12px;
         }
 
-        .input-wrapper {
+        .password-toggle {
             position: relative;
         }
-
-        .input-wrapper .bi {
+        .password-toggle .form-control {
+            padding-right: 40px;
+        }
+        .password-toggle .bi {
             position: absolute;
             right: 12px;
             top: 50%;
@@ -111,14 +113,10 @@
             color: #c0b8a8;
             font-size: 15px;
             cursor: pointer;
+            z-index: 5;
         }
-
-        .input-wrapper .bi:hover {
+        .password-toggle .bi:hover {
             color: #9B4D07;
-        }
-
-        .input-wrapper .form-control {
-            padding-right: 40px;
         }
 
         .btn-connexion {
@@ -233,7 +231,7 @@
                     {{-- Mot de passe --}}
                     <div class="mb-4">
                         <label for="password" class="form-label">Mot de passe</label>
-                        <div class="input-wrapper">
+                        <div class="password-toggle">
                             <input
                                 id="password"
                                 type="password"
@@ -242,7 +240,6 @@
                                 placeholder="••••••••"
                                 required
                                 autocomplete="current-password">
-                            <i class="bi bi-eye" id="togglePassword"></i>
                         </div>
                     </div>
 
@@ -264,15 +261,24 @@
     </div>
 
     <script>
-        // Toggle affichage mot de passe
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
-
-        togglePassword.addEventListener('click', () => {
-            const isPassword = passwordInput.type === 'password';
-            passwordInput.type = isPassword ? 'text' : 'password';
-            togglePassword.classList.toggle('bi-eye', !isPassword);
-            togglePassword.classList.toggle('bi-eye-slash', isPassword);
+        document.querySelectorAll('input[type="password"]').forEach(function(input) {
+            if (input.closest('.password-toggle')) return;
+            var wrapper = document.createElement('div');
+            wrapper.className = 'password-toggle';
+            input.parentNode.insertBefore(wrapper, input);
+            wrapper.appendChild(input);
+            var icon = document.createElement('i');
+            icon.className = 'bi bi-eye-slash';
+            icon.style.cssText = 'position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#c0b8a8;cursor:pointer;font-size:15px;z-index:5;';
+            icon.onmouseenter = function() { this.style.color = '#9B4D07'; };
+            icon.onmouseleave = function() { this.style.color = '#c0b8a8'; };
+            icon.onclick = function() {
+                var isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                this.classList.toggle('bi-eye-slash', isPassword);
+                this.classList.toggle('bi-eye', !isPassword);
+            };
+            wrapper.appendChild(icon);
         });
     </script>
 </body>

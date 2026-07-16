@@ -107,12 +107,11 @@ class CandidatController extends Controller
     {
         $validated = $request->validate([
             'id' => 'required|exists:candidats,id',
-            'field' => 'required|string|in:note_maitrise,note_originalite,note_presence',
-            'value' => 'nullable|numeric|min:0|max:20',
+            'note' => 'nullable|numeric|min:0|max:20',
         ]);
 
         Candidats::where('id', $validated['id'])->update([
-            $validated['field'] => $validated['value'] !== '' ? $validated['value'] : null,
+            'note_jury' => $validated['note'] !== '' ? $validated['note'] : null,
         ]);
 
         return response()->json(['success' => true]);

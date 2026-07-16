@@ -24,8 +24,7 @@ class Candidats extends Model
 
     Protected $fillable = [
 
-        'nom', 'nom_scene', 'categorie', 'numero_scene', 'photo', 'biographie', 'nombre_votes',
-        'note_maitrise', 'note_originalite', 'note_presence',
+        'nom', 'nom_scene', 'categorie', 'numero_scene', 'photo', 'biographie', 'nombre_votes', 'note_jury',
 
     ];
 
@@ -34,9 +33,7 @@ class Candidats extends Model
         return [
             'nombre_votes' => 'integer',
             'numero_scene' => 'integer',
-            'note_maitrise' => 'decimal:2',
-            'note_originalite' => 'decimal:2',
-            'note_presence' => 'decimal:2',
+            'note_jury' => 'decimal:2',
         ];
     }
 
@@ -85,17 +82,4 @@ class Candidats extends Model
         return $query->orderByDesc('nombre_votes');
     }
 
-    // Score pondéré jury (sur 85) : maitrise 30% + originalite 25% + presence 30%
-    public function getScoreJuryAttribute(): ?float
-    {
-        if (is_null($this->note_maitrise) || is_null($this->note_originalite) || is_null($this->note_presence)) {
-            return null;
-        }
-        return round(
-            ($this->note_maitrise / 20 * 30) +
-            ($this->note_originalite / 20 * 25) +
-            ($this->note_presence / 20 * 30),
-            2
-        );
-    }
 }

@@ -60,11 +60,12 @@
                                     −
                                 </button>
                                 <input type="number" id="quantite" name="quantite"
-                                       value="1" min="1"
+                                       value="1" min="1" max="1000"
                                        class="form-control text-center fw-bold border-0"
                                        style="width: 90px; font-size: 1.8rem; color: #3E1E05; background: transparent;"
                                        oninput="saisirQte(this)">
                                 <button type="button" onclick="changerQte(1)"
+                                        id="btnPlus"
                                         class="btn rounded-circle fw-bold d-flex align-items-center justify-content-center"
                                         style="width: 42px; height: 42px; background: #fef0e0; color: #9B4D07; border: 2px solid #E3D5AD; font-size: 1.3rem;">
                                     +

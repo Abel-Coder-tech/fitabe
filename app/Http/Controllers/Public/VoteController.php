@@ -81,7 +81,7 @@ class VoteController extends Controller
             'votant_nom' => 'required|string|max:255',
             'votant_email' => 'required|email|max:255',
             'votant_telephone' => 'required|string|max:50',
-            'quantite' => 'required|integer|min:1|max:100',
+            'quantite' => 'required|integer|min:1|max:1000',
         ]);
 
         $montant = $prixDuVote * $validated['quantite'];
