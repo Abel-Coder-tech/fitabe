@@ -26,7 +26,7 @@
                 <td data-label="ID">{{ $contact->id }}</td>
                 <td data-label="Nom">{{ $contact->nom }}</td>
                 <td data-label="Email">{{ $contact->email }}</td>
-                <td data-label="Sujet">{{ $contact->sujet }}</td>
+                <td data-label="Sujet">{{ $contact->sujet ?: 'Sans sujet' }}</td>
                 <td data-label="Date">{{ $contact->created_at->format('d/m/Y H:i') }}</td>
                 <td data-label="Statut">
                     @if ($contact->lu)

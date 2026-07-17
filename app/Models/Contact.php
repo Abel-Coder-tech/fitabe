@@ -12,7 +12,7 @@ class Contact extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nom', 'email', 'objet', 'message', 'adresse_ip', 'lu',
+        'nom', 'email', 'sujet', 'message', 'adresse_ip', 'lu',
     ];
 
     protected function casts(): array

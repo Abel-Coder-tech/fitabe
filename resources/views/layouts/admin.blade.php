@@ -341,9 +341,13 @@
                 </div>
             </div>
             <div class="d-flex align-items-center gap-3">
-                <button class="btn btn-light btn-sm rounded-circle p-2 border-0 position-relative" style="width: 36px; height: 36px;">
+                <a href="{{ route('admin.contacts.index') }}" class="btn btn-light btn-sm rounded-circle p-2 border-0 position-relative" style="width: 36px; height: 36px;">
                     <i class="bi bi-bell"></i>
-                </button>
+                    @php $nonLuCount = \App\Models\Contact::nonLu()->count(); @endphp
+                    @if($nonLuCount > 0)
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background: #dc3545; font-size: 0.6rem; min-width: 18px; height: 18px; line-height: 18px; padding: 0 4px;">{{ $nonLuCount }}</span>
+                    @endif
+                </a>
                 <button class="btn btn-light btn-sm rounded-circle p-2 border-0" style="width: 36px; height: 36px;">
                     <i class="bi bi-arrow-clockwise"></i>
                 </button>

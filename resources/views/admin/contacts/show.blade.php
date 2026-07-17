@@ -15,7 +15,7 @@
             <dd class="col-sm-10">{{ $contact->email }}</dd>
 
             <dt class="col-sm-2">Sujet</dt>
-            <dd class="col-sm-10">{{ $contact->sujet }}</dd>
+            <dd class="col-sm-10">{{ $contact->sujet ?: 'Sans sujet' }}</dd>
 
             <dt class="col-sm-2">Date</dt>
             <dd class="col-sm-10">{{ $contact->created_at->format('d/m/Y H:i') }}</dd>

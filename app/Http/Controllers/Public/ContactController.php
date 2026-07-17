@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Mail\ContactConfirmation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller
 {
@@ -29,8 +32,14 @@ class ContactController extends Controller
             'message.required' => 'Le message est requis.',
         ]);
 
-        Contact::create($validated);
+        $contact = Contact::create($validated);
 
-        return back()->with('success', 'Votre message a été envoyé avec succès.');
+        try {
+            Mail::to($contact->email)->send(new ContactConfirmation($contact));
+        } catch (\Throwable $e) {
+            Log::error('Erreur envoi email confirmation contact: ' . $e->getMessage());
+        }
+
+        return back()->with('success', 'Votre message a été envoyé avec succès. Un email de confirmation vous a été adressé.');
     }
 }
