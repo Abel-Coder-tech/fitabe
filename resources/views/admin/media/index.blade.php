@@ -31,7 +31,7 @@
                 <td data-label="Année">{{ $media->annee_edition ?? '-' }}</td>
                 <td data-label="Aperçu">
                     @if ($media->type === 'photo')
-                        <img src="{{ $media->thumbnail }}" alt="{{ $media->titre }}" width="60" class="img-thumbnail">
+                        <img src="{{ $media->thumbnail }}" alt="{{ $media->titre }}" width="60" height="60" style="object-fit:cover;border-radius:6px;" class="img-thumbnail">
                     @else
                         <span class="text-muted small">Vidéo</span>
                     @endif

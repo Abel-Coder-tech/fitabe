@@ -83,6 +83,78 @@
             padding: 0; line-height: 1;
         }
 
+        /* ============ Pagination ============ */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+            padding: 18px 12px;
+            margin: 0;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .pagination::-webkit-scrollbar {
+            display: none;
+        }
+        .page-item {
+            list-style: none;
+            flex-shrink: 0;
+        }
+        .page-item:first-child {
+            margin-right: auto;
+        }
+        .page-item:last-child {
+            margin-left: auto;
+        }
+        .page-item .page-link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: transparent;
+            color: #5F2B0C;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 10px;
+            padding: 0;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        .page-item .page-link:hover {
+            background: rgba(155, 77, 7, 0.08);
+            color: #9B4D07;
+        }
+        .page-item.active .page-link {
+            background: #9B4D07;
+            color: #fff;
+            font-weight: 600;
+        }
+        .page-item.disabled .page-link {
+            color: #ccc;
+            pointer-events: none;
+        }
+        .page-item:first-child .page-link,
+        .page-item:last-child .page-link {
+            width: 45px;
+            height: 45px;
+            border: none;
+            background: transparent;
+        }
+        .page-item:first-child .page-link i,
+        .page-item:last-child .page-link i {
+            font-size: 30px;
+            color: #1f2937;
+        }
+        .page-item:first-child.disabled .page-link i,
+        .page-item:last-child.disabled .page-link i {
+            color: #ccc;
+        }
+
         @media (max-width: 767.98px) {
             .admin-sidebar {
                 position: fixed; top: 0; left: 0; bottom: 0;
