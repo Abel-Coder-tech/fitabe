@@ -8,25 +8,34 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Artisan::command('sitemap:generate', function () {
-    $base = config('app.url');
+    $base = rtrim(config('app.url'), '/');
+
     $pages = [
-        '/' => ['daily', '1.0'],
-        '/vote' => ['daily', '0.9'],
-        '/medias' => ['weekly', '0.8'],
-        '/contact' => ['weekly', '0.7'],
-        '/mentions-legales' => ['monthly', '0.3'],
-        '/confidentialite' => ['monthly', '0.3'],
-        '/cgu' => ['monthly', '0.3'],
-        '/reglement' => ['monthly', '0.3'],
+        ['loc' => '', 'priority' => '1.0', 'freq' => 'daily'],
+        ['loc' => '/vote', 'priority' => '0.9', 'freq' => 'daily'],
+        ['loc' => '/medias', 'priority' => '0.8', 'freq' => 'weekly'],
+        ['loc' => '/contact', 'priority' => '0.7', 'freq' => 'weekly'],
+        ['loc' => '/mentions-legales', 'priority' => '0.3', 'freq' => 'monthly'],
+        ['loc' => '/confidentialite', 'priority' => '0.3', 'freq' => 'monthly'],
+        ['loc' => '/cgu', 'priority' => '0.3', 'freq' => 'monthly'],
+        ['loc' => '/reglement', 'priority' => '0.3', 'freq' => 'monthly'],
     ];
-    $sitemap = \Spatie\Sitemap\Sitemap::create();
-    foreach ($pages as $path => [$freq, $priority]) {
-        $sitemap->add(
-            \Spatie\Sitemap\Tags\Url::create($base . $path)
-                ->setChangeFrequency($freq)
-                ->setPriority($priority)
-        );
+
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+
+    foreach ($pages as $page) {
+        $xml .= "  <url>\n";
+        $xml .= '    <loc>' . $base . $page['loc'] . "</loc>\n";
+        $xml .= '    <lastmod>' . now()->toDateString() . "</lastmod>\n";
+        $xml .= '    <changefreq>' . $page['freq'] . "</changefreq>\n";
+        $xml .= '    <priority>' . $page['priority'] . "</priority>\n";
+        $xml .= "  </url>\n";
     }
-    $sitemap->writeToFile(public_path('sitemap.xml'));
-    $this->info('Sitemap generated successfully at ' . public_path('sitemap.xml'));
+
+    $xml .= '</urlset>' . "\n";
+
+    file_put_contents(public_path('sitemap.xml'), $xml);
+
+    $this->info('Sitemap generated: ' . public_path('sitemap.xml'));
 })->purpose('Generate sitemap.xml');
