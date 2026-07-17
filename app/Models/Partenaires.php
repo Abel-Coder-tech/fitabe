@@ -13,13 +13,13 @@ class Partenaires extends Model
         'logo',
         'site_web',
         'description',
-        'ordre',
+        'ordre_affichage',
     ];
 
     protected function casts(): array
     {
         return [
-            'ordre' => 'integer',
+            'ordre_affichage' => 'integer',
         ];
     }
 
@@ -32,6 +32,6 @@ class Partenaires extends Model
     // Scope : trié par ordre d'affichage
     public function scopeOrdered(Builder $query): Builder
     {
-        return $query->orderBy('ordre');
+        return $query->orderBy('ordre_affichage');
     }
 }

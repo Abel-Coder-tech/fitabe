@@ -16,7 +16,7 @@ class Programmes extends Model
         'date_programme',
         'lieu',
         'categorie',
-        'ordre',
+        'ordre_affichage',
         'est_actif',
     ];
 
@@ -25,7 +25,7 @@ class Programmes extends Model
         return [
             'date_programme' => 'datetime',
             'est_actif' => 'boolean',
-            'ordre' => 'integer',
+            'ordre_affichage' => 'integer',
         ];
     }
 
@@ -41,6 +41,6 @@ class Programmes extends Model
 
     public function scopeOrdered(Builder $query): Builder
     {
-        return $query->orderBy('ordre');
+        return $query->orderBy('ordre_affichage');
     }
 }
