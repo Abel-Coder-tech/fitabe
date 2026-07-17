@@ -73,6 +73,10 @@
         }
         .nav-hover:hover::after,
         .nav-hover.nav-active::after { width: 70%; }
+        .nav-hover:hover { color: var(--fitab-orange-light) !important; }
+        .nav-hover.nav-active { color: var(--fitab-orange-light) !important; }
+        .social-icon { transition: color 0.2s; }
+        .social-icon:hover { color: var(--fitab-orange-light) !important; }
         .navbar-toggler-icon-fitab {
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23E3D5AD' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         }
@@ -201,10 +205,10 @@
                         Théâtre, Danse, Musique, Percussion et Art Visuel.
                     </p>
                     <div class="d-flex gap-3 mt-3">
-                        <a href="https://www.facebook.com/share/1WhHoPqx9H/" target="_blank" rel="noopener" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6); hover: color: #CA7B05;"><i class="bi bi-facebook"></i></a>
-                        <a href="https://www.instagram.com/fitab_talents_artistiques_pn/" target="_blank" rel="noopener" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6); hover: color: #CA7B05;"><i class="bi bi-instagram"></i></a>
-                        <a href="https://www.youtube.com/@TalentsArtistiques" target="_blank" rel="noopener" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6); hover: color: #CA7B05;"><i class="bi bi-youtube"></i></a>
-                        <a href="https://www.tiktok.com/@fitab_talent_artistique" target="_blank" rel="noopener" class="text-decoration-none fs-5" style="color: rgba(227,213,173,0.6); hover: color: #CA7B05;"><i class="bi bi-tiktok"></i></a>
+                        <a href="https://www.facebook.com/share/1WhHoPqx9H/" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com/fitab_talents_artistiques_pn/" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.youtube.com/@TalentsArtistiques" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-youtube"></i></a>
+                        <a href="https://www.tiktok.com/@fitab_talent_artistique" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-tiktok"></i></a>
                     </div>
                 </div>
 
