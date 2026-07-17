@@ -204,7 +204,7 @@
                     <p class="small lh-lg" style="color: rgba(227,213,173,0.65);">
                         Festival International des Talents Artistiques du Bénin. Théâtre, Danse, Musique, Percussion et Art Visuel.
                     </p>
-                    <div class="d-flex gap-3 mt-3 justify-content-center justify-content-lg-start">
+                    <div class="d-flex gap-3 mt-3">
                         <a href="https://www.facebook.com/share/1WhHoPqx9H/" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-facebook"></i></a>
                         <a href="https://www.instagram.com/fitab_talents_artistiques_pn/" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-instagram"></i></a>
                         <a href="https://www.youtube.com/@TalentsArtistiques" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-youtube"></i></a>
