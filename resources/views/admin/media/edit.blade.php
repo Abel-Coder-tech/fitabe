@@ -72,7 +72,18 @@
 
     <button type="submit" class="btn btn-primary">Mettre à jour</button>
     <a href="{{ route('admin.medias.index') }}" class="btn btn-secondary">Annuler</a>
+
 </form>
+
+@if ($errors->any())
+    <div class="alert alert-danger mt-3">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
 {{-- Script : affichage conditionnel champs photo/vidéo --}}
 @push('scripts')
