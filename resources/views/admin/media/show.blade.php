@@ -23,7 +23,7 @@
             <img src="{{ asset('storage/' . $media->url) }}" class="img-fluid rounded" style="max-height:400px;">
         @elseif ($media->type === 'video' && $media->lien_youtube)
             <div class="ratio ratio-16x9">
-                <iframe src="{{ $media->lien_youtube }}" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/{{ $media->youtube_id }}" allowfullscreen></iframe>
             </div>
         @endif
     </div>
