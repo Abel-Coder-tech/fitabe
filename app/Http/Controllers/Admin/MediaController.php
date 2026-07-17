@@ -53,6 +53,8 @@ class MediaController extends Controller
 
         unset($validated['fichier']);
 
+        $validated['ordre_affichage'] ??= 0;
+
         Medias::create($validated);
 
         return to_route('admin.medias.index')->with('success', 'Média ajouté avec succès.');
