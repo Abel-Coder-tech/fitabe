@@ -77,12 +77,15 @@ class VoteController extends Controller
         $prixDuVote = 100;
 
         $validated = $request->validate([
-            'candidat_id' => 'required|exists:candidats,id',
+            'candidat_id' => 'required|exists:candidates,id',
             'votant_nom' => 'required|string|max:255',
             'votant_email' => 'required|email|max:255',
             'votant_telephone' => 'required|string|max:50',
             'quantite' => 'required|integer|min:1|max:1000',
         ]);
+
+        $validated['candidate_id'] = $validated['candidat_id'];
+        unset($validated['candidat_id']);
 
         $montant = $prixDuVote * $validated['quantite'];
 
@@ -98,7 +101,7 @@ class VoteController extends Controller
             'vote_id' => $vote->id,
             'montant' => $montant,
             'quantite' => $validated['quantite'],
-            'candidat_nom' => Candidats::find($validated['candidat_id'])->display_name,
+            'candidat_nom' => Candidats::find($validated['candidate_id'])->display_name,
         ]);
     }
 

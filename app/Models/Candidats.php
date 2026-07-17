@@ -10,22 +10,20 @@ use Illuminate\Support\Facades\Storage;
 
 class Candidats extends Model
 {
+    protected $table = 'candidates';
+
     Use HasFactory;
 
-    // Liste officielle des catégories FITAB
     public const CATEGORIES = [
-        'Théâtre',
-        'Percussions',
-        'Musique',
-        'Danse Traditionnelle',
-        'Stylisme/Modélisme',
-        'Arts Visuels',
+        'theatre',
+        'danse',
+        'musique',
+        'percussion',
+        'art_visuel',
     ];
 
     Protected $fillable = [
-
         'nom', 'nom_scene', 'categorie', 'numero_scene', 'photo', 'biographie', 'nombre_votes', 'note_jury',
-
     ];
 
     protected function casts(): array
@@ -39,7 +37,7 @@ class Candidats extends Model
 
     public function votes(): HasMany
     {
-        return $this->hasMany(Votes::class, 'candidat_id');
+        return $this->hasMany(Votes::class, 'candidate_id');
     }
 
     public function confirmerVotes(): HasMany
@@ -81,5 +79,4 @@ class Candidats extends Model
     {
         return $query->orderByDesc('nombre_votes');
     }
-
 }
