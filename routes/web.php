@@ -17,7 +17,11 @@ use App\Http\Controllers\Admin\ResultatController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\ProfileController;
 
+use App\Http\Controllers\SitemapController;
+
 require __DIR__.'/auth.php';
+
+Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 
 Route::get('/', [AcceuilController::class, 'index'])->name('home');
 Route::get('/vote', [PublicVoteController::class, 'index'])->name('public.vote');
