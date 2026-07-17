@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('candidats', function (Blueprint $table) {
+        Schema::table('candidates', function (Blueprint $table) {
             $table->decimal('note_technique', 4, 2)->nullable()->after('note_jury');
             $table->decimal('note_originalite', 4, 2)->nullable()->after('note_technique');
             $table->decimal('note_scene', 4, 2)->nullable()->after('note_originalite');
@@ -18,7 +18,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('candidats', function (Blueprint $table) {
+        Schema::table('candidates', function (Blueprint $table) {
             $table->dropColumn(['note_technique', 'note_originalite', 'note_scene', 'score_final']);
         });
     }

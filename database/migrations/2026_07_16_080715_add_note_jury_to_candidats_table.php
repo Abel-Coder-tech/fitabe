@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('candidats', function (Blueprint $table) {
+        Schema::table('candidates', function (Blueprint $table) {
             $table->decimal('note_jury', 5, 2)->nullable()->after('nombre_votes');
         });
     }
 
     public function down(): void
     {
-        Schema::table('candidats', function (Blueprint $table) {
+        Schema::table('candidates', function (Blueprint $table) {
             $table->dropColumn('note_jury');
         });
     }
