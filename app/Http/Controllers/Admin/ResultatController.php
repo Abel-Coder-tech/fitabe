@@ -24,7 +24,7 @@ class ResultatController extends Controller
     // Affiche les résultats d'une édition
     public function show(string $annee)
     {
-        $resultats = Resultat::where('annee_edition', '=', $annee, 'and')->orderBy('categorie')->orderBy('prix')->get()
+        $resultats = Resultat::where('annee_edition', $annee)->orderBy('categorie')->orderBy('prix')->get()
             ->groupBy('categorie');
         return view('admin.resultats.show', compact('resultats', 'annee'));
     }

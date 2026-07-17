@@ -39,7 +39,7 @@ class ProgrammeController extends Controller
             'date_programme' => 'required|date',
             'lieu' => 'nullable|string|max:255',
             'categorie' => 'nullable|string|max:100',
-            'ordre' => 'nullable|integer|min:0',
+            'ordre_affichage' => 'nullable|integer|min:0',
             'est_actif' => 'nullable|boolean',
         ], $messages);
 
@@ -81,7 +81,7 @@ class ProgrammeController extends Controller
             'date_programme' => 'required|date',
             'lieu' => 'nullable|string|max:255',
             'categorie' => 'nullable|string|max:100',
-            'ordre' => 'nullable|integer|min:0',
+            'ordre_affichage' => 'nullable|integer|min:0',
             'est_actif' => 'nullable|boolean',
         ], $messages);
 

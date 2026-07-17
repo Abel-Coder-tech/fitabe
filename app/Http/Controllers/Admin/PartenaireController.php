@@ -37,7 +37,7 @@ class PartenaireController extends Controller
             'logo' => 'nullable|image|max:2048',
             'site_web' => 'nullable|url|max:255',
             'description' => 'nullable|string',
-
+            'ordre_affichage' => 'nullable|integer|min:0',
         ], $messages);
 
         if ($request->hasFile('logo')) {
@@ -77,7 +77,7 @@ class PartenaireController extends Controller
             'logo' => 'nullable|image|max:2048',
             'site_web' => 'nullable|url|max:255',
             'description' => 'nullable|string',
-
+            'ordre_affichage' => 'nullable|integer|min:0',
         ], $messages);
 
         if ($request->hasFile('logo')) {

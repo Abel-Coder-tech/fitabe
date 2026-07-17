@@ -58,7 +58,7 @@ class VoteController extends Controller
             abort(403, 'Seul un super administrateur peut supprimer une ovation.');
         }
 
-        if ($vote->statut === 'confirme') {
+        if ($vote->statut === 'confirme' && $vote->candidat) {
             $vote->candidat->decrement('nombre_votes');
         }
 

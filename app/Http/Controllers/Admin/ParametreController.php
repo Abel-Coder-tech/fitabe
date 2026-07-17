@@ -37,12 +37,12 @@ class ParametreController extends Controller
 
     public function show(Parametres $parametre)
     {
-        return view('admin.parametres.show', compact('parametres'));
+        return view('admin.parametres.show', compact('parametre'));
     }
 
     public function edit(Parametres $parametre)
     {
-        return view('admin.parametres.edit', compact('parametres'));
+        return view('admin.parametres.edit', compact('parametre'));
     }
 
     public function update(Request $request, Parametres $parametre)
