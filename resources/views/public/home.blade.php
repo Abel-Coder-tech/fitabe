@@ -27,11 +27,11 @@
                     </a>
                 </div>
 
-                <div class="d-flex flex-wrap gap-4 mt-4" style="color: rgba(227,213,173,0.7);">
-                    <div><i class="bi bi-calendar-week me-1" style="color: #CA7B05;"></i> 12 Jours</div>
-                    <div><i class="bi bi-people-fill me-1" style="color: #CA7B05;"></i> 30 000 spectateurs</div>
-                    <div><i class="bi bi-grid-3x3-gap-fill me-1" style="color: #CA7B05;"></i> 6 catégories</div>
-                    <div><i class="bi bi-trophy-fill me-1" style="color: #CA7B05;"></i> Grand Prix 1 000 000 FCFA</div>
+                <div class="row g-2 mt-4 justify-content-center justify-content-lg-start" style="color: rgba(227,213,173,0.7);">
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-1"><i class="bi bi-calendar-week" style="color: #CA7B05;"></i> 12 Jours</div></div>
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-1"><i class="bi bi-people-fill" style="color: #CA7B05;"></i> 30 000 spectateurs</div></div>
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-1"><i class="bi bi-grid-3x3-gap-fill" style="color: #CA7B05;"></i> 6 catégories</div></div>
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-1"><i class="bi bi-trophy-fill" style="color: #CA7B05;"></i> Grand Prix 1 000 000 FCFA</div></div>
                 </div>
             </div>
 

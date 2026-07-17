@@ -77,8 +77,9 @@
         .nav-hover.nav-active { color: var(--fitab-orange-light) !important; }
         .social-icon { transition: color 0.2s; }
         .social-icon:hover { color: var(--fitab-orange-light) !important; }
-        .navbar-toggler-icon-fitab {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23E3D5AD' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        .navbar-toggler {
+            border: 1px solid rgba(227,213,173,0.3);
+            --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23E3D5AD' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         }
         .footer-link { transition: color 0.2s; }
         .footer-link:hover { color: var(--fitab-orange-light) !important; }
@@ -108,8 +109,8 @@
                      onerror="this.style.display='none'">
             </a>
 
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon navbar-toggler-icon-fitab"></span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -201,10 +202,9 @@
                         <span class="fw-bold fs-5" style="color: #E3D5AD;">{{ config('app.name', 'FITAB') }}</span>
                     </div>
                     <p class="small lh-lg" style="color: rgba(227,213,173,0.65);">
-                        Festival International des Talents Artistiques du Bénin.<br>
-                        Théâtre, Danse, Musique, Percussion et Art Visuel.
+                        Festival International des Talents Artistiques du Bénin. Théâtre, Danse, Musique, Percussion et Art Visuel.
                     </p>
-                    <div class="d-flex gap-3 mt-3">
+                    <div class="d-flex gap-3 mt-3 justify-content-center justify-content-lg-start">
                         <a href="https://www.facebook.com/share/1WhHoPqx9H/" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-facebook"></i></a>
                         <a href="https://www.instagram.com/fitab_talents_artistiques_pn/" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-instagram"></i></a>
                         <a href="https://www.youtube.com/@TalentsArtistiques" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-youtube"></i></a>
@@ -260,10 +260,11 @@
             <hr class="mt-5 mb-4" style="border-color: rgba(227,213,173,0.2);">
 
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-                <p class="small mb-0" style="color: rgba(227,213,173,0.5);">
-                    &copy; {{ date('Y') }} {{ config('app.name', 'FITAB') }} — STRATEGE MEDIAS EVENTS. Tous droits réservés.
+                <p class="small mb-0 text-center" style="color: rgba(227,213,173,0.5);">
+                    &copy; {{ date('Y') }} {{ config('app.name', 'FITAB') }}<br>
+                    STRATEGE MEDIAS EVENTS. Tous droits réservés.
                 </p>
-                <p class="small mb-0" style="color: rgba(227,213,173,0.5);">
+                <p class="small mb-0 text-center" style="color: rgba(227,213,173,0.5);">
                     Développé par <a href="#" class="text-decoration-none" style="color: #CA7B05;">Noctam Communication</a>
                 </p>
             </div>
