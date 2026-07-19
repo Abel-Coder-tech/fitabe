@@ -200,16 +200,16 @@
                 @endphp
 
                 @if($voteMode === 'cloture')
-                {{-- ÉTAT : Clôturé --}}
+                {{-- ÉTAT 3 : Après clôture --}}
                 <p class="lead hero-sub mb-3 mx-auto" style="max-width: 540px;">
-                    Les ovations sont clôturées. Merci à tous les participants !
+                    Les ovations sont closes. Rendez-vous le <strong>28 novembre</strong> pour la Grande Finale.
                 </p>
                 <a href="{{ route('public.resultats') }}" class="btn btn-vote fw-semibold px-4 py-2 rounded-pill">
-                    <i class="bi bi-trophy me-2"></i>Voir les résultats
+                    <i class="bi bi-trophy me-2"></i>Découvrez les finalistes et les résultats
                 </a>
 
                 @elseif($voteMode === 'off' || $now < $ouverture)
-                {{-- ÉTAT : Avant ouverture --}}
+                {{-- ÉTAT 1 : Avant ouverture --}}
                 <p class="lead hero-sub mb-4 mx-auto" style="max-width: 540px;">
                     Soutenez les talents du FITAB. Chaque voix compte pour aider votre artiste favori à remporter le concours.
                 </p>
@@ -221,7 +221,7 @@
                 </div>
 
                 @else
-                {{-- ÉTAT : Ovations actives --}}
+                {{-- ÉTAT 2 : Pendant la période d'ovations --}}
                 <p class="lead hero-sub mb-4 mx-auto" style="max-width: 540px;">
                     Soutenez les talents du FITAB. Chaque voix compte pour aider votre artiste favori à remporter le concours.
                 </p>
