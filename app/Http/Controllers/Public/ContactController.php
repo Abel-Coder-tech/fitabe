@@ -8,7 +8,6 @@ use App\Mail\ContactConfirmation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
 
 class ContactController extends Controller
 {
@@ -19,11 +18,15 @@ class ContactController extends Controller
 
     public function store(Request $request)
     {
+        if ($request->filled('_hp_name')) {
+            return back()->with('success', 'Votre message a été envoyé avec succès.');
+        }
+
         $validated = $request->validate([
             'nom' => 'required|string|max:150',
             'email' => 'required|email|max:150',
             'sujet' => 'required|string|max:200',
-            'message' => 'required|string',
+            'message' => 'required|string|max:5000',
         ], [
             'nom.required' => 'Votre nom est requis.',
             'email.required' => 'Votre email est requis.',
@@ -31,24 +34,8 @@ class ContactController extends Controller
             'sujet.required' => 'Le sujet est requis.',
             'sujet.max' => 'Le sujet ne doit pas dépasser :max caractères.',
             'message.required' => 'Le message est requis.',
+            'message.max' => 'Le message ne doit pas dépasser :max caractères.',
         ]);
-
-        $token = $request->input('recaptcha_token');
-        $secret = config('services.recaptcha.secret_key');
-
-        if ($secret) {
-            $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-                'secret' => $secret,
-                'response' => $token,
-                'remoteip' => $request->ip(),
-            ]);
-
-            $body = $response->json();
-
-            if (!($body['success'] ?? false) || ($body['score'] ?? 0) < 0.5) {
-                return back()->withErrors(['recaptcha' => 'La vérification anti-spam a échoué. Veuillez réessayer.']);
-            }
-        }
 
         $contact = Contact::create($validated);
 
