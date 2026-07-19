@@ -196,17 +196,32 @@
                     $now = time();
                     $ouverture = $dateDebut ? strtotime($dateDebut) : 0;
                     $cloture   = $dateFin ? strtotime($dateFin) : 0;
-                    $dateDebutFormatted = $dateDebut ? \Carbon\Carbon::parse($dateDebut)->locale('fr')->isoFormat('D MMMM YYYY') : '';
+                    $dateDebutFormatted = $dateDebut ? \Carbon\Carbon::parse($dateDebut)->locale('fr')->isoFormat('D MMMM YYYY [à] HH:mm') : '';
                 @endphp
 
-                @if($now >= $cloture)
-                {{-- ÉTAT : Après clôture — message simple, pas de contenu vote --}}
-                <p class="lead hero-sub mb-0 mx-auto" style="max-width: 540px;">
-                    La clôture des ovations a eu lieu. Revenez bientôt pour découvrir les résultats.
+                @if($voteMode === 'cloture')
+                {{-- ÉTAT : Clôturé --}}
+                <p class="lead hero-sub mb-3 mx-auto" style="max-width: 540px;">
+                    Les ovations sont clôturées. Merci à tous les participants !
                 </p>
+                <a href="{{ route('public.resultats') }}" class="btn btn-vote fw-semibold px-4 py-2 rounded-pill">
+                    <i class="bi bi-trophy me-2"></i>Voir les résultats
+                </a>
+
+                @elseif($voteMode === 'off' || $now < $ouverture)
+                {{-- ÉTAT : Avant ouverture --}}
+                <p class="lead hero-sub mb-4 mx-auto" style="max-width: 540px;">
+                    Soutenez les talents du FITAB. Chaque voix compte pour aider votre artiste favori à remporter le concours.
+                </p>
+                <div class="d-flex flex-column align-items-center gap-3">
+                    <div class="countdown-wrap d-inline-flex align-items-center gap-2 px-4 py-3">
+                        <i class="bi bi-calendar-event" style="color: #CA7B05; font-size: 1.2rem;"></i>
+                        <span style="color: #E3D5AD;">Les ovations ouvrent le <strong>{{ $dateDebutFormatted }}</strong>. Revenez soutenir vos artistes !</span>
+                    </div>
+                </div>
 
                 @else
-                {{-- Avant ou pendant les ovations --}}
+                {{-- ÉTAT : Ovations actives --}}
                 <p class="lead hero-sub mb-4 mx-auto" style="max-width: 540px;">
                     Soutenez les talents du FITAB. Chaque voix compte pour aider votre artiste favori à remporter le concours.
                 </p>
@@ -219,18 +234,7 @@
                         Voir les candidats <i class="bi bi-arrow-down ms-2"></i>
                     </a>
                 </div>
-
                 <div class="d-flex flex-column align-items-center gap-3">
-
-                    @if($now < $ouverture)
-                    {{-- ÉTAT 1 : Avant ouverture --}}
-                    <div class="countdown-wrap d-inline-flex align-items-center gap-2 px-4 py-3">
-                        <i class="bi bi-calendar-event" style="color: #CA7B05; font-size: 1.2rem;"></i>
-                        <span style="color: #E3D5AD;">Les ovations ouvrent le <strong>{{ $dateDebutFormatted }}</strong>. Revenez soutenir vos artistes !</span>
-                    </div>
-
-                    @else
-                    {{-- ÉTAT 2 : Pendant la période d'ovations --}}
                     <div class="countdown-wrap d-inline-flex flex-column align-items-center gap-2 px-4 py-3">
                         <div class="d-flex align-items-center gap-2">
                             <i class="bi bi-clock" style="color: #CA7B05;"></i>
@@ -244,8 +248,6 @@
                         </div>
                         <span style="color: #CA7B05; font-weight: 600; font-size: 0.85rem;">Ovationnez maintenant</span>
                     </div>
-                    @endif
-
                 </div>
                 @endif
             </div>
