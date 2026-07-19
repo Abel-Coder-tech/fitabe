@@ -12,8 +12,15 @@ class Resultat extends Model
         'annee_edition', 'categorie', 'prix',
         'candidat_nom', 'candidat_photo', 'nombre_votes',
         'note_jury', 'note_technique', 'note_originalite', 'note_presence',
-        'score_public', 'score_final',
+        'score_public', 'score_final', 'publie',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'publie' => 'boolean',
+        ];
+    }
 
     // Accesseur : URL complète de la photo du candidat
     public function getCandidatPhotoUrlAttribute(): string

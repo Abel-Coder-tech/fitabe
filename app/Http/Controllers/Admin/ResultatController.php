@@ -64,4 +64,34 @@ class ResultatController extends Controller
         return to_route('admin.resultats.show', $annee)
             ->with('success', 'Résultats régénérés pour l\'édition ' . $annee);
     }
+
+    public function togglePublishEdition(string $annee)
+    {
+        $allPublished = Resultat::where('annee_edition', $annee)->where('publie', false)->exists();
+
+        if ($allPublished) {
+            Resultat::where('annee_edition', $annee)->update(['publie' => true]);
+            $msg = 'Résultats ' . $annee . ' publiés.';
+        } else {
+            Resultat::where('annee_edition', $annee)->update(['publie' => false]);
+            $msg = 'Résultats ' . $annee . ' dépubliés.';
+        }
+
+        return back()->with('success', $msg);
+    }
+
+    public function publicIndex()
+    {
+        $annees = Resultat::where('publie', true)->distinct()->orderBy('annee_edition', 'desc')->pluck('annee_edition');
+
+        if ($annees->isEmpty()) {
+            return view('public.resultats.index', ['resultats' => collect(), 'annee' => null]);
+        }
+
+        $annee = $annees->first();
+        $resultats = Resultat::where('annee_edition', $annee)->where('publie', true)
+            ->orderBy('categorie')->orderBy('prix')->get()->groupBy('categorie');
+
+        return view('public.resultats.index', compact('resultats', 'annee'));
+    }
 }

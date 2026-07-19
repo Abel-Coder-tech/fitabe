@@ -37,9 +37,15 @@ class VoteController extends Controller
     // Page publique de vote avec candidats et paramètres
     public function index()
     {
+        $statutVote = Parametres::where('cle', 'statut_vote')->value('valeur');
         $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
         $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
-        $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
+
+        if ($statutVote === 'active' || $statutVote === 'cloture') {
+            $voteMode = $statutVote;
+        } else {
+            $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
+        }
 
         $prixDuVote = 100;
 

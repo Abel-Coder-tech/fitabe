@@ -30,6 +30,7 @@ Route::get('/vote/merci', [PublicVoteController::class, 'merci'])->name('public.
 Route::post('/vote/settings', [PublicVoteController::class, 'updateSettings'])->name('public.vote.settings')->middleware(['auth', 'role:super_admin', 'throttle:30,1']);
 Route::post('/webhook/fedapay', [PublicVoteController::class, 'webhookFedapay'])->name('public.vote.webhook.fedapay');
 Route::get('/medias', [PublicMediaController::class, 'index'])->name('public.medias');
+Route::get('/resultats', [ResultatController::class, 'publicIndex'])->name('public.resultats');
 Route::get('/contact', [PublicContactController::class, 'index'])->name('public.contact');
 Route::post('/contact', [PublicContactController::class, 'store'])->name('public.contact.store')->middleware('throttle:5,1');
 Route::view('/mentions-legales', 'public.mentions-legales')->name('public.mentions-legales');
@@ -54,6 +55,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('votes/{vote}', [VoteController::class, 'show'])->name('votes.show')->middleware('role:super_admin');
     Route::delete('votes/{vote}', [VoteController::class, 'destroy'])->name('votes.destroy')->middleware('role:super_admin');
     Route::post('votes/clear-all', [VoteController::class, 'clearAll'])->name('votes.clearAll')->middleware('role:super_admin');
+    Route::post('votes/toggle', [VoteController::class, 'toggle'])->name('votes.toggle')->middleware('role:super_admin');
 
     // Résultats — consultation pour tous, édition réservée super_admin
     Route::prefix('resultats')->name('resultats.')->controller(ResultatController::class)->group(function () {
@@ -62,6 +64,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         Route::get('/{resultat}/edit', 'edit')->name('edit')->middleware('role:super_admin');
         Route::put('/{resultat}', 'update')->name('update')->middleware('role:super_admin');
         Route::post('/regenerer/{annee}', 'regenerer')->name('regenerer')->middleware('role:super_admin');
+        Route::post('/{annee}/publier-tout', 'togglePublishEdition')->name('publier')->middleware('role:super_admin');
     });
 
     // Administration sensible — réservé super_admin

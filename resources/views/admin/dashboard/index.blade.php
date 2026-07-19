@@ -226,9 +226,26 @@
             </div>
             <div class="card-body px-4 py-3">
                 <div class="d-flex gap-2 mb-3">
-                    <span class="mode-toggle {{ $voteMode === 'off' ? 'active' : '' }}">Hors-événement</span>
-                    <span class="mode-toggle {{ $voteMode === 'active' ? 'active' : '' }}">Ovation active</span>
-                    <span class="mode-toggle {{ $voteMode === 'closed' ? 'active' : '' }}">Clôturé</span>
+                    @if($voteMode === 'active')
+                        <form action="{{ route('admin.votes.toggle') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="mode-toggle" style="border-color: #c62828; color: #c62828;"
+                                    onclick="return confirm('Clôturer les ovations ? Les résultats seront générés automatiquement.')">
+                                <i class="bi bi-stop-circle me-1"></i>Clôturer les ovations
+                            </button>
+                        </form>
+                        <span class="mode-toggle active"><i class="bi bi-play-circle me-1"></i>Ovations actives</span>
+                    @else
+                        <form action="{{ route('admin.votes.toggle') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="mode-toggle" style="border-color: #2e7d32; color: #2e7d32;">
+                                <i class="bi bi-play-circle me-1"></i>Démarrer les ovations
+                            </button>
+                        </form>
+                        <span class="mode-toggle {{ $voteMode === 'cloture' ? 'active' : '' }}">
+                            <i class="bi bi-check-circle me-1"></i>Clôturé
+                        </span>
+                    @endif
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-color: #f0f0f0 !important;">
                     <small class="text-muted">Prix de l'ovation</small>

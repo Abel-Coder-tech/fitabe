@@ -74,4 +74,24 @@ class VoteController extends Controller
 
         return to_route('admin.votes.index')->with('success', 'Toutes les ovations ont été supprimées.');
     }
+
+    public function toggle()
+    {
+        $statut = Parametres::where('cle', 'statut_vote')->value('valeur');
+
+        if ($statut === 'active') {
+            Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'cloture']);
+            try {
+                $annee = date('Y');
+                $service = app(\App\Services\ResultatService::class);
+                $service->generer($annee);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error('Erreur génération résultats: ' . $e->getMessage());
+            }
+            return to_route('admin.votes.index')->with('success', 'Vote clôturé. Résultats générés.');
+        }
+
+        Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'active']);
+        return to_route('admin.votes.index')->with('success', 'Vote démarré.');
+    }
 }

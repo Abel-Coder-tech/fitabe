@@ -13,12 +13,28 @@
             Résultats {{ $annee }}
         </h1>
     </div>
-    <form action="{{ route('admin.resultats.regenerer', $annee) }}" method="POST" class="d-inline" onsubmit="return confirm('Régénérer tous les résultats pour {{ $annee }} ? Les notes jury seront perdues.')">
-        @csrf
-        <button type="submit" class="btn btn-sm btn-outline-secondary">
-            <i class="bi bi-arrow-repeat me-1"></i> Régénérer
-        </button>
-    </form>
+    <div class="d-flex gap-2">
+        @auth
+            @if(auth()->user()?->role === 'super_admin')
+                @php
+                    $allPublished = $resultats->flatten()->every(fn($r) => $r->publie);
+                @endphp
+                <form action="{{ route('admin.resultats.publier', $annee) }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-sm {{ $allPublished ? 'btn-success' : 'btn-outline-success' }}">
+                        <i class="bi bi-{{ $allPublished ? 'check-circle-fill' : 'globe2' }} me-1"></i>
+                        {{ $allPublished ? 'Publié' : 'Publier' }}
+                    </button>
+                </form>
+            @endif
+        @endauth
+        <form action="{{ route('admin.resultats.regenerer', $annee) }}" method="POST" class="d-inline" onsubmit="return confirm('Régénérer tous les résultats pour {{ $annee }} ? Les notes jury seront perdues.')">
+            @csrf
+            <button type="submit" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-arrow-repeat me-1"></i> Régénérer
+            </button>
+        </form>
+    </div>
 </div>
 
 {{-- Résultats par catégorie --}}

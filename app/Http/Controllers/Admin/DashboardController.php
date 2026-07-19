@@ -42,15 +42,21 @@ class DashboardController extends Controller
 
         $messagesRecents = Contact::latest()->take(5)->get();
 
+        $statutVote = Parametres::where('cle', 'statut_vote')->value('valeur');
         $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
         $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
-        if ($dateDebut && $dateFin) {
+
+        if ($statutVote === 'active' || $statutVote === 'cloture') {
+            $voteMode = $statutVote;
+        } elseif ($dateDebut && $dateFin) {
             $now = Carbon::now();
             $debut = Carbon::parse($dateDebut);
             $fin = Carbon::parse($dateFin);
-            if ($now < $debut) $voteMode = 'off';
-            elseif ($now >= $fin) $voteMode = 'cloture';
-            else $voteMode = 'active';
+            $voteMode = match (true) {
+                $now < $debut => 'off',
+                $now >= $fin => 'cloture',
+                default => 'active',
+            };
         } else {
             $voteMode = 'off';
         }
@@ -66,7 +72,7 @@ class DashboardController extends Controller
             'votesConfirmes', 'messagesNonLus', 'totalRecettes',
             'votesParCategorie', 'totalVotes',
             'dernieresTransactions', 'messagesRecents',
-            'voteMode', 'prixDuVote', 'dateFin',
+            'voteMode', 'prixDuVote', 'dateFin', 'statutVote',
             'candidatsAvecVotes', 'categories'
         ));
     }

@@ -130,6 +130,11 @@
                            href="{{ route('public.vote') }}">Ovation</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.resultats') ? 'nav-active' : '' }}"
+                           style="color: #E3D5AD;"
+                           href="{{ route('public.resultats') }}">Résultats</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.contact') ? 'nav-active' : '' }}"
                            style="color: #E3D5AD;"
                            href="{{ route('public.contact') }}">Contact</a>
@@ -220,6 +225,7 @@
                                 <li class="mb-2"><a href="{{ route('home') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Accueil</a></li>
                                 <li class="mb-2"><a href="{{ route('public.medias') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Médiathèque</a></li>
                                 <li class="mb-2"><a href="{{ route('public.vote') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Ovation</a></li>
+                                <li class="mb-2"><a href="{{ route('public.resultats') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Résultats</a></li>
                                 <li class="mb-2"><a href="{{ route('public.contact') }}" class="text-decoration-none small footer-link" style="color: rgba(227,213,173,0.65);">Contact</a></li>
                             </ul>
                         </div>
