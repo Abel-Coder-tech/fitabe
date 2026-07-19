@@ -73,9 +73,10 @@ class VoteController extends Controller
     // Soumet un vote (vérifie mode, valide, crée)
     public function store(Request $request)
     {
+        $statutVote = Parametres::where('cle', 'statut_vote')->value('valeur');
         $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
         $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
-        $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
+        $voteMode = $statutVote === 'active' || $statutVote === 'cloture' ? $statutVote : $this->computeVoteMode($dateDebut, $dateFin);
         if ($voteMode !== 'active') {
             return response()->json(['success' => false, 'message' => 'Le vote est fermé.'], 403);
         }
@@ -185,10 +186,17 @@ class VoteController extends Controller
         Parametres::updateOrCreate(['cle' => 'afficher_compteur'], ['valeur' => $data['afficher_compteur'] ?? '0']);
 
         $now = Carbon::now();
+        $debut = $data['date_debut_vote'] ? Carbon::parse($data['date_debut_vote']) : null;
         $fin = $data['date_fin_vote'] ? Carbon::parse($data['date_fin_vote']) : null;
+
         if ($fin && $now > $fin) {
+            Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'cloture']);
             $annee = $request->input('annee_resultats', date('Y'));
             $this->resultatService->generer($annee);
+        } elseif ($debut && $now >= $debut && $fin && $now < $fin) {
+            Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'active']);
+        } else {
+            Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'off']);
         }
 
         return response()->json(['success' => true]);
