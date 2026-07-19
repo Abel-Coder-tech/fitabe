@@ -28,7 +28,7 @@
     <div class="card-body p-4 p-md-5">
         <h4 class="fw-bold mb-1" style="color: #9B4D07;">Envoyez-nous un message</h4>
                         <hr class="my-3" style="width: 60px; height: 3px; border: none; background-color: #CA7B05; opacity: 1;">
-                        <form action="{{ route('public.contact.store') }}" method="POST">
+                        <form action="{{ route('public.contact.store') }}" method="POST" id="contactForm">
                             @csrf
                             <div class="mb-3">
                                 <label for="nom" class="form-label fw-medium small">Nom complet <span class="text-danger">*</span></label>
@@ -53,10 +53,26 @@
                             <div class="mb-3">
                                 <small class="text-muted">En soumettant ce formulaire, vous acceptez notre <a href="{{ route('public.confidentialite') }}" style="color: #9B4D07;">politique de confidentialité</a>.</small>
                             </div>
+                            <input type="hidden" name="recaptcha_token" id="recaptcha_token">
                             <button type="submit" class="btn btn-lg w-100 fw-semibold py-3 border-0 btn-fitab">
                                 <i class="bi bi-send me-2"></i>Envoyer
                             </button>
                         </form>
+
+@push('scripts')
+<script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {action: 'submit'}).then(function(token) {
+            document.getElementById('recaptcha_token').value = token;
+            document.getElementById('contactForm').submit();
+        });
+    });
+});
+</script>
+@endpush
                     </div>
                 </div>
             </div>
