@@ -91,6 +91,14 @@ class VoteController extends Controller
             return to_route('admin.votes.index')->with('success', 'Vote clôturé. Résultats générés.');
         }
 
+        $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
+        $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+
+        if (!$dateDebut || !$dateFin) {
+            return to_route('admin.votes.index')
+                ->with('error', 'Veuillez d\'abord définir une date de début et de fin dans le menu Ovations avant de démarrer le vote.');
+        }
+
         Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'active']);
         return to_route('admin.votes.index')->with('success', 'Vote démarré.');
     }
