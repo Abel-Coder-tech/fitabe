@@ -19,7 +19,8 @@
 </style>
 
 {{-- ==================== HERO ==================== --}}
-<section class="d-flex align-items-center justify-content-center" style="min-height: 220px; background: linear-gradient(135deg, #3E1E05 0%, #9B4D07 50%, #3E1E05 100%);">
+<section class="d-flex align-items-center justify-content-center"
+         style="min-height: 220px; background: linear-gradient(135deg, rgba(62,30,5,0.88) 0%, rgba(62,30,5,0.65) 50%, rgba(62,30,5,0.4) 100%), url('{{ asset('images/hero.jpg') }}') no-repeat center center; background-size: cover;">
     <div class="container text-center">
         <h1 class="fw-bold display-6 mb-2" style="color: #E3D5AD;">Médiathèque</h1>
         <p class="mb-0" style="color: rgba(227,213,173,0.8); max-width: 500px; margin: 0 auto;">Explorez les photos et vidéos du Festival International des Talents Artistiques du Bénin.</p>
@@ -39,9 +40,21 @@
     </div>
 </section>
 
+{{-- ==================== SÉPARATEUR PHOTOS ==================== --}}
+@if ($photos->count())
+<section class="bg-white pt-5">
+    <div class="container">
+        <hr class="m-0">
+        <div class="text-center position-relative" style="margin-top: -12px;">
+            <span class="bg-white px-4 fw-semibold small" style="color: #CA7B05;">Galerie Photos</span>
+        </div>
+    </div>
+</section>
+@endif
+
 {{-- ==================== PHOTOS ==================== --}}
 @if ($photos->count())
-<section class="py-5 bg-white" id="section-photos">
+<section class="pb-5 bg-white" id="section-photos">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
             <h3 class="fw-bold mb-0" style="color: #9B4D07;">Galerie Photos</h3>
@@ -59,7 +72,7 @@
         </div>
         <div class="row g-3" id="photosGrid">
             @foreach ($photos as $media)
-            <div class="col-6 col-md-4 col-lg-3 media-item media-photo" data-type="photo" data-annee="{{ $media->annee_edition ?? '' }}">
+            <div class="col-6 col-md-4 col-lg-3 media-item media-photo media-limited" data-type="photo" data-annee="{{ $media->annee_edition ?? '' }}" data-index="{{ $loop->index }}">
                 <div class="card border-0 shadow-sm rounded-3 overflow-hidden media-card" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#photoModal" data-index="{{ $loop->index }}">
                     <div class="ratio ratio-1x1">
                         <img src="{{ $media->thumbnail }}" alt="{{ $media->titre ?? 'Photo' }}" class="media-thumb" loading="lazy">
@@ -77,6 +90,13 @@
             </div>
             @endforeach
         </div>
+        @if ($photos->count() > 4)
+        <div class="text-center mt-4">
+            <button id="voirPlusPhotos" class="btn btn-fitab-outline rounded-pill px-4 py-2">
+                <i class="bi bi-plus-circle me-2"></i>Voir plus
+            </button>
+        </div>
+        @endif
     </div>
 </section>
 @endif
@@ -86,7 +106,9 @@
 <section class="bg-white">
     <div class="container">
         <hr class="m-0">
-        
+        <div class="text-center position-relative" style="margin-top: -12px;">
+            <span class="bg-white px-4 fw-semibold small" style="color: #CA7B05;">Espace Vidéo</span>
+        </div>
     </div>
 </section>
 @endif
@@ -111,7 +133,7 @@
         </div>
         <div class="row g-3" id="videosGrid">
             @foreach ($videos as $media)
-            <div class="col-md-6 col-lg-4 media-item media-video" data-type="video" data-annee="{{ $media->annee_edition }}">
+            <div class="col-md-6 col-lg-4 media-item media-video media-limited" data-type="video" data-annee="{{ $media->annee_edition }}" data-index="{{ $loop->index }}">
                 <div class="card border-0 shadow-sm rounded-3 overflow-hidden media-card" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#videoModal" data-index="{{ $loop->index }}">
                     <div class="ratio ratio-16x9" style="background-color: #000;">
                         <img src="{{ $media->thumbnail }}" alt="{{ $media->titre ?? 'Vidéo' }}" class="media-thumb" loading="lazy">
@@ -129,6 +151,13 @@
             </div>
             @endforeach
         </div>
+        @if ($videos->count() > 4)
+        <div class="text-center mt-4">
+            <button id="voirPlusVideos" class="btn btn-fitab-outline rounded-pill px-4 py-2">
+                <i class="bi bi-plus-circle me-2"></i>Voir plus
+            </button>
+        </div>
+        @endif
     </div>
 </section>
 @endif
@@ -383,6 +412,40 @@
             videoDesc.style.display = 'none';
         }
     }
+
+    // === LIMITE AFFICHAGE (8 desktop / 4 mobile) + VOIR PLUS ===
+    function appliquerLimite() {
+        var mobile = window.innerWidth < 992;
+        var max = mobile ? 4 : 8;
+        document.querySelectorAll('.media-limited').forEach(function(el, i) {
+            var visible = el.closest('section') && el.closest('section').style.display !== 'none';
+            if (visible) {
+                el.classList.toggle('d-none', i >= max);
+            }
+        });
+        var btnPhotos = document.getElementById('voirPlusPhotos');
+        var btnVideos = document.getElementById('voirPlusVideos');
+        if (btnPhotos) { btnPhotos.style.display = document.querySelectorAll('#photosGrid .media-limited.d-none').length > 0 ? '' : 'none'; }
+        if (btnVideos) { btnVideos.style.display = document.querySelectorAll('#videosGrid .media-limited.d-none').length > 0 ? '' : 'none'; }
+    }
+
+    document.getElementById('voirPlusPhotos')?.addEventListener('click', function() {
+        document.querySelectorAll('#photosGrid .media-limited').forEach(function(el) { el.classList.remove('d-none'); });
+        this.style.display = 'none';
+    });
+    document.getElementById('voirPlusVideos')?.addEventListener('click', function() {
+        document.querySelectorAll('#videosGrid .media-limited').forEach(function(el) { el.classList.remove('d-none'); });
+        this.style.display = 'none';
+    });
+
+    window.addEventListener('resize', appliquerLimite);
+    appliquerLimite();
+
+    // Override filters to reapply limit
+    var _fp = window.filtrerPhotos;
+    window.filtrerPhotos = function() { if (_fp) _fp(); setTimeout(appliquerLimite, 50); };
+    var _fv = window.filtrerVideos;
+    window.filtrerVideos = function() { if (_fv) _fv(); setTimeout(appliquerLimite, 50); };
 
     // === RÉSULTATS ===
     const resultatsModal = document.getElementById('resultatsModal');

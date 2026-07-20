@@ -3,7 +3,8 @@
 @section('title', 'Résultats - ' . config('app.name', 'FITAB'))
 
 @section('content')
-<section class="d-flex align-items-center justify-content-center" style="min-height: 220px; background: linear-gradient(135deg, #3E1E05 0%, #9B4D07 50%, #3E1E05 100%);">
+<section class="d-flex align-items-center justify-content-center"
+         style="min-height: 220px; background: linear-gradient(135deg, rgba(62,30,5,0.88) 0%, rgba(62,30,5,0.65) 50%, rgba(62,30,5,0.4) 100%), url('{{ asset('images/hero.jpg') }}') no-repeat center center; background-size: cover;">
     <div class="container text-center">
         <h1 class="fw-bold display-6 mb-2" style="color: #E3D5AD;">Résultats</h1>
         @if($annee)

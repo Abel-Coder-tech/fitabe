@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="position-relative d-flex align-items-center"
-     style="background: linear-gradient(135deg, rgba(62,30,5,0.92) 0%, rgba(62,30,5,0.7) 50%, rgba(62,30,5,0.4) 100%), url('{{ asset('images/hero.jpg') }}') no-repeat center center; background-size: cover; min-height: 100vh;">
+     style="background: linear-gradient(135deg, rgba(62,30,5,0.92) 0%, rgba(62,30,5,0.7) 50%, rgba(62,30,5,0.4) 100%), url('{{ asset('images/hero.jpg') }}') no-repeat center center; background-size: cover; min-height: calc(100vh - 64px);">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8 text-center text-lg-start">
@@ -36,9 +36,9 @@
             </div>
 
             <div class="col-lg-4 d-none d-lg-flex justify-content-center">
-                <div class="text-center p-4 rounded-4" style="border: 1px solid rgba(202,123,5,0.4); background: rgba(227,213,173,0.06); backdrop-filter: blur(8px); max-width: 500px;">
-                    <i class="bi bi-calendar-event" style="color: #CA7B05; font-size: 2rem;"></i>
-                    <h6 class="text-white mt-2 mb-0" style="font-size: 1.1rem; font-weight: 700;">Novembre 2026</h6>
+                <div class="text-center p-4 p-xl-5 rounded-4" style="border: 1px solid rgba(202,123,5,0.4); background: rgba(227,213,173,0.06); backdrop-filter: blur(8px); max-width: 600px;">
+                    <i class="bi bi-calendar-event" style="color: #CA7B05; font-size: 2.5rem;"></i>
+                    <h5 class="text-white mt-3 mb-0" style="font-size: 1.3rem; font-weight: 700;">Novembre 2026</h5>
                    
                 </div>
             </div>

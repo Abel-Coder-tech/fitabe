@@ -1,7 +1,7 @@
 {{-- ==================== MODAL VOTE ==================== --}}
 @if($voteMode === 'active')
 <div class="modal fade" id="voteModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 480px;">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 480px;">
         <div class="modal-content border-0 rounded-4 overflow-hidden">
 
             {{-- En-tête simple --}}

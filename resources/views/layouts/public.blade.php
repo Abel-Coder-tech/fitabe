@@ -134,6 +134,12 @@
             color: var(--fitab-orange-light);
         }
 
+        /* Footer spacing mobile */
+        @media (max-width: 575.98px) {
+            footer .col-6,
+            footer .col-12 { padding-left: 1.5rem !important; }
+        }
+
         /* Mobile toggle */
         .mobile-toggle {
             display: none;
