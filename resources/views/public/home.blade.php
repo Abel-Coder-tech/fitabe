@@ -128,38 +128,19 @@ html, body { overflow-x: hidden; width: 100%; }
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
-.partenaire-card {
+.partenaire-logo {
     flex-shrink: 0;
-    width: 180px;
-    background: #fff;
-    border: 1px solid rgba(202,123,5,0.15);
-    border-radius: 16px;
-    padding: 1rem 0.75rem 0.75rem;
-    text-align: center;
-    transition: transform .35s, box-shadow .35s, border-color .35s;
-    cursor: pointer;
-}
-.partenaire-card:hover {
-    transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 10px 28px rgba(62,30,5,0.1);
-    border-color: #CA7B05;
-}
-.partenaire-card img {
-    width: 100%;
+    width: 140px;
     height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.partenaire-logo img {
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
     display: block;
-    margin-bottom: 0.5rem;
-    transition: transform .35s;
-}
-.partenaire-card:hover img {
-    transform: scale(1.08);
-}
-.partenaire-card h6 {
-    color: #3E1E05;
-    font-size: 0.8rem;
-    font-weight: 700;
-    margin-bottom: 0;
 }
 
 .accordion-button:not(.collapsed) { 
@@ -460,7 +441,7 @@ margin-right: 0;
 
         {{-- Promoteur 1 : image gauche, texte droite --}}
         <div class="row align-items-center g-0 mb-5">
-            <div class="col-lg-6 text-lg-end pe-lg-2">
+            <div class="col-lg-6 text-lg-end ">
                 <div class="position-relative d-inline-block">
                     <img src="{{ asset('images/promoteurs/promoteur1.png') }}" alt="MISTER OKEKE"
                          style="width: 100%; max-width: 400px; border-radius: 12px; border: 2px solid #c9a96e; display: block;">
@@ -470,7 +451,7 @@ margin-right: 0;
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 ps-lg-2">
+            <div class="col-lg-6 ">
                 <h3 style="color: #1a1a1a; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem;">MISTER OKEKE</h3>
                 <p style="color: #c8922a; font-size: 0.875rem; margin-bottom: 0.75rem;">Roi du Théâtre Béninois · Cofondateur</p>
                 <hr style="width: 50px; height: 3px; background: #c0392b; border: none; margin: 0 0 1rem 0;">
@@ -614,10 +595,9 @@ margin-right: 0;
         <div class="partenaires-track-wrapper mb-4">
             <div class="partenaires-track" id="partnerTrack">
                 @foreach ($partenaires as $p)
-                <div class="partenaire-card"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
-                    <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}">
-                  
-                </div>
+            <div class="partenaire-logo"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
+                <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}">
+            </div>
                 @endforeach
             </div>
         </div>
