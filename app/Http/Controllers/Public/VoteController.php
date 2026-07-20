@@ -8,6 +8,7 @@ use App\Models\Parametres;
 use App\Models\Votes;
 use App\Services\ResultatService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -101,13 +102,70 @@ class VoteController extends Controller
 
         $vote = Votes::create($validated);
 
+        $checkoutUrl = $this->creerCheckoutFedapay($vote, $montant);
+
         return response()->json([
             'success' => true,
             'vote_id' => $vote->id,
             'montant' => $montant,
             'quantite' => $validated['quantite'],
             'candidat_nom' => Candidats::find($validated['candidate_id'])->display_name,
+            'checkout_url' => $checkoutUrl,
         ]);
+    }
+
+    private function creerCheckoutFedapay(Votes $vote, int $montant): string
+    {
+        $secretKey = config('services.fedapay.secret_key')
+            ?: Parametres::where('cle', 'fedapay_secret_key')->value('valeur');
+        $isLive = config('services.fedapay.mode', 'live') !== 'sandbox';
+        $base = $isLive ? 'https://api.fedapay.com' : 'https://sandbox-api.fedapay.com';
+
+        if (!$secretKey) {
+            Log::warning('Fedapay : clé secrète manquante, fallback sur redirect sans création');
+            return $base . '/v1/checkout?public_key=' . config('services.fedapay.public_key')
+                . '&amount=' . $montant
+                . '&currency=XOF'
+                . '&description=Ovation+FITAB+%23' . $vote->id
+                . '&callback_url=' . urlencode(route('public.vote.merci', ['vote_id' => $vote->id]))
+                . '&data[vote_id]=' . $vote->id;
+        }
+
+        try {
+            $response = Http::withToken($secretKey)
+                ->post($base . '/v1/transactions', [
+                    'amount' => $montant,
+                    'currency' => ['iso' => 'XOF'],
+                    'description' => 'Ovation FITAB #' . $vote->id,
+                    'callback_url' => route('public.vote.merci', ['vote_id' => $vote->id]),
+                    'custom_metadata' => ['vote_id' => $vote->id],
+                ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                return $data['transaction']['checkout_url'] ?? $data['checkout_url']
+                    ?? $base . '/v1/checkout?public_key=' . config('services.fedapay.public_key')
+                    . '&amount=' . $montant
+                    . '&currency=XOF'
+                    . '&description=Ovation+FITAB+%23' . $vote->id
+                    . '&callback_url=' . urlencode(route('public.vote.merci', ['vote_id' => $vote->id]))
+                    . '&data[vote_id]=' . $vote->id;
+            }
+
+            Log::error('Fedapay : échec création transaction', [
+                'status' => $response->status(),
+                'body' => $response->body(),
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Fedapay : exception création transaction: ' . $e->getMessage());
+        }
+
+        return $base . '/v1/checkout?public_key=' . config('services.fedapay.public_key')
+            . '&amount=' . $montant
+            . '&currency=XOF'
+            . '&description=Ovation+FITAB+%23' . $vote->id
+            . '&callback_url=' . urlencode(route('public.vote.merci', ['vote_id' => $vote->id]))
+            . '&data[vote_id]=' . $vote->id;
     }
 
     // Webhook de confirmation Fedapay (appelé par Fedapay après un paiement)

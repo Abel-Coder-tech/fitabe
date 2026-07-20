@@ -666,7 +666,8 @@ async function lancerPaiement() {
 
         document.getElementById('paymentStepText').textContent = 'Redirection vers Fedapay...';
         document.getElementById('fedapayRedirectNotice').style.display = 'block';
-        ouvrirFedapay(data.vote_id, montant);
+
+        window.location.href = data.checkout_url;
 
     } catch (err) {
         document.getElementById('paymentSpinner').style.display = 'none';
