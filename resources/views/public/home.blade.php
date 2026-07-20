@@ -104,20 +104,11 @@ html, body { overflow-x: hidden; width: 100%; }
 .accordion-button::after { 
     margin-left: 0; 
 }
-.partenaires-track-wrapper {
-    overflow: hidden;
-    overflow-x: auto;
-    width: 100%;
-    padding: 8px 0;
-    scroll-behavior: smooth;
-}
-.partenaires-track-wrapper::-webkit-scrollbar {
-    display: none;
-}
-.partenaires-track {
+.partenaires-grid {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 1.5rem;
-    width: max-content;
 }
 .partenaire-card {
     flex-shrink: 0;
@@ -602,15 +593,13 @@ margin-right: 0;
             <h2 class="fw-bold mt-2" style="color: #3E1E05;">Nos partenaires</h2>
         </div>
         @if ($partenaires->count())
-        <div class="partenaires-track-wrapper">
-            <div class="partenaires-track">
-                @foreach ($partenaires as $p)
-                <div class="partenaire-card"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
-                    <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}">
-                    <h6>{{ $p->nom }}</h6>
-                </div>
-                @endforeach
+        <div class="partenaires-grid">
+            @foreach ($partenaires as $p)
+            <div class="partenaire-card"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
+                <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}">
+                <h6>{{ $p->nom }}</h6>
             </div>
+            @endforeach
         </div>
         @endif
     </div>
@@ -722,28 +711,7 @@ document.addEventListener('DOMContentLoaded', function() {
     resetAuto();
 });
 
-// Auto-scroll partenaires (droite → gauche)
-(function() {
-    var wrapper = document.querySelector('.partenaires-track-wrapper');
-    var track = document.querySelector('.partenaires-track');
-    if (!wrapper || !track) return;
-    var scrollAmount = 0;
-    var speed = 0.4;
-    var paused = false;
-    wrapper.addEventListener('mouseenter', function() { paused = true; });
-    wrapper.addEventListener('mouseleave', function() { paused = false; });
-    function step() {
-        if (!paused) {
-            scrollAmount += speed;
-            if (scrollAmount >= track.scrollWidth - wrapper.clientWidth) {
-                scrollAmount = 0;
-            }
-            wrapper.scrollLeft = scrollAmount;
-        }
-        requestAnimationFrame(step);
-    }
-    step();
-})();
+
 </script>
 @endpush
 @endsection
