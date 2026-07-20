@@ -190,17 +190,14 @@
                             <p class="small text-muted" id="paymentStepDetail">
                                 Montant : <strong id="paymentMontant" style="color: #9B4D07;"></strong>
                             </p>
-                            <div id="fedapayRedirectNotice"
-                                 class="alert alert-info text-center small py-2 mt-2"
-                                 style="display:none; border-radius: 12px;">
-                                <i class="bi bi-box-arrow-up-right me-1"></i> Redirection vers Fedapay...
-                            </div>
                             <button type="button"
                                     class="btn btn-sm btn-link text-muted mt-2"
                                     onclick="allerStep(2)"
                                     id="btnStep3Back">
                                 <i class="bi bi-arrow-left me-1"></i> Retour
                             </button>
+                            {{-- Bouton caché Fedapay (Checkout.js s'y attache) --}}
+                            <button type="button" id="btnPayerFedapay" style="display:none;">Payer</button>
                         </div>
                     </div>
 

@@ -35,6 +35,10 @@
 @endif
 @endpush
 
+@push('scripts')
+<script src="https://cdn.fedapay.com/checkout.js?v=1.1.3"></script>
+@endpush
+
 @push('styles')
 <style>
     :root {
@@ -660,14 +664,11 @@ async function lancerPaiement() {
         etat.voteId = data.vote_id;
         document.getElementById('paymentSpinner').style.display = 'none';
 
-        const quantite = data.quantite;
         const montant = data.montant;
         document.getElementById('paymentMontant').textContent = montant.toLocaleString('fr-FR') + ' FCFA';
 
-        document.getElementById('paymentStepText').textContent = 'Redirection vers Fedapay...';
-        document.getElementById('fedapayRedirectNotice').style.display = 'block';
-
-        window.location.href = data.checkout_url;
+        document.getElementById('paymentStepText').textContent = 'Initialisation du paiement...';
+        ouvrirFedapay(data.vote_id, montant);
 
     } catch (err) {
         document.getElementById('paymentSpinner').style.display = 'none';
@@ -696,16 +697,35 @@ function ouvrirFedapay(voteId, montant) {
         return;
     }
 
-    const isLive = '{{ config('services.fedapay.mode', 'live') }}' === 'live';
-    const base = isLive ? 'https://api.fedapay.com' : 'https://sandbox-api.fedapay.com';
-    const checkoutUrl = base + '/v1/checkout?public_key=' + apiKey
-        + '&amount=' + montant
-        + '&currency=XOF'
-        + '&description=Ovation+FITAB+%23' + voteId
-        + '&callback_url=' + encodeURIComponent('{{ route("public.vote.merci", ["vote_id" => "__VOTE_ID__"]) }}'.replace('__VOTE_ID__', voteId))
-        + '&data[vote_id]=' + voteId;
+    const apiEnv = '{{ $fedapayMode }}' === 'sandbox' ? 'sandbox' : 'live';
+    const btn = document.getElementById('btnPayerFedapay');
+    if (!btn) return;
 
-    window.location.href = checkoutUrl;
+    const callbackUrl = '{{ route("public.vote.merci") }}?vote_id=' + voteId;
+
+    FedaPay.init(btn, {
+        public_key: apiKey,
+        environment: apiEnv,
+        transaction: {
+            amount: montant,
+            description: 'Ovation FITAB #' + voteId,
+        },
+        currency: { iso: 'XOF' },
+        onComplete: function(data) {
+            if (data.reason === 'CHECKOUT COMPLETE' && data.transaction && data.transaction.id) {
+                var pm = data.transaction.payment_method || 'mobile_money';
+                var ph = data.transaction.phone || '';
+                window.location.href = callbackUrl + '&id=' + data.transaction.id + '&status=' + (data.transaction.status || 'approved') + '&payment_method=' + pm + '&phone=' + ph;
+            } else {
+                document.getElementById('paymentStepText').textContent = 'Paiement annulé ou fermé. Vous pouvez réessayer.';
+                document.getElementById('paymentStepText').className = 'text-warning fw-semibold';
+                document.getElementById('btnStep3Back').disabled = false;
+            }
+        }
+    });
+
+    document.getElementById('paymentStepText').textContent = 'Ouverture de la fenêtre Fedapay...';
+    btn.click();
 }
 
 // ==================== COMPTEUR (état 2 uniquement) ====================
