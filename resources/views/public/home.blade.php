@@ -104,55 +104,55 @@ html, body { overflow-x: hidden; width: 100%; }
 .accordion-button::after { 
     margin-left: 0; 
 }
-.partenaires-row { 
-    display: flex; 
-    flex-wrap: wrap; 
-    justify-content: center; 
-    gap: 1.5rem; 
+.partenaires-track-wrapper {
+    overflow: hidden;
+    width: 100%;
+}
+.partenaires-track {
+    display: flex;
+    gap: 1.5rem;
+    width: max-content;
+    animation: scrollPartenaires 30s linear infinite;
+}
+.partenaires-track:hover {
+    animation-play-state: paused;
 }
 .partenaire-card {
-    flex: 0 0 auto;
-    width: 220px;
+    flex-shrink: 0;
+    width: 180px;
     background: #fff;
     border: 1px solid rgba(202,123,5,0.15);
     border-radius: 16px;
-    padding: 1.25rem 1rem 1rem;
+    padding: 1rem 0.75rem 0.75rem;
     text-align: center;
     transition: transform .35s, box-shadow .35s, border-color .35s;
-    cursor: default;
+    cursor: pointer;
 }
 .partenaire-card:hover {
-    transform: translateY(-6px) scale(1.04);
-    box-shadow: 0 12px 32px rgba(62,30,5,0.12);
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 10px 28px rgba(62,30,5,0.1);
     border-color: #CA7B05;
 }
 .partenaire-card img {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #e8e8e8;
-    margin-bottom: 0.6rem;
-    transition: transform .35s, border-color .35s;
+    width: 100%;
+    height: 80px;
+    object-fit: contain;
+    display: block;
+    margin-bottom: 0.5rem;
+    transition: transform .35s;
 }
 .partenaire-card:hover img {
-    transform: scale(1.15);
-    border-color: #CA7B05;
+    transform: scale(1.08);
 }
 .partenaire-card h6 {
     color: #3E1E05;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0;
 }
-.partenaire-card .small {
-    color: #5F2B0C;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    line-height: 1.4;
-    min-height: 2.8em;
+@keyframes scrollPartenaires {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 .accordion-button:not(.collapsed) { 
     background: transparent !important; 
@@ -603,16 +603,23 @@ margin-right: 0;
             <h2 class="fw-bold mt-2" style="color: #3E1E05;">Nos partenaires</h2>
         </div>
         @if ($partenaires->count())
-        <div class="partenaires-row">
-            @foreach ($partenaires as $p)
-            <div class="partenaire-card"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
-                <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}">
-                <h6>{{ $p->nom }}</h6>
-                @if ($p->description)
-                <p class="small mb-0">{{ $p->description }}</p>
+        <div class="partenaires-track-wrapper">
+            <div class="partenaires-track">
+                @foreach ($partenaires as $p)
+                <div class="partenaire-card"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
+                    <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}">
+                    <h6>{{ $p->nom }}</h6>
+                </div>
+                @endforeach
+                @if ($partenaires->count() > 1)
+                @foreach ($partenaires as $p)
+                <div class="partenaire-card"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
+                    <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}">
+                    <h6>{{ $p->nom }}</h6>
+                </div>
+                @endforeach
                 @endif
             </div>
-            @endforeach
         </div>
         @endif
     </div>
