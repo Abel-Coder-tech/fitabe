@@ -488,7 +488,7 @@
                         <button class="btn btn-sm px-3 fw-semibold" style="background: #9B4D07; color: #fff;" type="button" data-bs-toggle="collapse" data-bs-target="#reglementCollapse">
                             <i class="bi bi-eye me-1"></i> Lire
                         </button>
-                        <a href="{{ asset('storage/documents/reglement-fitab-2026.pdf') }}" class="btn btn-sm px-3 fw-semibold" style="border: 2px solid #9B4D07; color: #9B4D07;" target="_blank">
+                        <a href="{{ asset('documents/reglement-fitab-2026.pdf') }}" class="btn btn-sm px-3 fw-semibold" style="border: 2px solid #9B4D07; color: #9B4D07;" target="_blank">
                             <i class="bi bi-download me-1"></i> Télécharger (PDF)
                         </a>
                     </div>
