@@ -106,16 +106,18 @@ html, body { overflow-x: hidden; width: 100%; }
 }
 .partenaires-track-wrapper {
     overflow: hidden;
+    overflow-x: auto;
     width: 100%;
+    padding: 8px 0;
+    scroll-behavior: smooth;
+}
+.partenaires-track-wrapper::-webkit-scrollbar {
+    display: none;
 }
 .partenaires-track {
     display: flex;
     gap: 1.5rem;
     width: max-content;
-    animation: scrollPartenaires 40s linear infinite;
-}
-.partenaires-track:hover {
-    animation-play-state: paused;
 }
 .partenaire-card {
     flex-shrink: 0;
@@ -150,10 +152,7 @@ html, body { overflow-x: hidden; width: 100%; }
     font-weight: 700;
     margin-bottom: 0;
 }
-@keyframes scrollPartenaires {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-}
+
 .accordion-button:not(.collapsed) { 
     background: transparent !important; 
     color: #3E1E05 !important; 
@@ -239,7 +238,7 @@ margin-right: 0;
 .carousel-viewport {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     user-select: none;
     cursor: grab;
@@ -722,6 +721,29 @@ document.addEventListener('DOMContentLoaded', function() {
     buildDots();
     resetAuto();
 });
+
+// Auto-scroll partenaires (droite → gauche)
+(function() {
+    var wrapper = document.querySelector('.partenaires-track-wrapper');
+    var track = document.querySelector('.partenaires-track');
+    if (!wrapper || !track) return;
+    var scrollAmount = 0;
+    var speed = 0.4;
+    var paused = false;
+    wrapper.addEventListener('mouseenter', function() { paused = true; });
+    wrapper.addEventListener('mouseleave', function() { paused = false; });
+    function step() {
+        if (!paused) {
+            scrollAmount += speed;
+            if (scrollAmount >= track.scrollWidth - wrapper.clientWidth) {
+                scrollAmount = 0;
+            }
+            wrapper.scrollLeft = scrollAmount;
+        }
+        requestAnimationFrame(step);
+    }
+    step();
+})();
 </script>
 @endpush
 @endsection
