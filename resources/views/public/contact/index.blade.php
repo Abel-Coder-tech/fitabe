@@ -8,7 +8,7 @@
          style="min-height: 220px; background: linear-gradient(135deg, rgba(62,30,5,0.88) 0%, rgba(62,30,5,0.65) 50%, rgba(62,30,5,0.4) 100%), url('{{ asset('images/hero.jpg') }}') no-repeat center center; background-size: cover;">
     <div class="container text-center">
         <h1 class="fw-bold display-6 mb-2" style="color: #E3D5AD;">Contactez-nous</h1>
-        <p class="mb-0" style="color: rgba(227,213,173,0.8); max-width: 500px; margin: 0 auto;">Une question, une suggestion ? Nous sommes à votre écoute.</p>
+        <p class="mb-0" style="color: rgba(227,213,173,0.8); max-width: 500px; margin: 0 auto;">Une question, une suggestion ? <br> Nous sommes à votre écoute.</p>
     </div>
 </section>
 

@@ -55,7 +55,7 @@ html, body { overflow-x: hidden; width: 100%; }
     .hero-section h1 { font-size: 1.75rem !important; }
 }
 @media (max-width: 575.98px) {
-    .public-footer .container { padding-left: 24px; padding-right: 24px; }
+    .public-footer .container { padding-left: 12px; padding-right: 12px; }
     .public-footer .row.gy-4 { --bs-gutter-y: 1.5rem; }
     .public-footer .brand img { height: 70px; }
 }
