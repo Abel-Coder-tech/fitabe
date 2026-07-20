@@ -231,7 +231,7 @@ margin-right: 0;
 .carousel-viewport {
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
     user-select: none;
     cursor: grab;
@@ -331,7 +331,7 @@ margin-right: 0;
 <section class="py-5 section-light" id="presentation">
     <div class="container">
         <div class="row align-items-center ">
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                 <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Présentation</span>
                 <h2 class="display-6 fw-bold mt-2 mb-2" style="color: #9B4D07;">
                     Porto-Novo a un festival.<br>
@@ -365,7 +365,7 @@ margin-right: 0;
                     </p>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                 <div class="fitab-carousel">
                     @php
                         $slides = [
