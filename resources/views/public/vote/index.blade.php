@@ -41,6 +41,10 @@
 
 @push('styles')
 <style>
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+    }
     :root {
         --vote-brown: #3E1E05;
         --vote-gold: #9B4D07;
@@ -306,23 +310,35 @@
                 <p class="small text-muted mb-0">Ovationnez votre artiste préféré en 3 étapes simples</p>
             </div>
             <div class="col-lg-6 col-md-8">
-                <div class="d-flex align-items-center">
-                    <div class="text-center flex-fill">
-                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white mb-1" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">1</div>
-                        <div class="small fw-semibold mt-1" style="color: #9B4D07;">Choisisser</div>
-                        <div class="small text-muted" style="font-size: 0.75rem;">votre candidat</div>
+                {{-- Cercles avec traits centrés --}}
+                <div class="d-flex align-items-center mb-1">
+                    <div class="text-center" style="flex: 1;">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">1</div>
                     </div>
-                    <div class="flex-grow-1 mx-2" style="height: 2px; background: #E3D5AD;"></div>
-                    <div class="text-center flex-fill">
-                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white mb-1" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">2</div>
-                        <div class="small fw-semibold mt-1" style="color: #9B4D07;">Entrer</div>
-                        <div class="small text-muted" style="font-size: 0.75rem;">le nombre d'ovations</div>
+                    <div style="flex: 0 0 auto; width: 40px; height: 2px; background: #E3D5AD; margin: 0 -4px;"></div>
+                    <div class="text-center" style="flex: 1;">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">2</div>
                     </div>
-                    <div class="flex-grow-1 mx-2" style="height: 2px; background: #E3D5AD;"></div>
-                    <div class="text-center flex-fill">
-                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white mb-1" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">3</div>
-                        <div class="small fw-semibold mt-1" style="color: #9B4D07;">Payer</div>
-                        <div class="small text-muted" style="font-size: 0.75rem;">Mobile Money </div>
+                    <div style="flex: 0 0 auto; width: 40px; height: 2px; background: #E3D5AD; margin: 0 -4px;"></div>
+                    <div class="text-center" style="flex: 1;">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">3</div>
+                    </div>
+                </div>
+                {{-- Labels alignés sous chaque cercle --}}
+                <div class="d-flex">
+                    <div class="text-center" style="flex: 1;">
+                        <div class="small fw-semibold mt-0" style="color: #9B4D07; font-size: 0.75rem;">Choisisser</div>
+                        <div class="small text-muted" style="font-size: 0.65rem;">votre candidat</div>
+                    </div>
+                    <div style="flex: 0 0 auto; width: 40px;"></div>
+                    <div class="text-center" style="flex: 1;">
+                        <div class="small fw-semibold mt-0" style="color: #9B4D07; font-size: 0.75rem;">Entrer</div>
+                        <div class="small text-muted" style="font-size: 0.65rem;">le nombre d'ovations</div>
+                    </div>
+                    <div style="flex: 0 0 auto; width: 40px;"></div>
+                    <div class="text-center" style="flex: 1;">
+                        <div class="small fw-semibold mt-0" style="color: #9B4D07; font-size: 0.75rem;">Payer</div>
+                        <div class="small text-muted" style="font-size: 0.65rem;">Mobile Money</div>
                     </div>
                 </div>
             </div>
