@@ -218,6 +218,113 @@ html, body { overflow-x: hidden; width: 100%; }
     margin-left: auto; 
 margin-right: 0; 
 }
+
+/* ========== CAROUSEL PRÉSENTATION ========== */
+.fitab-carousel {
+    max-width: 480px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    background: #fff;
+}
+.carousel-viewport {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    user-select: none;
+    cursor: grab;
+    touch-action: pan-y;
+}
+.carousel-viewport:active { cursor: grabbing; }
+.carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+}
+.carousel-slide {
+    flex: 0 0 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.carousel-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.1) 100%);
+    pointer-events: none;
+}
+.carousel-label {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    letter-spacing: 0.5px;
+    text-align: center;
+    padding: 0 1rem;
+}
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    backdrop-filter: blur(4px);
+    transition: all 0.2s;
+    cursor: pointer;
+    opacity: 0;
+}
+.carousel-viewport:hover .carousel-btn { opacity: 1; }
+.carousel-btn:hover { background: rgba(255,255,255,0.35); }
+.carousel-btn-left  { left: 12px; }
+.carousel-btn-right { right: 12px; }
+.carousel-btn:disabled { opacity: 0.15; cursor: default; }
+
+.carousel-dots {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 8px;
+}
+.carousel-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.45);
+    cursor: pointer;
+    transition: all 0.25s;
+}
+.carousel-dots span.active {
+    background: #CA7B05;
+    width: 22px;
+    border-radius: 4px;
+}
+
+@media (max-width: 575.98px) {
+    .fitab-carousel { max-width: 100%; border-radius: 12px; }
+    .carousel-label { font-size: 1.3rem; }
+    .carousel-btn { width: 32px; height: 32px; font-size: 0.9rem; opacity: 1; background: rgba(0,0,0,0.3); }
+}
 </style>
 
 {{-- ==================== PRÉSENTATION ==================== --}}
@@ -259,31 +366,30 @@ margin-right: 0;
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="position-relative mx-auto" style="max-width: 100%; width: 360px; height: 500px;">
+                <div class="fitab-carousel">
                     @php
-                        $items = [
-                            ['img' => 'cat1', 'angle' => 90,  'label' => 'Théatre',       'pos' => 'top'],
-                            ['img' => 'cat2', 'angle' => 30,  'label' => 'Percussion',      'pos' => 'right'],
-                            ['img' => 'cat3', 'angle' => 330, 'label' => 'Musique',         'pos' => 'right'],
-                            ['img' => 'cat4', 'angle' => 270, 'label' => 'Danse',    'pos' => 'bottom'],
-                            ['img' => 'cat5', 'angle' => 210, 'label' => 'Art visuel',    'pos' => 'left'],
-                            ['img' => 'cat6', 'angle' => 150, 'label' => 'Stylisme/Modélisme', 'pos' => 'left'],
-                        ];
-                        $labelStyles = [
-                            'top'    => 'bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 8px; text-align: center;',
-                            'right'  => 'left: 100%; top: 50%; transform: translateY(-50%); margin-left: 8px;',
-                            'bottom' => 'top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px; text-align: center;',
-                            'left'   => 'right: 100%; top: 50%; transform: translateY(-50%); margin-right: 8px; text-align: right;',
+                        $slides = [
+                            ['img' => 'cat1', 'label' => 'Théâtre'],
+                            ['img' => 'cat2', 'label' => 'Percussion'],
+                            ['img' => 'cat3', 'label' => 'Musique'],
+                            ['img' => 'cat4', 'label' => 'Danse'],
+                            ['img' => 'cat5', 'label' => 'Art visuel'],
+                            ['img' => 'cat6', 'label' => 'Stylisme & Modélisme'],
                         ];
                     @endphp
-                    @foreach ($items as $item)
-                    <div class="position-absolute rounded-circle cat-circle" style="width: 130px; height: 130px; top: 50%; left: 50%; margin-top: -65px; margin-left: -65px; border: 3px solid #e8e8e8; transform: rotate({{ $item['angle'] }}deg) translateX(90px) rotate(-{{ $item['angle'] }}deg);">
-                        <div class="w-100 h-100 overflow-hidden rounded-circle cat-inner">
-                            <img src="{{ asset('images/categories/' . $item['img'] . '.jpg') }}" alt="" class="w-100 h-100" style="object-fit: cover; display: block;">
+                    <div class="carousel-viewport" id="presentationCarousel">
+                        <div class="carousel-track">
+                            @foreach ($slides as $i => $slide)
+                            <div class="carousel-slide{{ $i === 0 ? ' active' : '' }}" style="background-image: url('{{ asset('images/categories/'.$slide['img'].'.jpg') }}');">
+                                <div class="carousel-overlay"></div>
+                                <div class="carousel-label">{{ $slide['label'] }}</div>
+                            </div>
+                            @endforeach
                         </div>
-                        <span class="cat-label position-absolute fw-semibold small text-nowrap px-3 py-1 rounded-pill text-white" style="{{ $labelStyles[$item['pos']] }}">{{ $item['label'] }}</span>
+                        <button class="carousel-btn carousel-btn-left" aria-label="Précédent"><i class="bi bi-chevron-left"></i></button>
+                        <button class="carousel-btn carousel-btn-right" aria-label="Suivant"><i class="bi bi-chevron-right"></i></button>
+                        <div class="carousel-dots"></div>
                     </div>
-                    @endforeach
                 </div>
             </div>
         </div>
@@ -519,4 +625,101 @@ margin-right: 0;
         </a>
     </div>
 </section>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var viewport = document.getElementById('presentationCarousel');
+    if (!viewport) return;
+    var track = viewport.querySelector('.carousel-track');
+    var slides = track.querySelectorAll('.carousel-slide');
+    var dotsContainer = viewport.querySelector('.carousel-dots');
+    var prevBtn = viewport.querySelector('.carousel-btn-left');
+    var nextBtn = viewport.querySelector('.carousel-btn-right');
+    var total = slides.length;
+    var current = 0;
+    var autoTimer;
+    var isDragging = false;
+    var startX = 0;
+    var currentTranslate = 0;
+    var prevTranslate = 0;
+    var animationID = 0;
+
+    function buildDots() {
+        dotsContainer.innerHTML = '';
+        for (var i = 0; i < total; i++) {
+            var dot = document.createElement('span');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', function() { goTo(parseInt(this.dataset.index)); });
+            dot.dataset.index = i;
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    function goTo(index) {
+        if (index < 0) index = 0;
+        if (index >= total) index = total - 1;
+        if (index === current) return;
+        current = index;
+        var offset = -current * 100;
+        track.style.transform = 'translateX(' + offset + '%)';
+        slides.forEach(function(s, i) { s.classList.toggle('active', i === current); });
+        dotsContainer.querySelectorAll('span').forEach(function(d, i) { d.classList.toggle('active', i === current); });
+        resetAuto();
+    }
+
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    function resetAuto() {
+        clearTimeout(autoTimer);
+        autoTimer = setTimeout(next, 4000);
+    }
+
+    // Touch / drag
+    function dragStart(e) {
+        isDragging = true;
+        startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+        track.style.transition = 'none';
+        prevTranslate = currentTranslate || -current * (viewport.offsetWidth || 480);
+        viewport.classList.add('dragging');
+        cancelAnimationFrame(animationID);
+    }
+    function dragMove(e) {
+        if (!isDragging) return;
+        var x = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+        var diff = (x - startX);
+        currentTranslate = prevTranslate + diff;
+        track.style.transform = 'translateX(' + currentTranslate + 'px)';
+    }
+    function dragEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        viewport.classList.remove('dragging');
+        track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        var w = viewport.offsetWidth || 480;
+        var movedBy = currentTranslate - (-current * w);
+        if (Math.abs(movedBy) > w * 0.15) {
+            if (movedBy < 0) next(); else prev();
+        } else {
+            goTo(current);
+        }
+        prevTranslate = currentTranslate;
+    }
+
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+    viewport.addEventListener('mousedown', dragStart);
+    viewport.addEventListener('mousemove', dragMove);
+    viewport.addEventListener('mouseup', dragEnd);
+    viewport.addEventListener('mouseleave', dragEnd);
+    viewport.addEventListener('touchstart', dragStart, { passive: true });
+    viewport.addEventListener('touchmove', dragMove, { passive: true });
+    viewport.addEventListener('touchend', dragEnd);
+
+    buildDots();
+    resetAuto();
+});
+</script>
+@endpush
 @endsection
