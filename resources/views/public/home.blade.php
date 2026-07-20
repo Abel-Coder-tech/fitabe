@@ -356,7 +356,7 @@ margin-right: 0;
                     </div>
                 </div>
 
-                <div class="p-3 rounded-3 border-start" style="border-color: #CA7B05 !important; border-width: 4px !important; background-color: #fdfaf5;">
+                <div class="p-3 rounded-3 border-start" style="border-color: #CA7B05 !important; border-width: 4px !important; background-color: #f5ebe0;">
                     <p class="mb-0 fst-italic" style="color: #5F2B0C; line-height: 1.7;">
                         « Il n'y a pas de grande nation sans grande culture. Porto-Novo mérite un festival à la hauteur de son âme. »
                     </p>
