@@ -29,14 +29,14 @@
 
                 <div class="row g-2 g-lg-3 mt-4 justify-content-center justify-content-lg-start hero-stats" style="color: rgba(227,213,173,0.7); font-size: 1.05rem;">
                     <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-calendar-week fs-5" style="color: #CA7B05;"></i> <span>5 Jours</span></div></div>
-                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-people-fill fs-5" style="color: #CA7B05;"></i> <span>30 000 spectateurs</span></div></div>
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-people-fill fs-5" style="color: #CA7B05;"></i> <span>30 000 spect.</span></div></div>
                     <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-grid-3x3-gap-fill fs-5" style="color: #CA7B05;"></i> <span>6 catégories</span></div></div>
                     <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-trophy-fill fs-5" style="color: #CA7B05;"></i> <span>+ 3 000 000 FCFA</span></div></div>
                 </div>
             </div>
 
             <div class="col-lg-4 d-none d-lg-flex justify-content-center">
-                <div class="text-center p-4 rounded-4" style="border: 1px solid rgba(202,123,5,0.4); background: rgba(227,213,173,0.06); backdrop-filter: blur(8px); max-width: 240px;">
+                <div class="text-center p-4 rounded-4" style="border: 1px solid rgba(202,123,5,0.4); background: rgba(227,213,173,0.06); backdrop-filter: blur(8px); max-width: 500px;">
                     <i class="bi bi-calendar-event" style="color: #CA7B05; font-size: 2rem;"></i>
                     <h6 class="text-white mt-2 mb-0" style="font-size: 1.1rem; font-weight: 700;">Novembre 2026</h6>
                    

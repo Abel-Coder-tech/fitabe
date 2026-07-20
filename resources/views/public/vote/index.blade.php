@@ -309,20 +309,20 @@
                 <div class="d-flex align-items-center">
                     <div class="text-center flex-fill">
                         <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white mb-1" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">1</div>
-                        <div class="small fw-semibold mt-1" style="color: #9B4D07;">Choisissez</div>
+                        <div class="small fw-semibold mt-1" style="color: #9B4D07;">Choisisser</div>
                         <div class="small text-muted" style="font-size: 0.75rem;">votre candidat</div>
                     </div>
                     <div class="flex-grow-1 mx-2" style="height: 2px; background: #E3D5AD;"></div>
                     <div class="text-center flex-fill">
                         <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white mb-1" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">2</div>
-                        <div class="small fw-semibold mt-1" style="color: #9B4D07;">Entrez</div>
+                        <div class="small fw-semibold mt-1" style="color: #9B4D07;">Entrer</div>
                         <div class="small text-muted" style="font-size: 0.75rem;">le nombre d'ovations</div>
                     </div>
                     <div class="flex-grow-1 mx-2" style="height: 2px; background: #E3D5AD;"></div>
                     <div class="text-center flex-fill">
                         <div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white mb-1" style="width: 36px; height: 36px; background: #9B4D07; font-size: 0.85rem;">3</div>
-                        <div class="small fw-semibold mt-1" style="color: #9B4D07;">Payez</div>
-                        <div class="small text-muted" style="font-size: 0.75rem;">Mobile Money / Carte</div>
+                        <div class="small fw-semibold mt-1" style="color: #9B4D07;">Payer</div>
+                        <div class="small text-muted" style="font-size: 0.75rem;">Mobile Money </div>
                     </div>
                 </div>
             </div>

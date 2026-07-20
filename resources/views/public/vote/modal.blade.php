@@ -26,7 +26,7 @@
                                  src=""
                                  alt=""
                                  class="rounded-3 shadow"
-                                 style="max-width: 100%; max-height: 260px; object-fit: contain;">
+                                 style="max-width: 100%; max-height: 200px; object-fit: contain;">
                             <div class="mt-3">
                                 <div class="fw-bold" style="font-size: 1.25rem; color: #3E1E05;" id="candidatNameMini"></div>
                                 <div class="d-flex align-items-center justify-content-center gap-2 mt-1">
@@ -108,7 +108,7 @@
                                 Moyen de paiement
                                 <span class="text-danger ms-1">*</span>
                             </h6>
-                            <small class="text-muted">Choisissez votre passerelle de paiement</small>
+                            <small class="text-muted">Choisissez votre moyen de paiement</small>
                         </div>
 
                         {{-- Résumé commande --}}
