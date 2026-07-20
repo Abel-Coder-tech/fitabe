@@ -459,7 +459,7 @@ margin-right: 0;
         </div>
 
         {{-- Promoteur 1 : image gauche, texte droite --}}
-        <div class="row align-items-center g-3 mb-5">
+        <div class="row align-items-center mb-5">
             <div class="col-lg-6">
                 <div class="position-relative d-inline-block">
                     <img src="{{ asset('images/promoteurs/promoteur1.png') }}" alt="MISTER OKEKE"
@@ -616,7 +616,7 @@ margin-right: 0;
                 @foreach ($partenaires as $p)
                 <div class="partenaire-card"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
                     <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}">
-                    <h6>{{ $p->nom }}</h6>
+                  
                 </div>
                 @endforeach
             </div>
