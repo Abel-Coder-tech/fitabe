@@ -703,6 +703,11 @@ function ouvrirFedapay(voteId, montant) {
 
     const callbackUrl = '{{ route("public.vote.merci") }}?vote_id=' + voteId;
 
+    // Fermer la modale Bootstrap avant d'ouvrir le widget Fedapay
+    const modalEl = document.getElementById('voteModal');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    if (modal) modal.hide();
+
     FedaPay.init(btn, {
         public_key: apiKey,
         environment: apiEnv,
