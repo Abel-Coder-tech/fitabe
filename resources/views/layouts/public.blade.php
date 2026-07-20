@@ -242,7 +242,7 @@
     </main>
 
     {{-- ==================== FOOTER ==================== --}}
-    <footer class="pt-5 pb-3" style="background-color: #3E1E05; color: #E3D5AD;">
+    <footer class="public-footer pt-5 pb-3" style="background-color: #3E1E05; color: #E3D5AD;">
         <div class="container">
 
             {{-- Newsletter --}}
@@ -270,14 +270,14 @@
 
                 {{-- À propos --}}
                 <div class="col-12 col-lg-4">
-                    <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="d-flex align-items-center gap-2 mb-3 brand">
                         <img src="{{ asset('images/logo.png') }}" alt="FITAB" height="50"
                              onerror="this.style.display='none'">
                     </div>
                     <p class="small lh-lg" style="color: rgba(227,213,173,0.65);">
                         Festival International des Talents Artistiques du Bénin. Théâtre, Danse, Musique, Percussion et Art Visuel.
                     </p>
-                    <div class="d-flex gap-3 mt-3">
+                    <div class="d-flex gap-3 mt-3 footer-social">
                         <a href="https://www.facebook.com/share/1WhHoPqx9H/" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-facebook"></i></a>
                         <a href="https://www.instagram.com/fitab_talents_artistiques_pn/" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-instagram"></i></a>
                         <a href="https://www.youtube.com/@TalentsArtistiques" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-youtube"></i></a>

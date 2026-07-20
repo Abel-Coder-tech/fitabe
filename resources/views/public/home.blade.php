@@ -3,7 +3,7 @@
 @section('title', 'Accueil - ' . config('app.name', 'FITAB'))
 
 @section('content')
-<div class="position-relative d-flex align-items-center"
+<div class="hero-section position-relative d-flex align-items-center"
      style="background: linear-gradient(135deg, rgba(62,30,5,0.92) 0%, rgba(62,30,5,0.7) 50%, rgba(62,30,5,0.4) 100%), url('{{ asset('images/hero.jpg') }}') no-repeat center center; background-size: cover; min-height: calc(100vh - 64px);">
     <div class="container">
         <div class="row align-items-center">
@@ -48,7 +48,19 @@
 </div>
 
 <style>
+html, body { overflow-x: hidden; width: 100%; }
 .hero-stats span { white-space: nowrap; }
+@media (max-width: 767.98px) {
+    .hero-section { padding: 2.5rem 0; }
+    .hero-section h1 { font-size: 1.75rem !important; }
+}
+@media (max-width: 575.98px) {
+    .public-footer .container { padding-left: 24px; padding-right: 24px; }
+    .public-footer .row.gy-4 { --bs-gutter-y: 1.5rem; }
+    .public-footer .brand { justify-content: center; }
+    .public-footer .brand img { height: 70px; }
+    .footer-social { justify-content: center; }
+}
 @media (max-width: 420px) {
     .hero-stats { font-size: 0.85rem !important; }
     .hero-stats .fs-5 { font-size: 0.95rem !important; }
