@@ -77,23 +77,50 @@
         .nav-hover.nav-active { color: var(--fitab-orange-light) !important; }
         .social-icon { transition: color 0.2s; }
         .social-icon:hover { color: var(--fitab-orange-light) !important; }
-        .navbar-toggler {
-            border: 1px solid rgba(227,213,173,0.3);
-            --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23E3D5AD' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-        }
         .footer-link { transition: color 0.2s; }
         .footer-link:hover { color: var(--fitab-orange-light) !important; }
 
+        /* Navigation responsive CSS-only */
+        .nav-menu {
+            gap: 0.5rem;
+        }
         @media (max-width: 991.98px) {
-               .navbar-nav {
-                    text-align: center;
-                    }
-                .navbar-nav .nav-item {
-                    margin: 5px 0;
-                    }
-                .navbar-nav .nav-link {
-                    display: inline-block;
-                    }
+            body { overflow-x: hidden; }
+            .nav-menu {
+                position: fixed;
+                top: 76px;
+                left: 0;
+                right: 0;
+                background: rgba(62,30,5,0.98);
+                flex-direction: column !important;
+                align-items: center !important;
+                padding: 1rem 0;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                z-index: 1029;
+            }
+            #navToggle:checked ~ .nav-menu {
+                transform: translateX(0);
+            }
+            #navToggle:checked ~ .nav-hamburger span:nth-child(1) {
+                transform: rotate(45deg) translate(4px, 4px);
+            }
+            #navToggle:checked ~ .nav-hamburger span:nth-child(2) {
+                opacity: 0;
+            }
+            #navToggle:checked ~ .nav-hamburger span:nth-child(3) {
+                transform: rotate(-45deg) translate(4px, -4px);
+            }
+            .nav-menu .nav-link {
+                display: block;
+                padding: 0.6rem 1.5rem;
+                text-align: center;
+            }
+        }
+        @media (min-width: 992px) {
+            .nav-menu {
+                flex-direction: row !important;
+            }
         }
     </style>
     @stack('styles')
@@ -101,50 +128,51 @@
 <body>
 
     {{-- ==================== NAVBAR ==================== --}}
-    <nav class="navbar navbar-expand-lg fixed-top" style="background-color: rgba(62,30,5,0.95); backdrop-filter: blur(10px);">
-        <div class="container">
+    <nav class="navbar fixed-top" style="background-color: rgba(62,30,5,0.95); backdrop-filter: blur(10px); z-index: 1030;">
+        <div class="container d-flex align-items-center justify-content-between">
 
-            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
+            <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
                 <img src="{{ asset('images/logo.png') }}" alt="FITAB" height="48"
                      onerror="this.style.display='none'">
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <input type="checkbox" id="navToggle" class="d-none" aria-label="Menu">
+            <label for="navToggle" class="nav-hamburger d-flex d-lg-none flex-column gap-1" style="cursor:pointer; padding: 4px;">
+                <span style="width:26px; height:3px; background:#E3D5AD; border-radius:2px; transition: 0.3s;"></span>
+                <span style="width:26px; height:3px; background:#E3D5AD; border-radius:2px; transition: 0.3s;"></span>
+                <span style="width:26px; height:3px; background:#E3D5AD; border-radius:2px; transition: 0.3s;"></span>
+            </label>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto gap-lg-2 align-items-lg-center">
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium nav-hover {{ request()->routeIs('home') ? 'nav-active' : '' }}"
-                           style="color: #E3D5AD;"
-                           href="{{ route('home') }}">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.medias') ? 'nav-active' : '' }}"
-                           style="color: #E3D5AD;"
-                           href="{{ route('public.medias') }}">Médiathèque</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.vote') ? 'nav-active' : '' }}"
-                           style="color: #E3D5AD;"
-                           href="{{ route('public.vote') }}">Ovation</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.contact') ? 'nav-active' : '' }}"
-                           style="color: #E3D5AD;"
-                           href="{{ route('public.contact') }}">Contact</a>
-                    </li>
-                   
-                </ul>
-            </div>
+            <ul class="nav-menu d-flex flex-column flex-lg-row align-items-lg-center gap-lg-2 list-unstyled mb-0">
+                <li class="nav-item">
+                    <a class="nav-link fw-medium nav-hover {{ request()->routeIs('home') ? 'nav-active' : '' }}"
+                       style="color: #E3D5AD;"
+                       href="{{ route('home') }}">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.medias') ? 'nav-active' : '' }}"
+                       style="color: #E3D5AD;"
+                       href="{{ route('public.medias') }}">Médiathèque</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.vote') ? 'nav-active' : '' }}"
+                       style="color: #E3D5AD;"
+                       href="{{ route('public.vote') }}">Ovation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.contact') ? 'nav-active' : '' }}"
+                       style="color: #E3D5AD;"
+                       href="{{ route('public.contact') }}">Contact</a>
+                </li>
+            </ul>
 
         </div>
     </nav>
 
-    {{-- ==================== CONTENU ==================== --}}
-    <main style="margin-top: 76px;">
+    {{-- ==================== ESPACEUR NAVBAR ==================== --}}
+    <div style="height: 76px;"></div>
 
+    <main>
         @if (session('success'))
             <div class="container mt-3">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
