@@ -77,9 +77,19 @@ class VoteController extends Controller
 
     public function toggle()
     {
-        $statut = Parametres::where('cle', 'statut_vote')->value('valeur');
+        $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
+        $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
 
-        if ($statut === 'active') {
+        if (!$dateDebut || !$dateFin) {
+            return to_route('admin.votes.index')
+                ->with('error', 'Veuillez d\'abord définir une date de début et de fin dans le menu Ovations avant de démarrer le vote.');
+        }
+
+        $now = Carbon::now();
+        $debut = Carbon::parse($dateDebut);
+        $fin = Carbon::parse($dateFin);
+
+        if ($now >= $debut && $now < $fin) {
             Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'cloture']);
             try {
                 $annee = date('Y');
@@ -89,14 +99,6 @@ class VoteController extends Controller
                 \Illuminate\Support\Facades\Log::error('Erreur génération résultats: ' . $e->getMessage());
             }
             return to_route('admin.votes.index')->with('success', 'Vote clôturé. Résultats générés.');
-        }
-
-        $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
-        $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
-
-        if (!$dateDebut || !$dateFin) {
-            return to_route('admin.votes.index')
-                ->with('error', 'Veuillez d\'abord définir une date de début et de fin dans le menu Ovations avant de démarrer le vote.');
         }
 
         Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'active']);

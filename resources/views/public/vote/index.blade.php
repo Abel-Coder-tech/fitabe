@@ -1,6 +1,39 @@
 @extends('layouts.public')
 
-@section('title', 'Ovation - ' . config('app.name', 'Fitabe'))
+@php
+    $nomPartage = $candidatPartage?->display_name;
+@endphp
+
+@section('title', $candidatPartage ? "Votez pour {$nomPartage} — FITAB 2026" : 'Ovation - ' . config('app.name', 'Fitabe'))
+
+@php
+    $description = $candidatPartage
+        ? "Soutenez {$nomPartage} en catégorie {$candidatPartage->categorie} au Festival International des Talents Artistiques du Bénin. 1 ovation = 100 FCFA"
+        : 'Soutenez vos artistes préférés au FITAB. Théâtre, Danse, Musique, Percussion et Art visuel.';
+@endphp
+
+@section('description', $description)
+
+@push('meta')
+@if ($candidatPartage)
+    <meta property="og:title" content="Votez pour {{ $nomPartage }} — FITAB 2026">
+    <meta property="og:description" content="{{ $description }}">
+    @if ($candidatPartage->photo)
+    <meta property="og:image" content="{{ asset('storage/' . $candidatPartage->photo) }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    @endif
+    <meta property="og:url" content="{{ url('/vote?candidat=' . $candidatPartage->id) }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="FITAB">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Votez pour {{ $nomPartage }} — FITAB 2026">
+    <meta name="twitter:description" content="{{ $description }}">
+    @if ($candidatPartage->photo)
+    <meta name="twitter:image" content="{{ asset('storage/' . $candidatPartage->photo) }}">
+    @endif
+@endif
+@endpush
 
 @push('styles')
 <style>
@@ -23,6 +56,10 @@
     .candidate-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 12px 32px rgba(62,30,5,0.18);
+    }
+    .shared-highlight .candidate-card {
+        box-shadow: 0 0 0 4px var(--vote-gold), 0 12px 32px rgba(62,30,5,0.25);
+        transform: translateY(-4px);
     }
     .candidate-card .candidat-num {
         position: absolute;
@@ -326,7 +363,7 @@
         @else
             <div class="row g-4">
                 @foreach($candidats as $candidat)
-                    <div class="col-sm-6 col-lg-3 candidat-col" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
+                    <div class="col-sm-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
                         <div class="card candidate-card h-100 shadow-sm">
                             <div class="candidat-cover">
                                 @if($candidat->photo)
@@ -738,6 +775,23 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    // ==================== CANDIDAT PARTAGÉ (auto-scroll + highlight) ====================
+    @if ($candidatPartage)
+    const targetBtn = document.querySelector('[data-candidat-id="{{ $candidatPartage->id }}"]');
+    if (targetBtn) {
+        const card = targetBtn.closest('.candidat-col');
+        if (card) {
+            const cat = card.dataset.categorie;
+            const filterBtn = document.querySelector('.filter-btn[data-filter="' + cat + '"]');
+            if (filterBtn) filterBtn.click();
+            setTimeout(function() {
+                card.classList.add('shared-highlight');
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+    }
+    @endif
 });
 </script>
 @endpush

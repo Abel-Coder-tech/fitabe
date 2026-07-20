@@ -35,17 +35,12 @@ class VoteController extends Controller
     }
 
     // Page publique de vote avec candidats et paramètres
-    public function index()
+    public function index(Request $request)
     {
-        $statutVote = Parametres::where('cle', 'statut_vote')->value('valeur');
         $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
         $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
 
-        if ($statutVote === 'active' || $statutVote === 'cloture') {
-            $voteMode = $statutVote;
-        } else {
-            $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
-        }
+        $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
 
         $prixDuVote = 100;
 
@@ -63,10 +58,15 @@ class VoteController extends Controller
             ?: Parametres::where('cle', 'fedapay_public_key')->value('valeur');
         $afficherCompteur = Parametres::where('cle', 'afficher_compteur')->value('valeur') === '1';
 
+        $candidatPartage = null;
+        if ($request->filled('candidat')) {
+            $candidatPartage = Candidats::find($request->integer('candidat'));
+        }
+
         return view('public.vote.index', compact(
             'candidats', 'categories', 'voteMode', 'prixDuVote',
             'fedapayKey', 'afficherCompteur',
-            'dateDebut', 'dateFin'
+            'dateDebut', 'dateFin', 'candidatPartage'
         ));
     }
 
