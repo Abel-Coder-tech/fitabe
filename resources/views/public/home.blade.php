@@ -440,8 +440,8 @@ margin-right: 0;
         </div>
 
         {{-- Promoteur 1 : image gauche, texte droite --}}
-        <div class="row align-items-center g-0 mb-5">
-            <div class="col-lg-6 text-lg-end ">
+        <div class="row align-items-center g-5 mb-5">
+            <div class="col-lg-6  ">
                 <div class="position-relative d-inline-block">
                     <img src="{{ asset('images/promoteurs/promoteur1.png') }}" alt="MISTER OKEKE"
                          style="width: 100%; max-width: 400px; border-radius: 12px; border: 2px solid #c9a96e; display: block;">
