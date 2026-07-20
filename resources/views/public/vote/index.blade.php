@@ -244,7 +244,7 @@
                 @if($voteMode === 'cloture')
                 {{-- ÉTAT 3 : Après clôture --}}
                 <p class="hero-sub mb-3 mx-auto" style="max-width: 540px;">
-                    Les ovations sont closes. Rendez-vous le <strong>28 novembre</strong> pour la Grande Finale.
+                    Les ovations sont closes. Rendez-vous le <strong>28 novembre</strong> <br>pour la Grande Finale.
                 </p>
                 <a href="{{ route('public.resultats') }}" class="btn btn-vote fw-semibold px-4 py-2 rounded-pill">
                     <i class="bi bi-trophy me-2"></i>Découvrez les finalistes et les résultats

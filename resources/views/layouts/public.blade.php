@@ -59,70 +59,124 @@
         .section-light { background: #fff; }
         .section-dark { background: var(--fitab-brown); }
 
-        .nav-hover { position: relative; }
-        .nav-hover::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--fitab-orange-light);
-            transition: width 0.25s;
-        }
-        .nav-hover:hover::after,
-        .nav-hover.nav-active::after { width: 100%; }
-        .nav-hover:hover { color: var(--fitab-orange-light) !important; }
-        .nav-hover.nav-active { color: var(--fitab-orange-light) !important; }
         .social-icon { transition: color 0.2s; }
         .social-icon:hover { color: var(--fitab-orange-light) !important; }
         .footer-link { transition: color 0.2s; }
         .footer-link:hover { color: var(--fitab-orange-light) !important; }
 
-        .nav-menu {
-            gap: 0.5rem;
+        /* ========== STICKY HEADER ========== */
+        .public-header {
+            background: rgba(62,30,5,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(227,213,173,0.1);
+            padding: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1050;
         }
-        .nav-menu .nav-link {
-            padding: 0.5rem 0.75rem;
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
         }
+
+        .public-header .brand-logo {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+        .public-header .brand-logo img {
+            height: 40px;
+            display: block;
+        }
+
+        .public-nav {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 0.15rem;
+            align-items: center;
+        }
+
+        .public-nav a {
+            color: rgba(227,213,173,0.85);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.45rem 0.85rem;
+            border-radius: 8px;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .public-nav a:hover {
+            background: rgba(202,123,5,0.15);
+            color: var(--fitab-orange-light);
+        }
+
+        .public-nav a.active {
+            background: transparent;
+            color: var(--fitab-orange-light);
+            font-weight: 700;
+            border-top: 3px solid var(--fitab-orange-light);
+            border-radius: 4px 4px 0 0;
+            padding-top: calc(0.45rem - 3px);
+        }
+
+        .public-nav a.active:hover {
+            background: transparent;
+            color: var(--fitab-orange-light);
+        }
+
+        /* Mobile toggle */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #E3D5AD;
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+        }
+
         @media (max-width: 991.98px) {
-            .nav-menu {
-                position: fixed;
-                top: 76px;
+            .mobile-toggle { display: block; }
+
+            .public-nav {
+                display: none;
+                position: absolute;
+                top: 64px;
                 left: 0;
                 right: 0;
-                bottom: 0;
                 background: rgba(62,30,5,0.98);
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: center !important;
-                padding: 0;
-                transform: translateX(100%);
-                transition: transform 0.3s ease;
-                z-index: 1029;
+                border-bottom: 1px solid rgba(227,213,173,0.1);
+                flex-direction: column;
+                padding: 0.75rem 1rem;
+                gap: 0.25rem;
             }
-            #navToggle:checked ~ .nav-menu {
-                transform: translateX(0);
-            }
-            #navToggle:checked ~ .nav-hamburger span:nth-child(1) {
-                transform: rotate(45deg) translate(4px, 4px);
-            }
-            #navToggle:checked ~ .nav-hamburger span:nth-child(2) {
-                opacity: 0;
-            }
-            #navToggle:checked ~ .nav-hamburger span:nth-child(3) {
-                transform: rotate(-45deg) translate(4px, -4px);
-            }
-            .nav-menu .nav-link {
+
+            .public-nav.show { display: flex; }
+
+            .public-nav a {
                 display: block;
-                padding: 0.8rem 2rem;
+                padding: 0.65rem 0.75rem;
+                font-size: 0.92rem;
+                border-radius: 8px;
                 text-align: center;
-                font-size: 1.1rem;
             }
-        }
-        @media (min-width: 992px) {
-            .nav-menu {
-                flex-direction: row !important;
+
+            .public-nav a.active {
+                border-top: none;
+                border-left: 3px solid var(--fitab-orange-light);
+                border-radius: 4px;
+                padding-top: 0.65rem;
+                background: rgba(202,123,5,0.08);
             }
         }
     </style>
@@ -130,50 +184,33 @@
 </head>
 <body>
 
-    {{-- ==================== NAVBAR ==================== --}}
-    <nav class="navbar fixed-top" style="background-color: rgba(62,30,5,0.95); backdrop-filter: blur(10px); z-index: 1030;">
-        <div class="container d-flex align-items-center justify-content-between">
+    {{-- ==================== STICKY HEADER ==================== --}}
+    <header class="public-header">
+        <div class="container">
+            <div class="header-inner">
 
-            <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="FITAB" height="48"
-                     onerror="this.style.display='none'">
-            </a>
+                <a class="brand-logo" href="{{ route('home') }}">
+                    <img src="{{ asset('images/logo.png') }}" alt="FITAB"
+                         onerror="this.style.display='none'">
+                </a>
 
-            <input type="checkbox" id="navToggle" class="d-none" aria-label="Menu">
-            <label for="navToggle" class="nav-hamburger d-flex d-lg-none flex-column gap-1" style="cursor:pointer; padding: 4px;">
-                <span style="width:26px; height:3px; background:#E3D5AD; border-radius:2px; transition: 0.3s;"></span>
-                <span style="width:26px; height:3px; background:#E3D5AD; border-radius:2px; transition: 0.3s;"></span>
-                <span style="width:26px; height:3px; background:#E3D5AD; border-radius:2px; transition: 0.3s;"></span>
-            </label>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+                    <i class="bi bi-list"></i>
+                </button>
 
-            <ul class="nav-menu d-flex flex-column flex-lg-row align-items-lg-center gap-lg-2 list-unstyled mb-0">
-                <li class="nav-item">
-                    <a class="nav-link fw-medium nav-hover {{ request()->routeIs('home') ? 'nav-active' : '' }}"
-                       style="color: #E3D5AD;"
-                       href="{{ route('home') }}">Accueil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.medias') ? 'nav-active' : '' }}"
-                       style="color: #E3D5AD;"
-                       href="{{ route('public.medias') }}">Médiathèque</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.vote') ? 'nav-active' : '' }}"
-                       style="color: #E3D5AD;"
-                       href="{{ route('public.vote') }}">Ovation</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium nav-hover {{ request()->routeIs('public.contact') ? 'nav-active' : '' }}"
-                       style="color: #E3D5AD;"
-                       href="{{ route('public.contact') }}">Contact</a>
-                </li>
-            </ul>
+                <ul class="public-nav" id="publicNav">
+                    <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Accueil</a></li>
+                    <li><a href="{{ route('public.medias') }}" class="{{ request()->routeIs('public.medias') ? 'active' : '' }}">Médiathèque</a></li>
+                    <li><a href="{{ route('public.vote') }}" class="{{ request()->routeIs('public.vote') ? 'active' : '' }}">Ovation</a></li>
+                    <li><a href="{{ route('public.contact') }}" class="{{ request()->routeIs('public.contact') ? 'active' : '' }}">Contact</a></li>
+                </ul>
 
+            </div>
         </div>
-    </nav>
+    </header>
 
-    {{-- ==================== ESPACEUR NAVBAR ==================== --}}
-    <div style="height: 76px;"></div>
+    {{-- ==================== ESPACEUR HEADER ==================== --}}
+    <div style="height: 64px;"></div>
 
     <main>
         @if (session('success'))
@@ -301,6 +338,17 @@
         </div>
     </footer>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var toggle = document.getElementById('mobileToggle');
+    var nav = document.getElementById('publicNav');
+    if (toggle && nav) {
+        toggle.addEventListener('click', function() {
+            nav.classList.toggle('show');
+        });
+    }
+});
+</script>
 @stack('scripts')
 </body>
 </html>
