@@ -417,16 +417,19 @@
     function appliquerLimite() {
         var mobile = window.innerWidth < 992;
         var max = mobile ? 4 : 8;
-        document.querySelectorAll('.media-limited').forEach(function(el, i) {
-            var visible = el.closest('section') && el.closest('section').style.display !== 'none';
-            if (visible) {
-                el.classList.toggle('d-none', i >= max);
-            }
+        ['photosGrid', 'videosGrid'].forEach(function(gridId) {
+            var grid = document.getElementById(gridId);
+            if (!grid) return;
+            var allItems = Array.from(grid.querySelectorAll('.media-limited'));
+            var visibleItems = allItems.filter(function(el) { return el.style.display !== 'none'; });
+            // Reset limit then apply to visible (filtered) items only
+            allItems.forEach(function(el) { el.classList.remove('d-none'); });
+            visibleItems.forEach(function(el, i) {
+                if (i >= max) el.classList.add('d-none');
+            });
+            var btn = gridId === 'photosGrid' ? document.getElementById('voirPlusPhotos') : document.getElementById('voirPlusVideos');
+            if (btn) btn.style.display = visibleItems.length > max ? '' : 'none';
         });
-        var btnPhotos = document.getElementById('voirPlusPhotos');
-        var btnVideos = document.getElementById('voirPlusVideos');
-        if (btnPhotos) { btnPhotos.style.display = document.querySelectorAll('#photosGrid .media-limited.d-none').length > 0 ? '' : 'none'; }
-        if (btnVideos) { btnVideos.style.display = document.querySelectorAll('#videosGrid .media-limited.d-none').length > 0 ? '' : 'none'; }
     }
 
     document.getElementById('voirPlusPhotos')?.addEventListener('click', function() {
