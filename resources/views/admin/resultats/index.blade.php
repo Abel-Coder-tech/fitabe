@@ -15,15 +15,27 @@
     <div class="row g-4">
         @foreach ($editions as $annee)
             <div class="col-6 col-md-4 col-lg-3">
-                <a href="{{ route('admin.resultats.show', $annee) }}" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100" style="transition: all .2s; cursor: pointer;">
-                        <div class="mb-2">
-                            <i class="bi bi-trophy-fill" style="font-size: 2rem; color: #CA7B05;"></i>
-                        </div>
-                        <h5 class="fw-bold mb-0" style="color: #3E1E05;">{{ $annee }}</h5>
-                        <small class="text-muted">Voir les résultats</small>
+                <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
+                    <div class="mb-2">
+                        <i class="bi bi-trophy-fill" style="font-size: 2rem; color: #CA7B05;"></i>
                     </div>
-                </a>
+                    <h5 class="fw-bold mb-2" style="color: #3E1E05;">{{ $annee }}</h5>
+                    <div class="d-flex justify-content-center gap-2 mt-auto">
+                        <a href="{{ route('admin.resultats.show', $annee) }}"
+                           class="btn btn-sm btn-outline-secondary rounded-pill px-3"
+                           title="Voir les résultats">
+                            <i class="bi bi-eye me-1"></i>
+                        </a>
+                        <form action="{{ route('admin.resultats.destroy', $annee) }}" method="POST"
+                              onsubmit="return confirm('Supprimer tous les résultats de {{ $annee }} ?')">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                    title="Supprimer les résultats">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         @endforeach
     </div>

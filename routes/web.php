@@ -65,6 +65,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         Route::put('/{resultat}', 'update')->name('update')->middleware('role:super_admin');
         Route::post('/regenerer/{annee}', 'regenerer')->name('regenerer')->middleware('role:super_admin');
         Route::post('/{annee}/publier-tout', 'togglePublishEdition')->name('publier')->middleware('role:super_admin');
+        Route::delete('/{annee}', 'destroy')->name('destroy')->middleware('role:super_admin');
     });
 
     // Administration sensible — réservé super_admin

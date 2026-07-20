@@ -80,6 +80,17 @@ class ResultatController extends Controller
         return back()->with('success', $msg);
     }
 
+    public function destroy(string $annee)
+    {
+        $count = Resultat::byEdition($annee)->count();
+        if ($count === 0) {
+            return back()->with('error', 'Aucun résultat trouvé pour l\'édition ' . $annee);
+        }
+        Resultat::byEdition($annee)->delete();
+        return to_route('admin.resultats.index')
+            ->with('success', "{$count} résultat(s) supprimé(s) pour l'édition {$annee}");
+    }
+
     public function publicIndex()
     {
         $annees = Resultat::where('publie', true)->distinct()->orderBy('annee_edition', 'desc')->pluck('annee_edition');
