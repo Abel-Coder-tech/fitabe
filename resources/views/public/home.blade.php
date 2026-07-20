@@ -112,7 +112,7 @@ html, body { overflow-x: hidden; width: 100%; }
     display: flex;
     gap: 1.5rem;
     width: max-content;
-    animation: scrollPartenaires 30s linear infinite;
+    animation: scrollPartenaires 40s linear infinite;
 }
 .partenaires-track:hover {
     animation-play-state: paused;
@@ -152,7 +152,7 @@ html, body { overflow-x: hidden; width: 100%; }
 }
 @keyframes scrollPartenaires {
     0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    100% { transform: translateX(-100%); }
 }
 .accordion-button:not(.collapsed) { 
     background: transparent !important; 
@@ -611,14 +611,6 @@ margin-right: 0;
                     <h6>{{ $p->nom }}</h6>
                 </div>
                 @endforeach
-                @if ($partenaires->count() > 1)
-                @foreach ($partenaires as $p)
-                <div class="partenaire-card"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
-                    <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}">
-                    <h6>{{ $p->nom }}</h6>
-                </div>
-                @endforeach
-                @endif
             </div>
         </div>
         @endif
