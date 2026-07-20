@@ -57,9 +57,7 @@ html, body { overflow-x: hidden; width: 100%; }
 @media (max-width: 575.98px) {
     .public-footer .container { padding-left: 24px; padding-right: 24px; }
     .public-footer .row.gy-4 { --bs-gutter-y: 1.5rem; }
-    .public-footer .brand { justify-content: center; }
     .public-footer .brand img { height: 70px; }
-    .footer-social { justify-content: center; }
 }
 @media (max-width: 420px) {
     .hero-stats { font-size: 0.85rem !important; }
