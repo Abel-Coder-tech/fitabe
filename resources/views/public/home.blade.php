@@ -9,7 +9,7 @@
         <div class="row align-items-center">
             <div class="col-lg-7 text-center text-lg-start">
                 <span class="badge fw-semibold px-3 py-2 mb-3 fs-6" style="background-color: #CA7B05; color: #fff;">
-                    <i class="bi bi-music-note-beamed me-1"></i> Édition 2026
+                    <i class="bi bi-music-note-beamed me-1"></i> FITAB 2026
                 </span>
                 <h1 class="display-4 fw-bold text-white mb-3">
                     La scène la plus<br>
