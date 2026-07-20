@@ -10,6 +10,7 @@ use App\Services\ResultatService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class VoteController extends Controller
@@ -95,6 +96,7 @@ class VoteController extends Controller
         $validated['montant'] = $montant;
         $validated['statut'] = 'en_attente';
         $validated['payment_method'] = 'fedapay';
+        $validated['transaction_id'] = 'pending_' . Str::uuid();
         $validated['adresse_ip'] = $request->ip();
 
         $vote = Votes::create($validated);
