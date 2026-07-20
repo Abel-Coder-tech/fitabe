@@ -372,17 +372,56 @@
         @elseif($voteMode === 'cloture')
             <div class="alert alert-secondary text-center py-4 mb-4" role="alert">
                 <h4 class="alert-heading mb-2"><i class="bi bi-trophy-fill"></i> Ovations clôturées</h4>
-                <p class="mb-0">Les ovations sont maintenant terminées. Consultez les résultats ci-dessous.</p>
+                <p class="mb-0">Les ovations sont maintenant terminées.
+                    @if($resultatsPublies) Consultez les résultats ci-dessous.
+                    @else Les résultats seront bientôt publiés. Revenez plus tard.
+                    @endif
+                </p>
             </div>
         @endif
 
-        @if($candidats->isEmpty())
+        @if($voteMode === 'cloture' && $resultatsPublies && $resultats->isNotEmpty())
+            {{-- ==================== RÉSULTATS PUBLIÉS ==================== --}}
+            @foreach($resultats as $categorie => $items)
+                <h5 class="fw-bold mb-3 mt-4" style="color: #3E1E05;">
+                    <i class="bi bi-tag-fill me-1" style="color: #9B4D07;"></i>
+                    {{ $categorie }}
+                </h5>
+                <div class="row g-4 mb-5">
+                    @foreach($items as $r)
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card candidate-card h-100 shadow-sm">
+                            <div class="candidat-cover">
+                                @if($r->candidat_photo)
+                                    <img src="{{ $r->candidat_photo_url }}" class="photo-principale" alt="{{ $r->candidat_nom }}">
+                                @endif
+                                <span class="candidat-num" style="background: {{ $r->prix === 1 ? '#FFD700' : ($r->prix === 2 ? '#C0C0C0' : '#CD7F32') }}; color: #3E1E05;">
+                                    {{ $r->prix_label }}
+                                </span>
+                            </div>
+                            <div class="card-body d-flex flex-column px-3 pb-3 pt-3 text-center">
+                                <h6 class="fw-bold mb-1" style="color: var(--vote-brown);">{{ $r->candidat_nom }}</h6>
+                                <span class="small text-muted mb-2">{{ $r->categorie }}</span>
+                                <hr class="my-2" style="border-color: #f0e6d6; opacity: 0.6;">
+                                <div class="mt-auto">
+                                    <span class="badge fw-semibold px-3 py-2 fs-6" style="background: #9B4D07; color: #fff;">
+                                        {{ $r->score_final ?? $r->score_public ?? '-' }}
+                                    </span>
+                                    <small class="d-block text-muted mt-1">Score final</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            @endforeach
+        @elseif($candidats->isEmpty())
             <div class="alert alert-info text-center py-5">
                 <i class="bi bi-people fs-1 d-block mb-3"></i>
                 Aucun candidat inscrit pour le moment.
             </div>
         @else
-            <div class="row g-4">
+            <div class="row g-4" id="candidatsGrid">
                 @foreach($candidats as $candidat)
                     <div class="col-sm-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
                         <div class="card candidate-card h-100 shadow-sm">

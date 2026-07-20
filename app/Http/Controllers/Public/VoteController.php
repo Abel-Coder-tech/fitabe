@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\Candidats;
 use App\Models\Parametres;
+use App\Models\Resultat;
 use App\Models\Votes;
 use App\Services\ResultatService;
 use Illuminate\Http\Request;
@@ -59,6 +60,15 @@ class VoteController extends Controller
         $fedapayMode = config('services.fedapay.mode', 'live');
         $afficherCompteur = Parametres::where('cle', 'afficher_compteur')->value('valeur') === '1';
 
+        $resultats = collect();
+        $resultatsPublies = false;
+        if ($voteMode === 'cloture') {
+            $anneeCourante = date('Y');
+            $resultats = Resultat::where('annee_edition', $anneeCourante)->where('publie', true)
+                ->orderBy('categorie')->orderBy('prix')->get()->groupBy('categorie');
+            $resultatsPublies = $resultats->isNotEmpty();
+        }
+
         $candidatPartage = null;
         if ($request->filled('candidat')) {
             $candidatPartage = Candidats::find($request->integer('candidat'));
@@ -67,7 +77,8 @@ class VoteController extends Controller
         return view('public.vote.index', compact(
             'candidats', 'categories', 'voteMode', 'prixDuVote',
             'fedapayKey', 'fedapayMode', 'afficherCompteur',
-            'dateDebut', 'dateFin', 'candidatPartage'
+            'dateDebut', 'dateFin', 'candidatPartage',
+            'resultats', 'resultatsPublies'
         ));
     }
 
