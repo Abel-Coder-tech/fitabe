@@ -226,7 +226,7 @@
 @if ($medias->hasPages())
 <section class="py-4" style="background: #fdfaf5;">
     <div class="container">
-        <div class="d-flex">
+        <div class="d-flex justify-content-center">
             {{ $medias->links('vendor.pagination.fitab') }}
         </div>
     </div>
