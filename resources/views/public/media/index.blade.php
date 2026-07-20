@@ -86,9 +86,7 @@
 <section class="bg-white">
     <div class="container">
         <hr class="m-0">
-        <div class="text-center position-relative" style="margin-top: -12px;">
-            <span class="bg-white px-4 fw-semibold small" style="color: #CA7B05;">Espace Vidéo</span>
-        </div>
+        
     </div>
 </section>
 @endif
