@@ -104,11 +104,29 @@ html, body { overflow-x: hidden; width: 100%; }
 .accordion-button::after { 
     margin-left: 0; 
 }
-.partenaires-grid {
+.partenaires-track-wrapper {
+    overflow: hidden;
+    width: 100%;
+}
+.partenaires-track {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
     gap: 1.5rem;
+    width: max-content;
+}
+.partenaires-track.centered {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.partenaires-track.scrolling {
+    animation: scrollPartenaires 35s linear infinite;
+}
+.partenaires-track.scrolling:hover {
+    animation-play-state: paused;
+}
+@keyframes scrollPartenaires {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 .partenaire-card {
     flex-shrink: 0;
@@ -593,13 +611,15 @@ margin-right: 0;
             <h2 class="fw-bold mt-2" style="color: #3E1E05;">Nos partenaires</h2>
         </div>
         @if ($partenaires->count())
-        <div class="partenaires-grid">
-            @foreach ($partenaires as $p)
-            <div class="partenaire-card"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
-                <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}">
-                <h6>{{ $p->nom }}</h6>
+        <div class="partenaires-track-wrapper">
+            <div class="partenaires-track" id="partnerTrack">
+                @foreach ($partenaires as $p)
+                <div class="partenaire-card"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
+                    <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}">
+                    <h6>{{ $p->nom }}</h6>
+                </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
         @endif
     </div>
@@ -711,7 +731,22 @@ document.addEventListener('DOMContentLoaded', function() {
     resetAuto();
 });
 
-
+// Partenaires : centré si tient, scroll droite→gauche si déborde
+(function() {
+    var track = document.getElementById('partnerTrack');
+    if (!track) return;
+    var wrapper = track.parentElement;
+    var items = track.querySelectorAll('.partenaire-card');
+    if (items.length < 2) { track.classList.add('centered'); return; }
+    var totalWidth = 0;
+    items.forEach(function(el) { totalWidth += el.offsetWidth + 24; });
+    if (totalWidth <= wrapper.offsetWidth) {
+        track.classList.add('centered');
+    } else {
+        items.forEach(function(el) { track.appendChild(el.cloneNode(true)); });
+        track.classList.add('scrolling');
+    }
+})();
 </script>
 @endpush
 @endsection
