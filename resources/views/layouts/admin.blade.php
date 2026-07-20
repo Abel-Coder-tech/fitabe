@@ -307,7 +307,7 @@
         </div>
 
         {{-- Bas de sidebar --}}
-        <div class="px-3 pb-3 mt-auto border-top pt-3" style="border-color: rgba(255,255,255,0.06) !important;">
+        <div class="px-3 pb-3 border-top pt-3" style="border-color: rgba(255,255,255,0.06) !important;">
             <ul class="nav flex-column gap-1">
                 <li class="nav-item">
                     <a href="{{ route('home') }}" target="_blank" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
