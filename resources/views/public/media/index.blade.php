@@ -224,10 +224,10 @@
 
 {{-- ==================== PAGINATION ==================== --}}
 @if ($medias->hasPages())
-<section class="py-4 bg-white">
+<section class="py-4" style="background: #fdfaf5;">
     <div class="container">
-        <div class="d-flex justify-content-center">
-            {{ $medias->links('pagination::bootstrap-5') }}
+        <div class="d-flex">
+            {{ $medias->links('vendor.pagination.fitab') }}
         </div>
     </div>
 </section>
