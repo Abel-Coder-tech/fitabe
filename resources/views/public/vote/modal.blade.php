@@ -16,9 +16,6 @@
                     @csrf
                     <input type="hidden" name="candidat_id" id="voteCandidatId">
                     <input type="hidden" name="payment_method" id="votePaymentMethod">
-                    <input type="hidden" name="votant_nom" id="votant_nom">
-                    <input type="hidden" name="votant_email" id="votant_email">
-                    <input type="hidden" name="votant_telephone" id="votant_telephone">
 
                     {{-- STEP 1 : Fiche candidat + quantité --}}
                     <div class="vote-step active" id="step-1">

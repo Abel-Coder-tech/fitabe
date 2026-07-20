@@ -526,9 +526,6 @@ function ouvrirVote(id, nom, photo, votesCount, categorie, bio, numeroScene) {
         document.getElementById('step2CandidatNom').textContent = nom;
         document.getElementById('step2CandidatPhoto').src = photo || '{{ asset("images/default-user.png") }}';
 
-        document.getElementById('votant_nom').value = 'Anonyme';
-        document.getElementById('votant_email').value = 'anonyme@ovation.fitab';
-        document.getElementById('votant_telephone').value = '0000000000';
         document.getElementById('quantite').value = 1;
         setTimeout(function() { changerQte(0); }, 10);
         document.getElementById('votePaymentMethod').value = '';
@@ -637,9 +634,6 @@ async function lancerPaiement() {
     const form = document.getElementById('voteForm');
     const formData = new FormData(form);
     formData.set('quantite', document.getElementById('quantite').value);
-    formData.set('votant_nom', document.getElementById('votant_nom').value);
-    formData.set('votant_email', document.getElementById('votant_email').value);
-    formData.set('votant_telephone', document.getElementById('votant_telephone').value);
     formData.set('payment_method', etat.paymentMethod);
     formData.set('candidat_id', etat.candidatId);
 

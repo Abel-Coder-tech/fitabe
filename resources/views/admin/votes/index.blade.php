@@ -263,7 +263,6 @@
             <tr>
                 <th class="py-3 ps-3">ID</th>
                 <th class="py-3">Candidat</th>
-                <th class="py-3">Ovationneur</th>
                 <th class="py-3">Email</th>
                 <th class="py-3 text-center">Qté</th>
                 <th class="py-3">Montant</th>
@@ -278,8 +277,7 @@
                 <tr>
                     <td class="ps-3 fw-semibold text-muted">{{ $vote->id }}</td>
                     <td>{{ $vote->candidat?->nom ?? 'N/A' }}</td>
-                    <td>{{ $vote->nom_votant ?? $vote->name ?? Str::limit($vote->votant_nom, 20) ?? 'N/A' }}</td>
-                    <td class="text-muted small">{{ $vote->votant_email ?? $vote->email }}</td>
+                    <td>{{ $vote->email ?? '—' }}</td>
                     <td class="text-center fw-semibold">{{ $vote->quantite ?? 1 }}</td>
                     <td class="fw-semibold" style="color:#3E1E05;">{{ $vote->montant ? number_format($vote->montant, 0, ',', ' ') . ' FCFA' : '-' }}</td>
                     <td>

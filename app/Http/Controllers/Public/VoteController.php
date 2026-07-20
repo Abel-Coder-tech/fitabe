@@ -84,9 +84,6 @@ class VoteController extends Controller
 
         $validated = $request->validate([
             'candidat_id' => 'required|exists:candidates,id',
-            'votant_nom' => 'required|string|max:255',
-            'votant_email' => 'required|email|max:255',
-            'votant_telephone' => 'required|string|max:50',
             'quantite' => 'required|integer|min:1|max:1000',
         ]);
 
@@ -98,7 +95,7 @@ class VoteController extends Controller
         $validated['montant'] = $montant;
         $validated['statut'] = 'en_attente';
         $validated['payment_method'] = 'fedapay';
-        $validated['ip_address'] = $request->ip();
+        $validated['adresse_ip'] = $request->ip();
 
         $vote = Votes::create($validated);
 
@@ -159,8 +156,23 @@ class VoteController extends Controller
             return response()->json(['success' => false, 'message' => 'Vote introuvable'], 404);
         }
 
+        $telephone = $transaction['customer']['phone_number']
+            ?? $transaction['customer']['phone']
+            ?? $transaction['phone_number']
+            ?? null;
+        $email = $transaction['customer']['email'] ?? null;
+        $moyenPaiement = $transaction['payment_method']['type']
+            ?? $transaction['payment_method_type']
+            ?? null;
+
         if ($vote->statut === 'en_attente') {
-            $vote->marquerConfirme($transactionId ?: 'fedapay_' . $vote->id, 'fedapay');
+            $vote->marquerConfirme(
+                $transactionId ?: 'fedapay_' . $vote->id,
+                'fedapay',
+                $telephone,
+                $email,
+                $moyenPaiement
+            );
             Log::info('Fedapay webhook : vote confirmé', [
                 'vote_id' => $voteId,
                 'transaction_id' => $transactionId,

@@ -57,12 +57,8 @@
                 <div class="detail-value">{{ $vote->candidat?->nom ?? 'N/A' }}</div>
             </div>
             <div class="col-md-6">
-                <div class="detail-label">Ovationneur</div>
-                <div class="detail-value">{{ $vote->nom_votant ?? $vote->name ?? 'N/A' }}</div>
-            </div>
-            <div class="col-md-6">
                 <div class="detail-label">Email</div>
-                <div class="detail-value">{{ $vote->email }}</div>
+                <div class="detail-value">{{ $vote->email ?? 'N/A' }}</div>
             </div>
             <div class="col-md-6">
                 <div class="detail-label">Téléphone</div>

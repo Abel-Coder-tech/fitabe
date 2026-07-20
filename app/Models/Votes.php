@@ -10,15 +10,16 @@ class Votes extends Model
 {
     protected $fillable = [
         'candidate_id',
-        'votant_nom',
-        'votant_email',
-        'votant_telephone',
-        'statut',
-        'ip_address',
+        'email',
+        'telephone',
         'quantite',
         'montant',
+        'statut',
         'payment_method',
+        'moyen_paiement',
         'transaction_id',
+        'adresse_ip',
+        'webhook_recu_le',
     ];
 
     protected function casts(): array
@@ -45,13 +46,17 @@ class Votes extends Model
         return $query->where('statut', 'en_attente');
     }
 
-    public function marquerConfirme(string $transactionId, string $paymentMethod): void
+    public function marquerConfirme(string $transactionId, string $paymentMethod, ?string $telephone = null, ?string $email = null, ?string $moyenPaiement = null): void
     {
-        $this->update([
+        $this->update(array_filter([
             'statut' => 'confirme',
             'transaction_id' => $transactionId,
             'payment_method' => $paymentMethod,
-        ]);
+            'telephone' => $telephone,
+            'email' => $email,
+            'moyen_paiement' => $moyenPaiement,
+            'webhook_recu_le' => now(),
+        ]));
 
         $this->candidat?->getIncrementeVotes($this->quantite);
     }
