@@ -63,16 +63,15 @@
         .nav-hover::after {
             content: '';
             position: absolute;
-            bottom: 2px;
-            left: 50%;
-            transform: translateX(-50%);
+            bottom: 0;
+            left: 0;
             width: 0;
             height: 2px;
             background: var(--fitab-orange-light);
             transition: width 0.25s;
         }
         .nav-hover:hover::after,
-        .nav-hover.nav-active::after { width: 70%; }
+        .nav-hover.nav-active::after { width: 100%; }
         .nav-hover:hover { color: var(--fitab-orange-light) !important; }
         .nav-hover.nav-active { color: var(--fitab-orange-light) !important; }
         .social-icon { transition: color 0.2s; }
@@ -80,21 +79,24 @@
         .footer-link { transition: color 0.2s; }
         .footer-link:hover { color: var(--fitab-orange-light) !important; }
 
-        /* Navigation responsive CSS-only */
         .nav-menu {
             gap: 0.5rem;
         }
+        .nav-menu .nav-link {
+            padding: 0.5rem 0.75rem;
+        }
         @media (max-width: 991.98px) {
-            body { overflow-x: hidden; }
             .nav-menu {
                 position: fixed;
                 top: 76px;
                 left: 0;
                 right: 0;
+                bottom: 0;
                 background: rgba(62,30,5,0.98);
                 flex-direction: column !important;
                 align-items: center !important;
-                padding: 1rem 0;
+                justify-content: center !important;
+                padding: 0;
                 transform: translateX(100%);
                 transition: transform 0.3s ease;
                 z-index: 1029;
@@ -113,8 +115,9 @@
             }
             .nav-menu .nav-link {
                 display: block;
-                padding: 0.6rem 1.5rem;
+                padding: 0.8rem 2rem;
                 text-align: center;
+                font-size: 1.1rem;
             }
         }
         @media (min-width: 992px) {

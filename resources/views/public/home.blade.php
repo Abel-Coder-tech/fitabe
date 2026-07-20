@@ -3,11 +3,11 @@
 @section('title', 'Accueil - ' . config('app.name', 'FITAB'))
 
 @section('content')
-<div class="position-relative d-flex align-items-center overflow-hidden"
+<div class="position-relative d-flex align-items-center"
      style="background: linear-gradient(135deg, rgba(62,30,5,0.92) 0%, rgba(62,30,5,0.7) 50%, rgba(62,30,5,0.4) 100%), url('{{ asset('images/hero.jpg') }}') no-repeat center center; background-size: cover; min-height: 100vh;">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-7 text-center text-lg-start">
+            <div class="col-lg-8 text-center text-lg-start">
                 <span class="badge fw-semibold px-3 py-2 mb-3 fs-6" style="background-color: #CA7B05; color: #fff;">
                     <i class="bi bi-music-note-beamed me-1"></i> FITAB 2026
                 </span>
@@ -27,18 +27,18 @@
                     </a>
                 </div>
 
-                <div class="row g-3 mt-4 justify-content-center justify-content-lg-start" style="color: rgba(227,213,173,0.7); font-size: 1.05rem;">
-                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-calendar-week fs-5" style="color: #CA7B05;"></i> 5 Jours</div></div>
-                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-people-fill fs-5" style="color: #CA7B05;"></i> 30 000 spectateurs</div></div>
-                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-grid-3x3-gap-fill fs-5" style="color: #CA7B05;"></i> 6 catégories</div></div>
-                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-trophy-fill fs-5" style="color: #CA7B05;"></i> + 3 000 000 FCFA</div></div>
+                <div class="row g-2 g-lg-3 mt-4 justify-content-center justify-content-lg-start hero-stats" style="color: rgba(227,213,173,0.7); font-size: 1.05rem;">
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-calendar-week fs-5" style="color: #CA7B05;"></i> <span>5 Jours</span></div></div>
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-people-fill fs-5" style="color: #CA7B05;"></i> <span>30 000 spectateurs</span></div></div>
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-grid-3x3-gap-fill fs-5" style="color: #CA7B05;"></i> <span>6 catégories</span></div></div>
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-trophy-fill fs-5" style="color: #CA7B05;"></i> <span>+ 3 000 000 FCFA</span></div></div>
                 </div>
             </div>
 
-            <div class="col-lg-5 d-none d-lg-flex justify-content-center">
-                <div class="text-center p-5 rounded-4" style="border: 1px solid rgba(202,123,5,0.4); background: rgba(227,213,173,0.06); backdrop-filter: blur(8px); max-width: 320px;">
-                    <i class="bi bi-calendar-event" style="color: #CA7B05; font-size: 3rem;"></i>
-                    <h5 class="text-white mt-3 mb-1" style="font-size: 1.8rem; font-weight: 800;">Novembre 2026</h5>
+            <div class="col-lg-4 d-none d-lg-flex justify-content-center">
+                <div class="text-center p-4 rounded-4" style="border: 1px solid rgba(202,123,5,0.4); background: rgba(227,213,173,0.06); backdrop-filter: blur(8px); max-width: 240px;">
+                    <i class="bi bi-calendar-event" style="color: #CA7B05; font-size: 2rem;"></i>
+                    <h6 class="text-white mt-2 mb-0" style="font-size: 1.1rem; font-weight: 700;">Novembre 2026</h6>
                    
                 </div>
             </div>
@@ -48,6 +48,11 @@
 </div>
 
 <style>
+.hero-stats span { white-space: nowrap; }
+@media (max-width: 420px) {
+    .hero-stats { font-size: 0.85rem !important; }
+    .hero-stats .fs-5 { font-size: 0.95rem !important; }
+}
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(8px); }
@@ -244,7 +249,7 @@ margin-right: 0;
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="position-relative mx-auto" style="width: 360px; height: 500px;">
+                <div class="position-relative mx-auto" style="max-width: 100%; width: 360px; height: 500px;">
                     @php
                         $items = [
                             ['img' => 'cat1', 'angle' => 90,  'label' => 'Théatre',       'pos' => 'top'],

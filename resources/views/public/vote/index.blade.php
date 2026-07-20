@@ -174,6 +174,7 @@
     .hero-vote {
         position: relative;
         overflow: hidden;
+        width: 100%;
         padding: 5rem 0;
         background: linear-gradient(135deg, rgba(62,30,5,0.88) 0%, rgba(62,30,5,0.65) 50%, rgba(62,30,5,0.4) 100%), url('{{ asset('images/hero.jpg') }}') no-repeat center center;
         background-size: cover;
@@ -226,9 +227,9 @@
     <div class="container">
         <div class="row justify-content-center text-center">
             <div class="col-lg-8">
-                <p class="small fw-semibold mb-2" style="color: #CA7B05; letter-spacing: 2px; text-transform: uppercase;">
-                    <i class="bi bi-star-fill me-1"></i> FITAB {{ date('Y') }}
-                </p>
+                <span class="badge fw-semibold px-3 py-2 mb-3 fs-6" style="background-color: #CA7B05; color: #fff;">
+                    <i class="bi bi-music-note-beamed me-1"></i> FITAB {{ date('Y') }}
+                </span>
                 <h1 class="display-4 fw-bold mb-3">
                     Ovationnez votre<br>
                     <span style="color: #CA7B05;">candidat préféré</span>
@@ -242,7 +243,7 @@
 
                 @if($voteMode === 'cloture')
                 {{-- ÉTAT 3 : Après clôture --}}
-                <p class="lead hero-sub mb-3 mx-auto" style="max-width: 540px;">
+                <p class="hero-sub mb-3 mx-auto" style="max-width: 540px;">
                     Les ovations sont closes. Rendez-vous le <strong>28 novembre</strong> pour la Grande Finale.
                 </p>
                 <a href="{{ route('public.resultats') }}" class="btn btn-vote fw-semibold px-4 py-2 rounded-pill">
@@ -251,7 +252,7 @@
 
                 @elseif($voteMode === 'off' || $now < $ouverture)
                 {{-- ÉTAT 1 : Avant ouverture --}}
-                <p class="lead hero-sub mb-4 mx-auto" style="max-width: 540px;">
+                <p class="hero-sub mb-4 mx-auto" style="max-width: 540px;">
                     Soutenez les talents du FITAB. Chaque voix compte pour aider votre artiste favori à remporter le concours.
                 </p>
                 <div class="d-flex flex-column align-items-center gap-3">
@@ -263,7 +264,7 @@
 
                 @else
                 {{-- ÉTAT 2 : Pendant la période d'ovations --}}
-                <p class="lead hero-sub mb-4 mx-auto" style="max-width: 540px;">
+                <p class="hero-sub mb-4 mx-auto" style="max-width: 540px;">
                     Soutenez les talents du FITAB. Chaque voix compte pour aider votre artiste favori à remporter le concours.
                 </p>
                 <div class="d-flex flex-wrap align-items-center justify-content-center gap-3 mb-4">
