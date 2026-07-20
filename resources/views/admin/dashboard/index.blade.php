@@ -76,7 +76,7 @@
 @endpush
 
 @section('page-title', 'Tableau de bord')
-@section('page-subtitle', 'Édition 2026 • Ovations en cours')
+@section('page-subtitle', 'FITAB 2026 • Ovations en cours')
 
 @section('content')
 

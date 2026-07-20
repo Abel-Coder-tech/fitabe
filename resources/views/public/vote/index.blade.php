@@ -227,7 +227,7 @@
         <div class="row justify-content-center text-center">
             <div class="col-lg-8">
                 <p class="small fw-semibold mb-2" style="color: #CA7B05; letter-spacing: 2px; text-transform: uppercase;">
-                    <i class="bi bi-star-fill me-1"></i> Édition {{ date('Y') }}
+                    <i class="bi bi-star-fill me-1"></i> FITAB {{ date('Y') }}
                 </p>
                 <h1 class="display-4 fw-bold mb-3">
                     Ovationnez votre<br>

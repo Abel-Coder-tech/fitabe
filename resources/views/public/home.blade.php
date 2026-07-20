@@ -27,11 +27,11 @@
                     </a>
                 </div>
 
-                <div class="row g-2 mt-4 justify-content-center justify-content-lg-start" style="color: rgba(227,213,173,0.7);">
-                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-1"><i class="bi bi-calendar-week" style="color: #CA7B05;"></i> 12 Jours</div></div>
-                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-1"><i class="bi bi-people-fill" style="color: #CA7B05;"></i> 30 000 spectateurs</div></div>
-                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-1"><i class="bi bi-grid-3x3-gap-fill" style="color: #CA7B05;"></i> 6 catégories</div></div>
-                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-1"><i class="bi bi-trophy-fill" style="color: #CA7B05;"></i> Grand Prix 1 000 000 FCFA</div></div>
+                <div class="row g-3 mt-4 justify-content-center justify-content-lg-start" style="color: rgba(227,213,173,0.7); font-size: 1.05rem;">
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-calendar-week fs-5" style="color: #CA7B05;"></i> 5 Jours</div></div>
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-people-fill fs-5" style="color: #CA7B05;"></i> 30 000 spectateurs</div></div>
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-grid-3x3-gap-fill fs-5" style="color: #CA7B05;"></i> 6 catégories</div></div>
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-trophy-fill fs-5" style="color: #CA7B05;"></i> + 3 000 000 FCFA</div></div>
                 </div>
             </div>
 
@@ -206,8 +206,8 @@ margin-right: 0;
 </style>
 
 {{-- ==================== PRÉSENTATION ==================== --}}
-<section class="py-4 section-light" id="presentation">
-    <div class="container py-2">
+<section class="py-5 section-light" id="presentation">
+    <div class="container">
         <div class="row align-items-center ">
             <div class="col-lg-6">
                 <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Présentation</span>
@@ -220,19 +220,19 @@ margin-right: 0;
                     <div class="d-flex align-items-start gap-2 flex-fill" style="min-width: 180px;">
                         <div>
                             <strong style="color: #3E1E05; font-size: 1.25rem;">Naissance & mission</strong>
-                            <p style="color: #5F2B0C; font-size: 0.8rem; line-height: 1.5; margin-bottom: 0;">Né en 2023 à Porto-Novo, le Festival International des Talents Artistiques du Bénin - FITAB est la réponse à un paradoxe douloureux : la capitale du Bénin, ville aux trois noms, terre de traditions millénaires, n'avait pas de grand festival. Les talents naissaient, brillaient dans l'ombre, et s'éteignaient sans jamais avoir eu leur scène.</p>
+                            <p style="color: #5F2B0C; line-height: 1.8; margin-bottom: 0;">Né en 2023 à Porto-Novo, le Festival International des Talents Artistiques du Bénin - FITAB est la réponse à un paradoxe douloureux : la capitale du Bénin, ville aux trois noms, terre de traditions millénaires, n'avait pas de grand festival. Les talents naissaient, brillaient dans l'ombre, et s'éteignaient sans jamais avoir eu leur scène.</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-start gap-2 flex-fill" style="min-width: 180px;">
                         <div>
                             <strong style="color: #3E1E05; font-size: 1.25rem;">Origine</strong>
-                            <p style="color: #5F2B0C; font-size: 0.8rem; line-height: 1.5; margin-bottom: 0;">Fondé par MISTER OKEKE, Roi du Théâtre Béninois, 1 903 spectacles, 50 ans de scène et EYISSE SOBUR BABATUNDE, le FITAB est né d'une blessure intime : celle d'une légende trop longtemps ignorée. Aujourd'hui, ce festival est l'acte fondateur qu'il aurait voulu trouver à ses débuts.</p>
+                            <p style="color: #5F2B0C; line-height: 1.8; margin-bottom: 0;">Fondé par MISTER OKEKE, Roi du Théâtre Béninois, 1 903 spectacles, 50 ans de scène et EYISSE SOBUR BABATUNDE, le FITAB est né d'une blessure intime : celle d'une légende trop longtemps ignorée. Aujourd'hui, ce festival est l'acte fondateur qu'il aurait voulu trouver à ses débuts.</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-start gap-2 flex-fill" style="min-width: 180px;">
                         <div>
                             <strong style="color: #3E1E05; font-size: 1.25rem;">Bilan & ambition</strong>
-                            <p style="color: #5F2B0C; font-size: 0.8rem; line-height: 1.5; margin-bottom: 0;">En 3 éditions, le FITAB a réuni plus de 15 000 spectateurs, décerné 36 trophées en une seule soirée, et imposé Porto-Novo sur la carte culturelle de l'Afrique de l'Ouest. L'Édition 4 vise 30 000 spectateurs, 6 catégories artistiques, un jury international, et une Grande Finale sur l'esplanade de l'Assemblée Nationale.</p>
+                            <p style="color: #5F2B0C; line-height: 1.8; margin-bottom: 0;">En 3 éditions, le FITAB a réuni plus de 15 000 spectateurs, décerné 36 trophées en une seule soirée, et imposé Porto-Novo sur la carte culturelle de l'Afrique de l'Ouest. L'Édition 4 vise 30 000 spectateurs, 6 catégories artistiques, un jury international, et une Grande Finale sur l'esplanade de l'Assemblée Nationale.</p>
                         </div>
                     </div>
                 </div>
@@ -276,9 +276,9 @@ margin-right: 0;
 </section>
 
 {{-- ==================== LES 3 PILIERS ==================== --}}
-<section class="" style="background-color: #fdfaf5;">
-    <div class="container py-3">
-        <div class="text-center mb-4">
+<section class="py-5" style="background-color: #fdfaf5;">
+    <div class="container">
+        <div class="text-center mb-5">
             <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Les 3 piliers</span>
         </div>
         <div class="row g-4">
@@ -288,7 +288,7 @@ margin-right: 0;
                         <i class="bi bi-eye-fill text-white fs-4"></i>
                     </div>
                     <h5 class="fw-bold" style="color: #9B4D07;">RÉVÉLER</h5>
-                    <p style="color: #5F2B0C; font-size: 0.9rem; line-height: 1.7;">Donner une scène internationale aux talents émergents du Grand Porto-Novo qui n'ont jamais été vus.</p>
+                    <p style="color: #5F2B0C; line-height: 1.8;">Donner une scène internationale aux talents émergents du Grand Porto-Novo qui n'ont jamais été vus.</p>
                 </div>
             </div>
             <div class="col-md-4">
@@ -297,7 +297,7 @@ margin-right: 0;
                         <i class="bi bi-award-fill text-white fs-4"></i>
                     </div>
                     <h5 class="fw-bold" style="color: #9B4D07;">VALORISER</h5>
-                    <p style="color: #5F2B0C; font-size: 0.9rem; line-height: 1.7;">Honorer publiquement les artistes confirmés et les Légendes de Porto-Novo qui ont tout donné à la culture.</p>
+                    <p style="color: #5F2B0C; line-height: 1.8;">Honorer publiquement les artistes confirmés et les Légendes de Porto-Novo qui ont tout donné à la culture.</p>
                 </div>
             </div>
             <div class="col-md-4">
@@ -306,7 +306,7 @@ margin-right: 0;
                         <i class="bi bi-globe2 text-white fs-4"></i>
                     </div>
                     <h5 class="fw-bold" style="color: #9B4D07;">RAYONNER</h5>
-                    <p style="color: #5F2B0C; font-size: 0.9rem; line-height: 1.7;">Projeter Porto-Novo et le Grand Porto-Novo sur la scène internationale à travers 7 mois de communication.</p>
+                    <p style="color: #5F2B0C; line-height: 1.8;">Projeter Porto-Novo et le Grand Porto-Novo sur la scène internationale à travers 7 mois de communication.</p>
                 </div>
             </div>
         </div>
@@ -314,8 +314,8 @@ margin-right: 0;
 </section>
 
 {{-- ==================== MOTS DES PROMOTEURS ==================== --}}
-<section  style="background-color: #fdfaf5;">
-    <div class="container py-4">
+<section class="py-5" style="background-color: #fdfaf5;">
+    <div class="container">
         <div class="text-center mb-5">
             <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Mots des promoteurs</span>
             <p class="mt-2" style="color: #5F2B0C;">Derrière le FITAB, deux hommes. Deux générations. Une seule vision.</p>
@@ -389,8 +389,8 @@ margin-right: 0;
 
 
 {{-- ==================== PROGRAMME ==================== --}}
-<section  style="background-color: #fdfaf5;">
-    <div class="container py-4">
+<section class="py-5" style="background-color: #fdfaf5;">
+    <div class="container">
         <div class="text-center mb-5">
             <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Programme</span>
             <h2 class="display-6 fw-bold mt-2" style="color: #9B4D07;">Le calendrier de l'Édition 4</h2>
@@ -469,7 +469,7 @@ margin-right: 0;
 {{-- ==================== PARTENAIRES ==================== --}}
 <section class="py-5 bg-white text-center">
     <div class="container">
-        <div class="text-center mb-4">
+        <div class="text-center mb-5">
             <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Partenaires</span>
             <h2 class="fw-bold mt-2" style="color: #3E1E05;">Nos partenaires</h2>
         </div>

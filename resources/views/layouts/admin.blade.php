@@ -337,7 +337,7 @@
                 </button>
                 <div class="topbar-title">
                     <h5 class="fw-bold mb-0" style="color: #9B4D07;">@yield('page-title', 'Tableau de bord')</h5>
-                    <small class="text-muted">@yield('page-subtitle','FITAB • Édition 2026' )</small>
+                    <small class="text-muted">@yield('page-subtitle','FITAB 2026' )</small>
                 </div>
             </div>
             <div class="d-flex align-items-center gap-3">

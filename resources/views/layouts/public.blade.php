@@ -225,9 +225,8 @@
                 {{-- À propos --}}
                 <div class="col-12 col-lg-4">
                     <div class="d-flex align-items-center gap-2 mb-3">
-                        <img src="{{ asset('images/logo.png') }}" alt="FITAB" height="40"
+                        <img src="{{ asset('images/logo.png') }}" alt="FITAB" height="50"
                              onerror="this.style.display='none'">
-                        <span class="fw-bold fs-5" style="color: #E3D5AD;">{{ config('app.name', 'FITAB') }}</span>
                     </div>
                     <p class="small lh-lg" style="color: rgba(227,213,173,0.65);">
                         Festival International des Talents Artistiques du Bénin. Théâtre, Danse, Musique, Percussion et Art Visuel.
@@ -289,8 +288,7 @@
 
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
                 <p class="small mb-0 text-center" style="color: rgba(227,213,173,0.5);">
-                    &copy; {{ date('Y') }} {{ config('app.name', 'FITAB') }}<br>
-                    STRATEGE MEDIAS EVENTS. Tous droits réservés.
+                    &copy; {{ date('Y') }} {{ config('app.name', 'FITAB') }}. Tous droits réservés.
                 </p>
                 <p class="small mb-0 text-center" style="color: rgba(227,213,173,0.5);">
                     Développé par <a href="#" class="text-decoration-none" style="color: #CA7B05;">Noctam Communication</a>

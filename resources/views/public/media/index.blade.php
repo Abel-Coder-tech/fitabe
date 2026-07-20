@@ -170,7 +170,7 @@
                         <i class="bi bi-trophy-fill text-white" style="font-size: 2rem;"></i>
                     </div>
                     <div class="card-body text-center py-3">
-                        <h5 class="fw-bold mb-0" style="color: #3E1E05;">Édition {{ $annee }}</h5>
+                        <h5 class="fw-bold mb-0" style="color: #3E1E05;">FITAB {{ $annee }}</h5>
                         <small class="text-muted">Voir les résultats</small>
                     </div>
                 </div>

@@ -7,7 +7,7 @@
     <div class="container text-center">
         <h1 class="fw-bold display-6 mb-2" style="color: #E3D5AD;">Résultats</h1>
         @if($annee)
-            <p class="mb-0" style="color: rgba(227,213,173,0.8);">Édition {{ $annee }}</p>
+            <p class="mb-0" style="color: rgba(227,213,173,0.8);">FITAB {{ $annee }}</p>
         @endif
     </div>
 </section>
