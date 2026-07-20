@@ -327,7 +327,7 @@
                 {{-- Labels alignés sous chaque cercle --}}
                 <div class="d-flex">
                     <div class="text-center" style="flex: 1;">
-                        <div class="small fw-semibold mt-0" style="color: #9B4D07; font-size: 0.75rem;">Choisisser</div>
+                        <div class="small fw-semibold mt-0" style="color: #9B4D07; font-size: 0.75rem;">Choisir</div>
                         <div class="small text-muted" style="font-size: 0.65rem;">votre candidat</div>
                     </div>
                     <div style="flex: 0 0 auto; width: 40px;"></div>
