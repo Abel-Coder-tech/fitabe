@@ -611,7 +611,7 @@ margin-right: 0;
             <h2 class="fw-bold mt-2" style="color: #3E1E05;">Nos partenaires</h2>
         </div>
         @if ($partenaires->count())
-        <div class="partenaires-track-wrapper">
+        <div class="partenaires-track-wrapper mb-4">
             <div class="partenaires-track" id="partnerTrack">
                 @foreach ($partenaires as $p)
                 <div class="partenaire-card"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
