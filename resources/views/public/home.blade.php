@@ -459,7 +459,7 @@ margin-right: 0;
         </div>
 
         {{-- Promoteur 1 : image gauche, texte droite --}}
-        <div class="row align-items-center g-4 mb-5 ms-5">
+        <div class="row align-items-center g-0 mb-5 ms-5">
             <div class="col-lg-6">
                 <div class="position-relative d-inline-block">
                     <img src="{{ asset('images/promoteurs/promoteur1.png') }}" alt="MISTER OKEKE"
@@ -470,7 +470,7 @@ margin-right: 0;
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 ms-0">
                 <h3 style="color: #1a1a1a; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem;">MISTER OKEKE</h3>
                 <p style="color: #c8922a; font-size: 0.875rem; margin-bottom: 0.75rem;">Roi du Théâtre Béninois · Cofondateur</p>
                 <hr style="width: 50px; height: 3px; background: #c0392b; border: none; margin: 0 0 1rem 0;">
