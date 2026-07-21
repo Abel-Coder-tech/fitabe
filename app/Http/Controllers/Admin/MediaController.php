@@ -11,7 +11,7 @@ class MediaController extends Controller
     // Affiche la liste paginée des médias
     public function index()
     {
-        $medias = Medias::latest('id')->paginate(20);
+        $medias = Medias::orderBy('id')->paginate(20);
         return view('admin.media.index', compact('medias'));
     }
 
