@@ -4,10 +4,7 @@
 
 @section('content')
 {{-- Titre --}}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0">Contacts</h1>
-    <a href="{{ route('admin.export.contacts') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-download me-1"></i> CSV</a>
-</div>
+<h1 class="mb-4">Contacts</h1>
 
 {{-- Liste des messages --}}
 <div class="table-responsive">
