@@ -304,11 +304,6 @@
                         @endif
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.subscribers.index') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 {{ $navClass('admin.subscribers') }}" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
-                        <i class="bi bi-envelope-open-fill" style="width: 18px;"></i> Newsletter
-                    </a>
-                </li>
             </ul>
         </div>
 
