@@ -304,25 +304,7 @@
                         @endif
                     </a>
                 </li>
-                @if(auth()->user()->role === 'super_admin')
-                <li class="nav-item">
-                    <a href="{{ route('admin.categories.index') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 {{ $navClass('admin.categories') }}" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
-                        <i class="bi bi-tags-fill" style="width: 18px;"></i> Catégories
-                    </a>
-                </li>
-                @endif
             </ul>
-
-            @if(auth()->user()->role === 'super_admin')
-            <div class="small text-uppercase px-2 mt-4 mb-2" style="color: rgba(255,255,255,0.3); font-size: 0.65rem; letter-spacing: 1.5px;">Système</div>
-            <ul class="nav flex-column gap-1">
-                <li class="nav-item">
-                    <a href="{{ route('admin.settings.index') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 {{ $navClass('admin.settings') }}" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
-                        <i class="bi bi-gear-fill" style="width: 18px;"></i> Paramètres
-                    </a>
-                </li>
-            </ul>
-            @endif
         </div>
 
         {{-- Bas de sidebar --}}
