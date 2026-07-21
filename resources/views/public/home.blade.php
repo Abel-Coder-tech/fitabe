@@ -4,28 +4,28 @@
 
 @push('meta')
 <script type="application/ld+json">
-{
-    "@@context": "https://schema.org",
-    "@@type": "Event",
-    "name": "FITAB 2026 - Festival International des Talents Artistiques du Bénin",
-    "description": "Théâtre, Danse, Musique, Percussion, Stylisme et Arts Visuels — Présélections et finale à Porto-Novo.",
-    "startDate": "2026",
-    "location": {
-        "@@type": "Place",
-        "name": "Porto-Novo",
-        "address": {
-            "@@type": "PostalAddress",
-            "addressLocality": "Porto-Novo",
-            "addressCountry": "BJ"
-        }
-    },
-    "image": "{{ asset('images/hero.jpg') }}",
-    "organizer": {
-        "@@type": "Organization",
-        "name": "FITAB",
-        "url": "{{ url('/') }}"
-    }
-}
+@php echo json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'Event',
+    'name' => 'FITAB 2026 - Festival International des Talents Artistiques du Bénin',
+    'description' => 'Théâtre, Danse, Musique, Percussion, Stylisme et Arts Visuels — Présélections et finale à Porto-Novo.',
+    'startDate' => '2026',
+    'location' => [
+        '@type' => 'Place',
+        'name' => 'Porto-Novo',
+        'address' => [
+            '@type' => 'PostalAddress',
+            'addressLocality' => 'Porto-Novo',
+            'addressCountry' => 'BJ',
+        ],
+    ],
+    'image' => asset('images/hero.jpg'),
+    'organizer' => [
+        '@type' => 'Organization',
+        'name' => 'FITAB',
+        'url' => url('/'),
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT); @endphp
 </script>
 @endpush
 

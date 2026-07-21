@@ -6,16 +6,16 @@
     <title>@yield('title', config('app.name', 'FITAB'))</title>
     <meta name="description" content="@yield('description', 'Soutenez vos artistes préférés au FITAB. Théâtre, Danse, Musique, Percussion et Art visuel.')">
     <link rel="canonical" href="{{ url()->current() }}">
-    <meta property="og:title" content="@yield('og_title', @yield('title', config('app.name', 'FITAB')))">
-    <meta property="og:description" content="@yield('og_description', @yield('description', 'Soutenez vos artistes préférés au FITAB.'))">
+    <meta property="og:title" content="{!! $__env->yieldContent('og_title', $__env->yieldContent('title', config('app.name', 'FITAB'))) !!}">
+    <meta property="og:description" content="{!! $__env->yieldContent('og_description', $__env->yieldContent('description', 'Soutenez vos artistes préférés au FITAB.')) !!}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="@yield('og_image', asset('images/hero.jpg'))">
+    <meta property="og:image" content="{{ asset('images/hero.jpg') }}">
     <meta property="og:site_name" content="{{ config('app.name', 'FITAB') }}">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@yield('og_title', @yield('title', config('app.name', 'FITAB')))">
-    <meta name="twitter:description" content="@yield('og_description', @yield('description', 'Soutenez vos artistes préférés au FITAB.'))">
-    <meta name="twitter:image" content="@yield('og_image', asset('images/hero.jpg'))">
+    <meta name="twitter:title" content="{!! $__env->yieldContent('og_title', $__env->yieldContent('title', config('app.name', 'FITAB'))) !!}">
+    <meta name="twitter:description" content="{!! $__env->yieldContent('og_description', $__env->yieldContent('description', 'Soutenez vos artistes préférés au FITAB.')) !!}">
+    <meta name="twitter:image" content="{{ asset('images/hero.jpg') }}">
     @stack('meta')
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <script type="application/ld+json">
