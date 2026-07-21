@@ -14,7 +14,6 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Ordre</th>
             <th>Légende</th>
             <th>Type</th>
             <th>Année</th>
@@ -25,7 +24,6 @@
     <tbody>
         @forelse ($medias as $media)
             <tr>
-                <td data-label="Ordre">{{ $media->ordre_affichage ?? '-' }}</td>
                 <td data-label="Légende">{{ $media->titre ?? '-' }}</td>
                 <td data-label="Type">{{ $media->type === 'photo' ? 'Photo' : 'Vidéo' }}</td>
                 <td data-label="Année">{{ $media->annee_edition ?? '-' }}</td>
@@ -47,7 +45,7 @@
                 </td>
             </tr>
         @empty
-            <tr><td colspan="6" class="text-center py-4 text-muted">Aucun média.</td></tr>
+            <tr><td colspan="5" class="text-center py-4 text-muted">Aucun média.</td></tr>
         @endforelse
     </tbody>
 </table>

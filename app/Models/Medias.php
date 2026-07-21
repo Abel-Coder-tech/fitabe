@@ -14,7 +14,6 @@ class Medias extends Model
         'url',
         'lien_youtube',
         'annee_edition',
-        'ordre_affichage',
     ];
 
     // Accesseur : URL de la miniature (YouTube ou locale)

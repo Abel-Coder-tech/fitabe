@@ -63,11 +63,6 @@
             </select>
             @error('annee_edition') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
-        <div class="col-md-4 mb-3">
-            <label class="form-label">Ordre d'affichage</label>
-            <input type="number" name="ordre_affichage" class="form-control @error('ordre_affichage') is-invalid @enderror" value="{{ old('ordre_affichage', $media->ordre_affichage) }}" min="0">
-            @error('ordre_affichage') <div class="invalid-feedback">{{ $message }}</div> @enderror
-        </div>
     </div>
 
     <button type="submit" class="btn btn-primary">Mettre à jour</button>

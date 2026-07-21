@@ -11,7 +11,7 @@ class MediaController extends Controller
     // Affiche la liste paginée des médias
     public function index()
     {
-        $medias = Medias::orderBy('ordre_affichage', 'asc')->paginate(20);
+        $medias = Medias::latest()->paginate(20);
         return view('admin.media.index', compact('medias'));
     }
 
@@ -31,7 +31,6 @@ class MediaController extends Controller
             'fichier' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,mp4,mov,avi|max:10240',
             'lien_youtube' => 'nullable|string|max:255',
             'annee_edition' => 'nullable|string|max:10',
-            'ordre_affichage' => 'nullable|integer|min:0',
         ], [
             'type.required' => 'Le type de média est requis.',
             'type.in' => 'Le type doit être photo ou video.',
@@ -52,8 +51,6 @@ class MediaController extends Controller
         }
 
         unset($validated['fichier']);
-
-        $validated['ordre_affichage'] ??= 0;
 
         Medias::create($validated);
 
@@ -82,7 +79,6 @@ class MediaController extends Controller
             'fichier' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,mp4,mov,avi|max:10240',
             'lien_youtube' => 'nullable|string|max:255',
             'annee_edition' => 'nullable|string|max:10',
-            'ordre_affichage' => 'nullable|integer|min:0',
         ], [
             'type.required' => 'Le type de média est requis.',
             'type.in' => 'Le type doit être photo ou video.',

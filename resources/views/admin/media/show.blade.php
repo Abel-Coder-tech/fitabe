@@ -17,7 +17,6 @@
         <p><strong>Titre :</strong> {{ $media->titre ?? '—' }}</p>
         <p><strong>Description :</strong> {{ $media->description ?? '—' }}</p>
         <p><strong>Année :</strong> {{ $media->annee_edition ?? '—' }}</p>
-        <p><strong>Ordre :</strong> {{ $media->ordre_affichage ?? '—' }}</p>
         <p><strong>Aperçu :</strong></p>
         @if ($media->type === 'photo' && $media->url)
             <img src="{{ asset('storage/' . $media->url) }}" class="img-fluid rounded" style="max-height:400px;">

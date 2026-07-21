@@ -11,11 +11,10 @@ class MediaController extends Controller
     // Page publique galerie : photos, vidéos et résultats
     public function index()
     {
-        $order = ['ordre_affichage', 'asc'];
-        $photos = Medias::where('type', 'photo')->orderBy(...$order)->get();
-        $videos = Medias::where('type', 'video')->orderBy(...$order)->get();
+        $photos = Medias::where('type', 'photo')->latest()->get();
+        $videos = Medias::where('type', 'video')->latest()->get();
         $annees = Medias::whereNotNull('annee_edition')->distinct()->orderBy('annee_edition', 'desc')->pluck('annee_edition');
-        $medias = Medias::orderBy('ordre_affichage')->latest()->paginate(24);
+        $medias = Medias::latest()->paginate(24);
 
         $photosJson = $photos->map(fn($m) => [
             'url' => $m->thumbnail,
