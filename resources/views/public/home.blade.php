@@ -467,18 +467,18 @@ margin-right: 0;
         </div>
 
         {{-- Promoteur 1 : image gauche, texte droite --}}
-        <div class="row align-items-center g-3 mb-5">
-            <div class="col-lg-6  ">
-                <div class="position-relative d-inline-block">
-                    <img src="{{ asset('images/promoteurs/promoteur1.png') }}" alt="MISTER OKEKE" loading="lazy" width="400" height="400"
-                         style="width: 100%; max-width: 400px; border-radius: 12px; border: 2px solid #c9a96e; display: block;">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
+                <div class="position-relative d-inline-block" style="max-width: 500px;">
+                    <img src="{{ asset('images/promoteurs/promoteur1.png') }}" alt="MISTER OKEKE" loading="lazy" width="500" height="500"
+                         class="w-100" style="border-radius: 12px; border: 2px solid #c9a96e; display: block;">
                     <div class="position-absolute" style="bottom: 12px; right: 12px; background: #8b1a1a; border-radius: 8px; padding: 8px 16px; text-align: center;">
                         <div style="color: #fff; font-size: 0.75rem; line-height: 1.2;">Cofondateur</div>
                         <div style="color: #fff; font-size: 1rem; font-weight: 700; line-height: 1.3;">Depuis 2023</div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 ">
+            <div class="col-lg-6">
                 <h3 style="color: #1a1a1a; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem;">MISTER OKEKE</h3>
                 <p style="color: #c8922a; font-size: 0.875rem; margin-bottom: 0.75rem;">Roi du Théâtre Béninois · Cofondateur</p>
                 <hr style="width: 50px; height: 3px; background: #c0392b; border: none; margin: 0 0 1rem 0;">
@@ -499,11 +499,11 @@ margin-right: 0;
         </div>
 
         {{-- Promoteur 2 : inversé (image droite, texte gauche) --}}
-        <div class="row align-items-center g-5 flex-row-reverse">
-            <div class="col-lg-6">
-                <div class="position-relative d-inline-block">
-                    <img src="{{ asset('images/promoteurs/promoteur2.png') }}" alt="EYISSE SOBUR BABATUNDE" loading="lazy" width="400" height="400"
-                         style="width: 100%; max-width: 400px; border-radius: 12px; border: 2px solid #c9a96e; display: block;">
+        <div class="row align-items-center flex-row-reverse">
+            <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
+                <div class="position-relative d-inline-block" style="max-width: 500px;">
+                    <img src="{{ asset('images/promoteurs/promoteur2.png') }}" alt="EYISSE SOBUR BABATUNDE" loading="lazy" width="500" height="500"
+                         class="w-100" style="border-radius: 12px; border: 2px solid #c9a96e; display: block;">
                     <div class="position-absolute" style="bottom: 12px; right: 12px; background: #8b1a1a; border-radius: 8px; padding: 8px 16px; text-align: center;">
                         <div style="color: #fff; font-size: 0.75rem; line-height: 1.2;">Cofondateur</div>
                         <div style="color: #fff; font-size: 1rem; font-weight: 700; line-height: 1.3;">Depuis 2023</div>
