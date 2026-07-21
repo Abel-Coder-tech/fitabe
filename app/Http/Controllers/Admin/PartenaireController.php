@@ -49,10 +49,10 @@ class PartenaireController extends Controller
         return to_route('admin.partenaires.index')->with('success', 'Partenaire créé avec succès.');
     }
 
-    // Affiche le détail d'un partenaire
+    // Redirige vers l'édition (pas de vue show dédiée)
     public function show(Partenaires $partenaire)
     {
-        return view('admin.partenaires.index', compact('partenaire'));
+        return to_route('admin.partenaires.edit', $partenaire);
     }
 
     // Affiche le formulaire d'édition

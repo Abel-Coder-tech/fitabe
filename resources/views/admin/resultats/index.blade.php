@@ -8,6 +8,7 @@
     <h1 style="font-size: 1.3rem; color: #3E1E05;">
         <i class="bi bi-trophy-fill me-2" style="color: #9B4D07;"></i> Résultats
     </h1>
+    <a href="{{ route('admin.export.resultats') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-download me-1"></i> CSV</a>
 </div>
 
 {{-- Grille des éditions --}}

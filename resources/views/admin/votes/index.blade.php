@@ -247,14 +247,17 @@
 
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
     <h1 class="section-title mb-0">Ovations reçues</h1>
-    @if($votes->total() > 0)
-    <form action="{{ route('admin.votes.clearAll') }}" method="POST" class="d-inline" onsubmit="return confirm('⚠️ Supprimer TOUTES les ovations ? Cette action est irréversible.')">
-        @csrf
-        <button type="submit" class="btn btn-sm btn-outline-bdx fw-semibold rounded-pill px-3">
-            <i class="bi bi-trash3 me-1"></i> Tout supprimer ({{ $votes->total() }})
-        </button>
-    </form>
-    @endif
+    <div class="d-flex gap-2">
+        <a href="{{ route('admin.export.votes') }}" class="btn btn-sm btn-outline-secondary fw-semibold rounded-pill px-3"><i class="bi bi-download me-1"></i> CSV</a>
+        @if($votes->total() > 0)
+        <form action="{{ route('admin.votes.clearAll') }}" method="POST" class="d-inline" onsubmit="return confirm('⚠️ Supprimer TOUTES les ovations ? Cette action est irréversible.')">
+            @csrf
+            <button type="submit" class="btn btn-sm btn-outline-bdx fw-semibold rounded-pill px-3">
+                <i class="bi bi-trash3 me-1"></i> Tout supprimer ({{ $votes->total() }})
+            </button>
+        </form>
+        @endif
+    </div>
 </div>
 
 <div class="table-responsive bg-white rounded-3 shadow-sm" style="border:1px solid rgba(202,123,5,0.08);">

@@ -37,7 +37,7 @@ class ParametreController extends Controller
 
     public function show(Parametres $parametre)
     {
-        return view('admin.parametres.show', compact('parametre'));
+        return to_route('admin.parametres.edit', $parametre);
     }
 
     public function edit(Parametres $parametre)

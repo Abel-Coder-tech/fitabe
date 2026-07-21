@@ -6,7 +6,10 @@
 {{-- En-tête --}}
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1>Candidats</h1>
-    <a href="{{ route('admin.candidats.create') }}" class="btn btn-primary">Nouveau candidat</a>
+    <div class="d-flex gap-2">
+        <a href="{{ route('admin.export.candidats') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-download me-1"></i> CSV</a>
+        <a href="{{ route('admin.candidats.create') }}" class="btn btn-primary">Nouveau candidat</a>
+    </div>
 </div>
 
 {{-- Liste des candidats --}}

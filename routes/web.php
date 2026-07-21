@@ -5,7 +5,11 @@ use App\Http\Controllers\Public\AcceuilController;
 use App\Http\Controllers\Public\VoteController as PublicVoteController;
 use App\Http\Controllers\Public\MediaController as PublicMediaController;
 use App\Http\Controllers\Public\ContactController as PublicContactController;
+use App\Http\Controllers\Public\NewsletterController;
 use App\Http\Controllers\Admin\CandidatController;
+use App\Http\Controllers\Admin\CategorieController;
+use App\Http\Controllers\Admin\ExportController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\VoteController;
 use App\Http\Controllers\Admin\ProgrammeController;
 use App\Http\Controllers\Admin\PartenaireController;
@@ -33,6 +37,7 @@ Route::get('/medias', [PublicMediaController::class, 'index'])->name('public.med
 Route::permanentRedirect('/resultats', '/vote')->name('public.resultats');
 Route::get('/contact', [PublicContactController::class, 'index'])->name('public.contact');
 Route::post('/contact', [PublicContactController::class, 'store'])->name('public.contact.store')->middleware('throttle:5,1');
+Route::post('/newsletter', [NewsletterController::class, 'store'])->name('public.newsletter.store')->middleware('throttle:3,1');
 Route::view('/mentions-legales', 'public.mentions-legales')->name('public.mentions-legales');
 Route::view('/confidentialite', 'public.confidentialite')->name('public.confidentialite');
 Route::view('/cgu', 'public.cgu')->name('public.cgu');
@@ -49,6 +54,14 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('partenaires', PartenaireController::class);
     Route::resource('medias', MediaController::class);
     Route::resource('contacts', ContactController::class)->except(['create', 'store', 'edit', 'update']);
+    Route::post('contacts/{contact}/respond', [ContactController::class, 'respond'])->name('contacts.respond');
+    Route::resource('categories', CategorieController::class)->middleware('role:super_admin');
+    Route::get('export/candidats', [ExportController::class, 'candidats'])->name('export.candidats');
+    Route::get('export/votes', [ExportController::class, 'votes'])->name('export.votes');
+    Route::get('export/contacts', [ExportController::class, 'contacts'])->name('export.contacts');
+    Route::get('export/resultats', [ExportController::class, 'resultats'])->name('export.resultats');
+    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
 
     // Votes — réservé super_admin
     Route::get('votes', [VoteController::class, 'index'])->name('votes.index')->middleware('role:super_admin');
