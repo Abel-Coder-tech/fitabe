@@ -4,7 +4,7 @@
     $nomPartage = $candidatPartage?->display_name;
 @endphp
 
-@section('title', $candidatPartage ? "Votez pour {$nomPartage} — FITAB 2026" : 'Ovation - ' . config('app.name', 'Fitabe'))
+@section('title', $candidatPartage ? "Votez pour {$nomPartage} — FITAB 2026" : 'Ovation - ' . config('app.name', 'FITAB'))
 
 @php
     $description = $candidatPartage
@@ -393,7 +393,7 @@
                         <div class="card candidate-card h-100 shadow-sm">
                             <div class="candidat-cover">
                                 @if($r->candidat_photo)
-                                    <img src="{{ $r->candidat_photo_url }}" class="photo-principale" alt="{{ $r->candidat_nom }}">
+                                    <img src="{{ $r->candidat_photo_url }}" class="photo-principale" alt="{{ $r->candidat_nom }}" loading="lazy">
                                 @endif
                                 <span class="candidat-num" style="background: {{ $r->prix === 1 ? '#FFD700' : ($r->prix === 2 ? '#C0C0C0' : '#CD7F32') }}; color: #3E1E05;">
                                     {{ $r->prix_label }}
@@ -427,7 +427,7 @@
                         <div class="card candidate-card h-100 shadow-sm">
                             <div class="candidat-cover">
                                 @if($candidat->photo)
-                                    <img src="{{ $candidat->photo_url }}" class="photo-principale" alt="{{ $candidat->display_name }}">
+                                    <img src="{{ $candidat->photo_url }}" class="photo-principale" alt="{{ $candidat->display_name }}" loading="lazy">
                                 @endif
                                 @if($candidat->numero_scene)
                                     <span class="candidat-num">N°{{ $candidat->numero_scene }}</span>
@@ -583,8 +583,10 @@ function ouvrirVote(id, nom, photo, votesCount, categorie, bio, numeroScene) {
 
         document.getElementById('candidatBio').textContent = bio || '';
         document.getElementById('candidatPhotoPreview').src = photo || '{{ asset("images/default-user.png") }}';
+        document.getElementById('candidatPhotoPreview').alt = nom || 'Photo du candidat';
         document.getElementById('step2CandidatNom').textContent = nom;
         document.getElementById('step2CandidatPhoto').src = photo || '{{ asset("images/default-user.png") }}';
+        document.getElementById('step2CandidatPhoto').alt = nom || 'Photo du candidat';
 
         document.getElementById('quantite').value = 1;
         setTimeout(function() { changerQte(0); }, 10);

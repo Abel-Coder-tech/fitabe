@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Contact - ' . config('app.name', 'FITAB'))
+@section('description', 'Contactez l\'équipe du FITAB — Festival International des Talents Artistiques du Bénin. Informations, partenariats, presse et réservations.')
 
 @section('content')
 {{-- ==================== HERO ==================== --}}

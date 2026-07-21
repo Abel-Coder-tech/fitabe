@@ -23,10 +23,10 @@
 
                         {{-- Photo + infos candidat --}}
                         <div class="text-center">
-                            <img id="candidatPhotoPreview"
-                                 src=""
-                                 alt=""
-                                 class="rounded-2 shadow"
+                                 <img id="candidatPhotoPreview"
+                                     src=""
+                                     alt="Photo du candidat"
+                                     class="rounded-2 shadow"
                                  style="max-width: 100%; max-height: 100px; object-fit: contain;">
                             <div class="mt-2">
                                 <div class="fw-bold" style="font-size: 1rem; color: #3E1E05;" id="candidatNameMini"></div>
@@ -98,7 +98,7 @@
                             <div class="rounded-2 overflow-hidden shadow mx-auto d-block" style="width: 70px; height: 70px; border: 2px solid #E3D5AD;">
                                 <img id="step2CandidatPhoto"
                                      src=""
-                                     alt=""
+                                     alt="Photo du candidat"
                                      style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
                         </div>

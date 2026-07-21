@@ -3,7 +3,6 @@
 @foreach($pages as $page)
     <url>
         <loc>{{ $page['loc'] }}</loc>
-        <lastmod>{{ now()->toDateString() }}</lastmod>
         <changefreq>{{ $page['changefreq'] }}</changefreq>
         <priority>{{ $page['priority'] }}</priority>
     </url>

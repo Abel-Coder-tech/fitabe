@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Résultats - ' . config('app.name', 'FITAB'))
+@section('description', 'Découvrez les résultats et le palmarès du FITAB — Festival International des Talents Artistiques du Bénin. Lauréats par catégorie.')
 
 @section('content')
 <section class="d-flex align-items-center justify-content-center"
@@ -50,7 +51,7 @@
                                         <td>
                                             <div class="d-flex align-items-center gap-2">
                                                 @if ($r->candidat_photo)
-                                                    <img src="{{ $r->candidat_photo_url }}" alt="" width="40" height="40" class="rounded-circle" style="object-fit: cover;">
+                                                    <img src="{{ $r->candidat_photo_url }}" alt="{{ $r->candidat_nom }}" width="40" height="40" class="rounded-circle" style="object-fit: cover;">
                                                 @endif
                                                 <span class="fw-medium">{{ $r->candidat_nom }}</span>
                                             </div>

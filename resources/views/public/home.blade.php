@@ -2,6 +2,33 @@
 
 @section('title', 'Accueil - ' . config('app.name', 'FITAB'))
 
+@push('meta')
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "FITAB 2026 - Festival International des Talents Artistiques du Bénin",
+    "description": "Théâtre, Danse, Musique, Percussion, Stylisme et Arts Visuels — Présélections et finale à Porto-Novo.",
+    "startDate": "2026",
+    "location": {
+        "@type": "Place",
+        "name": "Porto-Novo",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Porto-Novo",
+            "addressCountry": "BJ"
+        }
+    },
+    "image": "{{ asset('images/hero.jpg') }}",
+    "organizer": {
+        "@type": "Organization",
+        "name": "FITAB",
+        "url": "{{ url('/') }}"
+    }
+}
+</script>
+@endpush
+
 @section('content')
 <div class="hero-section position-relative d-flex align-items-center"
      style="background: linear-gradient(135deg, rgba(62,30,5,0.92) 0%, rgba(62,30,5,0.7) 50%, rgba(62,30,5,0.4) 100%), url('{{ asset('images/hero.jpg') }}') no-repeat center center; background-size: cover; min-height: calc(100vh - 64px);">
@@ -443,7 +470,7 @@ margin-right: 0;
         <div class="row align-items-center g-3 mb-5">
             <div class="col-lg-6  ">
                 <div class="position-relative d-inline-block">
-                    <img src="{{ asset('images/promoteurs/promoteur1.png') }}" alt="MISTER OKEKE"
+                    <img src="{{ asset('images/promoteurs/promoteur1.png') }}" alt="MISTER OKEKE" loading="lazy" width="400" height="400"
                          style="width: 100%; max-width: 400px; border-radius: 12px; border: 2px solid #c9a96e; display: block;">
                     <div class="position-absolute" style="bottom: 12px; right: 12px; background: #8b1a1a; border-radius: 8px; padding: 8px 16px; text-align: center;">
                         <div style="color: #fff; font-size: 0.75rem; line-height: 1.2;">Cofondateur</div>
@@ -475,7 +502,7 @@ margin-right: 0;
         <div class="row align-items-center g-5 flex-row-reverse">
             <div class="col-lg-6">
                 <div class="position-relative d-inline-block">
-                    <img src="{{ asset('images/promoteurs/promoteur2.png') }}" alt="EYISSE SOBUR BABATUNDE"
+                    <img src="{{ asset('images/promoteurs/promoteur2.png') }}" alt="EYISSE SOBUR BABATUNDE" loading="lazy" width="400" height="400"
                          style="width: 100%; max-width: 400px; border-radius: 12px; border: 2px solid #c9a96e; display: block;">
                     <div class="position-absolute" style="bottom: 12px; right: 12px; background: #8b1a1a; border-radius: 8px; padding: 8px 16px; text-align: center;">
                         <div style="color: #fff; font-size: 0.75rem; line-height: 1.2;">Cofondateur</div>
@@ -596,7 +623,7 @@ margin-right: 0;
             <div class="partenaires-track" id="partnerTrack">
                 @foreach ($partenaires as $p)
             <div class="partenaire-logo"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
-                <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}">
+                <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}" loading="lazy">
             </div>
                 @endforeach
             </div>

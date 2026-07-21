@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Merci pour votre ovation - ' . config('app.name', 'Fitabe'))
+@section('title', 'Merci pour votre ovation - ' . config('app.name', 'FITAB'))
 
 @push('styles')
 <style>
@@ -31,7 +31,7 @@
                             <div class="card-body p-4">
                                 <div class="d-flex align-items-center gap-3 mb-3">
                                     @if($vote->candidat && $vote->candidat->photo)
-                                        <img src="{{ $vote->candidat->photo_url }}" alt="" class="rounded-circle" width="64" height="64" style="object-fit:cover; border: 3px solid #CA7B05;">
+                                        <img src="{{ $vote->candidat->photo_url }}" alt="{{ $vote->candidat->display_name }}" class="rounded-circle" width="64" height="64" style="object-fit:cover; border: 3px solid #CA7B05;">
                                     @else
                                         <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:64px;height:64px;background:#fef0e0;">
                                             <i class="bi bi-person-fill" style="color: #9B4D07; font-size: 1.5rem;"></i>

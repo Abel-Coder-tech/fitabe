@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Médiathèque - ' . config('app.name', 'FITAB'))
+@section('description', 'Photos et vidéos des éditions du FITAB — Festival International des Talents Artistiques du Bénin. Revivez les plus grands moments du festival.')
 
 @section('content')
 <style>
@@ -472,7 +473,7 @@
                     html += '<div class="list-group-item d-flex align-items-center gap-3 px-0">';
                     html += '<span class="badge fs-6 px-2 py-1" style="background: ' + medal + '; color: #3E1E05; min-width: 48px;">' + r.prix_label + '</span>';
                     if (r.candidat_photo) {
-                        html += '<img src="' + r.candidat_photo + '" alt="" width="44" height="44" class="rounded-circle" style="object-fit: cover;">';
+                        html += '<img src="' + r.candidat_photo + '" alt="' + r.candidat_nom + '" width="44" height="44" class="rounded-circle" style="object-fit: cover;">';
                     }
                     html += '<div class="flex-grow-1">';
                     html += '<strong style="color: #3E1E05;">' + r.candidat_nom + '</strong>';

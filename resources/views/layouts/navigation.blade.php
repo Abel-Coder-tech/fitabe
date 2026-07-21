@@ -2,7 +2,7 @@
     <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('admin.dashboard') }}">
             <x-application-logo height="30" />
-            <span class="fw-semibold">{{ config('app.name', 'Fitabe') }}</span>
+            <span class="fw-semibold">{{ config('app.name', 'FITAB') }}</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>

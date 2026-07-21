@@ -3,10 +3,44 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', config('app.name', 'Fitabe'))</title>
+    <title>@yield('title', config('app.name', 'FITAB'))</title>
     <meta name="description" content="@yield('description', 'Soutenez vos artistes préférés au FITAB. Théâtre, Danse, Musique, Percussion et Art visuel.')">
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('og_title', @yield('title', config('app.name', 'FITAB')))">
+    <meta property="og:description" content="@yield('og_description', @yield('description', 'Soutenez vos artistes préférés au FITAB.'))">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="@yield('og_image', asset('images/hero.jpg'))">
+    <meta property="og:site_name" content="{{ config('app.name', 'FITAB') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('og_title', @yield('title', config('app.name', 'FITAB')))">
+    <meta name="twitter:description" content="@yield('og_description', @yield('description', 'Soutenez vos artistes préférés au FITAB.'))">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/hero.jpg'))">
     @stack('meta')
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "FITAB",
+        "alternateName": "Festival International des Talents Artistiques du Bénin",
+        "url": "{{ url('/') }}",
+        "logo": "{{ asset('images/logo.png') }}",
+        "sameAs": [
+            "https://www.facebook.com/fitab.benin",
+            "https://www.instagram.com/fitab.benin",
+            "https://www.youtube.com/@fitab"
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "FITAB",
+        "url": "{{ url('/') }}"
+    }
+    </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     @vite(['resources/css/app.scss', 'resources/js/app.js'])
     <style>
