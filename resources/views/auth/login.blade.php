@@ -20,7 +20,7 @@
             background: #fff;
             border-radius: 16px;
             overflow: hidden;
-            max-width: 440px;
+            max-width: 400px;
             width: 100%;
             box-shadow: 0 25px 60px rgba(0,0,0,0.4);
         }
