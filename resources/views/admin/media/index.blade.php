@@ -14,6 +14,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>ID</th>
             <th>Légende</th>
             <th>Type</th>
             <th>Année</th>
@@ -24,6 +25,7 @@
     <tbody>
         @forelse ($medias as $media)
             <tr>
+                <td data-label="ID">{{ $media->id }}</td>
                 <td data-label="Légende">{{ $media->titre ?? '-' }}</td>
                 <td data-label="Type">{{ $media->type === 'photo' ? 'Photo' : 'Vidéo' }}</td>
                 <td data-label="Année">{{ $media->annee_edition ?? '-' }}</td>
