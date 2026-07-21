@@ -60,22 +60,6 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    public function updatePreferences(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'preferences' => 'array',
-            'preferences.email_notifications' => 'boolean',
-            'preferences.compact_mode' => 'boolean',
-            'preferences.dark_mode' => 'boolean',
-        ]);
-
-        $user = $request->user();
-        $user->preferences = array_merge($user->preferences ?? [], $request->preferences);
-        $user->save();
-
-        return Redirect::route('profile.edit')->with('status', 'preferences-updated');
-    }
-
     public function destroySession(Request $request, string $sessionId): RedirectResponse
     {
         $session = DB::table('sessions')

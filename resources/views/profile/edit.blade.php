@@ -68,9 +68,6 @@
                 <a href="#securite" class="settings-nav-link" data-section="securite">
                     <i class="bi bi-shield-lock"></i> Sécurité
                 </a>
-                <a href="#preferences" class="settings-nav-link" data-section="preferences">
-                    <i class="bi bi-sliders"></i> Préférences
-                </a>
                 @if(auth()->user()->role === 'super_admin')
                 <a href="#utilisateurs" class="settings-nav-link" data-section="utilisateurs">
                     <i class="bi bi-people"></i> Utilisateurs
@@ -113,15 +110,6 @@
             <div class="card border-0 rounded-4 shadow-sm">
                 <div class="card-body p-4">
                     @include('profile.partials.sessions')
-                </div>
-            </div>
-        </div>
-
-        {{-- Section Préférences --}}
-        <div class="settings-section" id="section-preferences">
-            <div class="card border-0 rounded-4 shadow-sm">
-                <div class="card-body p-4">
-                    @include('profile.partials.preferences')
                 </div>
             </div>
         </div>

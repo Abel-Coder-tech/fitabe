@@ -27,18 +27,18 @@
 
         .login-header {
             background: #3E1E05;
-            padding: 32px 40px 24px;
+            padding: 20px 40px 16px;
             text-align: center;
             border-bottom: 3px solid #CA7B05;
         }
 
         .login-header img {
-            height: 70px;
-            margin-bottom: 14px;
+            height: 50px;
+            margin-bottom: 8px;
         }
 
         .login-header .site-title {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 800;
             color: #F3EACE;
             letter-spacing: 1px;
@@ -46,7 +46,7 @@
         }
 
         .login-header .site-sub {
-            font-size: 10px;
+            font-size: 9px;
             color: #CA7B05;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -54,20 +54,20 @@
         }
 
         .login-body {
-            padding: 32px 40px 36px;
+            padding: 20px 40px 24px;
         }
 
         .login-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             color: #3E1E05;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .login-sub {
-            font-size: 12px;
+            font-size: 11px;
             color: #888;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
         }
 
         .form-label {
@@ -80,7 +80,7 @@
         .form-control {
             border: 1.5px solid #e8e0d0;
             border-radius: 8px;
-            padding: 10px 14px;
+            padding: 8px 14px;
             font-size: 13px;
             color: #3E1E05;
             background: #fdfaf5;
@@ -124,7 +124,7 @@
             color: #F3EACE;
             border: none;
             border-radius: 8px;
-            padding: 12px;
+            padding: 10px;
             font-size: 13px;
             font-weight: 700;
             width: 100%;
@@ -144,7 +144,7 @@
         .divider {
             border: none;
             border-top: 1px solid #f0ebe0;
-            margin: 24px 0 16px;
+            margin: 16px 0 12px;
         }
 
         .login-footer {
@@ -213,7 +213,6 @@
                     {{-- Email --}}
                     <div class="mb-3">
                         <label for="email" class="form-label">Adresse email</label>
-                        <div class="input-wrapper">
                             <input
                                 id="email"
                                 type="email"
@@ -224,12 +223,10 @@
                                 required
                                 autofocus
                                 autocomplete="username">
-                            <i class="bi bi-envelope"></i>
-                        </div>
                     </div>
 
                     {{-- Mot de passe --}}
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <label for="password" class="form-label">Mot de passe</label>
                         <div class="password-toggle">
                             <input
@@ -240,6 +237,8 @@
                                 placeholder="••••••••"
                                 required
                                 autocomplete="current-password">
+                            <i class="bi bi-eye-slash" id="password-eye"
+                               onclick="var i=document.getElementById('password');var e=document.getElementById('password-eye');if(i.type==='password'){i.type='text';e.classList.replace('bi-eye-slash','bi-eye')}else{i.type='password';e.classList.replace('bi-eye','bi-eye-slash')}"></i>
                         </div>
                     </div>
 
@@ -260,26 +259,6 @@
         </div>
     </div>
 
-    <script>
-        document.querySelectorAll('input[type="password"]').forEach(function(input) {
-            if (input.closest('.password-toggle')) return;
-            var wrapper = document.createElement('div');
-            wrapper.className = 'password-toggle';
-            input.parentNode.insertBefore(wrapper, input);
-            wrapper.appendChild(input);
-            var icon = document.createElement('i');
-            icon.className = 'bi bi-eye-slash';
-            icon.style.cssText = 'position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#c0b8a8;cursor:pointer;font-size:15px;z-index:5;';
-            icon.onmouseenter = function() { this.style.color = '#9B4D07'; };
-            icon.onmouseleave = function() { this.style.color = '#c0b8a8'; };
-            icon.onclick = function() {
-                var isPassword = input.type === 'password';
-                input.type = isPassword ? 'text' : 'password';
-                this.classList.toggle('bi-eye-slash', isPassword);
-                this.classList.toggle('bi-eye', !isPassword);
-            };
-            wrapper.appendChild(icon);
-        });
-    </script>
+
 </body>
 </html>
