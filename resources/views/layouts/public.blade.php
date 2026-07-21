@@ -169,7 +169,7 @@
         }
 
         /* Footer spacing mobile */
-        @media (max-width: 575.98px) {
+        @@media (max-width: 575.98px) {
             footer .col-6,
             footer .col-12 { padding-left: 0.75rem !important; }
         }
@@ -185,7 +185,7 @@
             cursor: pointer;
         }
 
-        @media (max-width: 991.98px) {
+        @@media (max-width: 991.98px) {
             .mobile-toggle { display: block; }
 
             .public-nav {

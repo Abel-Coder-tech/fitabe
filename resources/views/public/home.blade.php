@@ -77,20 +77,20 @@
 <style>
 html, body { overflow-x: hidden; width: 100%; }
 .hero-stats span { white-space: nowrap; }
-@media (max-width: 767.98px) {
+@@media (max-width: 767.98px) {
     .hero-section { padding: 2.5rem 0; }
     .hero-section h1 { font-size: 1.75rem !important; }
 }
-@media (max-width: 575.98px) {
+@@media (max-width: 575.98px) {
     .public-footer .container { padding-left: 12px; padding-right: 12px; }
     .public-footer .row.gy-4 { --bs-gutter-y: 1.5rem; }
     .public-footer .brand img { height: 70px; }
 }
-@media (max-width: 420px) {
+@@media (max-width: 420px) {
     .hero-stats { font-size: 0.85rem !important; }
     .hero-stats .fs-5 { font-size: 0.95rem !important; }
 }
-@keyframes bounce {
+@@keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(8px); }
 }
@@ -151,7 +151,7 @@ html, body { overflow-x: hidden; width: 100%; }
 .partenaires-track.scrolling:hover {
     animation-play-state: paused;
 }
-@keyframes scrollPartenaires {
+@@keyframes scrollPartenaires {
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
@@ -344,7 +344,7 @@ margin-right: 0;
     border-radius: 4px;
 }
 
-@media (max-width: 575.98px) {
+@@media (max-width: 575.98px) {
     .fitab-carousel { max-width: 100%; border-radius: 12px; }
     .carousel-label { font-size: 1.3rem; }
     .carousel-btn { width: 32px; height: 32px; font-size: 0.9rem; opacity: 1; background: rgba(0,0,0,0.3); }
