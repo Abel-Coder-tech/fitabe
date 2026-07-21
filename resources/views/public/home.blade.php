@@ -5,23 +5,23 @@
 @push('meta')
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
-    "@type": "Event",
+    "@@context": "https://schema.org",
+    "@@type": "Event",
     "name": "FITAB 2026 - Festival International des Talents Artistiques du Bénin",
     "description": "Théâtre, Danse, Musique, Percussion, Stylisme et Arts Visuels — Présélections et finale à Porto-Novo.",
     "startDate": "2026",
     "location": {
-        "@type": "Place",
+        "@@type": "Place",
         "name": "Porto-Novo",
         "address": {
-            "@type": "PostalAddress",
+            "@@type": "PostalAddress",
             "addressLocality": "Porto-Novo",
             "addressCountry": "BJ"
         }
     },
     "image": "{{ asset('images/hero.jpg') }}",
     "organizer": {
-        "@type": "Organization",
+        "@@type": "Organization",
         "name": "FITAB",
         "url": "{{ url('/') }}"
     }

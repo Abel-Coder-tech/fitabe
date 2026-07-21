@@ -20,8 +20,8 @@
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "Organization",
+        "@@context": "https://schema.org",
+        "@@type": "Organization",
         "name": "FITAB",
         "alternateName": "Festival International des Talents Artistiques du Bénin",
         "url": "{{ url('/') }}",
@@ -29,14 +29,14 @@
         "sameAs": [
             "https://www.facebook.com/fitab.benin",
             "https://www.instagram.com/fitab.benin",
-            "https://www.youtube.com/@fitab"
+            "https://www.youtube.com/@@fitab"
         ]
     }
     </script>
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
+        "@@context": "https://schema.org",
+        "@@type": "WebSite",
         "name": "FITAB",
         "url": "{{ url('/') }}"
     }
