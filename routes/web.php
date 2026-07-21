@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ResultatController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SubscriberController;
+use App\Http\Controllers\Public\NewsletterController;
 use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\SitemapController;
@@ -33,6 +35,7 @@ Route::get('/medias', [PublicMediaController::class, 'index'])->name('public.med
 Route::permanentRedirect('/resultats', '/vote')->name('public.resultats');
 Route::get('/contact', [PublicContactController::class, 'index'])->name('public.contact');
 Route::post('/contact', [PublicContactController::class, 'store'])->name('public.contact.store')->middleware('throttle:5,1');
+Route::post('/newsletter', [NewsletterController::class, 'store'])->name('newsletter.store')->middleware('throttle:5,1');
 Route::view('/mentions-legales', 'public.mentions-legales')->name('public.mentions-legales');
 Route::view('/confidentialite', 'public.confidentialite')->name('public.confidentialite');
 Route::view('/cgu', 'public.cgu')->name('public.cgu');
@@ -49,6 +52,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('partenaires', PartenaireController::class);
     Route::resource('medias', MediaController::class);
     Route::resource('contacts', ContactController::class)->except(['create', 'store', 'edit', 'update']);
+    Route::post('contacts/{contact}/reply', [ContactController::class, 'reply'])->name('contacts.reply');
 
     // Votes — réservé super_admin
     Route::get('votes', [VoteController::class, 'index'])->name('votes.index')->middleware('role:super_admin');
@@ -71,6 +75,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // Administration sensible — réservé super_admin
     Route::resource('parametres', ParametreController::class)->middleware('role:super_admin');
     Route::resource('users', UserController::class)->middleware('role:super_admin');
+
+    // Newsletter
+    Route::resource('subscribers', SubscriberController::class)->only(['index', 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {

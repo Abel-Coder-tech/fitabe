@@ -289,8 +289,9 @@
                                 <p class="small mb-0" style="color: rgba(227,213,173,0.7);">Recevez les actualités du festival</p>
                             </div>
                             <div class="col-md-7">
-                                <form class="d-flex gap-2">
-                                    <input type="email" class="form-control" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(227,213,173,0.3); color: #E3D5AD;" placeholder="Votre adresse e-mail">
+                                <form method="POST" action="{{ route('newsletter.store') }}" class="d-flex gap-2">
+                                    @csrf
+                                    <input type="email" name="email" class="form-control" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(227,213,173,0.3); color: #E3D5AD;" placeholder="Votre adresse e-mail" required>
                                     <button type="submit" class="btn fw-semibold px-4 text-nowrap border-0" style="background: #CA7B05; color: #fff;">S'abonner</button>
                                 </form>
                             </div>
