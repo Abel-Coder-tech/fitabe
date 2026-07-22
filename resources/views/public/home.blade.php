@@ -623,7 +623,9 @@ margin-right: 0;
             <div class="partenaires-track" id="partnerTrack">
                 @foreach ($partenaires as $p)
             <div class="partenaire-logo"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
-                <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}" loading="lazy">
+               <a href="{{ $p->site_web }}" target="_blank" rel="noopener noreferrer">
+                    <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}" loading="lazy">
+                </a>
             </div>
                 @endforeach
             </div>
