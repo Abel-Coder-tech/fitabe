@@ -162,12 +162,48 @@ html, body { overflow-x: hidden; width: 100%; }
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
 }
 .partenaire-logo img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
     display: block;
+    transition: transform .3s ease;
+}
+.partenaire-logo .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: rgba(62, 30, 5, 0.75);
+    color: #E3D5AD;
+    font-size: 0.7rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity .3s ease;
+    border-radius: 8px;
+    pointer-events: none;
+    text-decoration: none;
+}
+.partenaire-logo:hover img {
+    transform: scale(1.08);
+}
+.partenaire-logo a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+}
+.partenaire-logo:hover .overlay {
+    opacity: 1;
 }
 
 .accordion-button:not(.collapsed) { 
@@ -625,6 +661,10 @@ margin-right: 0;
             <div class="partenaire-logo"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
                <a href="{{ $p->site_web }}" target="_blank" rel="noopener noreferrer">
                     <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}" loading="lazy">
+                    <span class="overlay">
+                        <i class="bi bi-box-arrow-up-right"></i>
+                            &nbsp;Visiter le site
+                    </span>
                 </a>
             </div>
                 @endforeach
