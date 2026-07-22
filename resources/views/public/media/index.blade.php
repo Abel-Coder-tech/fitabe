@@ -3,8 +3,8 @@
 @section('title', 'Médiathèque - ' . config('app.name', 'FITAB'))
 @section('description', 'Photos et vidéos des éditions du FITAB — Festival International des Talents Artistiques du Bénin. Revivez les plus grands moments du festival.')
 
-@endsection
-.media-card { transition: transform .3s ease, box-shadow .3s ease; }
+@section('content')
+<style>
 .media-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.1) !important; }
 .media-thumb { width: 100%; height: 100%; object-fit: cover; }
 .media-card { transition: transform .3s ease, box-shadow .3s ease; }
