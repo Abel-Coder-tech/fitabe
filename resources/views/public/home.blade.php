@@ -181,7 +181,6 @@ html, body { overflow-x: hidden; width: 100%; }
     align-items: center;
     justify-content: center;
     gap: 4px;
-    background: rgba(62, 30, 5, 0.75);
     color: #E3D5AD;
     font-size: 0.7rem;
     font-weight: 600;
