@@ -1,3 +1,17 @@
+<style>
+    @media (min-width: 768px) {
+        #voteModal .modal-dialog { max-width: 600px !important; }
+        #voteModal .step1-grid { display: flex; gap: 1rem; align-items: flex-start; }
+        #voteModal .step1-photo { flex: 0 0 200px; max-width: 200px; }
+        #voteModal .step1-photo img { max-height: 240px !important; }
+        #voteModal .step1-info { flex: 1; min-width: 0; }
+    }
+    @media (max-width: 767.98px) {
+        #voteModal .step1-grid { display: block; }
+        #voteModal .step1-photo, #voteModal .step1-info { flex: unset; max-width: 100%; }
+    }
+</style>
+
 {{-- ==================== MODAL VOTE ==================== --}}
 @if($voteMode === 'active')
 <div class="modal fade" id="voteModal" tabindex="-1" data-bs-backdrop="static">
@@ -21,16 +35,21 @@
                     {{-- STEP 1 : Fiche candidat + quantité --}}
                     <div class="vote-step active" id="step-1">
 
-                        {{-- Photo + infos candidat --}}
-                        <div class="text-center">
-                                 <img id="candidatPhotoPreview"
+                        <div class="step1-grid">
+
+                            {{-- Colonne gauche : Photo --}}
+                            <div class="step1-photo text-center">
+                                <img id="candidatPhotoPreview"
                                      src=""
                                      alt="Photo du candidat"
-                                     class="rounded-2 shadow"
-                                 style="max-width: 100%; max-height: 100px; object-fit: contain;">
-                            <div class="mt-2">
+                                     class="rounded-2 shadow w-100"
+                                     style="max-height: 100px; object-fit: contain;">
+                            </div>
+
+                            {{-- Colonne droite : Infos --}}
+                            <div class="step1-info">
                                 <div class="fw-bold" style="font-size: 1rem; color: #3E1E05;" id="candidatNameMini"></div>
-                                <div class="d-flex align-items-center justify-content-center gap-2 mt-1">
+                                <div class="d-flex align-items-center gap-2 mt-1">
                                     <span class="badge px-2 py-1" id="candidatCategoryInfo"
                                           style="background: #9B4D07; font-weight: 500; font-size: 0.7rem;"></span>
                                     <span class="badge px-2 py-1" id="candidatNumero"
@@ -38,7 +57,7 @@
                                 </div>
                                 <div class="small mt-1" id="candidatVoteCount"
                                      style="color: #CA7B05; font-size: 0.75rem;"></div>
-                                <div class="small text-muted mt-1 px-2" id="candidatBio"
+                                <div class="small text-muted mt-1" id="candidatBio"
                                      style="font-style: italic; line-height: 1.3; font-size: 0.75rem;"></div>
                             </div>
                         </div>
