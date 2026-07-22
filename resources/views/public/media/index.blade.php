@@ -208,19 +208,6 @@
     </div>
 </section>
 
-{{-- ==================== MODAL RÉSULTATS ==================== --}}
-<div class="modal fade" id="resultatsModal" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content border-0 rounded-4 overflow-hidden">
-            <div class="px-4 py-3 position-relative" style="background: linear-gradient(135deg, #3E1E05, #9B4D07);">
-                <h5 class="fw-bold text-white mb-0" id="resultatsModalTitle">Résultats</h5>
-                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 mt-3 me-3" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body p-4" id="resultatsModalBody">
-            </div>
-        </div>
-    </div>
-</div>
 @endif
 
 {{-- ==================== PAGINATION ==================== --}}

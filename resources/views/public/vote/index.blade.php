@@ -551,12 +551,12 @@ let etat = {
 
 // ==================== COULEURS CATÉGORIES ====================
 const categoryColors = {
-    'Théâtre': '#8B0000',
-    'Percussions': '#B8860B',
-    'Musique': '#1E6EB5',
-    'Danse Traditionnelle': '#6B3FA0',
-    'Stylisme/Modélisme': '#E67E00',
-    'Arts Visuels': '#C2185B',
+    'théâtre': '#8B0000',
+    'danse': '#6B3FA0',
+    'musique': '#1E6EB5',
+    'percussion': '#B8860B',
+    'arts visuels': '#C2185B',
+    'stylisme/modélisme': '#E67E00',
 };
 
 // ==================== OUVERTURE ====================

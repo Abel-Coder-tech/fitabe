@@ -15,11 +15,12 @@ class Candidats extends Model
     Use HasFactory;
 
     public const CATEGORIES = [
-        'theatre',
+        'théâtre',
         'danse',
         'musique',
         'percussion',
-        'art_visuel',
+        'arts visuels',
+        'stylisme/modélisme',
     ];
 
     Protected $fillable = [
