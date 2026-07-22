@@ -3,8 +3,7 @@
 @section('title', 'Médiathèque - ' . config('app.name', 'FITAB'))
 @section('description', 'Photos et vidéos des éditions du FITAB — Festival International des Talents Artistiques du Bénin. Revivez les plus grands moments du festival.')
 
-@section('content')
-<style>
+@endsection
 .media-card { transition: transform .3s ease, box-shadow .3s ease; }
 .media-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.1) !important; }
 .media-thumb { width: 100%; height: 100%; object-fit: cover; }
@@ -164,7 +163,7 @@
 @endif
 
 {{-- ==================== VIDE ==================== --}}
-@if (!$photos->count() && !$videos->count() && !$editions->count())
+@if (!$photos->count() && !$videos->count())
 <section class="py-5 bg-white">
     <div class="container text-center py-5">
         <i class="bi bi-images fs-1" style="color: #CA7B05;"></i>
@@ -172,57 +171,6 @@
     </div>
 </section>
 @endif
-
-{{-- ==================== SÉPARATEUR RÉSULTATS ==================== --}}
-@if ($editions->count())
-<section class="bg-white">
-    <div class="container">
-        <hr class="m-0">
-        <div class="text-center position-relative" style="margin-top: -12px;">
-            <span class="bg-white px-4 fw-semibold small" style="color: #CA7B05;">Résultats</span>
-        </div>
-    </div>
-</section>
-@endif
-
-{{-- ==================== RÉSULTATS ==================== --}}
-@if ($editions->count())
-<section class="py-5 bg-white" id="section-resultats">
-    <div class="container">
-        <h3 class="fw-bold mb-4" style="color: #9B4D07;">Résultats par édition</h3>
-        <div class="row g-3">
-            @foreach ($editions as $annee)
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="card border-0 shadow-sm rounded-4 overflow-hidden edition-card" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#resultatsModal" data-annee="{{ $annee }}">
-                    <div class="text-center py-4" style="background: linear-gradient(135deg, #3E1E05, #9B4D07);">
-                        <i class="bi bi-trophy-fill text-white" style="font-size: 2rem;"></i>
-                    </div>
-                    <div class="card-body text-center py-3">
-                        <h5 class="fw-bold mb-0" style="color: #3E1E05;">FITAB {{ $annee }}</h5>
-                        <small class="text-muted">Voir les résultats</small>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-@endif
-
-{{-- ==================== MODAL RÉSULTATS ==================== --}}
-<div class="modal fade" id="resultatsModal" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content border-0 rounded-4 overflow-hidden">
-            <div class="px-4 py-3 position-relative" style="background: linear-gradient(135deg, #3E1E05, #9B4D07);">
-                <h5 class="fw-bold text-white mb-0" id="resultatsModalTitle">Résultats</h5>
-                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 mt-3 me-3" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body p-4" id="resultatsModalBody">
-            </div>
-        </div>
-    </div>
-</div>
 
 {{-- ==================== PAGINATION ==================== --}}
 @if ($medias->hasPages())
@@ -302,7 +250,6 @@
     // === DONNÉES ===
     const photos = @json($photosJson);
     const videos = @json($videosJson);
-    const editions = @json($editionsJson);
 
     // === LIRE PLUS ===
     window.ouvrirLirePlus = function(index, type) {
@@ -451,56 +398,6 @@
     window.filtrerPhotos = function() { if (_fp) _fp(); setTimeout(appliquerLimite, 50); };
     var _fv = window.filtrerVideos;
     window.filtrerVideos = function() { if (_fv) _fv(); setTimeout(appliquerLimite, 50); };
-
-    // === RÉSULTATS ===
-    const resultatsModal = document.getElementById('resultatsModal');
-    const resultatsTitle = document.getElementById('resultatsModalTitle');
-    const resultatsBody = document.getElementById('resultatsModalBody');
-
-    if (resultatsModal) {
-        resultatsModal.addEventListener('show.bs.modal', function(e) {
-            const btn = e.relatedTarget;
-            if (!btn) return;
-            const annee = btn.dataset.annee;
-            if (!annee || !editions.length) return;
-            const edition = editions.find(ed => String(ed.annee) === String(annee));
-            if (!edition || !edition.categories || !edition.categories.length) {
-                resultatsBody.innerHTML = '<div class="text-center py-4 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2"></i>Aucun résultat publié pour cette édition.</div>';
-                return;
-            }
-            resultatsTitle.textContent = "Résultats - Édition " + annee;
-            let html = '';
-            edition.categories.forEach(cat => {
-                html += '<div class="mb-4">';
-                html += '<h6 class="fw-bold mb-2" style="color: #3E1E05;"><i class="bi bi-tag-fill me-1" style="color: #9B4D07;"></i>' + cat.categorie + '</h6>';
-                html += '<div class="list-group list-group-flush">';
-                cat.resultats.forEach(r => {
-                    const medal = r.prix === 1 ? '#FFD700' : (r.prix === 2 ? '#C0C0C0' : '#CD7F32');
-                    html += '<div class="list-group-item d-flex align-items-center gap-3 px-0">';
-                    html += '<span class="badge fs-6 px-2 py-1" style="background: ' + medal + '; color: #3E1E05; min-width: 48px;">' + r.prix_label + '</span>';
-                    if (r.candidat_photo) {
-                        html += '<img src="' + r.candidat_photo + '" alt="' + r.candidat_nom + '" width="44" height="44" class="rounded-circle" style="object-fit: cover;">';
-                    }
-                    html += '<div class="flex-grow-1">';
-                    html += '<strong style="color: #3E1E05;">' + r.candidat_nom + '</strong>';
-                    html += '<small class="d-block text-muted">';
-                    html += '<i class="bi bi-heart-fill" style="color: #9B4D07;"></i> ' + r.nombre_votes + ' ovation(s)';
-                    if (r.note_jury !== null && r.note_jury !== undefined) {
-                        html += ' · <i class="bi bi-star-fill" style="color: #CA7B05;"></i> Jury : ' + r.note_jury + '/20';
-                    }
-                    if (r.score_final !== null && r.score_final !== undefined) {
-                        html += ' · <strong style="color: #3E1E05;">Score : ' + r.score_final + '/20</strong>';
-                    } else if (r.score_public !== null && r.score_public !== undefined) {
-                        html += ' · Score : ' + r.score_public + '/20';
-                    }
-                    html += '</small>';
-                    html += '</div></div>';
-                });
-                html += '</div></div>';
-            });
-            resultatsBody.innerHTML = html;
-        });
-    }
 })();
 </script>
 @endpush
