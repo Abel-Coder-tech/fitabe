@@ -459,9 +459,14 @@
     if (resultatsModal) {
         resultatsModal.addEventListener('show.bs.modal', function(e) {
             const btn = e.relatedTarget;
+            if (!btn) return;
             const annee = btn.dataset.annee;
-            const edition = editions.find(e => e.annee === annee);
-            if (!edition) return;
+            if (!annee || !editions.length) return;
+            const edition = editions.find(ed => String(ed.annee) === String(annee));
+            if (!edition || !edition.categories || !edition.categories.length) {
+                resultatsBody.innerHTML = '<div class="text-center py-4 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2"></i>Aucun résultat publié pour cette édition.</div>';
+                return;
+            }
             resultatsTitle.textContent = "Résultats - Édition " + annee;
             let html = '';
             edition.categories.forEach(cat => {
@@ -477,7 +482,17 @@
                     }
                     html += '<div class="flex-grow-1">';
                     html += '<strong style="color: #3E1E05;">' + r.candidat_nom + '</strong>';
-                    html += '<small class="d-block text-muted">' + r.nombre_votes + ' ovations' + (r.score_final ? ' · Score : ' + r.score_final : '') + '</small>';
+                    html += '<small class="d-block text-muted">';
+                    html += '<i class="bi bi-heart-fill" style="color: #9B4D07;"></i> ' + r.nombre_votes + ' ovation(s)';
+                    if (r.note_jury !== null && r.note_jury !== undefined) {
+                        html += ' · <i class="bi bi-star-fill" style="color: #CA7B05;"></i> Jury : ' + r.note_jury + '/20';
+                    }
+                    if (r.score_final !== null && r.score_final !== undefined) {
+                        html += ' · <strong style="color: #3E1E05;">Score : ' + r.score_final + '/20</strong>';
+                    } else if (r.score_public !== null && r.score_public !== undefined) {
+                        html += ' · Score : ' + r.score_public + '/20';
+                    }
+                    html += '</small>';
                     html += '</div></div>';
                 });
                 html += '</div></div>';

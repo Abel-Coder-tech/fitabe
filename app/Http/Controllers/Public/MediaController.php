@@ -27,8 +27,8 @@ class MediaController extends Controller
             'description' => $m->description,
         ]);
 
-        $editions = Resultat::select('annee_edition')->distinct()->orderBy('annee_edition', 'desc')->pluck('annee_edition');
-        $resultats = Resultat::orderBy('annee_edition', 'desc')->orderBy('categorie')->orderBy('prix')->get()
+        $editions = Resultat::where('publie', true)->select('annee_edition')->distinct()->orderBy('annee_edition', 'desc')->pluck('annee_edition');
+        $resultats = Resultat::where('publie', true)->orderBy('annee_edition', 'desc')->orderBy('categorie')->orderBy('prix')->get()
             ->groupBy('annee_edition');
 
         $editionsJson = $resultats->map(fn($items, $annee) => [
@@ -41,6 +41,8 @@ class MediaController extends Controller
                     'candidat_nom' => $r->candidat_nom,
                     'candidat_photo' => $r->candidat_photo_url,
                     'nombre_votes' => $r->nombre_votes,
+                    'note_jury' => $r->note_jury,
+                    'score_public' => $r->score_public,
                     'score_final' => $r->score_final,
                 ]),
             ])->values(),
