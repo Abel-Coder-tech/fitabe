@@ -60,6 +60,8 @@
         overflow: hidden;
         max-width: 240px;
         margin-inline: auto;
+        display: flex;
+        flex-direction: column;
     }
     .candidate-card:hover {
         transform: translateY(-4px);
@@ -83,25 +85,27 @@
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
-        aspect-ratio: 16/9;
+        flex: 0 0 60%;
+        max-height: 60%;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
     .candidate-card .candidat-cover img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        opacity: 0.35;
     }
     .candidate-card .candidat-cover .photo-principale {
         width: 100%;
         height: 100%;
         object-fit: cover;
         opacity: 1;
+    }
+    .candidate-card .card-body {
+        flex: 0 0 40%;
+        max-height: 40%;
+        padding: 0.4rem 0.5rem;
     }
     .candidate-card .vote-count {
         font-size: 1rem;
@@ -469,15 +473,15 @@
                                     <span class="candidat-num">N°{{ $candidat->numero_scene }}</span>
                                 @endif
                             </div>
-                            <div class="card-body d-flex flex-column px-2 pb-2 pt-2">
-                                <h6 class="fw-bold mb-0 text-center" style="color: var(--vote-brown); font-size: 0.82rem;">{{ $candidat->display_name }}</h6>
+                            <div class="card-body d-flex flex-column px-2 py-2">
+                                <h6 class="fw-bold mb-0 text-center" style="color: var(--vote-brown); font-size: 0.95rem;">{{ $candidat->display_name }}</h6>
                                 @if($candidat->biographie)
-                                    <p class="small text-muted mb-1 text-center" style="line-height: 1.3; font-size: 0.7rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    <p class="small text-muted mb-1 text-center" style="line-height: 1.3; font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                         {{ \Illuminate\Support\Str::limit($candidat->biographie, 80) }}
                                     </p>
                                 @endif
                                 @if($afficherCompteur)
-                                    <p class="vote-count text-center mb-2">
+                                    <p class="vote-count text-center mb-1">
                                         <i class="bi bi-heart-fill" style="color: var(--vote-gold);"></i>
                                         {{ $candidat->votes_sum_quantite ?? 0 }} ovation(s)
                                     </p>
