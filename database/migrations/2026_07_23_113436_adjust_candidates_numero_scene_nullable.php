@@ -7,7 +7,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        DB::statement('ALTER TABLE `candidates` MODIFY `numero_scene` TINYINT UNSIGNED NULL');
+        DB::statement('ALTER TABLE `candidates` MODIFY `numero_scene` INT UNSIGNED NULL');
     }
 
     public function down(): void
