@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -25,7 +26,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:150',
             'email' => 'required|email|max:150|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => ['required', 'string', 'min:8', 'confirmed', Password::min(8)->mixedCase()->numbers()],
             'role' => 'required|in:editor',
         ], [
             'name.required' => 'Le nom est requis.',
@@ -35,6 +36,8 @@ class UserController extends Controller
             'password.required' => 'Le mot de passe est requis.',
             'password.min' => 'Le mot de passe doit contenir au moins :min caractères.',
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+            'password.mixed' => 'Le mot de passe doit contenir au moins une majuscule et une minuscule.',
+            'password.numbers' => 'Le mot de passe doit contenir au moins un chiffre.',
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
@@ -56,7 +59,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:150',
             'email' => ['required', 'email', 'max:150', Rule::unique('users', 'email')->ignore($user->id)],
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => ['nullable', 'string', 'min:8', 'confirmed', Password::min(8)->mixedCase()->numbers()],
             'role' => 'required|' . $allowedRoles,
         ], [
             'name.required' => 'Le nom est requis.',
@@ -65,6 +68,8 @@ class UserController extends Controller
             'email.unique' => 'Cet email est déjà utilisé.',
             'password.min' => 'Le mot de passe doit contenir au moins :min caractères.',
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+            'password.mixed' => 'Le mot de passe doit contenir au moins une majuscule et une minuscule.',
+            'password.numbers' => 'Le mot de passe doit contenir au moins un chiffre.',
         ]);
 
         if ($validated['password']) {
