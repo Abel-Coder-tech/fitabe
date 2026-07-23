@@ -253,38 +253,40 @@ html, body { overflow-x: hidden; width: 100%; }
 .soutien-carousel-card .card-body {
     padding: 1.25rem 1.25rem 1.5rem;
 }
-.soutien-carousel-card .card-citation {
-    color: #5F2B0C;
-    font-style: italic;
-    font-size: 0.88rem;
-    line-height: 1.5;
-    margin-bottom: 0.75rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
 .soutien-carousel-card .card-nom {
     color: #3E1E05;
     font-weight: 700;
-    font-size: 0.95rem;
-    margin-bottom: 0.15rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
 }
 .soutien-carousel-card .card-titre {
-    color: #9B4D07;
-    font-size: 0.78rem;
-    margin-bottom: 0.3rem;
+    color: #6c5a3e;
+    font-size: 0.88rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.35;
 }
 .soutien-carousel-card .card-role {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+    padding-top: 0.6rem;
+    border-top: 2px solid #E3D5AD;
+}
+.soutien-carousel-card .card-role::before {
+    content: '';
+    flex: 0 0 4px;
+    height: 4px;
+    border-radius: 2px;
     background: #9B4D07;
-    color: #fff;
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.3rem 0.85rem;
-    border-radius: 50px;
-    margin-top: 0.3rem;
-    letter-spacing: 0.3px;
+}
+.soutien-carousel-card .card-role span {
+    color: #9B4D07;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 .soutien-carousel-nav {
     display: flex;
@@ -777,15 +779,14 @@ margin-right: 0;
                         <img src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
                     </div>
                     <div class="card-body">
-                        @if ($s->citation)
-                        <p class="card-citation">« {{ $s->citation }} »</p>
-                        @endif
-                        <div class="card-nom">— {{ $s->nom }}</div>
+                        <div class="card-nom">{{ $s->nom }}</div>
                         @if ($s->titre)
                         <div class="card-titre">{{ $s->titre }}</div>
                         @endif
                         @if ($s->role_parrain)
-                        <span class="card-role">{{ $s->role_parrain }}</span>
+                        <div class="card-role">
+                            <span>{{ $s->role_parrain }}</span>
+                        </div>
                         @endif
                     </div>
                 </div>
