@@ -58,7 +58,7 @@
         cursor: pointer;
         border-radius: 16px;
         overflow: hidden;
-        max-width: 220px;
+        max-width: 290px;
         margin-inline: auto;
     }
     .candidate-card:hover {
@@ -83,26 +83,21 @@
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
+        height: 200px;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
-        max-height: 180px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
     .candidate-card .candidat-cover img {
         width: 100%;
-        max-height: 180px;
-        object-fit: contain;
-        display: block;
+        height: 100%;
+        object-fit: cover;
         opacity: 0.35;
     }
     .candidate-card .candidat-cover .photo-principale {
         width: 100%;
-        max-height: 180px;
-        object-fit: contain;
-        display: block;
+        height: 100%;
+        object-fit: cover;
         opacity: 1;
     }
     .candidate-card .vote-count {
@@ -404,9 +399,9 @@
                                     {{ $r->prix_label }}
                                 </span>
                             </div>
-                            <div class="card-body d-flex flex-column px-2 pb-2 pt-2 text-center">
-                                <h6 class="fw-bold mb-1" style="color: var(--vote-brown); font-size: 0.85rem;">{{ $r->candidat_nom }}</h6>
-                                <span class="text-muted" style="font-size: 0.7rem;">{{ $r->categorie }}</span>
+                            <div class="card-body d-flex flex-column px-3 pb-3 pt-2 text-center">
+                                <h6 class="fw-bold mb-0" style="color: var(--vote-brown); font-size: 0.9rem;">{{ $r->candidat_nom }}</h6>
+                                <small class="text-muted" style="font-size: 0.7rem;">{{ $r->categorie }}</small>
                                 <div class="d-flex flex-column gap-1 mt-1 mb-1">
                                     <div class="d-flex align-items-center justify-content-between px-2">
                                         <span style="color: #9B4D07; font-size: 0.75rem;"><i class="bi bi-heart-fill me-1"></i>Ovations</span>
@@ -420,7 +415,7 @@
                                     @endif
                                 </div>
                                 <div class="mt-auto pt-1">
-                                    <span class="badge fw-semibold px-2 py-1" style="background: #9B4D07; color: #fff; font-size: 0.8rem;">
+                                    <span class="badge fw-semibold px-3 py-1" style="background: #9B4D07; color: #fff; font-size: 0.85rem;">
                                         {{ $r->score_final ?? $r->score_public ?? '-' }}/20
                                     </span>
                                     <small class="d-block text-muted" style="font-size: 0.65rem;">Score final</small>
