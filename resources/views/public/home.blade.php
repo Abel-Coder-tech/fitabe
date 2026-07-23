@@ -206,79 +206,114 @@ html, body { overflow-x: hidden; width: 100%; }
     opacity: 1;
 }
 
-/* ==================== SOUTIENS ALTERNÉ ==================== */
-.soutien-row {
+/* ==================== SOUTIENS CAROUSEL ==================== */
+.soutien-carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+.soutien-carousel-track {
     display: flex;
-    align-items: center;
-    gap: 2.5rem;
-    padding: 2rem 0;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 1rem 0.5rem;
+    scrollbar-width: none;
 }
-.soutien-row.reversed {
-    flex-direction: row-reverse;
+.soutien-carousel-track::-webkit-scrollbar {
+    display: none;
 }
-.soutien-row + .soutien-row {
-    border-top: 1px solid #f0e6d6;
-}
-.soutien-row-photo {
-    flex: 0 0 180px;
-    width: 180px;
-    height: 180px;
+.soutien-carousel-card {
+    flex: 0 0 calc(33.333% - 1rem);
+    scroll-snap-align: start;
+    background: #fff;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(62,30,5,0.1);
+    box-shadow: 0 2px 16px rgba(62,30,5,0.07);
     transition: transform .3s ease, box-shadow .3s ease;
 }
-.soutien-row:hover .soutien-row-photo {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(62,30,5,0.15);
+.soutien-carousel-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(62,30,5,0.12);
 }
-.soutien-row-photo img {
+.soutien-carousel-card .card-photo {
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+}
+.soutien-carousel-card .card-photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
+    transition: transform .4s ease;
 }
-.soutien-row-text {
-    flex: 1;
+.soutien-carousel-card:hover .card-photo img {
+    transform: scale(1.04);
 }
-.soutien-row-text .citation {
-    color: #3E1E05;
-    font-size: 1.05rem;
+.soutien-carousel-card .card-body {
+    padding: 1.25rem 1.25rem 1.5rem;
+}
+.soutien-carousel-card .card-citation {
+    color: #5F2B0C;
     font-style: italic;
-    line-height: 1.8;
-    margin-bottom: 1rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
-.soutien-row-text .nom {
+.soutien-carousel-card .card-nom {
     color: #3E1E05;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.95rem;
     margin-bottom: 0.15rem;
 }
-.soutien-row-text .titre {
+.soutien-carousel-card .card-titre {
     color: #9B4D07;
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     margin-bottom: 0.3rem;
 }
-.soutien-row-text .badge-role {
+.soutien-carousel-card .card-role {
     display: inline-block;
     background: #fef0e0;
     color: #9B4D07;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 600;
-    padding: 0.2rem 0.65rem;
+    padding: 0.2rem 0.6rem;
     border-radius: 50px;
 }
-@media (max-width: 767.98px) {
-    .soutien-row, .soutien-row.reversed {
-        flex-direction: column;
-        text-align: center;
-        gap: 1.25rem;
-    }
-    .soutien-row-photo {
-        flex: unset;
-        width: 140px;
-        height: 140px;
-    }
+.soutien-carousel-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+.soutien-carousel-nav button {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid #E3D5AD;
+    background: #fff;
+    color: #9B4D07;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+.soutien-carousel-nav button:hover {
+    background: #9B4D07;
+    color: #fff;
+    border-color: #9B4D07;
+}
+@media (max-width: 991.98px) {
+    .soutien-carousel-card { flex: 0 0 calc(50% - 0.75rem); }
+}
+@media (max-width: 575.98px) {
+    .soutien-carousel-card { flex: 0 0 100%; }
+    .soutien-carousel-card .card-photo { height: 260px; }
 }
 
 .accordion-button:not(.collapsed) {
@@ -725,33 +760,61 @@ margin-right: 0;
 {{-- ==================== SOUTIENS ==================== --}}
 @if ($soutiens->count())
 <section class="py-5" style="background: #fdfaf5;">
-    <div class="container" style="max-width: 800px;">
+    <div class="container">
         <div class="text-center mb-4">
             <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Ils soutiennent le FITAB</span>
             <h2 class="fw-bold mt-2" style="color: #3E1E05;">Nos soutiens</h2>
         </div>
 
-        @foreach ($soutiens as $index => $s)
-        <div class="soutien-row {{ $index % 2 !== 0 ? 'reversed' : '' }}">
-            <div class="soutien-row-photo">
-                <img src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
-            </div>
-            <div class="soutien-row-text">
-                @if ($s->citation)
-                <p class="citation">« {{ $s->citation }} »</p>
-                @endif
-                <div class="nom">— {{ $s->nom }}</div>
-                @if ($s->titre)
-                <div class="titre">{{ $s->titre }}</div>
-                @endif
-                @if ($s->role_parrain)
-                <span class="badge-role">{{ $s->role_parrain }}</span>
-                @endif
+        <div class="soutien-carousel-wrapper">
+            <div class="soutien-carousel-track" id="soutienTrack">
+                @foreach ($soutiens as $s)
+                <div class="soutien-carousel-card">
+                    <div class="card-photo">
+                        <img src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
+                    </div>
+                    <div class="card-body">
+                        @if ($s->citation)
+                        <p class="card-citation">« {{ $s->citation }} »</p>
+                        @endif
+                        <div class="card-nom">{{ $s->nom }}</div>
+                        @if ($s->titre)
+                        <div class="card-titre">{{ $s->titre }}</div>
+                        @endif
+                        @if ($s->role_parrain)
+                        <span class="card-role">{{ $s->role_parrain }}</span>
+                        @endif
+                    </div>
+                </div>
+                @endforeach
             </div>
         </div>
-        @endforeach
+
+        <div class="soutien-carousel-nav">
+            <button type="button" id="soutienPrev" aria-label="Précédent"><i class="bi bi-chevron-left"></i></button>
+            <button type="button" id="soutienNext" aria-label="Suivant"><i class="bi bi-chevron-right"></i></button>
+        </div>
     </div>
 </section>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var track = document.getElementById('soutienTrack');
+    var prev = document.getElementById('soutienPrev');
+    var next = document.getElementById('soutienNext');
+    var card = track.querySelector('.soutien-carousel-card');
+
+    function scroll(direction) {
+        var w = card.offsetWidth + 24;
+        track.scrollBy({ left: direction * w, behavior: 'smooth' });
+    }
+
+    prev.addEventListener('click', function() { scroll(-1); });
+    next.addEventListener('click', function() { scroll(1); });
+});
+</script>
+@endpush
 @endif
 
 {{-- ==================== PARTENAIRES ==================== --}}
