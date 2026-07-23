@@ -56,9 +56,9 @@
         border: none;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer;
-        border-radius: 16px;
+        border-radius: 14px;
         overflow: hidden;
-        max-width: 290px;
+        max-width: 240px;
         margin-inline: auto;
     }
     .candidate-card:hover {
@@ -83,7 +83,7 @@
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
-        aspect-ratio: 4/3;
+        aspect-ratio: 16/9;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
@@ -94,13 +94,13 @@
     .candidate-card .candidat-cover img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
         opacity: 0.35;
     }
     .candidate-card .candidat-cover .photo-principale {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
         opacity: 1;
     }
     .candidate-card .vote-count {
@@ -449,10 +449,10 @@
                                     <span class="candidat-num">N°{{ $candidat->numero_scene }}</span>
                                 @endif
                             </div>
-                            <div class="card-body d-flex flex-column px-3 pb-3 pt-3">
-                                <h6 class="fw-bold mb-1 text-center" style="color: var(--vote-brown);">{{ $candidat->display_name }}</h6>
+                            <div class="card-body d-flex flex-column px-2 pb-2 pt-2">
+                                <h6 class="fw-bold mb-0 text-center" style="color: var(--vote-brown); font-size: 0.82rem;">{{ $candidat->display_name }}</h6>
                                 @if($candidat->biographie)
-                                    <p class="small text-muted mb-2 text-center" style="line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    <p class="small text-muted mb-1 text-center" style="line-height: 1.3; font-size: 0.7rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                         {{ \Illuminate\Support\Str::limit($candidat->biographie, 80) }}
                                     </p>
                                 @endif
