@@ -94,13 +94,13 @@
     .candidate-card .candidat-cover img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
         opacity: 0.35;
     }
     .candidate-card .candidat-cover .photo-principale {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
         opacity: 1;
     }
     .candidate-card .vote-count {
