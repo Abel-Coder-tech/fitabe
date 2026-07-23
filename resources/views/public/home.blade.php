@@ -277,12 +277,14 @@ html, body { overflow-x: hidden; width: 100%; }
 }
 .soutien-carousel-card .card-role {
     display: inline-block;
-    background: #fef0e0;
-    color: #9B4D07;
-    font-size: 0.65rem;
+    background: #9B4D07;
+    color: #fff;
+    font-size: 0.7rem;
     font-weight: 600;
-    padding: 0.2rem 0.6rem;
+    padding: 0.3rem 0.85rem;
     border-radius: 50px;
+    margin-top: 0.3rem;
+    letter-spacing: 0.3px;
 }
 .soutien-carousel-nav {
     display: flex;
@@ -768,7 +770,8 @@ margin-right: 0;
 
         <div class="soutien-carousel-wrapper">
             <div class="soutien-carousel-track" id="soutienTrack">
-                @foreach ($soutiens as $s)
+                @php $soutiensDouble = $soutiens->merge($soutiens); @endphp
+                @foreach ($soutiensDouble as $s)
                 <div class="soutien-carousel-card">
                     <div class="card-photo">
                         <img src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
@@ -777,7 +780,7 @@ margin-right: 0;
                         @if ($s->citation)
                         <p class="card-citation">« {{ $s->citation }} »</p>
                         @endif
-                        <div class="card-nom">{{ $s->nom }}</div>
+                        <div class="card-nom">— {{ $s->nom }}</div>
                         @if ($s->titre)
                         <div class="card-titre">{{ $s->titre }}</div>
                         @endif
@@ -803,15 +806,39 @@ document.addEventListener('DOMContentLoaded', function() {
     var track = document.getElementById('soutienTrack');
     var prev = document.getElementById('soutienPrev');
     var next = document.getElementById('soutienNext');
-    var card = track.querySelector('.soutien-carousel-card');
+    var originals = track.querySelectorAll('.soutien-carousel-card');
+    var cardWidth = originals[0].offsetWidth + 24;
+    var totalOriginals = originals.length / 2;
+    var autoTimer = null;
 
     function scroll(direction) {
-        var w = card.offsetWidth + 24;
-        track.scrollBy({ left: direction * w, behavior: 'smooth' });
+        track.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
     }
 
-    prev.addEventListener('click', function() { scroll(-1); });
-    next.addEventListener('click', function() { scroll(1); });
+    function startAuto() {
+        stopAuto();
+        autoTimer = setInterval(function() {
+            var maxScroll = track.scrollWidth - track.offsetWidth;
+            if (track.scrollLeft >= maxScroll - 10) {
+                track.scrollLeft = 0;
+            } else {
+                scroll(1);
+            }
+        }, 3000);
+    }
+
+    function stopAuto() {
+        if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+    }
+
+    prev.addEventListener('click', function() { stopAuto(); scroll(-1); startAuto(); });
+    next.addEventListener('click', function() { stopAuto(); scroll(1); startAuto(); });
+    track.addEventListener('mouseenter', stopAuto);
+    track.addEventListener('mouseleave', startAuto);
+    track.addEventListener('touchstart', stopAuto, { passive: true });
+    track.addEventListener('touchend', function() { setTimeout(startAuto, 2000); });
+
+    startAuto();
 });
 </script>
 @endpush
