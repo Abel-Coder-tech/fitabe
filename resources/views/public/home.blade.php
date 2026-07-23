@@ -206,116 +206,107 @@ html, body { overflow-x: hidden; width: 100%; }
     opacity: 1;
 }
 
-/* ==================== SOUTIENS SCROLL SNAP ==================== */
-.soutien-scroll-wrapper {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    display: flex;
-    gap: 2rem;
-    padding: 0 2rem 1rem;
+/* ==================== SOUTIENS HERO ==================== */
+.soutien-hero-wrapper {
+    scroll-snap-type: y mandatory;
+    overflow-y: auto;
+    max-height: 85vh;
+    scroll-behavior: smooth;
     scrollbar-width: none;
+    border-radius: 20px;
 }
-.soutien-scroll-wrapper::-webkit-scrollbar {
+.soutien-hero-wrapper::-webkit-scrollbar {
     display: none;
 }
-.soutien-slide {
-    flex: 0 0 calc(100% - 4rem);
-    scroll-snap-align: center;
-    display: flex;
-    align-items: center;
-    gap: 2.5rem;
-    min-height: 420px;
-}
-.soutien-slide.reversed {
-    flex-direction: row-reverse;
-}
-.soutien-slide-photo {
-    flex: 0 0 45%;
-    max-width: 45%;
-    height: 400px;
+.soutien-hero-slide {
+    scroll-snap-align: start;
+    min-height: 85vh;
+    position: relative;
     border-radius: 20px;
     overflow: hidden;
-    position: relative;
 }
-.soutien-slide-photo img {
+.soutien-hero-slide img.hero-bg {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    transition: transform .5s ease;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
 }
-.soutien-slide:hover .soutien-slide-photo img {
-    transform: scale(1.03);
-}
-.soutien-slide-photo::after {
+.soutien-hero-slide::after {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 20px;
-    border: 2px solid rgba(155,77,7,0.15);
-    pointer-events: none;
+    background: linear-gradient(to top, rgba(62,30,5,0.85) 0%, rgba(62,30,5,0.25) 40%, transparent 70%);
+    z-index: 2;
 }
-.soutien-slide-text {
-    flex: 1;
-    padding: 1rem 0;
+.soutien-hero-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    padding: 2.5rem 3rem;
+    color: #fff;
 }
-.soutien-slide-text .citation {
-    color: #3E1E05;
-    font-size: 1.15rem;
+.soutien-hero-text .citation {
+    font-size: 1.2rem;
     font-style: italic;
     line-height: 1.8;
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-left: 1.5rem;
-    border-left: 3px solid #CA7B05;
+    margin-bottom: 1.25rem;
+    max-width: 600px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
-.soutien-slide-text .nom {
-    color: #3E1E05;
+.soutien-hero-text .nom {
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     margin-bottom: 0.2rem;
 }
-.soutien-slide-text .titre {
-    color: #9B4D07;
+.soutien-hero-text .titre {
     font-size: 0.85rem;
+    color: rgba(227,213,173,0.9);
     margin-bottom: 0.4rem;
 }
-.soutien-slide-text .badge-role {
+.soutien-hero-text .badge-role {
     display: inline-block;
-    background: #fef0e0;
-    color: #9B4D07;
+    background: rgba(155,77,7,0.8);
+    color: #E3D5AD;
     font-size: 0.7rem;
     font-weight: 600;
     padding: 0.25rem 0.75rem;
     border-radius: 50px;
 }
-.soutien-dots {
+.soutien-hero-dots {
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 4;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     gap: 0.5rem;
-    margin-top: 1rem;
 }
-.soutien-dots .dot {
+.soutien-hero-dots .dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #E3D5AD;
-    border: none;
+    background: rgba(255,255,255,0.4);
+    border: 2px solid rgba(255,255,255,0.6);
     cursor: pointer;
     transition: all .3s ease;
 }
-.soutien-dots .dot.active {
-    background: #9B4D07;
+.soutien-hero-dots .dot.active {
+    background: #fff;
     transform: scale(1.3);
+    border-color: #fff;
 }
-.soutien-nav {
+.soutien-hero-nav {
     display: flex;
     justify-content: center;
     gap: 0.75rem;
-    margin-top: 1.25rem;
+    margin-top: 1rem;
 }
-.soutien-nav button {
+.soutien-hero-nav button {
     width: 42px;
     height: 42px;
     border-radius: 50%;
@@ -328,34 +319,16 @@ html, body { overflow-x: hidden; width: 100%; }
     cursor: pointer;
     transition: all .2s ease;
 }
-.soutien-nav button:hover {
+.soutien-hero-nav button:hover {
     background: #9B4D07;
     color: #fff;
     border-color: #9B4D07;
 }
 @media (max-width: 767.98px) {
-    .soutien-slide {
-        flex: 0 0 100%;
-        flex-direction: column !important;
-        min-height: auto;
-        gap: 1.5rem;
-    }
-    .soutien-slide-photo {
-        flex: unset;
-        max-width: 100%;
-        width: 100%;
-        height: 260px;
-    }
-    .soutien-slide-text {
-        text-align: center;
-        padding: 0 0.5rem;
-    }
-    .soutien-slide-text .citation {
-        border-left: none;
-        padding-left: 0;
-        border-top: 3px solid #CA7B05;
-        padding-top: 1rem;
-    }
+    .soutien-hero-wrapper { max-height: 70vh; border-radius: 14px; }
+    .soutien-hero-slide { min-height: 70vh; border-radius: 14px; }
+    .soutien-hero-text { padding: 1.5rem; }
+    .soutien-hero-text .citation { font-size: 1rem; }
 }
 
 .accordion-button:not(.collapsed) {
@@ -807,46 +780,48 @@ margin-right: 0;
         <h2 class="fw-bold mt-2" style="color: #3E1E05;">Nos soutiens</h2>
     </div>
 
-    <div class="soutien-scroll-wrapper" id="soutienScroll">
-        @foreach ($soutiens as $index => $s)
-        <div class="soutien-slide {{ $index % 2 !== 0 ? 'reversed' : '' }}">
-            <div class="soutien-slide-photo">
-                <img src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
+    <div class="container" style="max-width: 900px;">
+        <div class="soutien-hero-wrapper" id="soutienHero">
+            @foreach ($soutiens as $index => $s)
+            <div class="soutien-hero-slide">
+                <img class="hero-bg" src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
+                <div class="soutien-hero-text">
+                    @if ($s->citation)
+                    <p class="citation">« {{ $s->citation }} »</p>
+                    @endif
+                    <div class="nom">— {{ $s->nom }}</div>
+                    @if ($s->titre)
+                    <div class="titre">{{ $s->titre }}</div>
+                    @endif
+                    @if ($s->role_parrain)
+                    <span class="badge-role">{{ $s->role_parrain }}</span>
+                    @endif
+                </div>
             </div>
-            <div class="soutien-slide-text">
-                @if ($s->citation)
-                <p class="citation">« {{ $s->citation }} »</p>
-                @endif
-                <div class="nom">{{ $s->nom }}</div>
-                @if ($s->titre)
-                <div class="titre">{{ $s->titre }}</div>
-                @endif
-                @if ($s->role_parrain)
-                <span class="badge-role">{{ $s->role_parrain }}</span>
-                @endif
+            @endforeach
+
+            {{-- Dots latéraux --}}
+            <div class="soutien-hero-dots" id="soutienDots">
+                @foreach ($soutiens as $i => $s)
+                <button type="button" class="dot {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}"></button>
+                @endforeach
             </div>
         </div>
-        @endforeach
-    </div>
 
-    {{-- Dots + navigation --}}
-    <div class="soutien-dots" id="soutienDots">
-        @foreach ($soutiens as $i => $s)
-        <button type="button" class="dot {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}"></button>
-        @endforeach
-    </div>
-    <div class="soutien-nav">
-        <button type="button" id="soutienPrev" aria-label="Précédent"><i class="bi bi-chevron-left"></i></button>
-        <button type="button" id="soutienNext" aria-label="Suivant"><i class="bi bi-chevron-right"></i></button>
+        {{-- Navigation --}}
+        <div class="soutien-hero-nav">
+            <button type="button" id="soutienPrev" aria-label="Précédent"><i class="bi bi-chevron-up"></i></button>
+            <button type="button" id="soutienNext" aria-label="Suivant"><i class="bi bi-chevron-down"></i></button>
+        </div>
     </div>
 </section>
 
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    var scroll = document.getElementById('soutienScroll');
+    var wrapper = document.getElementById('soutienHero');
+    var slides = wrapper.querySelectorAll('.soutien-hero-slide');
     var dots = document.querySelectorAll('#soutienDots .dot');
-    var slides = scroll.querySelectorAll('.soutien-slide');
     var prev = document.getElementById('soutienPrev');
     var next = document.getElementById('soutienNext');
     var current = 0;
@@ -854,7 +829,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function goTo(index) {
         if (index < 0 || index >= slides.length) return;
         current = index;
-        slides[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        slides[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
         dots.forEach(function(d, i) { d.classList.toggle('active', i === index); });
     }
 
@@ -864,12 +839,12 @@ document.addEventListener('DOMContentLoaded', function() {
         d.addEventListener('click', function() { goTo(parseInt(this.dataset.index)); });
     });
 
-    scroll.addEventListener('scroll', function() {
-        var scrollLeft = scroll.scrollLeft;
-        var mid = scrollLeft + scroll.offsetWidth / 2;
+    wrapper.addEventListener('scroll', function() {
+        var scrollTop = wrapper.scrollTop;
+        var mid = scrollTop + wrapper.offsetHeight / 2;
         var closest = 0, minDist = Infinity;
         slides.forEach(function(s, i) {
-            var center = s.offsetLeft + s.offsetWidth / 2;
+            var center = s.offsetTop + s.offsetHeight / 2;
             var dist = Math.abs(center - mid);
             if (dist < minDist) { minDist = dist; closest = i; }
         });
