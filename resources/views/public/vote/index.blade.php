@@ -83,7 +83,7 @@
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
-        aspect-ratio: 4/3;
+        aspect-ratio: 16/9;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
