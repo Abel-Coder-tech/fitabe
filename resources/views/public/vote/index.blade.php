@@ -464,7 +464,7 @@
             <div class="row g-4" id="candidatsGrid">
                 @foreach($candidats as $candidat)
                     <div class="col-sm-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
-                        <div class="card candidate-card h-100 shadow-sm">
+                        <div class="card candidate-card shadow-sm">
                             <div class="candidat-cover">
                                 @if($candidat->photo)
                                     <img src="{{ $candidat->photo_url }}" class="photo-principale" alt="{{ $candidat->display_name }}" loading="lazy">
