@@ -12,14 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('candidates', function (Blueprint $table) {
-            $table->unsignedTinyInteger('numero_scene')->nullable()->unique()->change();
+            $table->dropUnique(['numero_scene']);
+            $table->unsignedTinyInteger('numero_scene')->nullable()->change();
+            $table->unique('numero_scene');
         });
     }
 
     public function down(): void
     {
         Schema::table('candidates', function (Blueprint $table) {
-            $table->unsignedTinyInteger('numero_scene')->unique()->change();
+            $table->dropUnique(['numero_scene']);
+            $table->unsignedTinyInteger('numero_scene')->change();
+            $table->unique('numero_scene');
         });
     }
 };
