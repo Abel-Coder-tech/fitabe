@@ -319,6 +319,11 @@
                         <i class="bi bi-gear-fill" style="width: 18px;"></i> Paramètres
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('profile.edit') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 {{ $navClass('profile') }}" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
+                        <i class="bi bi-person-circle" style="width: 18px;"></i> Mon compte
+                    </a>
+                </li>
             </ul>
             @endif
         </div>
@@ -329,11 +334,6 @@
                 <li class="nav-item">
                     <a href="{{ route('home') }}" target="_blank" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
                         <i class="bi bi-box-arrow-up-right" style="width: 18px;"></i> Voir le site
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('profile.edit') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
-                        <i class="bi bi-person-circle" style="width: 18px;"></i> Mon compte
                     </a>
                 </li>
                 <li class="nav-item">

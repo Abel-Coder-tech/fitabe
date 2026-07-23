@@ -25,7 +25,7 @@
         "name": "FITAB",
         "alternateName": "Festival International des Talents Artistiques du Bénin",
         "url": "{{ url('/') }}",
-        "logo": "{{ $site['logo_url'] ? asset('storage/' . $site['logo_url']) : asset('images/logo.png') }}",
+        "logo": "{{ asset('images/logo.png') }}",
         "sameAs": {!! json_encode(array_values(array_filter([$site['social_facebook'], $site['social_instagram'], $site['social_youtube'], $site['social_tiktok']]))) !!}
     }
     </script>
@@ -226,13 +226,8 @@
             <div class="header-inner">
 
                 <a class="brand-logo" href="{{ route('home') }}">
-                    @if ($site['logo_url'])
-                        <img src="{{ asset('storage/' . $site['logo_url']) }}" alt="{{ $site['edition_nom'] }}"
-                             onerror="this.onerror=null;this.src='{{ asset('images/logo.png') }}'">
-                    @else
-                        <img src="{{ asset('images/logo.png') }}" alt="{{ $site['edition_nom'] }}"
-                             onerror="this.style.display='none'">
-                    @endif
+                    <img src="{{ asset('images/logo.png') }}" alt="{{ $site['edition_nom'] }}"
+                         onerror="this.style.display='none'">
                 </a>
 
                 <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
@@ -307,13 +302,8 @@
                 {{-- À propos --}}
                 <div class="col-12 col-lg-4">
                     <div class="d-flex align-items-center gap-2 mb-3 brand">
-                        @if ($site['logo_url'])
-                            <img src="{{ asset('storage/' . $site['logo_url']) }}" alt="{{ $site['edition_nom'] }}" height="50"
-                                 onerror="this.onerror=null;this.src='{{ asset('images/logo.png') }}'">
-                        @else
-                            <img src="{{ asset('images/logo.png') }}" alt="{{ $site['edition_nom'] }}" height="50"
-                                 onerror="this.style.display='none'">
-                        @endif
+                        <img src="{{ asset('images/logo.png') }}" alt="{{ $site['edition_nom'] }}" height="50"
+                             onerror="this.style.display='none'">
                     </div>
                     <p class="small lh-lg" style="color: rgba(227,213,173,0.65);">
                         Festival International des Talents Artistiques du Bénin. Théâtre, Danse, Musique, Percussion et Art Visuel.

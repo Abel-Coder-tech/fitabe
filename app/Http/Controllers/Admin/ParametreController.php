@@ -9,44 +9,34 @@ use Illuminate\Http\Request;
 
 class ParametreController extends Controller
 {
+    private array $labels = [
+        'contact_telephone' => 'Contact',
+        'contact_email' => 'Email',
+        'social_facebook' => 'Facebook',
+        'social_instagram' => 'Instagram',
+        'social_youtube' => 'YouTube',
+        'social_tiktok' => 'TikTok',
+        'hero_titre' => 'Titre héros',
+        'hero_sous_titre' => 'Sous-titre héros',
+        'texte_info_vote' => 'Info ovation',
+        'texte_mediatheque' => 'Description médiathèque',
+    ];
+
     public function index()
     {
         $parametres = Parametres::query()->orderBy('id')->get();
 
-        $grouped = $parametres->groupBy(function ($p) {
-            $prefix = explode('_', $p->cle)[0] ?? 'autre';
-            return match ($prefix) {
-                'edition', 'logo' => 'Général',
-                'contact', 'social', 'hero' => 'Communication',
-                'prix', 'devise', 'seuil', 'texte_info' => 'Vote / Ovation',
-                'texte_media', 'medias' => 'Médiathèque',
-                default => 'Autre',
-            };
-        });
-
-        return view('admin.parametres.index', compact('grouped'));
+        return view('admin.parametres.index', compact('parametres'));
     }
 
     public function create()
     {
-        return view('admin.parametres.create');
+        return to_route('admin.parametres.index');
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'cle' => 'required|string|max:100|unique:parametres,cle',
-            'valeur' => 'nullable|string',
-        ], [
-            'cle.required' => 'La clé est requise.',
-            'cle.max' => 'La clé ne doit pas dépasser :max caractères.',
-            'cle.unique' => 'Cette clé est déjà utilisée.',
-        ]);
-
-        Parametres::create($validated);
-        Parametre::flush();
-
-        return to_route('admin.parametres.index')->with('success', 'Paramètre créé avec succès.');
+        return to_route('admin.parametres.index');
     }
 
     public function show(Parametres $parametre)
@@ -56,7 +46,9 @@ class ParametreController extends Controller
 
     public function edit(Parametres $parametre)
     {
-        return view('admin.parametres.edit', compact('parametre'));
+        $label = $this->labels[$parametre->cle] ?? $parametre->cle;
+
+        return view('admin.parametres.edit', compact('parametre', 'label'));
     }
 
     public function update(Request $request, Parametres $parametre)
@@ -72,7 +64,7 @@ class ParametreController extends Controller
         $parametre->update($validated);
         Parametre::flush();
 
-        return to_route('admin.parametres.index')->with('success', 'Paramètre mis à jour avec succès.');
+        return to_route('admin.parametres.index')->with('success', 'Paramètre mis à jour.');
     }
 
     public function destroy(Parametres $parametre)
@@ -80,6 +72,6 @@ class ParametreController extends Controller
         $parametre->forceDelete();
         Parametre::flush();
 
-        return to_route('admin.parametres.index')->with('success', 'Paramètre supprimé avec succès.');
+        return to_route('admin.parametres.index')->with('success', 'Paramètre supprimé.');
     }
 }

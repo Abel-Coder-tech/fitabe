@@ -3,28 +3,24 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h3">Paramètres du site</h1>
-    <a href="{{ route('admin.parametres.create') }}" class="btn btn-primary">
-        <i class="bi bi-plus-lg"></i> Nouveau paramètre
-    </a>
 </div>
 
 @php
-    $icons = [
-        'Général' => 'bi-gear',
-        'Communication' => 'bi-megaphone',
-        'Vote / Ovation' => 'bi-heart',
-        'Médiathèque' => 'bi-camera',
-        'Autre' => 'bi-three-dots',
+    $labels = [
+        'contact_telephone' => 'Contact',
+        'contact_email' => 'Email',
+        'social_facebook' => 'Facebook',
+        'social_instagram' => 'Instagram',
+        'social_youtube' => 'YouTube',
+        'social_tiktok' => 'TikTok',
+        'hero_titre' => 'Titre héros',
+        'hero_sous_titre' => 'Sous-titre héros',
+        'texte_info_vote' => 'Info ovation',
+        'texte_mediatheque' => 'Description médiathèque',
     ];
 @endphp
 
-@foreach ($grouped as $groupe => $items)
-<div class="card mb-4">
-    <div class="card-header d-flex align-items-center gap-2" style="background: #fdfaf5; border-bottom: 1px solid #E3D5AD;">
-        <i class="{{ $icons[$groupe] ?? 'bi-gear' }}" style="color: #9B4D07;"></i>
-        <h6 class="fw-bold mb-0" style="color: #3E1E05;">{{ $groupe }}</h6>
-        <span class="badge bg-secondary ms-auto" style="font-size: 0.7rem;">{{ $items->count() }}</span>
-    </div>
+<div class="card">
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
@@ -36,20 +32,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($items as $p)
+                    @foreach ($parametres as $p)
                     <tr>
-                        <td>
-                            <code class="small" style="color: #9B4D07;">{{ $p->cle }}</code>
+                        <td class="fw-semibold" style="color: #3E1E05;">
+                            {{ $labels[$p->cle] ?? $p->cle }}
                         </td>
-                        <td class="text-break" style="max-width: 400px;">
-                            @if (str_starts_with($p->cle, 'logo_url') && $p->valeur)
-                                <img src="{{ asset('storage/' . $p->valeur) }}" alt="Logo" height="30" style="object-fit: contain;">
-                            @elseif (str_contains($p->cle, 'social_') && $p->valeur)
-                                <a href="{{ $p->valeur }}" target="_blank" class="text-truncate d-inline-block" style="max-width: 300px;">{{ $p->valeur }}</a>
-                            @elseif (str_contains($p->cle, 'date_'))
-                                <span>{{ $p->valeur ?: '—' }}</span>
+                        <td class="text-break" style="max-width: 500px;">
+                            @if (str_contains($p->cle, 'social_') && $p->valeur)
+                                <a href="{{ $p->valeur }}" target="_blank" class="text-truncate d-inline-block" style="max-width: 400px;">{{ $p->valeur }}</a>
+                            @elseif ($p->valeur)
+                                <span>{{ $p->valeur }}</span>
                             @else
-                                <span>{{ $p->valeur ?: '—' }}</span>
+                                <span class="text-muted">—</span>
                             @endif
                         </td>
                         <td class="text-center">
@@ -64,5 +58,4 @@
         </div>
     </div>
 </div>
-@endforeach
 @endsection
