@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class ParametreController extends Controller
 {
+    private array $allowed = [
+        'contact_telephone', 'contact_email',
+        'social_facebook', 'social_instagram', 'social_youtube', 'social_tiktok',
+        'hero_titre', 'hero_sous_titre',
+        'texte_info_vote', 'texte_mediatheque',
+    ];
+
     private array $labels = [
         'contact_telephone' => 'Contact',
         'contact_email' => 'Email',
@@ -24,7 +31,9 @@ class ParametreController extends Controller
 
     public function index()
     {
-        $parametres = Parametres::query()->orderBy('id')->get();
+        $parametres = Parametres::whereIn('cle', $this->allowed)
+            ->orderByRaw("FIELD(cle, '" . implode("','", $this->allowed) . "')")
+            ->get();
 
         return view('admin.parametres.index', compact('parametres'));
     }
@@ -46,6 +55,8 @@ class ParametreController extends Controller
 
     public function edit(Parametres $parametre)
     {
+        abort_unless(in_array($parametre->cle, $this->allowed), 404);
+
         $label = $this->labels[$parametre->cle] ?? $parametre->cle;
 
         return view('admin.parametres.edit', compact('parametre', 'label'));
@@ -53,6 +64,8 @@ class ParametreController extends Controller
 
     public function update(Request $request, Parametres $parametre)
     {
+        abort_unless(in_array($parametre->cle, $this->allowed), 404);
+
         $validated = $request->validate([
             'valeur' => 'nullable|string',
         ]);
@@ -69,6 +82,8 @@ class ParametreController extends Controller
 
     public function destroy(Parametres $parametre)
     {
+        abort_unless(in_array($parametre->cle, $this->allowed), 404);
+
         $parametre->forceDelete();
         Parametre::flush();
 
