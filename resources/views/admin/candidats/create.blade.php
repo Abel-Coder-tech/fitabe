@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Nom</label>
-            <input type="text" name="nom" class="form-control @error('nom') is-invalid @enderror" value="{{ old('nom') }}" required>
+            <input type="text" name="nom" class="form-control @error('nom') is-invalid @enderror" value="{{ old('nom') }}">
             @error('nom') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-md-6 mb-3">
@@ -22,7 +22,7 @@
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Catégorie</label>
-            <select name="categorie" class="form-select @error('categorie') is-invalid @enderror" required>
+            <select name="categorie" class="form-select @error('categorie') is-invalid @enderror">
                 <option value="">— Sélectionner une catégorie —</option>
                 @foreach (\App\Models\Candidats::CATEGORIES as $cat)
                     <option value="{{ $cat }}" {{ old('categorie') === $cat ? 'selected' : '' }}>{{ $cat }}</option>
