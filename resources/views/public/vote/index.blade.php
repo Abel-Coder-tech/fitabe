@@ -625,6 +625,11 @@ function ouvrirVote(id, nom, photo, votesCount, categorie, bio, numeroScene) {
         document.getElementById('candidatBio').textContent = bio || '';
         document.getElementById('candidatPhotoPreview').src = photo || '{{ asset("images/default-user.png") }}';
         document.getElementById('candidatPhotoPreview').alt = nom || 'Photo du candidat';
+        const mobilePreview = document.getElementById('candidatPhotoPreviewMobile');
+        if (mobilePreview) {
+            mobilePreview.src = photo || '{{ asset("images/default-user.png") }}';
+            mobilePreview.alt = nom || 'Photo du candidat';
+        }
         document.getElementById('step2CandidatNom').textContent = nom;
         document.getElementById('step2CandidatPhoto').src = photo || '{{ asset("images/default-user.png") }}';
         document.getElementById('step2CandidatPhoto').alt = nom || 'Photo du candidat';

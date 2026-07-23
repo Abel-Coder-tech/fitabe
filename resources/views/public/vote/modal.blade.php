@@ -1,14 +1,174 @@
 <style>
     @media (min-width: 768px) {
-        #voteModal .modal-dialog { max-width: 600px !important; }
-        #voteModal .step1-grid { display: flex; gap: 1rem; align-items: flex-start; }
-        #voteModal .step1-photo { flex: 0 0 200px; max-width: 200px; }
-        #voteModal .step1-photo img { max-height: 240px !important; }
-        #voteModal .step1-info { flex: 1; min-width: 0; }
+        #voteModal .modal-dialog { max-width: 700px !important; }
+        #voteModal .modal-content { display: flex; flex-direction: row !important; min-height: 480px; }
+        #voteModal .step1-photo {
+            flex: 0 0 45%;
+            max-width: 45%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem 0 0 1rem;
+        }
+        #voteModal .step1-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #voteModal .step1-info {
+            flex: 0 0 55%;
+            max-width: 55%;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        #voteModal .step1-info .btn-close-modal {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 2;
+        }
+        #voteModal .step1-info .btn-close-modal:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+        #voteModal .step1-info .candidat-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #3E1E05;
+            margin-bottom: 0.5rem;
+            padding-right: 2rem;
+        }
+        #voteModal .step1-info .candidat-bio {
+            font-size: 0.82rem;
+            color: #6c757d;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+        #voteModal .step1-info .ovations-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #3E1E05;
+            margin-bottom: 0.5rem;
+        }
+        #voteModal .step1-info .qte-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #E3D5AD;
+            background: #fef0e0;
+            color: #9B4D07;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            line-height: 1;
+        }
+        #voteModal .step1-info .qte-btn:hover {
+            background: #fde4c4;
+            border-color: #CA7B05;
+        }
+        #voteModal .step1-info .qte-btn.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        #voteModal .step1-info .qte-input {
+            width: 55px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #3E1E05;
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 0.25rem;
+        }
+        #voteModal .step1-info .total-block {
+            background: #fdfaf5;
+            border: 1px solid #E3D5AD;
+            border-radius: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            margin-bottom: 1rem;
+        }
+        #voteModal .step1-info .total-block .price-label {
+            font-size: 0.72rem;
+            color: #6c757d;
+        }
+        #voteModal .step1-info .total-block .price-total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #9B4D07;
+        }
+        #voteModal .step1-info .btn-payer {
+            width: 100%;
+            border-radius: 50px;
+            padding: 0.55rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            background: #9B4D07;
+            color: #fff;
+            border: none;
+            transition: all 0.2s;
+        }
+        #voteModal .step1-info .btn-payer:hover {
+            background: #7B3D05;
+        }
+        #voteModal .step1-info .note-preselection {
+            font-size: 0.68rem;
+            color: #6c757d;
+            text-align: center;
+            margin-top: auto;
+            padding-top: 0.5rem;
+        }
+        #voteModal .step1-info .note-preselection i {
+            color: #CA7B05;
+        }
+        /* Mobile: keep column layout */
+        #voteModal .step1-photo-mobile { display: none; }
     }
     @media (max-width: 767.98px) {
-        #voteModal .step1-grid { display: block; }
-        #voteModal .step1-photo, #voteModal .step1-info { flex: unset; max-width: 100%; }
+        #voteModal .modal-dialog { max-width: 400px !important; }
+        #voteModal .modal-content { display: block !important; }
+        #voteModal .step1-photo { display: none !important; }
+        #voteModal .step1-photo-mobile { display: block !important; }
+        #voteModal .step1-info {
+            flex: unset !important;
+            max-width: 100% !important;
+            padding: 1rem !important;
+        }
+        #voteModal .step1-info .candidat-name { font-size: 1rem; }
+        #voteModal .step1-info .btn-close-modal {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: #666;
+            cursor: pointer;
+            z-index: 2;
+        }
     }
 </style>
 
@@ -18,95 +178,88 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 400px;">
         <div class="modal-content border-0 rounded-4 overflow-hidden">
 
-            {{-- En-tête --}}
-            <div class="px-3 pt-3 pb-2 position-relative" style="background: linear-gradient(135deg, #3E1E05, #9B4D07);">
-                <h6 class="fw-bold text-white mb-0 text-center" id="voteModalTitle">
-                    Ovationner <span id="candidatNameDisplay"></span>
-                </h6>
-                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" style="font-size: 0.75rem;" data-bs-dismiss="modal"></button>
-            </div>
-
-            <div class="modal-body px-3 pb-3 pt-2">
+            <div class="modal-body p-0">
                 <form id="voteForm" method="POST">
                     @csrf
                     <input type="hidden" name="candidat_id" id="voteCandidatId">
                     <input type="hidden" name="payment_method" id="votePaymentMethod">
 
                     {{-- STEP 1 : Fiche candidat + quantité --}}
-                    <div class="vote-step active" id="step-1">
+                    <div class="vote-step active" id="step-1" style="display: flex; flex-direction: row;">
 
-                        <div class="step1-grid">
+                        {{-- Colonne gauche : Photo (desktop) --}}
+                        <div class="step1-photo">
+                            <img id="candidatPhotoPreview" src="" alt="Photo du candidat">
+                        </div>
 
-                            {{-- Colonne gauche : Photo --}}
-                            <div class="step1-photo text-center">
-                                <img id="candidatPhotoPreview"
-                                     src=""
-                                     alt="Photo du candidat"
-                                     class="rounded-2 shadow w-100"
-                                     style="max-height: 100px; object-fit: contain;">
+                        {{-- Colonne droite : Infos --}}
+                        <div class="step1-info">
+
+                            {{-- Photo mobile --}}
+                            <div class="step1-photo-mobile text-center mb-2">
+                                <img id="candidatPhotoPreviewMobile" src="" alt="Photo du candidat"
+                                     class="rounded-2 shadow" style="width: 80px; height: 80px; object-fit: cover;">
                             </div>
 
-                            {{-- Colonne droite : Infos --}}
-                            <div class="step1-info">
-                                <div class="fw-bold" style="font-size: 1rem; color: #3E1E05;" id="candidatNameMini"></div>
-                                <div class="d-flex align-items-center gap-2 mt-1">
-                                    <span class="badge px-2 py-1" id="candidatCategoryInfo"
-                                          style="background: #9B4D07; font-weight: 500; font-size: 0.7rem;"></span>
-                                    <span class="badge px-2 py-1" id="candidatNumero"
-                                          style="background: #3E1E05; font-weight: 500; font-size: 0.7rem;"></span>
+                            {{-- Bouton fermer --}}
+                            <button type="button" class="btn-close-modal" data-bs-dismiss="modal">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+
+                            {{-- Nom --}}
+                            <div class="candidat-name" id="candidatNameMini"></div>
+
+                            {{-- Badges --}}
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="badge px-2 py-1" id="candidatCategoryInfo"
+                                      style="background: #9B4D07; font-weight: 500; font-size: 0.72rem;"></span>
+                                <span class="badge px-2 py-1" id="candidatNumero"
+                                      style="background: #3E1E05; font-weight: 500; font-size: 0.72rem;"></span>
+                            </div>
+
+                            {{-- Biographie --}}
+                            <div class="candidat-bio" id="candidatBio"></div>
+
+                            <hr class="my-2" style="border-color: #E3D5AD; opacity: 0.5;">
+
+                            {{-- Compteur ovations --}}
+                            <div class="mb-3">
+                                <div class="ovations-label">Nombre d'ovations</div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <button type="button" onclick="changerQte(-1)" id="btnMoins"
+                                            class="qte-btn disabled">−</button>
+                                    <input type="number" id="quantite" name="quantite"
+                                           value="1" min="1" max="1000"
+                                           class="qte-input"
+                                           oninput="saisirQte(this)">
+                                    <button type="button" onclick="changerQte(1)" id="btnPlus"
+                                            class="qte-btn">+</button>
                                 </div>
-                                <div class="small mt-1" id="candidatVoteCount"
-                                     style="color: #CA7B05; font-size: 0.75rem;"></div>
-                                <div class="small text-muted mt-1" id="candidatBio"
-                                     style="font-style: italic; line-height: 1.3; font-size: 0.75rem;"></div>
+                            </div>
+
+                            {{-- Total --}}
+                            <div class="total-block">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="price-label">
+                                        Prix unitaire : <strong>{{ number_format($prixDuVote, 0, ',', ' ') }} FCFA</strong>
+                                    </span>
+                                    <span class="price-total">
+                                        <span id="totalDisplay">{{ number_format($prixDuVote, 0, ',', ' ') }}</span> FCFA
+                                    </span>
+                                </div>
+                            </div>
+
+                            {{-- Bouton payer --}}
+                            <button type="button" class="btn-payer" onclick="allerStep(2)">
+                                Payer <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+
+                            {{-- Note présélections --}}
+                            <div class="note-preselection">
+                                <i class="bi bi-megaphone-fill me-1"></i>
+                                L'entrée aux présélections est libre et gratuite. Les ovations sont un critère officiel de sélection.
                             </div>
                         </div>
-
-                        <hr class="my-2" style="border-color: #E3D5AD; opacity: 0.5;">
-
-                        {{-- Compteur votes --}}
-                        <div class="text-center mb-2">
-                            <label class="fw-semibold mb-1 d-block" style="color: #3E1E05; font-size: 0.8rem;">
-                                Nombre d'ovations
-                            </label>
-                            <div class="d-inline-flex align-items-center gap-2">
-                                <button type="button" onclick="changerQte(-1)"
-                                        id="btnMoins"
-                                        class="btn rounded-circle fw-bold d-flex align-items-center justify-content-center"
-                                        style="width: 32px; height: 32px; background: #fef0e0; color: #9B4D07; border: 2px solid #E3D5AD; font-size: 0.9rem; opacity: 0.3; pointer-events: none; line-height: 1;">
-                                    −
-                                </button>
-                                <input type="number" id="quantite" name="quantite"
-                                       value="1" min="1" max="1000"
-                                       class="form-control text-center fw-bold border-0"
-                                       style="width: 60px; font-size: 1.3rem; color: #3E1E05; background: transparent; padding: 0.15rem;"
-                                       oninput="saisirQte(this)">
-                                <button type="button" onclick="changerQte(1)"
-                                        id="btnPlus"
-                                        class="btn rounded-circle fw-bold d-flex align-items-center justify-content-center"
-                                        style="width: 32px; height: 32px; background: #fef0e0; color: #9B4D07; border: 2px solid #E3D5AD; font-size: 0.9rem; line-height: 1;">
-                                    +
-                                </button>
-                            </div>
-                        </div>
-
-                        {{-- Total --}}
-                        <div class="text-center mb-3 p-2 rounded-3"
-                             style="background: #fdfaf5; border: 1px solid #E3D5AD;">
-                            <small class="text-muted d-block mb-1" style="font-size: 0.7rem;">
-                                Prix unitaire : <strong>{{ number_format($prixDuVote, 0, ',', ' ') }} FCFA</strong>
-                            </small>
-                            <div class="fw-bold" style="font-size: 1.15rem; color: #9B4D07;">
-                                <span id="totalDisplay">{{ number_format($prixDuVote, 0, ',', ' ') }}</span> FCFA
-                            </div>
-                        </div>
-
-                        <button type="button"
-                                class="btn w-100 fw-bold text-white rounded-pill py-1"
-                                style="background: #9B4D07; font-size: 0.85rem;"
-                                onclick="allerStep(2)">
-                            Payer <i class="bi bi-arrow-right ms-1"></i>
-                        </button>
                     </div>
 
                     {{-- STEP 2 : Choix agrégateur --}}
@@ -115,9 +268,7 @@
                         {{-- Photo candidat --}}
                         <div class="text-center mb-2">
                             <div class="rounded-2 overflow-hidden shadow mx-auto d-block" style="width: 70px; height: 70px; border: 2px solid #E3D5AD;">
-                                <img id="step2CandidatPhoto"
-                                     src=""
-                                     alt="Photo du candidat"
+                                <img id="step2CandidatPhoto" src="" alt="Photo du candidat"
                                      style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
                         </div>
@@ -225,8 +376,8 @@
 
                 </form>
 
-                {{-- Info présélections --}}
-                <div class="px-1 mt-2">
+                {{-- Info présélections (mobile only) --}}
+                <div class="px-3 mt-2 step1-photo-mobile">
                     <div class="p-1 rounded-2 text-center" style="background: #fdfaf5; border-left: 3px solid #9B4D07; font-size: 0.65rem;">
                         <i class="bi bi-megaphone-fill me-1" style="color: #CA7B05;"></i>
                         <span style="color: #5F2B0C;">L'entrée aux présélections est libre et gratuite. Les ovations sont un critère officiel de sélection.</span>
