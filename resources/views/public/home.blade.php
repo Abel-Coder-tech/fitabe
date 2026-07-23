@@ -36,14 +36,14 @@
         <div class="row align-items-center">
             <div class="col-lg-8 text-center text-lg-start">
                 <span class="badge fw-semibold px-3 py-2 mb-3 fs-6" style="background-color: #CA7B05; color: #fff;">
-                    <i class="bi bi-music-note-beamed me-1"></i> FITAB 2026
+                    <i class="bi bi-music-note-beamed me-1"></i> {{ $site['edition_nom'] }}
                 </span>
                 <h1 class="display-4 fw-bold text-white mb-3">
                     La scène la plus<br>
                     <span style="color: #E3D5AD;">attendue du Bénin</span>
                 </h1>
                 <p class="mb-4" style="color: rgba(227,213,173,0.65); max-width: 540px; line-height: 1.7;">
-                    Le FITAB est bien plus qu'un festival. C'est une révolution culturelle. Chaque année, Porto-Novo s'arrête, tend l'oreille, et offre sa scène aux artistes qui méritent d'être vus.
+                    {{ $site['hero_sous_titre'] }}
                 </p>
                 <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
                     <a href="#presentation" class="btn btn-fitab btn-lg px-4 py-3 border-0 shadow-sm">

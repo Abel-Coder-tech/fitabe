@@ -7,6 +7,7 @@ use App\Models\Votes;
 use App\Models\Candidats;
 use App\Models\Contact;
 use App\Models\Parametres;
+use App\Support\Parametre;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -57,7 +58,7 @@ class DashboardController extends Controller
         } else {
             $voteMode = 'off';
         }
-        $prixDuVote = 100;
+        $prixDuVote = Parametre::getInt('prix_ovation', 100);
 
         $totalVotes = $votesParCategorie->sum('total');
         $categories = Candidats::select('categorie')

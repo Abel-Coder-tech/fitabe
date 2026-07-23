@@ -4,11 +4,11 @@
     $nomPartage = $candidatPartage?->display_name;
 @endphp
 
-@section('title', $candidatPartage ? "Votez pour {$nomPartage} — FITAB 2026" : 'Ovation - ' . config('app.name', 'FITAB'))
+@section('title', $candidatPartage ? "Votez pour {$nomPartage} — {$site['edition_nom']}" : 'Ovation - ' . config('app.name', 'FITAB'))
 
 @php
     $description = $candidatPartage
-        ? "Soutenez {$nomPartage} en catégorie {$candidatPartage->categorie} au Festival International des Talents Artistiques du Bénin. 1 ovation = 100 FCFA"
+        ? "Soutenez {$nomPartage} en catégorie {$candidatPartage->categorie} au Festival International des Talents Artistiques du Bénin. 1 ovation = {$site['prix_ovation']} {$site['devise']}"
         : 'Soutenez vos artistes préférés au FITAB. Théâtre, Danse, Musique, Percussion et Art visuel.';
 @endphp
 
@@ -16,7 +16,7 @@
 
 @push('meta')
 @if ($candidatPartage)
-    <meta property="og:title" content="Votez pour {{ $nomPartage }} — FITAB 2026">
+    <meta property="og:title" content="Votez pour {{ $nomPartage }} — {{ $site['edition_nom'] }}">
     <meta property="og:description" content="{{ $description }}">
     @if ($candidatPartage->photo)
     <meta property="og:image" content="{{ asset('storage/' . $candidatPartage->photo) }}">
@@ -27,7 +27,7 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="FITAB">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Votez pour {{ $nomPartage }} — FITAB 2026">
+    <meta name="twitter:title" content="Votez pour {{ $nomPartage }} — {{ $site['edition_nom'] }}">
     <meta name="twitter:description" content="{{ $description }}">
     @if ($candidatPartage->photo)
     <meta name="twitter:image" content="{{ asset('storage/' . $candidatPartage->photo) }}">

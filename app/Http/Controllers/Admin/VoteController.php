@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Parametres;
 use App\Models\Votes;
 use App\Models\Candidats;
+use App\Support\Parametre;
 use Carbon\Carbon;
 
 class VoteController extends Controller
@@ -30,7 +31,7 @@ class VoteController extends Controller
     {
         $votes = Votes::with('candidat')->latest()->paginate(20);
 
-        $prixDuVote = 100;
+        $prixDuVote = Parametre::getInt('prix_ovation', 100);
         $afficherCompteur = Parametres::where('cle', 'afficher_compteur')->value('valeur') === '1';
         $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
         $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
@@ -47,7 +48,7 @@ class VoteController extends Controller
     public function show(Votes $vote)
     {
         $vote->load('candidat');
-        $prixDuVote = 100;
+        $prixDuVote = Parametre::getInt('prix_ovation', 100);
         return view('admin.votes.show', compact('vote', 'prixDuVote'));
     }
 

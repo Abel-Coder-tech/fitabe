@@ -8,6 +8,7 @@ use App\Models\Parametres;
 use App\Models\Resultat;
 use App\Models\Votes;
 use App\Services\ResultatService;
+use App\Support\Parametre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -43,7 +44,7 @@ class VoteController extends Controller
 
         $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
 
-        $prixDuVote = 100;
+        $prixDuVote = Parametre::getInt('prix_ovation', 100);
 
         $categories = Candidats::select('categorie')
             ->distinct()
@@ -92,7 +93,7 @@ class VoteController extends Controller
             return response()->json(['success' => false, 'message' => 'Le vote est fermé.'], 403);
         }
 
-        $prixDuVote = 100;
+        $prixDuVote = Parametre::getInt('prix_ovation', 100);
 
         $validated = $request->validate([
             'candidat_id' => 'required|exists:candidates,id',

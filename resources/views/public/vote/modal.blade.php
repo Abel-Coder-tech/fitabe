@@ -257,7 +257,7 @@
                             {{-- Note présélections --}}
                             <div class="note-preselection">
                                 <i class="bi bi-megaphone-fill me-1"></i>
-                                L'entrée aux présélections est libre et gratuite. Les ovations sont un critère officiel de sélection.
+                                {{ $site['texte_info_vote'] }}
                             </div>
                         </div>
                     </div>
@@ -380,7 +380,7 @@
                 <div class="px-3 mt-2 step1-photo-mobile">
                     <div class="p-1 rounded-2 text-center" style="background: #fdfaf5; border-left: 3px solid #9B4D07; font-size: 0.65rem;">
                         <i class="bi bi-megaphone-fill me-1" style="color: #CA7B05;"></i>
-                        <span style="color: #5F2B0C;">L'entrée aux présélections est libre et gratuite. Les ovations sont un critère officiel de sélection.</span>
+                        <span style="color: #5F2B0C;">{{ $site['texte_info_vote'] }}</span>
                     </div>
                 </div>
             </div>

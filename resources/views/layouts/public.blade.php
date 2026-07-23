@@ -25,12 +25,8 @@
         "name": "FITAB",
         "alternateName": "Festival International des Talents Artistiques du Bénin",
         "url": "{{ url('/') }}",
-        "logo": "{{ asset('images/logo.png') }}",
-        "sameAs": [
-            "https://www.facebook.com/fitab.benin",
-            "https://www.instagram.com/fitab.benin",
-            "https://www.youtube.com/@@fitab"
-        ]
+        "logo": "{{ $site['logo_url'] ? asset('storage/' . $site['logo_url']) : asset('images/logo.png') }}",
+        "sameAs": @json(array_filter([$site['social_facebook'], $site['social_instagram'], $site['social_youtube'], $site['social_tiktok']]))
     }
     </script>
     <script type="application/ld+json">
@@ -230,8 +226,13 @@
             <div class="header-inner">
 
                 <a class="brand-logo" href="{{ route('home') }}">
-                    <img src="{{ asset('images/logo.png') }}" alt="FITAB"
-                         onerror="this.style.display='none'">
+                    @if ($site['logo_url'])
+                        <img src="{{ asset('storage/' . $site['logo_url']) }}" alt="{{ $site['edition_nom'] }}"
+                             onerror="this.onerror=null;this.src='{{ asset('images/logo.png') }}'">
+                    @else
+                        <img src="{{ asset('images/logo.png') }}" alt="{{ $site['edition_nom'] }}"
+                             onerror="this.style.display='none'">
+                    @endif
                 </a>
 
                 <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
@@ -306,17 +307,30 @@
                 {{-- À propos --}}
                 <div class="col-12 col-lg-4">
                     <div class="d-flex align-items-center gap-2 mb-3 brand">
-                        <img src="{{ asset('images/logo.png') }}" alt="FITAB" height="50"
-                             onerror="this.style.display='none'">
+                        @if ($site['logo_url'])
+                            <img src="{{ asset('storage/' . $site['logo_url']) }}" alt="{{ $site['edition_nom'] }}" height="50"
+                                 onerror="this.onerror=null;this.src='{{ asset('images/logo.png') }}'">
+                        @else
+                            <img src="{{ asset('images/logo.png') }}" alt="{{ $site['edition_nom'] }}" height="50"
+                                 onerror="this.style.display='none'">
+                        @endif
                     </div>
                     <p class="small lh-lg" style="color: rgba(227,213,173,0.65);">
                         Festival International des Talents Artistiques du Bénin. Théâtre, Danse, Musique, Percussion et Art Visuel.
                     </p>
                     <div class="d-flex gap-3 mt-3 footer-social">
-                        <a href="https://www.facebook.com/share/1WhHoPqx9H/" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-facebook"></i></a>
-                        <a href="https://www.instagram.com/fitab_talents_artistiques_pn/" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-instagram"></i></a>
-                        <a href="https://www.youtube.com/@TalentsArtistiques" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-youtube"></i></a>
-                        <a href="https://www.tiktok.com/@fitab_talent_artistique" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-tiktok"></i></a>
+                        @if ($site['social_facebook'])
+                            <a href="{{ $site['social_facebook'] }}" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-facebook"></i></a>
+                        @endif
+                        @if ($site['social_instagram'])
+                            <a href="{{ $site['social_instagram'] }}" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-instagram"></i></a>
+                        @endif
+                        @if ($site['social_youtube'])
+                            <a href="{{ $site['social_youtube'] }}" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-youtube"></i></a>
+                        @endif
+                        @if ($site['social_tiktok'])
+                            <a href="{{ $site['social_tiktok'] }}" target="_blank" rel="noopener" class="text-decoration-none fs-5 social-icon" style="color: rgba(227,213,173,0.6);"><i class="bi bi-tiktok"></i></a>
+                        @endif
                     </div>
                 </div>
 
@@ -346,17 +360,21 @@
                         <div class="col-12 col-lg-4">
                             <h6 class="fw-bold mb-3 text-uppercase small" style="color: #CA7B05; letter-spacing: 1.5px;">Contact</h6>
                             <ul class="list-unstyled small" style="color: rgba(227,213,173,0.65);">
-                                <li class="mb-2 d-flex gap-2">
-                                    <i class="bi bi-whatsapp mt-1" style="color: #CA7B05;"></i>
-                                    <a href="https://wa.me/2290166167588" target="_blank" rel="noopener" style="color: rgba(227,213,173,0.65); text-decoration: none;">+229 01 66 16 75 88</a>
-                                </li>
-                                <li class="mb-2 d-flex gap-2">
-                                    <i class="bi bi-envelope-fill mt-1" style="color: #CA7B05;"></i>
-                                    <span>strategemediaevents@gmail.com</span>
-                                </li>
+                                @if ($site['contact_telephone'])
+                                    <li class="mb-2 d-flex gap-2">
+                                        <i class="bi bi-whatsapp mt-1" style="color: #CA7B05;"></i>
+                                        <a href="https://wa.me/{{ ltrim($site['contact_telephone'], '+') }}" target="_blank" rel="noopener" style="color: rgba(227,213,173,0.65); text-decoration: none;">{{ $site['contact_telephone'] }}</a>
+                                    </li>
+                                @endif
+                                @if ($site['contact_email'])
+                                    <li class="mb-2 d-flex gap-2">
+                                        <i class="bi bi-envelope-fill mt-1" style="color: #CA7B05;"></i>
+                                        <span>{{ $site['contact_email'] }}</span>
+                                    </li>
+                                @endif
                                 <li class="mb-2 d-flex gap-2">
                                     <i class="bi bi-geo-alt-fill mt-1" style="color: #CA7B05;"></i>
-                                    <span>Agbokou Centre Social, Porto-Novo, Bénin</span>
+                                    <span>{{ $site['edition_lieu'] }}</span>
                                 </li>
                             </ul>
                         </div>
