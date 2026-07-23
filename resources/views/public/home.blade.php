@@ -206,76 +206,156 @@ html, body { overflow-x: hidden; width: 100%; }
     opacity: 1;
 }
 
-/* ==================== SOUTIENS MARQUEE ==================== */
-.soutien-marquee-wrapper {
-    overflow: hidden;
-    width: 100%;
-}
-.soutien-marquee {
+/* ==================== SOUTIENS SCROLL SNAP ==================== */
+.soutien-scroll-wrapper {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
     display: flex;
     gap: 2rem;
-    width: max-content;
-    animation: scrollSoutiens 40s linear infinite;
+    padding: 0 2rem 1rem;
+    scrollbar-width: none;
 }
-.soutien-marquee:hover {
-    animation-play-state: paused;
+.soutien-scroll-wrapper::-webkit-scrollbar {
+    display: none;
 }
-@keyframes scrollSoutiens {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+.soutien-slide {
+    flex: 0 0 calc(100% - 4rem);
+    scroll-snap-align: center;
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    min-height: 420px;
 }
-.soutien-card {
-    flex-shrink: 0;
-    width: 220px;
-    text-align: center;
-    padding: 1.25rem 1rem;
-    border-radius: 16px;
-    background: #fff;
-    border: 1px solid #f0e6d6;
-    box-shadow: 0 2px 12px rgba(62,30,5,0.06);
-    transition: transform .3s ease, box-shadow .3s ease;
+.soutien-slide.reversed {
+    flex-direction: row-reverse;
 }
-.soutien-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(62,30,5,0.12);
-}
-.soutien-photo {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+.soutien-slide-photo {
+    flex: 0 0 45%;
+    max-width: 45%;
+    height: 400px;
+    border-radius: 20px;
     overflow: hidden;
-    margin: 0 auto 0.75rem;
-    border: 3px solid #E3D5AD;
-    transition: border-color .3s ease;
+    position: relative;
 }
-.soutien-card:hover .soutien-photo {
-    border-color: #9B4D07;
-}
-.soutien-photo img {
+.soutien-slide-photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
+    transition: transform .5s ease;
 }
-.soutien-citation {
-    color: #5F2B0C;
+.soutien-slide:hover .soutien-slide-photo img {
+    transform: scale(1.03);
+}
+.soutien-slide-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    border: 2px solid rgba(155,77,7,0.15);
+    pointer-events: none;
+}
+.soutien-slide-text {
+    flex: 1;
+    padding: 1rem 0;
+}
+.soutien-slide-text .citation {
+    color: #3E1E05;
+    font-size: 1.15rem;
     font-style: italic;
-    font-size: 0.78rem;
-    line-height: 1.4;
-    margin-bottom: 0.5rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-left: 1.5rem;
+    border-left: 3px solid #CA7B05;
 }
-.soutien-nom {
+.soutien-slide-text .nom {
     color: #3E1E05;
     font-weight: 700;
-    font-size: 0.85rem;
-    margin-bottom: 0.15rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
 }
-.soutien-titre {
+.soutien-slide-text .titre {
     color: #9B4D07;
-    font-size: 0.72rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+}
+.soutien-slide-text .badge-role {
+    display: inline-block;
+    background: #fef0e0;
+    color: #9B4D07;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+}
+.soutien-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+.soutien-dots .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #E3D5AD;
+    border: none;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+.soutien-dots .dot.active {
+    background: #9B4D07;
+    transform: scale(1.3);
+}
+.soutien-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+.soutien-nav button {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid #E3D5AD;
+    background: #fff;
+    color: #9B4D07;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+.soutien-nav button:hover {
+    background: #9B4D07;
+    color: #fff;
+    border-color: #9B4D07;
+}
+@media (max-width: 767.98px) {
+    .soutien-slide {
+        flex: 0 0 100%;
+        flex-direction: column !important;
+        min-height: auto;
+        gap: 1.5rem;
+    }
+    .soutien-slide-photo {
+        flex: unset;
+        max-width: 100%;
+        width: 100%;
+        height: 260px;
+    }
+    .soutien-slide-text {
+        text-align: center;
+        padding: 0 0.5rem;
+    }
+    .soutien-slide-text .citation {
+        border-left: none;
+        padding-left: 0;
+        border-top: 3px solid #CA7B05;
+        padding-top: 1rem;
+    }
 }
 
 .accordion-button:not(.collapsed) {
@@ -719,7 +799,7 @@ margin-right: 0;
     </div>
 </section>
 
-{{-- ==================== SOUTIENS (MARQUEE) ==================== --}}
+{{-- ==================== SOUTIENS ==================== --}}
 @if ($soutiens->count())
 <section class="py-5" style="background: #fdfaf5;">
     <div class="container text-center mb-4">
@@ -727,53 +807,80 @@ margin-right: 0;
         <h2 class="fw-bold mt-2" style="color: #3E1E05;">Nos soutiens</h2>
     </div>
 
-    {{-- Rangée 1 : défilement gauche → droite --}}
-    <div class="soutien-marquee-wrapper mb-3">
-        <div class="soutien-marquee" style="animation-direction: normal;">
-            @php $soutiensDouble = $soutiens->merge($soutiens); @endphp
-            @foreach ($soutiensDouble as $s)
-            <div class="soutien-card">
-                <div class="soutien-photo">
-                    <img src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
-                </div>
+    <div class="soutien-scroll-wrapper" id="soutienScroll">
+        @foreach ($soutiens as $index => $s)
+        <div class="soutien-slide {{ $index % 2 !== 0 ? 'reversed' : '' }}">
+            <div class="soutien-slide-photo">
+                <img src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
+            </div>
+            <div class="soutien-slide-text">
                 @if ($s->citation)
-                <p class="soutien-citation">« {{ $s->citation }} »</p>
+                <p class="citation">« {{ $s->citation }} »</p>
                 @endif
-                <div class="soutien-nom">{{ $s->nom }}</div>
+                <div class="nom">{{ $s->nom }}</div>
                 @if ($s->titre)
-                <div class="soutien-titre">{{ $s->titre }}</div>
+                <div class="titre">{{ $s->titre }}</div>
                 @endif
                 @if ($s->role_parrain)
-                <span class="badge mt-1" style="background: #fef0e0; color: #9B4D07; font-size: 0.65rem;">{{ $s->role_parrain }}</span>
+                <span class="badge-role">{{ $s->role_parrain }}</span>
                 @endif
             </div>
-            @endforeach
         </div>
+        @endforeach
     </div>
 
-    {{-- Rangée 2 : défilement droite → gauche --}}
-    <div class="soutien-marquee-wrapper">
-        <div class="soutien-marquee" style="animation-direction: reverse;">
-            @foreach ($soutiensDouble as $s)
-            <div class="soutien-card">
-                <div class="soutien-photo">
-                    <img src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
-                </div>
-                @if ($s->citation)
-                <p class="soutien-citation">« {{ $s->citation }} »</p>
-                @endif
-                <div class="soutien-nom">{{ $s->nom }}</div>
-                @if ($s->titre)
-                <div class="soutien-titre">{{ $s->titre }}</div>
-                @endif
-                @if ($s->role_parrain)
-                <span class="badge mt-1" style="background: #fef0e0; color: #9B4D07; font-size: 0.65rem;">{{ $s->role_parrain }}</span>
-                @endif
-            </div>
-            @endforeach
-        </div>
+    {{-- Dots + navigation --}}
+    <div class="soutien-dots" id="soutienDots">
+        @foreach ($soutiens as $i => $s)
+        <button type="button" class="dot {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}"></button>
+        @endforeach
+    </div>
+    <div class="soutien-nav">
+        <button type="button" id="soutienPrev" aria-label="Précédent"><i class="bi bi-chevron-left"></i></button>
+        <button type="button" id="soutienNext" aria-label="Suivant"><i class="bi bi-chevron-right"></i></button>
     </div>
 </section>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var scroll = document.getElementById('soutienScroll');
+    var dots = document.querySelectorAll('#soutienDots .dot');
+    var slides = scroll.querySelectorAll('.soutien-slide');
+    var prev = document.getElementById('soutienPrev');
+    var next = document.getElementById('soutienNext');
+    var current = 0;
+
+    function goTo(index) {
+        if (index < 0 || index >= slides.length) return;
+        current = index;
+        slides[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === index); });
+    }
+
+    prev.addEventListener('click', function() { goTo(current - 1); });
+    next.addEventListener('click', function() { goTo(current + 1); });
+    dots.forEach(function(d) {
+        d.addEventListener('click', function() { goTo(parseInt(this.dataset.index)); });
+    });
+
+    scroll.addEventListener('scroll', function() {
+        var scrollLeft = scroll.scrollLeft;
+        var mid = scrollLeft + scroll.offsetWidth / 2;
+        var closest = 0, minDist = Infinity;
+        slides.forEach(function(s, i) {
+            var center = s.offsetLeft + s.offsetWidth / 2;
+            var dist = Math.abs(center - mid);
+            if (dist < minDist) { minDist = dist; closest = i; }
+        });
+        if (closest !== current) {
+            current = closest;
+            dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+        }
+    });
+});
+</script>
+@endpush
 @endif
 
 {{-- ==================== PARTENAIRES ==================== --}}
