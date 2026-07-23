@@ -87,16 +87,19 @@
         position: relative;
         overflow: hidden;
         max-height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .candidate-card .candidat-cover img {
-        width: 100%;
+        width: 85%;
         max-height: 180px;
         object-fit: contain;
         display: block;
         opacity: 0.35;
     }
     .candidate-card .candidat-cover .photo-principale {
-        width: 100%;
+        width: 85%;
         max-height: 180px;
         object-fit: contain;
         display: block;
