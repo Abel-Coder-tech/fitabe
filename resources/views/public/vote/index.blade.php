@@ -58,7 +58,7 @@
         cursor: pointer;
         border-radius: 16px;
         overflow: hidden;
-        max-width: 290px;
+        max-width: 260px;
         margin-inline: auto;
     }
     .candidate-card:hover {
@@ -83,7 +83,7 @@
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
-        aspect-ratio: 4/3;
+        aspect-ratio: 1/1;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
@@ -402,28 +402,18 @@
                                     {{ $r->prix_label }}
                                 </span>
                             </div>
-                            <div class="card-body d-flex flex-column px-3 pb-3 pt-3 text-center">
-                                <h6 class="fw-bold mb-1" style="color: var(--vote-brown);">{{ $r->candidat_nom }}</h6>
-                                <span class="small text-muted mb-2">{{ $r->categorie }}</span>
-                                <hr class="my-2" style="border-color: #f0e6d6; opacity: 0.6;">
-                                <div class="d-flex flex-column gap-2 mb-2">
-                                    <div class="d-flex align-items-center justify-content-between px-2">
-                                        <span class="small" style="color: #9B4D07;"><i class="bi bi-heart-fill me-1"></i>Ovations</span>
-                                        <span class="fw-bold" style="color: #3E1E05;">{{ $r->nombre_votes }}</span>
-                                    </div>
+                            <div class="card-body d-flex flex-column px-2 pb-2 pt-2 text-center">
+                                <h6 class="fw-bold mb-0" style="color: var(--vote-brown); font-size: 0.85rem;">{{ $r->candidat_nom }}</h6>
+                                <div class="d-flex align-items-center justify-content-center gap-2 mt-1">
+                                    <span class="small" style="color: #9B4D07; font-size: 0.7rem;"><i class="bi bi-heart-fill me-1"></i>{{ $r->nombre_votes }}</span>
                                     @if($r->note_jury !== null)
-                                    <div class="d-flex align-items-center justify-content-between px-2">
-                                        <span class="small" style="color: #9B4D07;"><i class="bi bi-star-fill me-1"></i>Jury</span>
-                                        <span class="fw-bold" style="color: #3E1E05;">{{ $r->note_jury }}/20</span>
-                                    </div>
+                                    <span class="small" style="color: #9B4D07; font-size: 0.7rem;"><i class="bi bi-star-fill me-1"></i>{{ $r->note_jury }}/20</span>
                                     @endif
                                 </div>
-                                <hr class="my-2" style="border-color: #f0e6d6; opacity: 0.6;">
-                                <div class="mt-auto">
-                                    <span class="badge fw-semibold px-3 py-2 fs-6" style="background: #9B4D07; color: #fff;">
+                                <div class="mt-auto pt-1">
+                                    <span class="badge fw-semibold px-2 py-1" style="background: #9B4D07; color: #fff; font-size: 0.75rem;">
                                         {{ $r->score_final ?? $r->score_public ?? '-' }}/20
                                     </span>
-                                    <small class="d-block text-muted mt-1">Score final</small>
                                 </div>
                             </div>
                         </div>
@@ -449,21 +439,21 @@
                                     <span class="candidat-num">N°{{ $candidat->numero_scene }}</span>
                                 @endif
                             </div>
-                            <div class="card-body d-flex flex-column px-3 pb-3 pt-3">
-                                <h6 class="fw-bold mb-1 text-center" style="color: var(--vote-brown);">{{ $candidat->display_name }}</h6>
+                            <div class="card-body d-flex flex-column px-2 pb-2 pt-2">
+                                <h6 class="fw-bold mb-0 text-center" style="color: var(--vote-brown); font-size: 0.85rem;">{{ $candidat->display_name }}</h6>
                                 @if($candidat->biographie)
-                                    <p class="small text-muted mb-2 text-center" style="line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-                                        {{ \Illuminate\Support\Str::limit($candidat->biographie, 80) }}
+                                    <p class="small text-muted mb-1 text-center" style="line-height: 1.2; font-size: 0.7rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
+                                        {{ \Illuminate\Support\Str::limit($candidat->biographie, 60) }}
                                     </p>
                                 @endif
                                 @if($afficherCompteur)
-                                    <p class="vote-count text-center mb-2">
+                                    <p class="vote-count text-center mb-1" style="font-size: 0.8rem;">
                                         <i class="bi bi-heart-fill" style="color: var(--vote-gold);"></i>
                                         {{ $candidat->votes_sum_quantite ?? 0 }} ovation(s)
                                     </p>
                                 @endif
-                                <hr class="my-2" style="border-color: #f0e6d6; opacity: 0.6;">
-                                <div class="d-flex flex-column gap-2">
+                                <hr class="my-1" style="border-color: #f0e6d6; opacity: 0.6;">
+                                <div class="d-flex flex-column gap-1">
                                     @if($voteMode === 'active')
                                         <div class="d-flex gap-2">
                                             <button type="button" class="btn text-white fw-semibold btn-sm flex-fill" style="background: var(--vote-gold); border-radius: 50px;"
