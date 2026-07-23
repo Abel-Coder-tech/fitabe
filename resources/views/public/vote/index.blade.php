@@ -85,8 +85,7 @@
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
-        flex: 0 0 60%;
-        max-height: 60%;
+        aspect-ratio: 3/2;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
@@ -103,8 +102,7 @@
         opacity: 1;
     }
     .candidate-card .card-body {
-        flex: 0 0 40%;
-        max-height: 40%;
+        flex: 1;
         padding: 0.4rem 0.5rem;
     }
     .candidate-card .vote-count {
