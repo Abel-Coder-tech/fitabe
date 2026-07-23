@@ -32,9 +32,9 @@ class Resultat extends Model
     public function getPrixLabelAttribute(): string
     {
         return match ($this->prix) {
-            1 => '1er Prix',
-            2 => '2ème Prix',
-            3 => '3ème Prix',
+            1 => 'Premier Prix',
+            2 => 'Deuxième Prix',
+            3 => 'Troisième Prix',
             default => $this->prix . 'ème Prix',
         };
     }

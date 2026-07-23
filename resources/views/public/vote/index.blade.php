@@ -75,9 +75,9 @@
         left: 12px;
         background: rgba(62,30,5,0.85);
         color: #fff;
-        font-size: 0.75rem;
+        font-size: 1.1rem;
         font-weight: 700;
-        padding: 4px 12px;
+        padding: 6px 18px;
         border-radius: 20px;
         z-index: 2;
         letter-spacing: 0.3px;
