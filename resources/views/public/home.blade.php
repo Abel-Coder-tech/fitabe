@@ -206,7 +206,78 @@ html, body { overflow-x: hidden; width: 100%; }
     opacity: 1;
 }
 
-.accordion-button:not(.collapsed) { 
+/* ==================== SOUTIENS MARQUEE ==================== */
+.soutien-marquee-wrapper {
+    overflow: hidden;
+    width: 100%;
+}
+.soutien-marquee {
+    display: flex;
+    gap: 2rem;
+    width: max-content;
+    animation: scrollSoutiens 40s linear infinite;
+}
+.soutien-marquee:hover {
+    animation-play-state: paused;
+}
+@keyframes scrollSoutiens {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+.soutien-card {
+    flex-shrink: 0;
+    width: 220px;
+    text-align: center;
+    padding: 1.25rem 1rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform .3s ease, background .3s ease;
+}
+.soutien-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.1);
+}
+.soutien-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 0.75rem;
+    border: 3px solid rgba(202, 123, 5, 0.5);
+    transition: border-color .3s ease;
+}
+.soutien-card:hover .soutien-photo {
+    border-color: #CA7B05;
+}
+.soutien-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.soutien-citation {
+    color: rgba(227, 213, 173, 0.85);
+    font-style: italic;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.soutien-nom {
+    color: #E3D5AD;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 0.15rem;
+}
+.soutien-titre {
+    color: rgba(202, 123, 5, 0.8);
+    font-size: 0.72rem;
+}
+
+.accordion-button:not(.collapsed) {
     background: transparent !important; 
     color: #3E1E05 !important; 
     box-shadow: none !important; 
@@ -646,6 +717,57 @@ margin-right: 0;
         </div>
     </div>
 </section>
+
+{{-- ==================== SOUTIENS (MARQUEE) ==================== --}}
+@if ($soutiens->count())
+<section class="py-5" style="background: #0f0a05;">
+    <div class="container text-center mb-4">
+        <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Ils soutiennent le FITAB</span>
+        <h2 class="fw-bold mt-2 text-white">Nos soutiens</h2>
+    </div>
+
+    {{-- Rangée 1 : défilement gauche → droite --}}
+    <div class="soutien-marquee-wrapper mb-3">
+        <div class="soutien-marquee" style="animation-direction: normal;">
+            @php $soutiensDouble = $soutiens->merge($soutiens); @endphp
+            @foreach ($soutiensDouble as $s)
+            <div class="soutien-card">
+                <div class="soutien-photo">
+                    <img src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
+                </div>
+                @if ($s->citation)
+                <p class="soutien-citation">« {{ $s->citation }} »</p>
+                @endif
+                <div class="soutien-nom">{{ $s->nom }}</div>
+                @if ($s->titre || $s->organisation)
+                <div class="soutien-titre">{{ $s->titre }}{{ $s->titre && $s->organisation ? ' · ' : '' }}{{ $s->organisation }}</div>
+                @endif
+            </div>
+            @endforeach
+        </div>
+    </div>
+
+    {{-- Rangée 2 : défilement droite → gauche --}}
+    <div class="soutien-marquee-wrapper">
+        <div class="soutien-marquee" style="animation-direction: reverse;">
+            @foreach ($soutiensDouble as $s)
+            <div class="soutien-card">
+                <div class="soutien-photo">
+                    <img src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
+                </div>
+                @if ($s->citation)
+                <p class="soutien-citation">« {{ $s->citation }} »</p>
+                @endif
+                <div class="soutien-nom">{{ $s->nom }}</div>
+                @if ($s->titre || $s->organisation)
+                <div class="soutien-titre">{{ $s->titre }}{{ $s->titre && $s->organisation ? ' · ' : '' }}{{ $s->organisation }}</div>
+                @endif
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
 
 {{-- ==================== PARTENAIRES ==================== --}}
 <section class="py-5 bg-white text-center">

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CandidatController;
 use App\Http\Controllers\Admin\VoteController;
 use App\Http\Controllers\Admin\ProgrammeController;
 use App\Http\Controllers\Admin\PartenaireController;
+use App\Http\Controllers\Admin\SoutienController;
 use App\Http\Controllers\Admin\ParametreController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\ContactController;
@@ -49,6 +50,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('candidats/note-jury', [CandidatController::class, 'updateNoteJury'])->name('candidats.note-jury');
     Route::resource('programmes', ProgrammeController::class);
     Route::resource('partenaires', PartenaireController::class);
+    Route::resource('soutiens', SoutienController::class);
     Route::resource('medias', MediaController::class);
     Route::resource('contacts', ContactController::class)->except(['create', 'store', 'edit', 'update']);
     Route::post('contacts/{contact}/reply', [ContactController::class, 'reply'])->name('contacts.reply');

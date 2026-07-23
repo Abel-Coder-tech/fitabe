@@ -296,6 +296,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('admin.soutiens.index') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 {{ $navClass('admin.soutiens') }}" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
+                        <i class="bi bi-heart-fill" style="width: 18px;"></i> Soutiens
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin.contacts.index') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 {{ $navClass('admin.contacts') }}" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
                         <i class="bi bi-envelope-fill" style="width: 18px;"></i> Messages
                         @php $nonLuCount = \App\Models\Contact::nonLu()->count(); @endphp
