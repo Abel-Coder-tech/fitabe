@@ -230,13 +230,14 @@ html, body { overflow-x: hidden; width: 100%; }
     text-align: center;
     padding: 1.25rem 1rem;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    transition: transform .3s ease, background .3s ease;
+    background: #fff;
+    border: 1px solid #f0e6d6;
+    box-shadow: 0 2px 12px rgba(62,30,5,0.06);
+    transition: transform .3s ease, box-shadow .3s ease;
 }
 .soutien-card:hover {
     transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 24px rgba(62,30,5,0.12);
 }
 .soutien-photo {
     width: 100px;
@@ -244,11 +245,11 @@ html, body { overflow-x: hidden; width: 100%; }
     border-radius: 50%;
     overflow: hidden;
     margin: 0 auto 0.75rem;
-    border: 3px solid rgba(202, 123, 5, 0.5);
+    border: 3px solid #E3D5AD;
     transition: border-color .3s ease;
 }
 .soutien-card:hover .soutien-photo {
-    border-color: #CA7B05;
+    border-color: #9B4D07;
 }
 .soutien-photo img {
     width: 100%;
@@ -256,7 +257,7 @@ html, body { overflow-x: hidden; width: 100%; }
     object-fit: cover;
 }
 .soutien-citation {
-    color: rgba(227, 213, 173, 0.85);
+    color: #5F2B0C;
     font-style: italic;
     font-size: 0.78rem;
     line-height: 1.4;
@@ -267,13 +268,13 @@ html, body { overflow-x: hidden; width: 100%; }
     overflow: hidden;
 }
 .soutien-nom {
-    color: #E3D5AD;
+    color: #3E1E05;
     font-weight: 700;
     font-size: 0.85rem;
     margin-bottom: 0.15rem;
 }
 .soutien-titre {
-    color: rgba(202, 123, 5, 0.8);
+    color: #9B4D07;
     font-size: 0.72rem;
 }
 
@@ -720,10 +721,10 @@ margin-right: 0;
 
 {{-- ==================== SOUTIENS (MARQUEE) ==================== --}}
 @if ($soutiens->count())
-<section class="py-5" style="background: #0f0a05;">
+<section class="py-5" style="background: #fdfaf5;">
     <div class="container text-center mb-4">
         <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Ils soutiennent le FITAB</span>
-        <h2 class="fw-bold mt-2 text-white">Nos soutiens</h2>
+        <h2 class="fw-bold mt-2" style="color: #3E1E05;">Nos soutiens</h2>
     </div>
 
     {{-- Rangée 1 : défilement gauche → droite --}}
@@ -739,8 +740,11 @@ margin-right: 0;
                 <p class="soutien-citation">« {{ $s->citation }} »</p>
                 @endif
                 <div class="soutien-nom">{{ $s->nom }}</div>
-                @if ($s->titre || $s->organisation)
-                <div class="soutien-titre">{{ $s->titre }}{{ $s->titre && $s->organisation ? ' · ' : '' }}{{ $s->organisation }}</div>
+                @if ($s->titre)
+                <div class="soutien-titre">{{ $s->titre }}</div>
+                @endif
+                @if ($s->role_parrain)
+                <span class="badge mt-1" style="background: #fef0e0; color: #9B4D07; font-size: 0.65rem;">{{ $s->role_parrain }}</span>
                 @endif
             </div>
             @endforeach
@@ -759,8 +763,11 @@ margin-right: 0;
                 <p class="soutien-citation">« {{ $s->citation }} »</p>
                 @endif
                 <div class="soutien-nom">{{ $s->nom }}</div>
-                @if ($s->titre || $s->organisation)
-                <div class="soutien-titre">{{ $s->titre }}{{ $s->titre && $s->organisation ? ' · ' : '' }}{{ $s->organisation }}</div>
+                @if ($s->titre)
+                <div class="soutien-titre">{{ $s->titre }}</div>
+                @endif
+                @if ($s->role_parrain)
+                <span class="badge mt-1" style="background: #fef0e0; color: #9B4D07; font-size: 0.65rem;">{{ $s->role_parrain }}</span>
                 @endif
             </div>
             @endforeach

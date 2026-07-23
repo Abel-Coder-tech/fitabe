@@ -30,7 +30,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="citation" class="form-label">Citation / Phrase</label>
+                <label for="citation" class="form-label">Phrase / Citation</label>
                 <textarea name="citation" id="citation" rows="3" class="form-control @error('citation') is-invalid @enderror" placeholder="La phrase ou le mot de ce soutien...">{{ old('citation') }}</textarea>
                 @error('citation')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -40,26 +40,18 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="titre" class="form-label">Titre / Fonction</label>
-                    <input type="text" name="titre" id="titre" class="form-control @error('titre') is-invalid @enderror" value="{{ old('titre') }}" placeholder="Ex: Président, Directeur...">
+                    <input type="text" name="titre" id="titre" class="form-control @error('titre') is-invalid @enderror" value="{{ old('titre') }}" placeholder="Ex: Ministre, Député, Chef d'entreprise...">
                     @error('titre')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="organisation" class="form-label">Organisation</label>
-                    <input type="text" name="organisation" id="organisation" class="form-control @error('organisation') is-invalid @enderror" value="{{ old('organisation') }}" placeholder="Ex: Fondation X, Ministère...">
-                    @error('organisation')
+                    <label for="role_parrain" class="form-label">Rôle événement</label>
+                    <input type="text" name="role_parrain" id="role_parrain" class="form-control @error('role_parrain') is-invalid @enderror" value="{{ old('role_parrain') }}" placeholder="Ex: Parrain, Marraine, Mécène, Sponsor...">
+                    @error('role_parrain')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="ordre_affichage" class="form-label">Ordre d'affichage</label>
-                <input type="number" name="ordre_affichage" id="ordre_affichage" class="form-control @error('ordre_affichage') is-invalid @enderror" value="{{ old('ordre_affichage', 0) }}" min="0">
-                @error('ordre_affichage')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
             </div>
 
             <div class="d-flex gap-2">

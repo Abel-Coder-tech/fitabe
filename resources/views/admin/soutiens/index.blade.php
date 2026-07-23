@@ -13,14 +13,14 @@
 <div class="card border-0 rounded-4 shadow-sm">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0" style="min-width: 600px;">
+            <table class="table table-hover align-middle mb-0" style="min-width: 550px;">
                 <thead class="small text-muted" style="background: #f9f9fb;">
                     <tr>
                         <th class="px-4 py-3 fw-semibold" style="width: 60px;">ID</th>
                         <th class="px-4 py-3 fw-semibold">Nom</th>
                         <th class="px-4 py-3 fw-semibold text-center" style="width: 100px;">Photo</th>
                         <th class="px-4 py-3 fw-semibold">Titre</th>
-                        <th class="px-4 py-3 fw-semibold">Organisation</th>
+                        <th class="px-4 py-3 fw-semibold">Rôle</th>
                         <th class="px-4 py-3 fw-semibold text-center" style="width: 110px;">Actions</th>
                     </tr>
                 </thead>
@@ -45,7 +45,13 @@
                                 @endif
                             </td>
                             <td class="px-4 py-3 small">{{ $soutien->titre ?? '—' }}</td>
-                            <td class="px-4 py-3 small">{{ $soutien->organisation ?? '—' }}</td>
+                            <td class="px-4 py-3 small">
+                                @if ($soutien->role_parrain)
+                                    <span class="badge" style="background: #fef0e0; color: #9B4D07;">{{ $soutien->role_parrain }}</span>
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
+                            </td>
                             <td class="px-4 py-3 text-center">
                                 <div class="d-flex gap-1 justify-content-center">
                                     <a href="{{ route('admin.soutiens.edit', $soutien) }}" class="btn btn-sm" style="background: #fef0e0; color: #9B4D07;" title="Modifier">

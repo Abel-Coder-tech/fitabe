@@ -12,16 +12,8 @@ class Soutien extends Model
         'photo',
         'citation',
         'titre',
-        'organisation',
-        'ordre_affichage',
+        'role_parrain',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'ordre_affichage' => 'integer',
-        ];
-    }
 
     public function getPhotoUrlAttribute(): string
     {
@@ -30,6 +22,6 @@ class Soutien extends Model
 
     public function scopeOrdered(Builder $query): Builder
     {
-        return $query->orderBy('ordre_affichage');
+        return $query->orderBy('id');
     }
 }

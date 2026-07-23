@@ -24,13 +24,11 @@
 
             <div class="mb-3">
                 <label for="photo" class="form-label">Photo</label>
-
                 @if ($soutien->photo)
                     <div class="mb-2">
                         <img src="{{ asset('storage/' . $soutien->photo) }}" alt="{{ $soutien->nom }}" width="80" height="80" style="object-fit: cover; border-radius: 50%;" class="img-thumbnail">
                     </div>
                 @endif
-
                 <input type="file" name="photo" id="photo" class="form-control @error('photo') is-invalid @enderror" accept="image/*">
                 @error('photo')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -38,7 +36,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="citation" class="form-label">Citation / Phrase</label>
+                <label for="citation" class="form-label">Phrase / Citation</label>
                 <textarea name="citation" id="citation" rows="3" class="form-control @error('citation') is-invalid @enderror">{{ old('citation', $soutien->citation) }}</textarea>
                 @error('citation')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -54,20 +52,12 @@
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="organisation" class="form-label">Organisation</label>
-                    <input type="text" name="organisation" id="organisation" class="form-control @error('organisation') is-invalid @enderror" value="{{ old('organisation', $soutien->organisation) }}">
-                    @error('organisation')
+                    <label for="role_parrain" class="form-label">Rôle événement</label>
+                    <input type="text" name="role_parrain" id="role_parrain" class="form-control @error('role_parrain') is-invalid @enderror" value="{{ old('role_parrain', $soutien->role_parrain) }}">
+                    @error('role_parrain')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="ordre_affichage" class="form-label">Ordre d'affichage</label>
-                <input type="number" name="ordre_affichage" id="ordre_affichage" class="form-control @error('ordre_affichage') is-invalid @enderror" value="{{ old('ordre_affichage', $soutien->ordre_affichage) }}" min="0">
-                @error('ordre_affichage')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
             </div>
 
             <div class="d-flex gap-2">

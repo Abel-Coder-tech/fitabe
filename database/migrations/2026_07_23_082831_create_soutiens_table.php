@@ -14,8 +14,7 @@ return new class extends Migration
             $table->string('photo', 255);
             $table->text('citation')->nullable();
             $table->string('titre', 200)->nullable();
-            $table->string('organisation', 200)->nullable();
-            $table->unsignedTinyInteger('ordre_affichage')->default(0);
+            $table->string('role_parrain', 100)->nullable();
             $table->timestamps();
         });
     }

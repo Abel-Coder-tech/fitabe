@@ -26,8 +26,7 @@ class SoutienController extends Controller
             'photo' => 'required|image|max:2048',
             'citation' => 'nullable|string',
             'titre' => 'nullable|string|max:200',
-            'organisation' => 'nullable|string|max:200',
-            'ordre_affichage' => 'nullable|integer|min:0',
+            'role_parrain' => 'nullable|string|max:100',
         ], [
             'nom.required' => 'Le nom est requis.',
             'photo.required' => 'La photo est requise.',
@@ -61,8 +60,7 @@ class SoutienController extends Controller
             'photo' => 'nullable|image|max:2048',
             'citation' => 'nullable|string',
             'titre' => 'nullable|string|max:200',
-            'organisation' => 'nullable|string|max:200',
-            'ordre_affichage' => 'nullable|integer|min:0',
+            'role_parrain' => 'nullable|string|max:100',
         ], [
             'nom.required' => 'Le nom est requis.',
             'photo.image' => 'Le fichier doit être une image.',
