@@ -26,7 +26,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:150',
             'email' => 'required|email|max:150|unique:users,email',
-            'password' => ['required', 'string', 'min:8', 'confirmed', Password::min(8)->mixedCase()->numbers()],
+            'password' => ['required', 'string', 'min:8', 'confirmed', Password::min(8)->mixedCase()->numbers()->uncompromised()],
             'role' => 'required|in:editor',
         ], [
             'name.required' => 'Le nom est requis.',
@@ -38,6 +38,7 @@ class UserController extends Controller
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
             'password.mixed' => 'Le mot de passe doit contenir au moins une majuscule et une minuscule.',
             'password.numbers' => 'Le mot de passe doit contenir au moins un chiffre.',
+            'password.uncompromised' => 'Ce mot de passe a été trouvé dans une fuite de données. Choisissez-en un autre.',
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
@@ -59,7 +60,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:150',
             'email' => ['required', 'email', 'max:150', Rule::unique('users', 'email')->ignore($user->id)],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed', Password::min(8)->mixedCase()->numbers()],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed', Password::min(8)->mixedCase()->numbers()->uncompromised()],
             'role' => 'required|' . $allowedRoles,
         ], [
             'name.required' => 'Le nom est requis.',
@@ -70,6 +71,7 @@ class UserController extends Controller
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
             'password.mixed' => 'Le mot de passe doit contenir au moins une majuscule et une minuscule.',
             'password.numbers' => 'Le mot de passe doit contenir au moins un chiffre.',
+            'password.uncompromised' => 'Ce mot de passe a été trouvé dans une fuite de données. Choisissez-en un autre.',
         ]);
 
         if ($validated['password']) {
