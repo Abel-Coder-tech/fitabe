@@ -86,14 +86,19 @@
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
+        max-height: 180px;
     }
     .candidate-card .candidat-cover img {
         width: 100%;
+        max-height: 180px;
+        object-fit: contain;
         display: block;
         opacity: 0.35;
     }
     .candidate-card .candidat-cover .photo-principale {
         width: 100%;
+        max-height: 180px;
+        object-fit: contain;
         display: block;
         opacity: 1;
     }
