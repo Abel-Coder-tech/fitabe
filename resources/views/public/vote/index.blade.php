@@ -403,9 +403,9 @@
                                 </span>
                             </div>
                             <div class="card-body d-flex flex-column px-2 pb-2 pt-2 text-center">
-                                <h6 class="fw-bold mb-0" style="color: var(--vote-brown); font-size: 0.85rem;">{{ $r->candidat_nom }}</h6>
+                                <h6 class="fw-bold mb-1" style="color: var(--vote-brown); font-size: 0.85rem;">{{ $r->candidat_nom }}</h6>
                                 <span class="text-muted" style="font-size: 0.7rem;">{{ $r->categorie }}</span>
-                                <div class="d-flex flex-column gap-0 mt-1">
+                                <div class="d-flex flex-column gap-1 mt-1 mb-1">
                                     <div class="d-flex align-items-center justify-content-between px-2">
                                         <span style="color: #9B4D07; font-size: 0.75rem;"><i class="bi bi-heart-fill me-1"></i>Ovations</span>
                                         <span class="fw-bold" style="color: #3E1E05; font-size: 0.8rem;">{{ $r->nombre_votes }}</span>
