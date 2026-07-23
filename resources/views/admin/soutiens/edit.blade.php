@@ -15,8 +15,8 @@
             @method('PUT')
 
             <div class="mb-3">
-                <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
-                <input type="text" name="nom" id="nom" class="form-control @error('nom') is-invalid @enderror" value="{{ old('nom', $soutien->nom) }}" required>
+                <label for="nom" class="form-label">Nom complet <span class="text-danger">*</span></label>
+                <input type="text" name="nom" id="nom" class="form-control @error('nom') is-invalid @enderror" value="{{ old('nom', $soutien->nom) }}">
                 @error('nom')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -38,17 +38,19 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="titre" class="form-label">Titre / Fonction</label>
-                    <input type="text" name="titre" id="titre" class="form-control @error('titre') is-invalid @enderror" value="{{ old('titre', $soutien->titre) }}">
+                    <input type="text" name="titre" id="titre" class="form-control @error('titre') is-invalid @enderror" value="{{ old('titre', $soutien->titre) }}" placeholder="Ex: Ministre de la Culture">
                     @error('titre')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                    <small class="text-muted">Poste ou qualité du soutien</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="role_parrain" class="form-label">Rôle événement</label>
-                    <input type="text" name="role_parrain" id="role_parrain" class="form-control @error('role_parrain') is-invalid @enderror" value="{{ old('role_parrain', $soutien->role_parrain) }}">
+                    <input type="text" name="role_parrain" id="role_parrain" class="form-control @error('role_parrain') is-invalid @enderror" value="{{ old('role_parrain', $soutien->role_parrain) }}" placeholder="Ex: Parrain, Marraine, Mécène">
                     @error('role_parrain')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                    <small class="text-muted">Son rôle lors de l'événement FITAB</small>
                 </div>
             </div>
 
