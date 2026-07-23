@@ -206,129 +206,79 @@ html, body { overflow-x: hidden; width: 100%; }
     opacity: 1;
 }
 
-/* ==================== SOUTIENS HERO ==================== */
-.soutien-hero-wrapper {
-    scroll-snap-type: y mandatory;
-    overflow-y: auto;
-    max-height: 85vh;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    border-radius: 20px;
+/* ==================== SOUTIENS ALTERNÉ ==================== */
+.soutien-row {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 2rem 0;
 }
-.soutien-hero-wrapper::-webkit-scrollbar {
-    display: none;
+.soutien-row.reversed {
+    flex-direction: row-reverse;
 }
-.soutien-hero-slide {
-    scroll-snap-align: start;
-    min-height: 85vh;
-    position: relative;
-    border-radius: 20px;
+.soutien-row + .soutien-row {
+    border-top: 1px solid #f0e6d6;
+}
+.soutien-row-photo {
+    flex: 0 0 180px;
+    width: 180px;
+    height: 180px;
+    border-radius: 16px;
     overflow: hidden;
+    box-shadow: 0 4px 20px rgba(62,30,5,0.1);
+    transition: transform .3s ease, box-shadow .3s ease;
 }
-.soutien-hero-slide img.hero-bg {
+.soutien-row:hover .soutien-row-photo {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(62,30,5,0.15);
+}
+.soutien-row-photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    position: absolute;
-    inset: 0;
-    z-index: 1;
+    display: block;
 }
-.soutien-hero-slide::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(62,30,5,0.85) 0%, rgba(62,30,5,0.25) 40%, transparent 70%);
-    z-index: 2;
+.soutien-row-text {
+    flex: 1;
 }
-.soutien-hero-text {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 3;
-    padding: 2.5rem 3rem;
-    color: #fff;
-}
-.soutien-hero-text .citation {
-    font-size: 1.2rem;
+.soutien-row-text .citation {
+    color: #3E1E05;
+    font-size: 1.05rem;
     font-style: italic;
     line-height: 1.8;
-    margin-bottom: 1.25rem;
-    max-width: 600px;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    margin-bottom: 1rem;
 }
-.soutien-hero-text .nom {
+.soutien-row-text .nom {
+    color: #3E1E05;
     font-weight: 700;
-    font-size: 1.15rem;
-    margin-bottom: 0.2rem;
+    font-size: 1rem;
+    margin-bottom: 0.15rem;
 }
-.soutien-hero-text .titre {
+.soutien-row-text .titre {
+    color: #9B4D07;
     font-size: 0.85rem;
-    color: rgba(227,213,173,0.9);
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.3rem;
 }
-.soutien-hero-text .badge-role {
+.soutien-row-text .badge-role {
     display: inline-block;
-    background: rgba(155,77,7,0.8);
-    color: #E3D5AD;
+    background: #fef0e0;
+    color: #9B4D07;
     font-size: 0.7rem;
     font-weight: 600;
-    padding: 0.25rem 0.75rem;
+    padding: 0.2rem 0.65rem;
     border-radius: 50px;
 }
-.soutien-hero-dots {
-    position: absolute;
-    right: 1.25rem;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 4;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-.soutien-hero-dots .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.4);
-    border: 2px solid rgba(255,255,255,0.6);
-    cursor: pointer;
-    transition: all .3s ease;
-}
-.soutien-hero-dots .dot.active {
-    background: #fff;
-    transform: scale(1.3);
-    border-color: #fff;
-}
-.soutien-hero-nav {
-    display: flex;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-top: 1rem;
-}
-.soutien-hero-nav button {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: 2px solid #E3D5AD;
-    background: #fff;
-    color: #9B4D07;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all .2s ease;
-}
-.soutien-hero-nav button:hover {
-    background: #9B4D07;
-    color: #fff;
-    border-color: #9B4D07;
-}
 @media (max-width: 767.98px) {
-    .soutien-hero-wrapper { max-height: 70vh; border-radius: 14px; }
-    .soutien-hero-slide { min-height: 70vh; border-radius: 14px; }
-    .soutien-hero-text { padding: 1.5rem; }
-    .soutien-hero-text .citation { font-size: 1rem; }
+    .soutien-row, .soutien-row.reversed {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.25rem;
+    }
+    .soutien-row-photo {
+        flex: unset;
+        width: 140px;
+        height: 140px;
+    }
 }
 
 .accordion-button:not(.collapsed) {
@@ -775,87 +725,33 @@ margin-right: 0;
 {{-- ==================== SOUTIENS ==================== --}}
 @if ($soutiens->count())
 <section class="py-5" style="background: #fdfaf5;">
-    <div class="container text-center mb-4">
-        <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Ils soutiennent le FITAB</span>
-        <h2 class="fw-bold mt-2" style="color: #3E1E05;">Nos soutiens</h2>
-    </div>
-
-    <div class="container" style="max-width: 900px;">
-        <div class="soutien-hero-wrapper" id="soutienHero">
-            @foreach ($soutiens as $index => $s)
-            <div class="soutien-hero-slide">
-                <img class="hero-bg" src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
-                <div class="soutien-hero-text">
-                    @if ($s->citation)
-                    <p class="citation">« {{ $s->citation }} »</p>
-                    @endif
-                    <div class="nom">— {{ $s->nom }}</div>
-                    @if ($s->titre)
-                    <div class="titre">{{ $s->titre }}</div>
-                    @endif
-                    @if ($s->role_parrain)
-                    <span class="badge-role">{{ $s->role_parrain }}</span>
-                    @endif
-                </div>
-            </div>
-            @endforeach
-
-            {{-- Dots latéraux --}}
-            <div class="soutien-hero-dots" id="soutienDots">
-                @foreach ($soutiens as $i => $s)
-                <button type="button" class="dot {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}"></button>
-                @endforeach
-            </div>
+    <div class="container" style="max-width: 800px;">
+        <div class="text-center mb-4">
+            <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Ils soutiennent le FITAB</span>
+            <h2 class="fw-bold mt-2" style="color: #3E1E05;">Nos soutiens</h2>
         </div>
 
-        {{-- Navigation --}}
-        <div class="soutien-hero-nav">
-            <button type="button" id="soutienPrev" aria-label="Précédent"><i class="bi bi-chevron-up"></i></button>
-            <button type="button" id="soutienNext" aria-label="Suivant"><i class="bi bi-chevron-down"></i></button>
+        @foreach ($soutiens as $index => $s)
+        <div class="soutien-row {{ $index % 2 !== 0 ? 'reversed' : '' }}">
+            <div class="soutien-row-photo">
+                <img src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
+            </div>
+            <div class="soutien-row-text">
+                @if ($s->citation)
+                <p class="citation">« {{ $s->citation }} »</p>
+                @endif
+                <div class="nom">— {{ $s->nom }}</div>
+                @if ($s->titre)
+                <div class="titre">{{ $s->titre }}</div>
+                @endif
+                @if ($s->role_parrain)
+                <span class="badge-role">{{ $s->role_parrain }}</span>
+                @endif
+            </div>
         </div>
+        @endforeach
     </div>
 </section>
-
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var wrapper = document.getElementById('soutienHero');
-    var slides = wrapper.querySelectorAll('.soutien-hero-slide');
-    var dots = document.querySelectorAll('#soutienDots .dot');
-    var prev = document.getElementById('soutienPrev');
-    var next = document.getElementById('soutienNext');
-    var current = 0;
-
-    function goTo(index) {
-        if (index < 0 || index >= slides.length) return;
-        current = index;
-        slides[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
-        dots.forEach(function(d, i) { d.classList.toggle('active', i === index); });
-    }
-
-    prev.addEventListener('click', function() { goTo(current - 1); });
-    next.addEventListener('click', function() { goTo(current + 1); });
-    dots.forEach(function(d) {
-        d.addEventListener('click', function() { goTo(parseInt(this.dataset.index)); });
-    });
-
-    wrapper.addEventListener('scroll', function() {
-        var scrollTop = wrapper.scrollTop;
-        var mid = scrollTop + wrapper.offsetHeight / 2;
-        var closest = 0, minDist = Infinity;
-        slides.forEach(function(s, i) {
-            var center = s.offsetTop + s.offsetHeight / 2;
-            var dist = Math.abs(center - mid);
-            if (dist < minDist) { minDist = dist; closest = i; }
-        });
-        if (closest !== current) {
-            current = closest;
-            dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
-        }
-    });
-});
-</script>
-@endpush
 @endif
 
 {{-- ==================== PARTENAIRES ==================== --}}
