@@ -5,7 +5,7 @@
 @section('content')
 <h1 class="mb-4">Modifier : {{ $user->name }}</h1>
 
-<form method="POST" action="{{ route('admin.users.update', $user) }}">
+<form method="POST" action="{{ route('admin.users.update', $user) }}" novalidate>
     @csrf @method('PUT')
     <div class="row">
         <div class="col-md-6 mb-3">

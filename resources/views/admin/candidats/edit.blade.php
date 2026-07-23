@@ -7,7 +7,7 @@
 <h1 class="mb-4">Modifier : {{ $candidat->nom }}</h1>
 
 {{-- Formulaire de modification --}}
-<form method="POST" action="{{ route('admin.candidats.update', $candidat) }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('admin.candidats.update', $candidat) }}" enctype="multipart/form-data" novalidate>
     @csrf @method('PUT')
     <div class="row">
         <div class="col-md-6 mb-3">

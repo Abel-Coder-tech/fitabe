@@ -10,7 +10,7 @@
 
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('admin.programmes.store') }}" method="POST">
+        <form action="{{ route('admin.programmes.store') }}" method="POST" novalidate>
             @csrf
 
             <div class="mb-3">

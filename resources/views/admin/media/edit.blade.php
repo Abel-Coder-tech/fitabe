@@ -7,7 +7,7 @@
 <h1 class="mb-4">Modifier le média</h1>
 
 {{-- Formulaire de modification --}}
-<form method="POST" action="{{ route('admin.medias.update', $media) }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('admin.medias.update', $media) }}" enctype="multipart/form-data" novalidate>
     @csrf @method('PUT')
 
     <div class="row">

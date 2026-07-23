@@ -10,7 +10,7 @@
 
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('admin.soutiens.update', $soutien) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.soutiens.update', $soutien) }}" method="POST" enctype="multipart/form-data" novalidate>
             @csrf
             @method('PUT')
 

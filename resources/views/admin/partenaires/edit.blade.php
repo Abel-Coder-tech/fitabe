@@ -12,7 +12,7 @@
 {{-- Formulaire de modification --}}
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('admin.partenaires.update', $partenaire) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.partenaires.update', $partenaire) }}" method="POST" enctype="multipart/form-data" novalidate>
             @csrf
             @method('PUT')
 

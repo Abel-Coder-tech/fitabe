@@ -7,7 +7,7 @@
 <h1 class="mb-4">Nouveau média</h1>
 
 {{-- Formulaire de création --}}
-<form method="POST" action="{{ route('admin.medias.store') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('admin.medias.store') }}" enctype="multipart/form-data" novalidate>
     @csrf
 
     <div class="row">

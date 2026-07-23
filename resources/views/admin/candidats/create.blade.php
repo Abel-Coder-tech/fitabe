@@ -7,7 +7,7 @@
 <h1 class="mb-4">Nouveau candidat</h1>
 
 {{-- Formulaire de création --}}
-<form method="POST" action="{{ route('admin.candidats.store') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('admin.candidats.store') }}" enctype="multipart/form-data" novalidate>
     @csrf
     <div class="row">
         <div class="col-md-6 mb-3">
