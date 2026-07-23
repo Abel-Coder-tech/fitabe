@@ -253,17 +253,6 @@ html, body { overflow-x: hidden; width: 100%; }
 .soutien-carousel-card .card-body {
     padding: 1.25rem 1.25rem 1.5rem;
 }
-.soutien-carousel-card .card-citation {
-    color: #5F2B0C;
-    font-style: italic;
-    font-size: 0.88rem;
-    line-height: 1.5;
-    margin-bottom: 0.75rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
 .soutien-carousel-card .card-nom {
     color: #3E1E05;
     font-weight: 700;
@@ -777,9 +766,7 @@ margin-right: 0;
                         <img src="{{ $s->photo_url }}" alt="{{ $s->nom }}" loading="lazy">
                     </div>
                     <div class="card-body">
-                        @if ($s->citation)
-                        <p class="card-citation">« {{ $s->citation }} »</p>
-                        @endif
+
                         <div class="card-nom">— {{ $s->nom }}</div>
                         @if ($s->titre)
                         <div class="card-titre">{{ $s->titre }}</div>
