@@ -85,7 +85,7 @@
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
-        min-height: 180px;
+        height: 200px;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
@@ -462,7 +462,7 @@
                 Aucun candidat inscrit pour le moment.
             </div>
         @else
-            <div class="row g-4" id="candidatsGrid">
+            <div class="row g-4 align-items-stretch" id="candidatsGrid">
                 @foreach($candidats as $candidat)
                     <div class="col-sm-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
                         <div class="card candidate-card shadow-sm">
