@@ -128,6 +128,7 @@
     .result-body {
         flex: 0 0 40%;
         max-height: 40%;
+        padding: 0.4rem 0.5rem;
     }
 
     .filter-btn {
@@ -423,10 +424,10 @@
                                     {{ $r->prix_label }}
                                 </span>
                             </div>
-                            <div class="card-body result-body d-flex flex-column px-2 pb-2 pt-2 text-center">
-                                <h6 class="fw-bold mb-0" style="color: var(--vote-brown); font-size: 0.9rem;">{{ $r->candidat_nom }}</h6>
-                                <span class="text-muted" style="font-size: 0.72rem;">{{ $r->categorie }}</span>
-                                <div class="mt-1" style="font-size: 0.7rem;">
+                            <div class="card-body result-body d-flex flex-column px-2 py-2 text-center">
+                                <h6 class="fw-bold mb-0" style="color: var(--vote-brown); font-size: 0.95rem;">{{ $r->candidat_nom }}</h6>
+                                <span class="text-muted" style="font-size: 0.75rem;">{{ $r->categorie }}</span>
+                                <div class="mt-1 mb-1" style="font-size: 0.78rem;">
                                     <div class="d-flex justify-content-between px-1">
                                         <span style="color: #9B4D07;">Ovations</span>
                                         <span class="fw-bold" style="color: #3E1E05;">{{ $r->nombre_votes }}</span>
@@ -438,11 +439,11 @@
                                     </div>
                                     @endif
                                 </div>
-                                <div class="mt-auto pt-1">
-                                    <span class="badge fw-semibold px-2 py-1" style="background: #9B4D07; color: #fff; font-size: 0.8rem;">
+                                <div class="mt-auto">
+                                    <span class="badge fw-semibold px-2 py-1" style="background: #9B4D07; color: #fff; font-size: 0.85rem;">
                                         {{ $r->score_final ?? $r->score_public ?? '-' }}/20
                                     </span>
-                                    <small class="d-block text-muted" style="font-size: 0.6rem;">Score final</small>
+                                    <small class="d-block text-muted" style="font-size: 0.65rem;">Score final</small>
                                 </div>
                             </div>
                         </div>
