@@ -58,7 +58,7 @@
         cursor: pointer;
         border-radius: 16px;
         overflow: hidden;
-        max-width: 290px;
+        max-width: 220px;
         margin-inline: auto;
     }
     .candidate-card:hover {
@@ -92,14 +92,14 @@
         justify-content: center;
     }
     .candidate-card .candidat-cover img {
-        width: 85%;
+        width: 100%;
         max-height: 180px;
         object-fit: contain;
         display: block;
         opacity: 0.35;
     }
     .candidate-card .candidat-cover .photo-principale {
-        width: 85%;
+        width: 100%;
         max-height: 180px;
         object-fit: contain;
         display: block;
