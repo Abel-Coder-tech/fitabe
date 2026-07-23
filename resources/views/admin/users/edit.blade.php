@@ -10,12 +10,12 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Nom <span class="text-danger">*</span></label>
-            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $user->name) }}" required>
+            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $user->name) }}">
             @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Email <span class="text-danger">*</span></label>
-            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $user->email) }}" required>
+            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $user->email) }}">
             @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
     </div>
@@ -24,6 +24,7 @@
             <label class="form-label">Mot de passe</label>
             <input type="password" name="password" class="form-control @error('password') is-invalid @enderror">
             @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            <small class="text-muted">Laisser vide pour conserver l'actuel. 8 car. min, 1 maj., 1 min., 1 chiffre.</small>
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Confirmer le mot de passe</label>

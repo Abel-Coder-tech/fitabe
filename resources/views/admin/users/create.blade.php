@@ -10,24 +10,25 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Nom <span class="text-danger">*</span></label>
-            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required>
+            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
             @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Email <span class="text-danger">*</span></label>
-            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required>
+            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
             @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Mot de passe <span class="text-danger">*</span></label>
-            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
+            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror">
             @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            <small class="text-muted">8 caractères minimum, 1 majuscule, 1 minuscule, 1 chiffre.</small>
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Confirmer le mot de passe <span class="text-danger">*</span></label>
-            <input type="password" name="password_confirmation" class="form-control" required>
+            <input type="password" name="password_confirmation" class="form-control">
         </div>
     </div>
     <div class="mb-3">

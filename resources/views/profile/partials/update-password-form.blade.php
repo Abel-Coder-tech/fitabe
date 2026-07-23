@@ -4,7 +4,7 @@
         <p class="text-muted small">Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester sécurisé.</p>
     </header>
 
-    <form method="post" action="{{ route('password.update') }}">
+    <form method="post" action="{{ route('password.update') }}" novalidate>
         @csrf
         @method('put')
 
@@ -18,6 +18,7 @@
             <x-input-label for="update_password_password" value="Nouveau mot de passe" />
             <x-text-input id="update_password_password" name="password" type="password" class="form-control" autocomplete="new-password" />
             <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
+            <small class="text-muted">8 caractères minimum, 1 majuscule, 1 minuscule, 1 chiffre.</small>
         </div>
 
         <div class="mb-3">
