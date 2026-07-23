@@ -824,7 +824,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 scroll(1);
             }
-        }, 3000);
+        }, 10000);
     }
 
     function stopAuto() {
