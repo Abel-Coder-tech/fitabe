@@ -75,27 +75,32 @@
         left: 12px;
         background: rgba(62,30,5,0.85);
         color: #fff;
-        font-size: 1rem;
+        font-size: 0.75rem;
         font-weight: 700;
-        padding: 8px 20px;
+        padding: 4px 12px;
         border-radius: 20px;
         z-index: 2;
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
+        aspect-ratio: 4/3;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
-        line-height: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .candidate-card .candidat-cover img {
         width: 100%;
-        display: block;
+        height: 100%;
+        object-fit: contain;
         opacity: 0.35;
     }
     .candidate-card .candidat-cover .photo-principale {
         width: 100%;
-        display: block;
+        height: 100%;
+        object-fit: contain;
         opacity: 1;
     }
     .candidate-card .vote-count {
@@ -397,26 +402,28 @@
                                     {{ $r->prix_label }}
                                 </span>
                             </div>
-                            <div class="card-body d-flex flex-column px-3 pb-3 pt-2 text-center">
-                                <h6 class="fw-bold mb-0" style="color: var(--vote-brown); font-size: 0.9rem;">{{ $r->candidat_nom }}</h6>
-                                <small class="text-muted" style="font-size: 0.7rem;">{{ $r->categorie }}</small>
-                                <div class="d-flex flex-column gap-1 mt-1 mb-1">
+                            <div class="card-body d-flex flex-column px-3 pb-3 pt-3 text-center">
+                                <h6 class="fw-bold mb-1" style="color: var(--vote-brown);">{{ $r->candidat_nom }}</h6>
+                                <span class="small text-muted mb-2">{{ $r->categorie }}</span>
+                                <hr class="my-2" style="border-color: #f0e6d6; opacity: 0.6;">
+                                <div class="d-flex flex-column gap-2 mb-2">
                                     <div class="d-flex align-items-center justify-content-between px-2">
-                                        <span style="color: #9B4D07; font-size: 0.75rem;"><i class="bi bi-heart-fill me-1"></i>Ovations</span>
-                                        <span class="fw-bold" style="color: #3E1E05; font-size: 0.8rem;">{{ $r->nombre_votes }}</span>
+                                        <span class="small" style="color: #9B4D07;"><i class="bi bi-heart-fill me-1"></i>Ovations</span>
+                                        <span class="fw-bold" style="color: #3E1E05;">{{ $r->nombre_votes }}</span>
                                     </div>
                                     @if($r->note_jury !== null)
                                     <div class="d-flex align-items-center justify-content-between px-2">
-                                        <span style="color: #9B4D07; font-size: 0.75rem;"><i class="bi bi-star-fill me-1"></i>Jury</span>
-                                        <span class="fw-bold" style="color: #3E1E05; font-size: 0.8rem;">{{ $r->note_jury }}/20</span>
+                                        <span class="small" style="color: #9B4D07;"><i class="bi bi-star-fill me-1"></i>Jury</span>
+                                        <span class="fw-bold" style="color: #3E1E05;">{{ $r->note_jury }}/20</span>
                                     </div>
                                     @endif
                                 </div>
-                                <div class="mt-auto pt-1">
-                                    <span class="badge fw-semibold px-3 py-1" style="background: #9B4D07; color: #fff; font-size: 0.85rem;">
+                                <hr class="my-2" style="border-color: #f0e6d6; opacity: 0.6;">
+                                <div class="mt-auto">
+                                    <span class="badge fw-semibold px-3 py-2 fs-6" style="background: #9B4D07; color: #fff;">
                                         {{ $r->score_final ?? $r->score_public ?? '-' }}/20
                                     </span>
-                                    <small class="d-block text-muted" style="font-size: 0.65rem;">Score final</small>
+                                    <small class="d-block text-muted mt-1">Score final</small>
                                 </div>
                             </div>
                         </div>
