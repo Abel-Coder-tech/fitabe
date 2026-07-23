@@ -83,24 +83,19 @@
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
-        height: 300px;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        line-height: 0;
     }
     .candidate-card .candidat-cover img {
         width: 100%;
-        height: 100%;
-        object-fit: contain;
+        display: block;
         opacity: 0.35;
     }
     .candidate-card .candidat-cover .photo-principale {
         width: 100%;
-        height: 100%;
-        object-fit: contain;
+        display: block;
         opacity: 1;
     }
     .candidate-card .vote-count {
