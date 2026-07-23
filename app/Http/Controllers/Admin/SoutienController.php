@@ -24,7 +24,6 @@ class SoutienController extends Controller
         $validated = $request->validate([
             'nom' => 'required|string|max:200',
             'photo' => 'required|image|max:2048',
-            'citation' => 'nullable|string',
             'titre' => 'nullable|string|max:200',
             'role_parrain' => 'nullable|string|max:100',
         ], [
@@ -58,7 +57,6 @@ class SoutienController extends Controller
         $validated = $request->validate([
             'nom' => 'required|string|max:200',
             'photo' => 'nullable|image|max:2048',
-            'citation' => 'nullable|string',
             'titre' => 'nullable|string|max:200',
             'role_parrain' => 'nullable|string|max:100',
         ], [

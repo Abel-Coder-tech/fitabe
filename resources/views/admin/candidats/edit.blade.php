@@ -32,7 +32,8 @@
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Numéro de scène</label>
-            <input type="number" name="numero_scene" class="form-control" value="{{ old('numero_scene', $candidat->numero_scene) }}">
+            <input type="number" name="numero_scene" class="form-control @error('numero_scene') is-invalid @enderror" value="{{ old('numero_scene', $candidat->numero_scene) }}">
+            @error('numero_scene') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
     </div>
     <div class="mb-3">
@@ -45,7 +46,8 @@
     </div>
     <div class="mb-3">
         <label class="form-label">Biographie</label>
-        <textarea name="biographie" rows="5" class="form-control">{{ old('biographie', $candidat->biographie) }}</textarea>
+        <textarea name="biographie" rows="5" class="form-control @error('biographie') is-invalid @enderror">{{ old('biographie', $candidat->biographie) }}</textarea>
+        @error('biographie') <div class="invalid-feedback">{{ $message }}</div> @enderror
     </div>
     <button type="submit" class="btn btn-primary">Mettre à jour</button>
     <a href="{{ route('admin.candidats.index') }}" class="btn btn-secondary">Annuler</a>

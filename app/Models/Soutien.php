@@ -10,7 +10,6 @@ class Soutien extends Model
     protected $fillable = [
         'nom',
         'photo',
-        'citation',
         'titre',
         'role_parrain',
     ];

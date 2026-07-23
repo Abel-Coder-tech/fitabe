@@ -35,14 +35,6 @@
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <label for="citation" class="form-label">Phrase / Citation</label>
-                <textarea name="citation" id="citation" rows="3" class="form-control @error('citation') is-invalid @enderror">{{ old('citation', $soutien->citation) }}</textarea>
-                @error('citation')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="titre" class="form-label">Titre / Fonction</label>
