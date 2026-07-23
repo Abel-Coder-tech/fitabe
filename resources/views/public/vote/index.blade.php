@@ -85,15 +85,18 @@
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
-        aspect-ratio: 3/2;
+        min-height: 180px;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .candidate-card .candidat-cover img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
     }
     .candidate-card .candidat-cover .photo-principale {
         width: 100%;
