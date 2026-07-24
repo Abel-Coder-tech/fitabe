@@ -476,7 +476,7 @@
         @else
             <div class="row g-4 align-items-stretch" id="candidatsGrid">
                 @foreach($candidats as $candidat)
-                    <div class="col-12 col-md-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
+                    <div class="col-8 col-md-6 col-lg-3 offset-2 offset-md-0 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
                         <div class="card candidate-card shadow-sm">
                             <div class="candidat-cover">
                                 @if($candidat->photo)
@@ -547,8 +547,10 @@
         <div class="modal-content" style="border-radius: 18px; overflow: hidden; border: none; box-shadow: 0 10px 40px rgba(62,30,5,0.25);">
             <div class="modal-body p-0">
                 <div class="text-center position-relative">
-                    <button type="button" class="btn-close position-absolute top-0 end-0 m-2 z-3" data-bs-dismiss="modal" aria-label="Fermer" style="background: rgba(0,0,0,0.5); border-radius: 50%; width: 28px; height: 28px; padding: 4px; opacity: 1;"></button>
-                    <img id="sharePhoto" src="" alt="Photo du candidat" class="w-100" style="height: 220px; object-fit: cover;">
+                    <button type="button" class="position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Fermer" style="background: rgba(0,0,0,0.5); border-radius: 50%; width: 28px; height: 28px; border: none; color: #fff; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; z-index: 10; cursor: pointer;">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                    <img id="sharePhoto" src="{{ asset('images/default-user.png') }}" alt="Photo du candidat" class="w-100" style="height: 220px; object-fit: cover;">
                     <div class="p-3">
                         <h6 class="fw-bold mb-1" id="shareName" style="color: #3E1E05;"></h6>
                         <p class="text-muted mb-3" style="font-size: 0.78rem;">Partagez ce candidat sur vos réseaux</p>

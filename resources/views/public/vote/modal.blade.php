@@ -100,7 +100,7 @@
     /* === DESKTOP === */
     @media (min-width: 768px) {
         #voteModal .modal-dialog { max-width: 700px !important; }
-        #voteModal .modal-dialog.modal-narrow { max-width: 420px !important; }
+        #voteModal .modal-dialog.modal-narrow { max-width: 350px !important; }
         #voteModal .modal-content { min-height: 480px; }
         #voteModal .step1-photo {
             flex: 0 0 45%;
@@ -130,7 +130,8 @@
         #voteModal .step1-photo-mobile { display: block !important; }
         #voteModal .step1-photo-mobile img {
             width: calc(100% - 2rem) !important;
-            margin: 0 1rem !important;
+            margin: 0 auto !important;
+            display: block !important;
             height: 140px !important;
             object-fit: cover !important;
             border-radius: 10px !important;
@@ -140,9 +141,12 @@
             max-width: 100% !important;
             padding: 0.75rem 1rem 1rem !important;
             position: relative !important;
+            text-align: center !important;
         }
         #voteModal .candidat-name { font-size: 0.95rem; margin-bottom: 0.25rem; padding-right: 2.5rem; }
         #voteModal .candidat-bio { font-size: 0.72rem; margin-bottom: 0.5rem; }
+        #voteModal .mb-3 { margin-bottom: 0.75rem !important; text-align: center; }
+        #voteModal .mb-3 .d-flex { justify-content: center; }
         #voteModal .qte-btn { width: 34px; height: 34px; font-size: 0.95rem; }
         #voteModal .qte-input { width: 50px; font-size: 1.1rem; }
         #voteModal .total-block { padding: 0.5rem 0.6rem; margin-bottom: 0.6rem; }
@@ -151,6 +155,7 @@
         #voteModal .note-preselection { font-size: 0.65rem; }
         #voteModal #step-2, #voteModal #step-3 { padding: 1rem !important; }
         #voteModal #step-2 .payment-option { min-width: 140px !important; }
+        #voteModal .note-preselection { display: none !important; }
     }
 </style>
 
