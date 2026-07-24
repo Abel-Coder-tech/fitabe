@@ -101,45 +101,62 @@
     @media (min-width: 768px) {
         #voteModal .modal-dialog { max-width: 700px !important; }
         #voteModal .modal-dialog.modal-narrow { max-width: 350px !important; }
-        #voteModal .modal-content { min-height: 480px; }
+        #voteModal .modal-content { min-height: 520px; display: flex; }
         #voteModal .step1-photo {
             flex: 0 0 45%;
             max-width: 45%;
             position: relative;
             overflow: hidden;
             border-radius: 1rem 0 0 1rem;
+            min-height: 520px;
         }
         #voteModal .step1-photo img { width: 100%; height: 100%; object-fit: cover; }
         #voteModal .step1-info {
-            flex: 0 0 55%;
+            flex: 1;
             max-width: 55%;
-            padding: 1.5rem;
+            padding: 2rem 1.5rem;
             display: flex;
             flex-direction: column;
             position: relative;
+            justify-content: center;
         }
+        #voteModal .step1-info .mb-3 { margin-bottom: 1.25rem !important; }
+        #voteModal .step1-info .total-block { margin-bottom: 1.25rem; }
         #voteModal .step1-photo-mobile { display: none; }
         #voteModal .candidat-name { font-size: 1.25rem; margin-bottom: 0.5rem; }
+        #voteModal #step-2 {
+            padding: 2rem 2.5rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+        }
+        #voteModal #step-2 .payment-option { min-width: 160px !important; }
+        #voteModal #step-3 {
+            padding: 2rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+        }
     }
 
     /* === MOBILE === */
     @media (max-width: 767.98px) {
         #voteModal .modal-dialog { max-width: 100% !important; margin: 0.5rem !important; }
-        #voteModal .modal-content { display: block !important; border-radius: 16px !important; }
+        #voteModal .modal-content { display: block !important; border-radius: 16px !important; min-height: auto !important; }
         #voteModal .step1-photo { display: none !important; }
         #voteModal .step1-photo-mobile { display: block !important; }
         #voteModal .step1-photo-mobile img {
-            width: calc(100% - 2rem) !important;
+            width: calc(100% - 0.5rem) !important;
             margin: 0 auto !important;
             display: block !important;
-            height: 140px !important;
+            height: 160px !important;
             object-fit: cover !important;
             border-radius: 10px !important;
         }
         #voteModal .step1-info {
             flex: unset !important;
             max-width: 100% !important;
-            padding: 0.75rem 1rem 1rem !important;
+            padding: 1rem !important;
             position: relative !important;
             text-align: center !important;
         }
@@ -153,8 +170,16 @@
         #voteModal .total-block .price-total { font-size: 1.1rem; }
         #voteModal .btn-payer { padding: 0.65rem; font-size: 0.95rem; }
         #voteModal .note-preselection { font-size: 0.65rem; }
-        #voteModal #step-2, #voteModal #step-3 { padding: 1rem !important; }
-        #voteModal #step-2 .payment-option { min-width: 140px !important; }
+
+        #voteModal #step-2 {
+            padding: 2rem 1.5rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+        }
+        #voteModal #step-2 .text-center.mb-2 { margin-top: auto !important; }
+        #voteModal #step-2 .payment-option { min-width: 160px !important; }
+        #voteModal #step-3 { padding: 1rem !important; }
         #voteModal .note-preselection { display: none !important; }
     }
 </style>
@@ -253,8 +278,8 @@
                     <div class="vote-step" id="step-2">
 
                         {{-- Photo candidat --}}
-                        <div class="text-center mb-2">
-                            <div class="rounded-2 overflow-hidden shadow mx-auto d-block" style="width: 70px; height: 70px; border: 2px solid #E3D5AD;">
+                        <div class="text-center mb-3">
+                            <div class="rounded-2 overflow-hidden shadow mx-auto d-block" style="width: 90px; height: 90px; border: 2px solid #E3D5AD;">
                                 <img id="step2CandidatPhoto" src="" alt="Photo du candidat"
                                      style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
