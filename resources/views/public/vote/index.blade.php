@@ -58,6 +58,7 @@
         cursor: pointer;
         border-radius: 14px;
         overflow: hidden;
+        max-width: 280px;
         margin-inline: auto;
         display: flex;
         flex-direction: column;
@@ -84,7 +85,7 @@
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
-        height: 260px;
+        height: 220px;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
@@ -105,12 +106,22 @@
     }
     .candidate-card .card-body {
         flex: 1;
-        padding: 0.75rem 0.75rem 0.85rem;
+        padding: 0.6rem 0.65rem 0.7rem;
     }
     .candidate-card .vote-count {
         font-size: 1rem;
         font-weight: 700;
         color: var(--vote-brown);
+    }
+    .candidate-card .categorie-badge {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 2px 10px;
+        border-radius: 20px;
+        color: #fff;
     }
 
     .result-card {
@@ -468,7 +479,7 @@
         @else
             <div class="row g-4 align-items-stretch" id="candidatsGrid">
                 @foreach($candidats as $candidat)
-                    <div class="col-sm-6 col-lg-4 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
+                    <div class="col-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
                         <div class="card candidate-card shadow-sm">
                             <div class="candidat-cover">
                                 @if($candidat->photo)
@@ -478,29 +489,35 @@
                                     <span class="candidat-num">N°{{ $candidat->numero_scene }}</span>
                                 @endif
                             </div>
-                            <div class="card-body d-flex flex-column px-3 py-3">
-                                <h6 class="fw-bold mb-0 text-center" style="color: var(--vote-brown); font-size: 0.95rem;">{{ $candidat->display_name }}</h6>
-                                @if($candidat->biographie)
-                                    <p class="small text-muted mb-1 text-center" style="line-height: 1.3; font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-                                        {{ \Illuminate\Support\Str::limit($candidat->biographie, 80) }}
-                                    </p>
+                            <div class="card-body d-flex flex-column text-center">
+                                @if($candidat->categorie)
+                                    @php $catColor = \App\Models\Candidats::CATEGORIES[$candidat->categorie] ?? '#9B4D07'; @endphp
+                                    <span class="categorie-badge mb-1" style="background: {{ $catColor }};">{{ $candidat->categorie }}</span>
                                 @endif
+                                <h6 class="fw-bold mb-1" style="color: var(--vote-brown); font-size: 0.9rem; line-height: 1.2;">{{ $candidat->display_name }}</h6>
                                 @if($afficherCompteur)
-                                    <p class="vote-count text-center mb-1">
+                                    <p class="vote-count text-center mb-1" style="font-size: 0.85rem;">
                                         <i class="bi bi-heart-fill" style="color: var(--vote-gold);"></i>
                                         {{ $candidat->votes_sum_quantite ?? 0 }} ovation(s)
                                     </p>
                                 @endif
-                                <hr class="my-2" style="border-color: #f0e6d6; opacity: 0.6;">
-                                <div class="d-flex flex-column gap-2">
+                                <hr class="my-1" style="border-color: #f0e6d6; opacity: 0.6;">
+                                <div class="d-flex flex-column gap-1 mt-auto">
                                     @if($voteMode === 'active')
                                         <div class="d-flex gap-2">
-                                            <button type="button" class="btn text-white fw-semibold btn-sm flex-fill" style="background: var(--vote-gold); border-radius: 50px;"
-                                                    onclick='ouvrirVote({{ $candidat->id }}, {!! json_encode($candidat->display_name, JSON_HEX_APOS) !!}, {!! json_encode($candidat->photo_url, JSON_HEX_APOS) !!}, {{ $candidat->votes_sum_quantite ?? 0 }}, {!! json_encode($candidat->categorie ?? '', JSON_HEX_APOS) !!}, {!! json_encode(Str::limit($candidat->biographie ?? '', 120), JSON_HEX_APOS) !!}, {!! json_encode($candidat->numero_scene) !!})'>
+                                            <button type="button" class="btn text-white fw-semibold btn-sm flex-fill vote-btn" style="background: var(--vote-gold); border-radius: 50px; font-size: 0.8rem;"
+                                                    data-id="{{ $candidat->id }}"
+                                                    data-nom="{{ $candidat->display_name }}"
+                                                    data-photo="{{ $candidat->photo_url }}"
+                                                    data-votes="{{ $candidat->votes_sum_quantite ?? 0 }}"
+                                                    data-categorie="{{ $candidat->categorie ?? '' }}"
+                                                    data-bio="{{ Str::limit($candidat->biographie ?? '', 120) }}"
+                                                    data-numero="{{ $candidat->numero_scene }}">
                                                 Ovationner <i class="bi bi-check-circle ms-1"></i>
                                             </button>
-                                            <button type="button" class="btn btn-sm fw-semibold" style="border: 2px solid var(--vote-gold-light); color: var(--vote-gold-light); border-radius: 50px; flex: 0 0 auto; padding: 0.25rem 0.8rem;"
-                                                    onclick='partagerCandidat({{ $candidat->id }}, {!! json_encode($candidat->display_name, JSON_HEX_APOS) !!})'>
+                                            <button type="button" class="btn btn-sm fw-semibold share-btn" style="border: 2px solid var(--vote-gold-light); color: var(--vote-gold-light); border-radius: 50px; flex: 0 0 auto; padding: 0.25rem 0.8rem;"
+                                                    data-id="{{ $candidat->id }}"
+                                                    data-nom="{{ $candidat->display_name }}">
                                                 <i class="bi bi-share-fill"></i>
                                             </button>
                                         </div>
@@ -886,6 +903,26 @@ function partagerCandidat(id, nom) {
 
 // ==================== FILTRES CATÉGORIES ====================
 document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.vote-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            ouvrirVote(
+                parseInt(this.dataset.id),
+                this.dataset.nom,
+                this.dataset.photo,
+                parseInt(this.dataset.votes) || 0,
+                this.dataset.categorie,
+                this.dataset.bio,
+                this.dataset.numero
+            );
+        });
+    });
+
+    document.querySelectorAll('.share-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            partagerCandidat(parseInt(this.dataset.id), this.dataset.nom);
+        });
+    });
+
     const filterBtns = document.querySelectorAll('.filter-btn');
     const colonnes = document.querySelectorAll('.candidat-col');
 
