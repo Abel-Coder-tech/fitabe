@@ -1,7 +1,7 @@
 <style>
     @media (min-width: 768px) {
         #voteModal .modal-dialog { max-width: 700px !important; }
-        #voteModal .modal-content { display: flex; flex-direction: row !important; min-height: 480px; }
+        #voteModal .modal-content { min-height: 480px; }
         #voteModal .step1-photo {
             flex: 0 0 45%;
             max-width: 45%;
@@ -146,6 +146,11 @@
         #voteModal .modal-content { display: block !important; }
         #voteModal .step1-photo { display: none !important; }
         #voteModal .step1-photo-mobile { display: block !important; }
+        #voteModal .step1-photo-mobile img {
+            width: 100% !important;
+            height: 180px !important;
+            object-fit: cover !important;
+        }
         #voteModal .step1-info {
             flex: unset !important;
             max-width: 100% !important;
@@ -169,6 +174,11 @@
             cursor: pointer;
             z-index: 2;
         }
+        #voteModal .step2-summary {
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 0.75rem !important;
+        }
     }
 </style>
 
@@ -185,7 +195,7 @@
                     <input type="hidden" name="payment_method" id="votePaymentMethod">
 
                     {{-- STEP 1 : Fiche candidat + quantité --}}
-                    <div class="vote-step active" id="step-1" style="display: flex; flex-direction: row;">
+                    <div class="vote-step active" id="step-1">
 
                         {{-- Colonne gauche : Photo (desktop) --}}
                         <div class="step1-photo">

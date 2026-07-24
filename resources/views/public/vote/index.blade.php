@@ -42,10 +42,14 @@
         cursor: pointer;
         border-radius: 14px;
         overflow: hidden;
-        max-width: 280px;
-        margin-inline: auto;
+        width: 100%;
         display: flex;
         flex-direction: column;
+    }
+    @media (max-width: 575.98px) {
+        .candidate-card .candidat-cover {
+            height: 180px;
+        }
     }
     .candidate-card:hover {
         transform: translateY(-4px);
@@ -154,6 +158,12 @@
     }
     .vote-step.active {
         display: block;
+    }
+    @media (min-width: 768px) {
+        #step-1.active {
+            display: flex !important;
+            flex-direction: row !important;
+        }
     }
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(12px); }
@@ -509,7 +519,8 @@
                                             </button>
                                             <button type="button" class="btn btn-sm fw-semibold share-btn" style="border: 2px solid var(--vote-gold-light); color: var(--vote-gold-light); border-radius: 50px; flex: 0 0 auto; padding: 0.25rem 0.8rem;"
                                                     data-id="{{ $candidat->id }}"
-                                                    data-nom="{{ $candidat->display_name }}">
+                                                    data-nom="{{ $candidat->display_name }}"
+                                                    data-photo="{{ $candidat->photo_url }}">
                                                 <i class="bi bi-share-fill"></i>
                                             </button>
                                         </div>
@@ -529,6 +540,44 @@
 </section>
 
 @include('public.vote.modal')
+
+{{-- ==================== MODAL PARTAGE ==================== --}}
+<div class="modal fade" id="shareModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 380px;">
+        <div class="modal-content" style="border-radius: 18px; overflow: hidden; border: none; box-shadow: 0 10px 40px rgba(62,30,5,0.25);">
+            <div class="modal-body p-0">
+                <div class="text-center position-relative">
+                    <button type="button" class="btn-close position-absolute top-0 end-0 m-2 z-3" data-bs-dismiss="modal" aria-label="Fermer" style="background: rgba(0,0,0,0.5); border-radius: 50%; width: 28px; height: 28px; padding: 4px; opacity: 1;"></button>
+                    <img id="sharePhoto" src="" alt="Photo du candidat" class="w-100" style="height: 220px; object-fit: cover;">
+                    <div class="p-3">
+                        <h6 class="fw-bold mb-1" id="shareName" style="color: #3E1E05;"></h6>
+                        <p class="text-muted mb-3" style="font-size: 0.78rem;">Partagez ce candidat sur vos réseaux</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a id="shareWhatsApp" href="#" target="_blank" class="btn text-white fw-semibold w-100" style="background: #25D366; border-radius: 50px; font-size: 0.85rem;">
+                                <i class="bi bi-whatsapp me-2"></i>Partager sur WhatsApp
+                            </a>
+                            <a id="shareFacebook" href="#" target="_blank" class="btn text-white fw-semibold w-100" style="background: #1877F2; border-radius: 50px; font-size: 0.85rem;">
+                                <i class="bi bi-facebook me-2"></i>Partager sur Facebook
+                            </a>
+                            <a id="shareTelegram" href="#" target="_blank" class="btn text-white fw-semibold w-100" style="background: #0088CC; border-radius: 50px; font-size: 0.85rem;">
+                                <i class="bi bi-telegram me-2"></i>Partager sur Telegram
+                            </a>
+                            <a id="shareTwitter" href="#" target="_blank" class="btn text-white fw-semibold w-100" style="background: #000; border-radius: 50px; font-size: 0.85rem;">
+                                <i class="bi bi-twitter-x me-2"></i>Partager sur X (Twitter)
+                            </a>
+                            <a id="shareEmail" href="#" class="btn fw-semibold w-100" style="border: 2px solid #3E1E05; color: #3E1E05; border-radius: 50px; font-size: 0.85rem;">
+                                <i class="bi bi-envelope me-2"></i>Envoyer par e-mail
+                            </a>
+                            <button type="button" id="shareCopyLink" class="btn fw-semibold w-100" style="background: #f0e6d6; color: #3E1E05; border-radius: 50px; font-size: 0.85rem;">
+                                <i class="bi bi-link-45deg me-2"></i>Copier le lien
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {{-- ==================== RÈGLEMENT ==================== --}}
 <section class="py-4" style="background: #fdfaf5;">
@@ -883,16 +932,30 @@ function ouvrirFedapay(voteId, montant) {
 })();
 
 // ==================== PARTAGER ====================
-function partagerCandidat(id, nom) {
+function partagerCandidat(id, nom, photo) {
     const url = window.location.origin + '/vote?candidat=' + id;
     const text = 'Ovationnez ' + nom + ' au FITAB ! Votez pour votre candidat préféré.';
-    if (navigator.share) {
-        navigator.share({ title: nom, text: text, url: url });
-    } else {
+
+    document.getElementById('sharePhoto').src = photo || '{{ asset("images/default-user.png") }}';
+    document.getElementById('shareName').textContent = nom;
+    document.getElementById('shareWhatsApp').href = 'https://wa.me/?text=' + encodeURIComponent(text + ' ' + url);
+    document.getElementById('shareFacebook').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+    document.getElementById('shareTelegram').href = 'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text);
+    document.getElementById('shareTwitter').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url);
+    document.getElementById('shareEmail').href = 'mailto:?subject=' + encodeURIComponent(nom + ' — FITAB') + '&body=' + encodeURIComponent(text + '\n' + url);
+
+    const copyBtn = document.getElementById('shareCopyLink');
+    copyBtn.onclick = function() {
         navigator.clipboard.writeText(url).then(function() {
-            alert('Lien copié ! Partagez-le pour soutenir ' + nom);
+            copyBtn.innerHTML = '<i class="bi bi-check-lg me-2"></i>Lien copié !';
+            setTimeout(function() {
+                copyBtn.innerHTML = '<i class="bi bi-link-45deg me-2"></i>Copier le lien';
+            }, 2000);
         });
-    }
+    };
+
+    const shareModal = new bootstrap.Modal(document.getElementById('shareModal'));
+    shareModal.show();
 }
 
 // ==================== FILTRES CATÉGORIES ====================
@@ -913,7 +976,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.share-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            partagerCandidat(parseInt(this.dataset.id), this.dataset.nom);
+            partagerCandidat(parseInt(this.dataset.id), this.dataset.nom, this.dataset.photo);
         });
     });
 
