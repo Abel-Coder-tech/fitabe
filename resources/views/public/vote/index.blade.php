@@ -58,7 +58,6 @@
         cursor: pointer;
         border-radius: 14px;
         overflow: hidden;
-        max-width: 240px;
         margin-inline: auto;
         display: flex;
         flex-direction: column;
@@ -85,7 +84,7 @@
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
-        height: 200px;
+        height: 260px;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
@@ -101,12 +100,12 @@
     .candidate-card .candidat-cover .photo-principale {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         opacity: 1;
     }
     .candidate-card .card-body {
         flex: 1;
-        padding: 0.4rem 0.5rem;
+        padding: 0.75rem 0.75rem 0.85rem;
     }
     .candidate-card .vote-count {
         font-size: 1rem;
@@ -469,7 +468,7 @@
         @else
             <div class="row g-4 align-items-stretch" id="candidatsGrid">
                 @foreach($candidats as $candidat)
-                    <div class="col-sm-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
+                    <div class="col-sm-6 col-lg-4 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
                         <div class="card candidate-card shadow-sm">
                             <div class="candidat-cover">
                                 @if($candidat->photo)
@@ -479,7 +478,7 @@
                                     <span class="candidat-num">N°{{ $candidat->numero_scene }}</span>
                                 @endif
                             </div>
-                            <div class="card-body d-flex flex-column px-2 py-2">
+                            <div class="card-body d-flex flex-column px-3 py-3">
                                 <h6 class="fw-bold mb-0 text-center" style="color: var(--vote-brown); font-size: 0.95rem;">{{ $candidat->display_name }}</h6>
                                 @if($candidat->biographie)
                                     <p class="small text-muted mb-1 text-center" style="line-height: 1.3; font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
