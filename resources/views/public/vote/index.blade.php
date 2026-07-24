@@ -10,30 +10,14 @@
     $description = $candidatPartage
         ? "Soutenez {$nomPartage} en catégorie {$candidatPartage->categorie} au Festival International des Talents Artistiques du Bénin. 1 ovation = {$site['prix_ovation']} {$site['devise']}"
         : 'Soutenez vos artistes préférés au FITAB. Théâtre, Danse, Musique, Percussion et Art visuel.';
+    $ogImage = $candidatPartage?->photo ? url('storage/' . $candidatPartage->photo) : asset('images/hero.jpg');
 @endphp
 
 @section('description', $description)
-
-@push('meta')
-@if ($candidatPartage)
-    <meta property="og:title" content="Votez pour {{ $nomPartage }} — {{ $site['edition_nom'] }}">
-    <meta property="og:description" content="{{ $description }}">
-    @if ($candidatPartage->photo)
-    <meta property="og:image" content="{{ asset('storage/' . $candidatPartage->photo) }}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    @endif
-    <meta property="og:url" content="{{ url('/vote?candidat=' . $candidatPartage->id) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="FITAB">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Votez pour {{ $nomPartage }} — {{ $site['edition_nom'] }}">
-    <meta name="twitter:description" content="{{ $description }}">
-    @if ($candidatPartage->photo)
-    <meta name="twitter:image" content="{{ asset('storage/' . $candidatPartage->photo) }}">
-    @endif
-@endif
-@endpush
+@section('og_title', $candidatPartage ? "Votez pour {$nomPartage} — {$site['edition_nom']}" : 'Ovation - FITAB')
+@section('og_description', $description)
+@section('og_image', $ogImage)
+@section('og_url', url('/vote' . ($candidatPartage ? '?candidat=' . $candidatPartage->id : '')))
 
 @push('scripts')
 <script src="https://cdn.fedapay.com/checkout.js?v=1.1.3"></script>
@@ -891,9 +875,10 @@ function ouvrirFedapay(voteId, montant) {
 
 // ==================== PARTAGER ====================
 function partagerCandidat(id, nom) {
-    const url = window.location.href.split('#')[0].split('?')[0] + '?candidat=' + id;
+    const url = window.location.origin + '/vote?candidat=' + id;
+    const text = 'Ovationnez ' + nom + ' au FITAB ! Votez pour votre candidat préféré.';
     if (navigator.share) {
-        navigator.share({ title: nom, text: 'Ovationnez ' + nom + ' au FITAB !', url: url });
+        navigator.share({ title: nom, text: text, url: url });
     } else {
         navigator.clipboard.writeText(url).then(function() {
             alert('Lien copié ! Partagez-le pour soutenir ' + nom);
