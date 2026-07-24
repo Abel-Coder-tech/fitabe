@@ -165,6 +165,7 @@
         #voteModal .candidat-bio { font-size: 0.72rem; margin-bottom: 0.5rem; }
         #voteModal .mb-3 { margin-bottom: 0.75rem !important; text-align: center; }
         #voteModal .mb-3 .d-flex { justify-content: center; }
+        #voteModal .step1-info .d-flex.gap-2 { justify-content: center; }
         #voteModal .qte-btn { width: 34px; height: 34px; font-size: 0.95rem; }
         #voteModal .qte-input { width: 50px; font-size: 1.1rem; }
         #voteModal .total-block { padding: 0.5rem 0.6rem; margin-bottom: 0.6rem; }
@@ -293,7 +294,7 @@
                             <div class="d-flex align-items-center justify-content-center gap-2">
                                 <strong id="step2Quantite" style="color: #3E1E05; font-size: 0.85rem;">1 ovation</strong>
                                 <span style="color: #adb5bd;">·</span>
-                                <strong id="step2Total" style="color: #9B4D07; font-size: 0.95rem;">
+                                <strong id="step2Total" style="color: #9B4D07; font-size: 0.95rem; ">
                                     {{ number_format($prixDuVote, 0, ',', ' ') }} FCFA
                                 </strong>
                             </div>
