@@ -124,14 +124,14 @@
         #voteModal .step1-info .total-block { margin-bottom: 1.25rem; }
         #voteModal .step1-photo-mobile { display: none; }
         #voteModal .candidat-name { font-size: 1.25rem; margin-bottom: 0.5rem; }
-        #voteModal #step-2 {
+        #voteModal #step-2.active {
             padding: 2rem 2.5rem !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
         }
         #voteModal #step-2 .payment-option { min-width: 160px !important; }
-        #voteModal #step-3 {
+        #voteModal #step-3.active {
             padding: 2rem !important;
             display: flex !important;
             flex-direction: column !important;
@@ -171,7 +171,7 @@
         #voteModal .btn-payer { padding: 0.65rem; font-size: 0.95rem; }
         #voteModal .note-preselection { font-size: 0.65rem; }
 
-        #voteModal #step-2 {
+        #voteModal #step-2.active {
             padding: 2rem 1.5rem !important;
             display: flex !important;
             flex-direction: column !important;
@@ -179,7 +179,7 @@
         }
         #voteModal #step-2 .text-center.mb-2 { margin-top: auto !important; }
         #voteModal #step-2 .payment-option { min-width: 160px !important; }
-        #voteModal #step-3 { padding: 1rem !important; }
+        #voteModal #step-3.active { padding: 1rem !important; }
         #voteModal .note-preselection { display: none !important; }
     }
 </style>
