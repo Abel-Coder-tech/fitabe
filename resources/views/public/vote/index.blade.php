@@ -788,6 +788,11 @@ function allerStep(n, skipValidation) {
     etat.step = n;
     document.getElementById('step-' + n).classList.add('active');
 
+    const dialog = document.querySelector('#voteModal .modal-dialog');
+    if (dialog) {
+        dialog.classList.toggle('modal-narrow', n === 2 || n === 3);
+    }
+
     if (n === 3) {
         lancerPaiement();
     }
