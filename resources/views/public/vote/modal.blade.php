@@ -287,15 +287,16 @@
                         </div>
 
                         {{-- Résumé commande --}}
-                        <div class="d-flex justify-content-between align-items-center p-2 mb-3 rounded-3"
+                        <div class="text-center p-2 mb-3 rounded-3"
                              style="background: #fdfaf5; border: 1px solid #E3D5AD;">
-                            <div>
-                                <small class="text-muted d-block" id="step2CandidatNom" style="font-size: 0.75rem;"></small>
+                            <small class="text-muted d-block mb-1" id="step2CandidatNom" style="font-size: 0.75rem;"></small>
+                            <div class="d-flex align-items-center justify-content-center gap-2">
                                 <strong id="step2Quantite" style="color: #3E1E05; font-size: 0.85rem;">1 ovation</strong>
+                                <span style="color: #adb5bd;">·</span>
+                                <strong id="step2Total" style="color: #9B4D07; font-size: 0.95rem;">
+                                    {{ number_format($prixDuVote, 0, ',', ' ') }} FCFA
+                                </strong>
                             </div>
-                            <strong id="step2Total" style="color: #9B4D07; font-size: 0.95rem;">
-                                {{ number_format($prixDuVote, 0, ',', ' ') }} FCFA
-                            </strong>
                         </div>
 
                         {{-- Titre moyen de paiement --}}
