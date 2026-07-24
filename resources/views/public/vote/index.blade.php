@@ -69,7 +69,7 @@
         letter-spacing: 0.3px;
     }
     .candidate-card .candidat-cover {
-        height: 220px;
+        height: 240px;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
@@ -80,12 +80,12 @@
     .candidate-card .candidat-cover img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
     }
     .candidate-card .candidat-cover .photo-principale {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
         opacity: 1;
     }
     .candidate-card .card-body {
@@ -98,14 +98,17 @@
         color: var(--vote-brown);
     }
     .candidate-card .categorie-badge {
-        display: inline-block;
-        font-size: 0.68rem;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 0.65rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        padding: 2px 10px;
+        padding: 3px 10px;
         border-radius: 20px;
         color: #fff;
+        z-index: 2;
     }
 
     .result-card {
@@ -469,16 +472,21 @@
                                 @if($candidat->photo)
                                     <img src="{{ $candidat->photo_url }}" class="photo-principale" alt="{{ $candidat->display_name }}" loading="lazy">
                                 @endif
+                                @if($candidat->categorie)
+                                    @php $catColor = \App\Models\Candidats::CATEGORIES[$candidat->categorie] ?? '#9B4D07'; @endphp
+                                    <span class="categorie-badge" style="background: {{ $catColor }};">{{ $candidat->categorie }}</span>
+                                @endif
                                 @if($candidat->numero_scene)
                                     <span class="candidat-num">N°{{ $candidat->numero_scene }}</span>
                                 @endif
                             </div>
                             <div class="card-body d-flex flex-column text-center">
-                                @if($candidat->categorie)
-                                    @php $catColor = \App\Models\Candidats::CATEGORIES[$candidat->categorie] ?? '#9B4D07'; @endphp
-                                    <span class="categorie-badge mb-1" style="background: {{ $catColor }};">{{ $candidat->categorie }}</span>
-                                @endif
                                 <h6 class="fw-bold mb-1" style="color: var(--vote-brown); font-size: 0.9rem; line-height: 1.2;">{{ $candidat->display_name }}</h6>
+                                @if($candidat->biographie)
+                                    <p class="mb-1 text-center" style="font-size: 0.75rem; color: #777; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                        {{ Str::limit($candidat->biographie, 80) }}
+                                    </p>
+                                @endif
                                 @if($afficherCompteur)
                                     <p class="vote-count text-center mb-1" style="font-size: 0.85rem;">
                                         <i class="bi bi-heart-fill" style="color: var(--vote-gold);"></i>
@@ -603,7 +611,8 @@ function ouvrirVote(id, nom, photo, votesCount, categorie, bio, numeroScene) {
         etat.voteId = null;
 
         document.getElementById('voteCandidatId').value = id;
-        document.getElementById('candidatNameDisplay').textContent = nom;
+        const nameEl = document.getElementById('candidatNameDisplay');
+        if (nameEl) nameEl.textContent = nom;
         document.getElementById('candidatNameMini').textContent = nom;
         document.getElementById('candidatCategoryInfo').textContent = categorie || '';
 
