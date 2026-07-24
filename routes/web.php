@@ -74,7 +74,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     });
 
     // Administration sensible — réservé super_admin
-    Route::resource('parametres', ParametreController::class)->middleware('role:super_admin');
+    Route::put('parametres', [ParametreController::class, 'updateAll'])->name('admin.parametres.updateAll');
+    Route::resource('parametres', ParametreController::class)->middleware('role:super_admin')->except(['update']);
     Route::resource('users', UserController::class)->middleware('role:super_admin');
 
 });

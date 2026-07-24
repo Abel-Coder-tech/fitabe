@@ -16,19 +16,6 @@ class ParametreController extends Controller
         'texte_info_vote', 'texte_mediatheque',
     ];
 
-    private array $labels = [
-        'contact_telephone' => 'Contact',
-        'contact_email' => 'Email',
-        'social_facebook' => 'Facebook',
-        'social_instagram' => 'Instagram',
-        'social_youtube' => 'YouTube',
-        'social_tiktok' => 'TikTok',
-        'hero_titre' => 'Titre héros',
-        'hero_sous_titre' => 'Sous-titre héros',
-        'texte_info_vote' => 'Info ovation',
-        'texte_mediatheque' => 'Description médiathèque',
-    ];
-
     public function index()
     {
         $parametres = Parametres::whereIn('cle', $this->allowed)
@@ -38,55 +25,27 @@ class ParametreController extends Controller
         return view('admin.parametres.index', compact('parametres'));
     }
 
-    public function create()
+    public function updateAll(Request $request)
     {
-        return to_route('admin.parametres.index');
-    }
+        $data = $request->input('parametres', []);
 
-    public function store(Request $request)
-    {
-        return to_route('admin.parametres.index');
-    }
-
-    public function show(Parametres $parametre)
-    {
-        return to_route('admin.parametres.edit', $parametre);
-    }
-
-    public function edit(Parametres $parametre)
-    {
-        abort_unless(in_array($parametre->cle, $this->allowed), 404);
-
-        $label = $this->labels[$parametre->cle] ?? $parametre->cle;
-
-        return view('admin.parametres.edit', compact('parametre', 'label'));
-    }
-
-    public function update(Request $request, Parametres $parametre)
-    {
-        abort_unless(in_array($parametre->cle, $this->allowed), 404);
-
-        $validated = $request->validate([
-            'valeur' => 'nullable|string',
-        ]);
-
-        if ($request->hasFile('valeur_file') && $request->file('valeur_file')->isValid()) {
-            $validated['valeur'] = $request->file('valeur_file')->store('logos', 'public');
+        foreach ($data as $cle => $valeur) {
+            if (in_array($cle, $this->allowed)) {
+                Parametres::updateOrCreate(
+                    ['cle' => $cle],
+                    ['valeur' => trim($valeur ?? '')]
+                );
+            }
         }
 
-        $parametre->update($validated);
         Parametre::flush();
 
-        return to_route('admin.parametres.index')->with('success', 'Paramètre mis à jour.');
+        return to_route('admin.parametres.index')->with('success', 'Paramètres enregistrés.');
     }
 
-    public function destroy(Parametres $parametre)
-    {
-        abort_unless(in_array($parametre->cle, $this->allowed), 404);
-
-        $parametre->forceDelete();
-        Parametre::flush();
-
-        return to_route('admin.parametres.index')->with('success', 'Paramètre supprimé.');
-    }
+    public function store(Request $request) { return to_route('admin.parametres.index'); }
+    public function show(Parametres $parametre) { return to_route('admin.parametres.index'); }
+    public function edit(Parametres $parametre) { return to_route('admin.parametres.index'); }
+    public function update(Request $request, Parametres $parametre) { return to_route('admin.parametres.index'); }
+    public function destroy(Parametres $parametre) { return to_route('admin.parametres.index'); }
 }
