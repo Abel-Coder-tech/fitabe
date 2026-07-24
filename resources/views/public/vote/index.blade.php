@@ -251,6 +251,11 @@
         text-transform: uppercase;
         letter-spacing: 1px;
     }
+    @media (max-width: 575.98px) {
+        .hero-vote .countdown-wrap span {
+            font-size: 0.82rem;
+        }
+    }
 </style>
 @endpush
 
@@ -272,7 +277,7 @@
                     $now = time();
                     $ouverture = $dateDebut ? strtotime($dateDebut) : 0;
                     $cloture   = $dateFin ? strtotime($dateFin) : 0;
-                    $dateDebutFormatted = $dateDebut ? \Carbon\Carbon::parse($dateDebut)->locale('fr')->isoFormat('D MMMM YYYY [à] HH:mm') : '';
+                    $dateDebutFormatted = $dateDebut ? \Carbon\Carbon::parse($dateDebut)->locale('fr')->isoFormat('D MMM YYYY [à] HH:mm') : '';
                 @endphp
 
                 @if($voteMode === 'cloture')
