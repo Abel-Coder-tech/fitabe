@@ -476,7 +476,7 @@
         @else
             <div class="row g-4 align-items-stretch" id="candidatsGrid">
                 @foreach($candidats as $candidat)
-                    <div class="col-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
+                    <div class="col-12 col-md-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
                         <div class="card candidate-card shadow-sm">
                             <div class="candidat-cover">
                                 @if($candidat->photo)

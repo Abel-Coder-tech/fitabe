@@ -2,6 +2,12 @@
     @media (min-width: 768px) {
         #voteModal .modal-dialog { max-width: 700px !important; }
         #voteModal .modal-content { min-height: 480px; }
+        #voteModal #step-2,
+        #voteModal #step-3 {
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
         #voteModal .step1-photo {
             flex: 0 0 45%;
             max-width: 45%;
@@ -142,25 +148,30 @@
         #voteModal .step1-photo-mobile { display: none; }
     }
     @media (max-width: 767.98px) {
-        #voteModal .modal-dialog { max-width: 400px !important; }
-        #voteModal .modal-content { display: block !important; }
+        #voteModal .modal-dialog { max-width: 100% !important; margin: 0.5rem !important; }
+        #voteModal .modal-content { display: block !important; border-radius: 16px !important; }
         #voteModal .step1-photo { display: none !important; }
         #voteModal .step1-photo-mobile { display: block !important; }
         #voteModal .step1-photo-mobile img {
             width: 100% !important;
-            height: 180px !important;
+            height: 140px !important;
             object-fit: cover !important;
+            border-radius: 0 !important;
         }
         #voteModal .step1-info {
             flex: unset !important;
             max-width: 100% !important;
-            padding: 1rem !important;
+            padding: 0.75rem 1rem 1rem !important;
+            position: relative !important;
         }
-        #voteModal .step1-info .candidat-name { font-size: 1rem; }
+        #voteModal .step1-info .candidat-name { font-size: 0.95rem; margin-bottom: 0.25rem; }
+        #voteModal .step1-info .candidat-bio { font-size: 0.75rem; margin-bottom: 0.5rem; }
+        #voteModal .step1-info .mb-3 { margin-bottom: 0.75rem !important; }
+        #voteModal .step1-info .btn-payer { padding: 0.6rem; font-size: 0.9rem; }
         #voteModal .step1-info .btn-close-modal {
             position: absolute;
-            top: 0.75rem;
-            right: 0.75rem;
+            top: 0.5rem;
+            right: 0.5rem;
             width: 28px;
             height: 28px;
             border-radius: 50%;
@@ -172,13 +183,13 @@
             font-size: 0.75rem;
             color: #666;
             cursor: pointer;
-            z-index: 2;
+            z-index: 10;
         }
-        #voteModal .step2-summary {
-            flex-direction: row !important;
-            align-items: center !important;
-            gap: 0.75rem !important;
+        #voteModal #step-2 {
+            padding: 1rem !important;
         }
+        #voteModal #step-2 .payment-option { min-width: 140px !important; }
+        #voteModal #step-3 { padding: 1rem !important; }
     }
 </style>
 
@@ -208,7 +219,7 @@
                             {{-- Photo mobile --}}
                             <div class="step1-photo-mobile text-center mb-2">
                                 <img id="candidatPhotoPreviewMobile" src="" alt="Photo du candidat"
-                                     class="rounded-2 shadow" style="width: 80px; height: 80px; object-fit: cover;">
+                                     class="rounded-2 shadow" style="width: 100%; height: 140px; object-fit: cover;">
                             </div>
 
                             {{-- Bouton fermer --}}
