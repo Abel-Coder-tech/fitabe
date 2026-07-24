@@ -287,19 +287,19 @@
                 @elseif($voteMode === 'off' || $now < $ouverture)
                 {{-- ÉTAT 1 : Avant ouverture --}}
                 <p class="hero-sub mb-4 mx-auto" style="max-width: 540px;">
-                    Soutenez les talents du FITAB. Chaque voix compte pour aider votre artiste favori à remporter le concours.
+                    Soutenez les talents du FITAB.<br>Chaque voix compte pour aider votre artiste favori à remporter le concours.
                 </p>
                 <div class="d-flex flex-column align-items-center gap-3">
                     <div class="countdown-wrap d-inline-flex align-items-center gap-2 px-4 py-3">
                         <i class="bi bi-calendar-event" style="color: #CA7B05; font-size: 1.2rem;"></i>
-                        <span style="color: #E3D5AD;">Les ovations ouvrent le <strong>{{ $dateDebutFormatted }}</strong>. Revenez soutenir vos artistes !</span>
+                        <span style="color: #E3D5AD;">Les ovations ouvrent le <strong>{{ $dateDebutFormatted }}</strong>.<br>Revenez soutenir vos artistes !</span>
                     </div>
                 </div>
 
                 @else
                 {{-- ÉTAT 2 : Pendant la période d'ovations --}}
                 <p class="hero-sub mb-4 mx-auto" style="max-width: 540px;">
-                    Soutenez les talents du FITAB. Chaque voix compte pour aider votre artiste favori à remporter le concours.
+                    Soutenez les talents du FITAB.<br>Chaque voix compte pour aider votre artiste favori à remporter le concours.
                 </p>
                 <div class="d-flex flex-wrap align-items-center justify-content-center gap-3 mb-4">
                     <span class="price-badge">
