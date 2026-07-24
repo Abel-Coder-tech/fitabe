@@ -48,7 +48,7 @@ class Candidats extends Model
 
     public function getDisplayNameAttribute(): string
     {
-        return $this->nom_scene ?? $this->nom;
+        return $this->nom_scene ?: $this->nom;
     }
 
     public function getPhotoUrlAttribute(): string
