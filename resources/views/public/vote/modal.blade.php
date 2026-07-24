@@ -125,14 +125,15 @@
         #voteModal .step1-photo-mobile { display: none; }
         #voteModal .candidat-name { font-size: 1.25rem; margin-bottom: 0.5rem; }
         #voteModal #step-2.active {
-            padding: 2rem 2.5rem !important;
+            padding: 1rem 1.5rem 1.5rem !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
+            justify-content: flex-end !important;
         }
         #voteModal #step-2 .payment-option { min-width: 160px !important; }
         #voteModal #step-3.active {
-            padding: 2rem !important;
+            padding: 1.5rem !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
@@ -279,7 +280,7 @@
 
                         {{-- Photo candidat --}}
                         <div class="text-center mb-3">
-                            <div class="rounded-2 overflow-hidden shadow mx-auto d-block" style="width: 90px; height: 90px; border: 2px solid #E3D5AD;">
+                            <div class="rounded-2 overflow-hidden shadow mx-auto d-block" style="width: 110px; height: 110px; border: 2px solid #E3D5AD;">
                                 <img id="step2CandidatPhoto" src="" alt="Photo du candidat"
                                      style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
