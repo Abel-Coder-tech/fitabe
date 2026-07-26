@@ -306,7 +306,7 @@
                              onerror="this.style.display='none'">
                     </div>
                     <p class="small lh-lg" style="color: rgba(227,213,173,0.65);">
-                        Festival International des Talents Artistiques du Bénin. Théâtre, Danse, Musique, Percussion et Art Visuel.
+                        Festival International des Talents Artistiques du Bénin. Théâtre, Danse, Musique, Percussion,Art Visuel, Stylisme & Modélisme.
                     </p>
                     <div class="d-flex gap-3 mt-3 footer-social">
                         @if ($site['social_facebook'])

@@ -58,7 +58,7 @@
                     <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-calendar-week fs-5" style="color: #CA7B05;"></i> <span>5 Jours</span></div></div>
                     <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-people-fill fs-5" style="color: #CA7B05;"></i> <span>30 000 spect.</span></div></div>
                     <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-grid-3x3-gap-fill fs-5" style="color: #CA7B05;"></i> <span>6 catégories</span></div></div>
-                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-trophy-fill fs-5" style="color: #CA7B05;"></i> <span>+ 3 000 000 FCFA</span></div></div>
+                    <div class="col-6 col-lg-auto"><div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2"><i class="bi bi-trophy-fill fs-5" style="color: #CA7B05;"></i> <span>+ 5 000 000 FCFA</span></div></div>
                 </div>
             </div>
 
@@ -590,7 +590,7 @@ margin-right: 0;
                         <i class="bi bi-award-fill text-white fs-4"></i>
                     </div>
                     <h5 class="fw-bold" style="color: #9B4D07;">VALORISER</h5>
-                    <p style="color: #5F2B0C; line-height: 1.8;">Honorer publiquement les artistes confirmés et les Légendes de Porto-Novo qui ont tout donné à la culture.</p>
+                    <p style="color: #5F2B0C; line-height: 1.8;">Honorer publiquement les artistes confirmés et les Légendes du Grand Porto-Novo qui ont tout donné à la culture.</p>
                 </div>
             </div>
             <div class="col-md-4">
@@ -599,7 +599,7 @@ margin-right: 0;
                         <i class="bi bi-globe2 text-white fs-4"></i>
                     </div>
                     <h5 class="fw-bold" style="color: #9B4D07;">RAYONNER</h5>
-                    <p style="color: #5F2B0C; line-height: 1.8;">Projeter Porto-Novo et le Grand Porto-Novo sur la scène internationale à travers 7 mois de communication.</p>
+                    <p style="color: #5F2B0C; line-height: 1.8;">Projeter le Grand Porto-Novo sur la scène internationale.</p>
                 </div>
             </div>
         </div>
