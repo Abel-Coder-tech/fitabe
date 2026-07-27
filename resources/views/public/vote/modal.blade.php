@@ -103,8 +103,8 @@
         #voteModal .modal-dialog.modal-narrow { max-width: 350px !important; }
         #voteModal .modal-content { min-height: 520px; display: flex; }
         #voteModal .step1-photo {
-            flex: 0 0 45%;
-            max-width: 45%;
+            flex: 0 0 250px;
+            max-width: 250px;
             position: relative;
             overflow: hidden;
             border-radius: 1rem 0 0 1rem;
@@ -113,7 +113,6 @@
         #voteModal .step1-photo img { width: 100%; height: 100%; object-fit: cover; }
         #voteModal .step1-info {
             flex: 1;
-            max-width: 55%;
             padding: 2rem 1.5rem;
             display: flex;
             flex-direction: column;
