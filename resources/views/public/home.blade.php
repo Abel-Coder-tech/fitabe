@@ -687,7 +687,7 @@ margin-right: 0;
         <div class="text-center mb-5">
             <span class="text-uppercase fw-semibold small" style="color: #CA7B05; letter-spacing: 2px;">Programme</span>
             <h2 class="display-6 fw-bold mt-2" style="color: #9B4D07;">Le calendrier de l'Édition 4</h2>
-            <p class="text-muted-custom mt-2" style="max-width: 540px; margin: 0 auto;">Du premier souffle au Grand Prix. 7 mois pour changer des destins.</p>
+            <p class="text-muted-custom mt-2" style="max-width: 540px; margin: 0 auto;">Du premier souffle au Grand Prix.</p>
         </div>
 
         <div class="accordion" id="programmeAccordion">
