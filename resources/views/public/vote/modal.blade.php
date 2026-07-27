@@ -146,10 +146,10 @@
         #voteModal .step1-photo { display: none !important; }
         #voteModal .step1-photo-mobile { display: block !important; }
         #voteModal .step1-photo-mobile img {
-            width: calc(100% - 0.5rem) !important;
+            width: 60% !important;
             margin: 0 auto !important;
             display: block !important;
-            height: 160px !important;
+            height: 200px !important;
             object-fit: cover !important;
             border-radius: 10px !important;
         }
@@ -391,8 +391,8 @@
                 </form>
 
                 {{-- Info présélections (mobile only) --}}
-                <div class="px-3 mt-2 step1-photo-mobile">
-                    <div class="p-1 rounded-2 text-center" style="background: #fdfaf5; border-left: 3px solid #9B4D07; font-size: 0.65rem;">
+                <div class="px-3 pb-3 pt-2 step1-photo-mobile">
+                    <div class="p-2 rounded-2 text-center" style="background: #fdfaf5; border-left: 3px solid #9B4D07; font-size: 0.65rem;">
                         <i class="bi bi-megaphone-fill me-1" style="color: #CA7B05;"></i>
                         <span style="color: #5F2B0C;">{{ $site['texte_info_vote'] }}</span>
                     </div>
