@@ -137,13 +137,9 @@ html, body { overflow-x: hidden; width: 100%; }
 }
 .partenaires-track {
     display: flex;
+    flex-wrap: nowrap;
     gap: 1.5rem;
     width: max-content;
-}
-.partenaires-track.centered {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
 }
 .partenaires-track.scrolling {
     animation: scrollPartenaires 35s linear infinite;
@@ -172,27 +168,12 @@ html, body { overflow-x: hidden; width: 100%; }
     max-height: 100%;
     object-fit: contain;
     display: block;
-    transition: transform .3s ease;
-}
-.partenaire-logo .overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    background: rgba(62, 30, 5, 0.65);
-    color: #E3D5AD;
-    font-size: 0.7rem;
-    font-weight: 600;
-    opacity: 0;
-    transition: opacity .3s ease;
-    border-radius: 8px;
-    pointer-events: none;
-    text-decoration: none;
+    filter: grayscale(100%);
+    transition: transform .3s ease, filter .3s ease;
 }
 .partenaire-logo:hover img {
-    transform: scale(1.08);
+    transform: scale(1.1);
+    filter: grayscale(0%);
 }
 .partenaire-logo a {
     display: flex;
@@ -201,9 +182,6 @@ html, body { overflow-x: hidden; width: 100%; }
     width: 100%;
     height: 100%;
     text-decoration: none;
-}
-.partenaire-logo:hover .overlay {
-    opacity: 1;
 }
 
 /* ==================== SOUTIENS CAROUSEL ==================== */
@@ -855,13 +833,9 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="partenaires-track-wrapper mb-4">
             <div class="partenaires-track" id="partnerTrack">
                 @foreach ($partenaires as $p)
-            <div class="partenaire-logo"{{ $p->site_web ? ' onclick="window.open(\''.$p->site_web.'\',\'_blank\')"' : '' }}>
-               <a href="{{ $p->site_web }}" target="_blank" rel="noopener noreferrer">
+            <div class="partenaire-logo">
+                <a href="{{ $p->site_web }}" target="_blank" rel="noopener noreferrer">
                     <img src="{{ $p->logo_url }}" alt="{{ $p->nom }}" loading="lazy">
-                    <span class="overlay">
-                        <i class="bi bi-box-arrow-up-right"></i>
-                            &nbsp;Visiter le site
-                    </span>
                 </a>
             </div>
                 @endforeach
@@ -977,21 +951,14 @@ document.addEventListener('DOMContentLoaded', function() {
     resetAuto();
 });
 
-// Partenaires : centré si tient, scroll droite→gauche si déborde
+// Partenaires : scroll infini droite→gauche
 (function() {
     var track = document.getElementById('partnerTrack');
     if (!track) return;
-    var wrapper = track.parentElement;
-    var items = track.querySelectorAll('.partenaire-card');
-    if (items.length < 2) { track.classList.add('centered'); return; }
-    var totalWidth = 0;
-    items.forEach(function(el) { totalWidth += el.offsetWidth + 24; });
-    if (totalWidth <= wrapper.offsetWidth) {
-        track.classList.add('centered');
-    } else {
-        items.forEach(function(el) { track.appendChild(el.cloneNode(true)); });
-        track.classList.add('scrolling');
-    }
+    var items = track.querySelectorAll('.partenaire-logo');
+    if (items.length < 1) return;
+    items.forEach(function(el) { track.appendChild(el.cloneNode(true)); });
+    track.classList.add('scrolling');
 })();
 </script>
 @endpush
