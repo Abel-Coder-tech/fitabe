@@ -593,7 +593,7 @@ margin-right: 0;
         </div>
 
         {{-- Promoteur 1 : image gauche, texte droite --}}
-        <div class="row align-items-center mb-5">
+        <div class="row align-items-center g-0 mb-5">
             <div class="col-lg-6 text-center text-lg-start">
                 <div class="position-relative d-inline-block" style="max-width: 500px;">
                     <img src="{{ asset('images/promoteurs/promoteur1.png') }}" alt="MISTER OKEKE" loading="lazy" width="500" height="500"
@@ -625,7 +625,7 @@ margin-right: 0;
         </div>
 
         {{-- Promoteur 2 : inversé (image droite, texte gauche) --}}
-        <div class="row align-items-center gy-4 flex-row-reverse">
+        <div class="row align-items-center g-0 flex-row-reverse">
             <div class="col-lg-6 text-center text-lg-start">
                 <div class="position-relative d-inline-block" style="max-width: 500px;">
                     <img src="{{ asset('images/promoteurs/promoteur2.png') }}" alt="EYISSE SOBUR BABATUNDE" loading="lazy" width="500" height="500"
