@@ -285,7 +285,7 @@
                 @endphp
 
                 @if($voteMode === 'active' && $now >= $ouverture && $now < $cloture)
-                <div class="d-flex justify-content-center mb-4">
+                <div class="d-flex justify-content-center mb-4 mt-4">
                     <div class="countdown-wrap d-inline-flex flex-column align-items-center gap-2 px-4 py-3">
                         <div class="d-flex align-items-center gap-2">
                             <i class="bi bi-clock" style="color: #CA7B05;"></i>
@@ -479,7 +479,7 @@
                 Aucun candidat inscrit pour le moment.
             </div>
         @else
-            <div class="row g-3 g-md-4 align-items-stretch justify-content-start" id="candidatsGrid">
+            <div class="row g-3 g-md-4 align-items-stretch justify-content-center justify-content-lg-start" id="candidatsGrid">
                 @foreach($candidats as $candidat)
                     <div class="col-10 col-md-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
                         <div class="card candidate-card shadow-sm">

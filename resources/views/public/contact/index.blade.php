@@ -14,9 +14,9 @@
 </section>
 
 {{-- ==================== CORPS ==================== --}}
-<section class="py-5 bg-white">
+<section class="py-5 bg-white" style="overflow-x: hidden;">
     <div class="container">
-        <div class="row g-5" id="formulaire">
+        <div class="row g-5 justify-content-center" id="formulaire">
             {{-- COLONNE GAUCHE — FORMULAIRE --}}
             <div class="col-lg-7">
                 @if (session('success'))
