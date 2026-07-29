@@ -276,36 +276,16 @@
                 <span class="badge fw-semibold px-3 py-2 mb-3 fs-6" style="background-color: #CA7B05; color: #fff;">
                     <i class="bi bi-music-note-beamed me-1"></i> FITAB {{ date('Y') }}
                 </span>
-
+                <h1 class="display-4 fw-bold mb-3">
+                    Ovationnez votre<br>
+                    <span style="color: #CA7B05;">candidat préféré</span>
+                </h1>
                 @php
                     $now = time();
                     $ouverture = $dateDebut ? strtotime($dateDebut) : 0;
                     $cloture   = $dateFin ? strtotime($dateFin) : 0;
                     $dateDebutFormatted = $dateDebut ? \Carbon\Carbon::parse($dateDebut)->locale('fr')->isoFormat('D MMM YYYY [à] HH:mm') : '';
                 @endphp
-
-                @if($voteMode === 'active' && $now >= $ouverture && $now < $cloture)
-                <div class="d-flex justify-content-center mb-4">
-                    <div class="countdown-wrap d-inline-flex flex-column align-items-center gap-2 px-4 py-3">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-clock" style="color: #CA7B05;"></i>
-                            <span style="color: #E3D5AD;">Les ovations ferment dans :</span>
-                        </div>
-                        <div class="d-flex gap-1" id="countdown">
-                            <div class="countdown-item"><div class="num" id="cd-jours">00</div><div class="label">Jours</div></div>
-                            <div class="countdown-item"><div class="num" id="cd-heures">00</div><div class="label">Hrs</div></div>
-                            <div class="countdown-item"><div class="num" id="cd-minutes">00</div><div class="label">Min</div></div>
-                            <div class="countdown-item"><div class="num" id="cd-secondes">00</div><div class="label">Sec</div></div>
-                        </div>
-                        <span style="color: #CA7B05; font-weight: 600; font-size: 0.85rem;">Ovationnez maintenant</span>
-                    </div>
-                </div>
-                @endif
-
-                <h1 class="display-4 fw-bold mb-3">
-                    Ovationnez votre<br>
-                    <span style="color: #CA7B05;">candidat préféré</span>
-                </h1>
 
                 @if($voteMode === 'cloture')
                 {{-- ÉTAT 3 : Après clôture --}}
@@ -341,6 +321,21 @@
                     <a href="#candidats" class="btn btn-vote fw-semibold px-4 py-2 rounded-pill">
                         Voir les candidats <i class="bi bi-arrow-down ms-2"></i>
                     </a>
+                </div>
+                <div class="d-flex flex-column align-items-center gap-3">
+                    <div class="countdown-wrap d-inline-flex flex-column align-items-center gap-2 px-4 py-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-clock" style="color: #CA7B05;"></i>
+                            <span style="color: #E3D5AD;">Les ovations ferment dans :</span>
+                        </div>
+                        <div class="d-flex gap-1" id="countdown">
+                            <div class="countdown-item"><div class="num" id="cd-jours">00</div><div class="label">Jours</div></div>
+                            <div class="countdown-item"><div class="num" id="cd-heures">00</div><div class="label">Hrs</div></div>
+                            <div class="countdown-item"><div class="num" id="cd-minutes">00</div><div class="label">Min</div></div>
+                            <div class="countdown-item"><div class="num" id="cd-secondes">00</div><div class="label">Sec</div></div>
+                        </div>
+                        <span style="color: #CA7B05; font-weight: 600; font-size: 0.85rem;">Ovationnez maintenant</span>
+                    </div>
                 </div>
                 @endif
             </div>
