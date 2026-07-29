@@ -594,7 +594,7 @@ margin-right: 0;
 
         {{-- Promoteur 1 : image gauche, texte droite --}}
         <div class="row align-items-center g-3 mb-5">
-            <div class="col-lg-6 text-center text-lg-start">
+            <div class="col-lg-6 text-center text-lg-end">
                 <div class="position-relative d-inline-block" style="max-width: 500px;">
                     <img src="{{ asset('images/promoteurs/promoteur1.png') }}" alt="MISTER OKEKE" loading="lazy" width="500" height="500"
                          class="w-100" style="border-radius: 12px; border: 2px solid #c9a96e; display: block;">
@@ -617,7 +617,7 @@ margin-right: 0;
                 <div style="border-left: 4px solid #c9a96e; padding-left: 16px;">
                     <div style="color: #c9a96e; font-size: 2.5rem; line-height: 1; font-family: Georgia, serif;">"</div>
                     <p style="color: #1a1a1a; font-style: italic; line-height: 1.7; margin-bottom: 0.25rem;">
-                        Le téâtre n'est pas un métier, c'est une mission. Transmettre aux jeunes générations ce feu sacré est la seule chose qui compte.
+                        Le théâtre n'est pas un métier, c'est une mission. Transmettre aux jeunes générations ce feu sacré est la seule chose qui compte.
                     </p>
                     <p style="color: #c8922a; font-style: normal; margin-bottom: 0;">— MISTER OKEKE</p>
                 </div>
