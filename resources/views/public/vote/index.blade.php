@@ -474,7 +474,7 @@
                 Aucun candidat inscrit pour le moment.
             </div>
         @else
-            <div class="row g-3 g-md-4 align-items-stretch justify-content-center" id="candidatsGrid">
+            <div class="row g-3 g-md-4 align-items-stretch justify-content-start" id="candidatsGrid">
                 @foreach($candidats as $candidat)
                     <div class="col-10 col-md-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
                         <div class="card candidate-card shadow-sm">

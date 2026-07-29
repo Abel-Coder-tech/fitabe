@@ -15,7 +15,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $votesConfirmes = Votes::confirme()->count();
+        $votesConfirmes = Votes::confirme()->sum('quantite');
         $messagesNonLus = Contact::nonLu()->count();
         $totalRecettes = Votes::confirme()->sum('montant');
 
