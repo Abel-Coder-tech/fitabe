@@ -625,8 +625,8 @@ margin-right: 0;
         </div>
 
         {{-- Promoteur 2 : inversé (image droite, texte gauche) --}}
-        <div class="row align-items-center g-3 flex-row-reverse">
-            <div class="col-lg-6 text-center text-lg-start">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 order-lg-2 text-center text-lg-start">
                 <div class="position-relative d-inline-block" style="max-width: 500px;">
                     <img src="{{ asset('images/promoteurs/promoteur2.png') }}" alt="EYISSE SOBUR BABATUNDE" loading="lazy" width="500" height="500"
                          class="w-100" style="border-radius: 12px; border: 2px solid #c9a96e; display: block;">
@@ -636,7 +636,7 @@ margin-right: 0;
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 order-lg-1">
                 <h3 style="color: #1a1a1a; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem;">EYISSE SOBUR BABATUNDE</h3>
                 <p style="color: #c8922a; font-size: 0.875rem; margin-bottom: 0.75rem;">PDG Stratège Media Events · Cofondateur</p>
                 <hr style="width: 50px; height: 3px; background: #c0392b; border: none; margin: 0 0 1rem 0;">
