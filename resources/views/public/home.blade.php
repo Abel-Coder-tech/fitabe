@@ -626,7 +626,7 @@ margin-right: 0;
 
         {{-- Promoteur 2 : inversé (image droite, texte gauche) --}}
         <div class="row align-items-center g-3 flex-row-reverse">
-            <div class="col-lg-6 text-center text-lg-start ms-lg-3">
+            <div class="col-lg-6 text-center text-lg-start">
                 <div class="position-relative d-inline-block" style="max-width: 500px;">
                     <img src="{{ asset('images/promoteurs/promoteur2.png') }}" alt="EYISSE SOBUR BABATUNDE" loading="lazy" width="500" height="500"
                          class="w-100" style="border-radius: 12px; border: 2px solid #c9a96e; display: block;">
