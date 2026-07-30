@@ -598,9 +598,9 @@ margin-right: 0;
                 <div class="position-relative d-inline-block" style="max-width: 500px;">
                     <img src="{{ asset('images/promoteurs/promoteur1.png') }}" alt="MISTER OKEKE" loading="lazy" width="500" height="500"
                          class="w-100" style="border-radius: 12px; border: 2px solid #c9a96e; display: block;">
-                    <div class="position-absolute" style="bottom: 12px; right: 12px; background: #8b1a1a; border-radius: 8px; padding: 8px 16px; text-align: center;">
-                        <div style="color: #fff; font-size: 0.75rem; line-height: 1.2;">Cofondateur</div>
-                        <div style="color: #fff; font-size: 1rem; font-weight: 700; line-height: 1.3;">Depuis 2023</div>
+<div class="position-absolute" style="bottom: 12px; right: 12px; background: #3E1E05; border-radius: 8px; padding: 8px 16px; text-align: center;">
+                        <div style="color: #E3D5AD; font-size: 0.75rem; line-height: 1.2;">Cofondateur</div>
+                        <div style="color: #E3D5AD; font-size: 1rem; font-weight: 700; line-height: 1.3;">Depuis 2023</div>
                     </div>
                 </div>
             </div>
@@ -625,14 +625,14 @@ margin-right: 0;
         </div>
 
         {{-- Promoteur 2 : inversé (image droite, texte gauche) --}}
-        <div class="row align-items-center g-5 flex-row-reverse">
-            <div class="col-lg-6 text-center text-lg-start">
+        <div class="row align-items-center g-3 flex-row-reverse">
+            <div class="col-lg-6 text-center text-lg-start ms-lg-3">
                 <div class="position-relative d-inline-block" style="max-width: 500px;">
                     <img src="{{ asset('images/promoteurs/promoteur2.png') }}" alt="EYISSE SOBUR BABATUNDE" loading="lazy" width="500" height="500"
                          class="w-100" style="border-radius: 12px; border: 2px solid #c9a96e; display: block;">
-                    <div class="position-absolute" style="bottom: 12px; right: 12px; background: #8b1a1a; border-radius: 8px; padding: 8px 16px; text-align: center;">
-                        <div style="color: #fff; font-size: 0.75rem; line-height: 1.2;">Cofondateur</div>
-                        <div style="color: #fff; font-size: 1rem; font-weight: 700; line-height: 1.3;">Depuis 2023</div>
+                    <div class="position-absolute" style="bottom: 12px; right: 12px; background: #3E1E05; border-radius: 8px; padding: 8px 16px; text-align: center;">
+                        <div style="color: #E3D5AD; font-size: 0.75rem; line-height: 1.2;">Cofondateur</div>
+                        <div style="color: #E3D5AD; font-size: 1rem; font-weight: 700; line-height: 1.3;">Depuis 2023</div>
                     </div>
                 </div>
             </div>
