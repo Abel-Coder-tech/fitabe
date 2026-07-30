@@ -519,18 +519,18 @@ margin-right: 0;
                 <div class="fitab-carousel">
                     @php
                         $slides = [
-                            ['img' => 'cat1', 'label' => 'Théâtre'],
-                            ['img' => 'cat2', 'label' => 'Percussion'],
-                            ['img' => 'cat3', 'label' => 'Musique'],
-                            ['img' => 'cat4', 'label' => 'Danse'],
-                            ['img' => 'cat5', 'label' => 'Art visuel'],
-                            ['img' => 'cat6', 'label' => 'Stylisme & Modélisme'],
+                            ['img' => 'Theatre', 'label' => 'Théâtre'],
+                            ['img' => 'Percussion', 'label' => 'Percussion'],
+                            ['img' => 'Musique', 'label' => 'Musique'],
+                            ['img' => 'Danse', 'label' => 'Danse'],
+                            ['img' => 'Art_visuel', 'label' => 'Art visuel'],
+                            ['img' => 'Stylisme', 'label' => 'Stylisme & Modélisme'],
                         ];
                     @endphp
                     <div class="carousel-viewport" id="presentationCarousel">
                         <div class="carousel-track">
                             @foreach ($slides as $i => $slide)
-                            <div class="carousel-slide{{ $i === 0 ? ' active' : '' }}" style="background-image: url('{{ asset('images/categories/'.$slide['img'].'.jpg') }}');">
+                            <div class="carousel-slide{{ $i === 0 ? ' active' : '' }}" style="background-image: url('{{ asset('images/categories/'.$slide['img'].'.jpeg') }}');">
                                 <div class="carousel-overlay"></div>
                                 <div class="carousel-label">{{ $slide['label'] }}</div>
                             </div>
