@@ -269,7 +269,6 @@
             <tr>
                 <th class="py-3 ps-3">ID</th>
                 <th class="py-3">Candidat</th>
-                <th class="py-3">Email</th>
                 <th class="py-3 text-center">Qté</th>
                 <th class="py-3">Montant</th>
                 <th class="py-3">Paiement</th>
@@ -283,7 +282,6 @@
                 <tr>
                     <td class="ps-3 fw-semibold text-muted">{{ $vote->id }}</td>
                     <td>{{ $vote->candidat?->nom ?? 'N/A' }}</td>
-                    <td>{{ $vote->email ?? '—' }}</td>
                     <td class="text-center fw-semibold">{{ $vote->quantite ?? 1 }}</td>
                     <td class="fw-semibold" style="color:#3E1E05;">{{ $vote->montant ? number_format($vote->montant, 0, ',', ' ') . ' FCFA' : '-' }}</td>
                     <td>
@@ -327,7 +325,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="10" class="text-center py-4 text-muted">Aucune ovation trouvée.</td>
+                    <td colspan="9" class="text-center py-4 text-muted">Aucune ovation trouvée.</td>
                 </tr>
             @endforelse
         </tbody>
