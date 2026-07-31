@@ -14,10 +14,19 @@ class ResultatController extends Controller
         protected ResultatService $resultatService
     ) {}
 
-    // Liste les éditions disponibles
+    // Liste les éditions disponibles avec leur statut de publication
     public function index()
     {
-        $editions = Resultat::select('annee_edition')->distinct()->orderBy('annee_edition', 'desc')->pluck('annee_edition');
+        $editions = Resultat::select('annee_edition')
+            ->distinct()
+            ->orderBy('annee_edition', 'desc')
+            ->get()
+            ->map(function ($r) {
+                $annee = $r->annee_edition;
+                $r->total = Resultat::byEdition($annee)->count();
+                $r->publies = Resultat::byEdition($annee)->where('publie', true)->count();
+                return $r;
+            });
         return view('admin.resultats.index', compact('editions'));
     }
 
