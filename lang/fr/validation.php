@@ -162,6 +162,7 @@ return [
         'nom_scene' => 'nom de scène',
         'date_debut_vote' => 'date de début',
         'date_fin_vote' => 'date de fin',
+        'date_finale' => 'date de la Grande Finale',
         'note_technique' => 'note technique',
         'note_originalite' => 'note d\'originalité',
         'note_scene' => 'note de présence scénique',

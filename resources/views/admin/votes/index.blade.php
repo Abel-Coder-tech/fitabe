@@ -185,6 +185,12 @@
                                        class="form-control form-control-sm"
                                        value="{{ $dateFin ? date('Y-m-d\TH:i', strtotime($dateFin)) : '' }}">
                             </div>
+                            <div class="col">
+                                <label style="font-size:0.6rem;font-weight:600;color:rgba(62,30,5,0.45);">Grande Finale</label>
+                                <input type="datetime-local" name="date_finale" id="date_finale"
+                                       class="form-control form-control-sm"
+                                       value="{{ $dateFinale ? date('Y-m-d\TH:i', strtotime($dateFinale)) : '' }}">
+                            </div>
                             <div class="col" style="max-width:100px;">
                                 <span class="badge w-100 py-2" style="background: #3E1E05; color: #E3D5AD; font-size: 0.75rem;">
                                     <i class="bi bi-ticket-perforated me-1"></i> 100 FCFA

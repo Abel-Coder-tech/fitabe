@@ -35,12 +35,13 @@ class VoteController extends Controller
         $afficherCompteur = Parametres::where('cle', 'afficher_compteur')->value('valeur') === '1';
         $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
         $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+        $dateFinale = Parametres::where('cle', 'date_finale')->value('valeur');
 
         $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
 
         return view('admin.votes.index', compact(
             'votes', 'voteMode', 'prixDuVote', 'afficherCompteur',
-            'dateDebut', 'dateFin'
+            'dateDebut', 'dateFin', 'dateFinale'
         ));
     }
 

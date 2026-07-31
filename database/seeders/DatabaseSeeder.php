@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         Parametres::insert([
             ['cle' => 'date_debut_vote', 'valeur' => '2026-08-01 00:00:00', 'created_at' => now(), 'updated_at' => now()],
             ['cle' => 'date_fin_vote', 'valeur' => '2026-11-22 23:59:00', 'created_at' => now(), 'updated_at' => now()],
+            ['cle' => 'date_finale', 'valeur' => '2026-11-28 19:00:00', 'created_at' => now(), 'updated_at' => now()],
             ['cle' => 'afficher_compteur', 'valeur' => '1', 'created_at' => now(), 'updated_at' => now()],
         ]);
 

@@ -309,9 +309,17 @@
 
                 @if($voteMode === 'cloture')
                 {{-- ÉTAT 3 : Après clôture --}}
+                @if($finalePassee)
                 <p class="hero-sub mb-3 mx-auto" style="max-width: 540px;">
-                    Les ovations sont closes. Rendez-vous le <strong>28 novembre</strong> <br>pour la Grande Finale.
+                    La Grande Finale a eu lieu !<br>Découvrez le palmarès de cette édition.
                 </p>
+                @else
+                <p class="hero-sub mb-3 mx-auto" style="max-width: 540px;">
+                    Les ovations sont closes. Rendez-vous le
+                    <strong>{{ $dateFinale ? \Carbon\Carbon::parse($dateFinale)->locale('fr')->isoFormat('D MMMM') : 'à venir' }}</strong>
+                    <br>pour la Grande Finale.
+                </p>
+                @endif
                 <a href="{{ route('public.resultats') }}" class="btn btn-vote fw-semibold px-4 py-2 rounded-pill">
                     <i class="bi bi-trophy me-2"></i>Découvrez les finalistes et les résultats
                 </a>

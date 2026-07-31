@@ -41,8 +41,11 @@ class VoteController extends Controller
     {
         $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
         $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+        $dateFinale = Parametres::where('cle', 'date_finale')->value('valeur');
 
         $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
+
+        $finalePassee = $dateFinale && Carbon::now()->gte(Carbon::parse($dateFinale));
 
         $prixDuVote = Parametre::getInt('prix_ovation', 100);
 
@@ -78,7 +81,8 @@ class VoteController extends Controller
         return view('public.vote.index', compact(
             'candidats', 'categories', 'voteMode', 'prixDuVote',
             'fedapayKey', 'fedapayMode', 'afficherCompteur',
-            'dateDebut', 'dateFin', 'candidatPartage',
+            'dateDebut', 'dateFin', 'dateFinale', 'finalePassee',
+            'candidatPartage',
             'resultats', 'resultatsPublies'
         ));
     }
@@ -162,12 +166,14 @@ class VoteController extends Controller
         $data = $request->validate([
             'date_debut_vote' => 'nullable|date',
             'date_fin_vote' => 'nullable|date|after_or_equal:date_debut_vote',
+            'date_finale' => 'nullable|date|after_or_equal:date_fin_vote',
             'afficher_compteur' => 'nullable|in:0,1',
             'annee_resultats' => 'nullable|string|max:4',
         ]);
 
         Parametres::updateOrCreate(['cle' => 'date_debut_vote'], ['valeur' => $data['date_debut_vote'] ?? '']);
         Parametres::updateOrCreate(['cle' => 'date_fin_vote'], ['valeur' => $data['date_fin_vote'] ?? '']);
+        Parametres::updateOrCreate(['cle' => 'date_finale'], ['valeur' => $data['date_finale'] ?? '']);
         Parametres::updateOrCreate(['cle' => 'afficher_compteur'], ['valeur' => $data['afficher_compteur'] ?? '0']);
 
         $now = Carbon::now();
