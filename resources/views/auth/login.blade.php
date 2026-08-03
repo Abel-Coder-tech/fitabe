@@ -243,6 +243,12 @@
                         </div>
                     </div>
 
+                    <div class="mb-3 d-flex justify-content-end">
+                        <a href="{{ route('password.request') }}" style="font-size: 11px; color: #9B4D07; text-decoration: none; font-weight: 600;">
+                            Mot de passe oublié ?
+                        </a>
+                    </div>
+
                     <button type="submit" class="btn-connexion">
                         Se connecter <i class="bi bi-arrow-right ms-1"></i>
                     </button>
