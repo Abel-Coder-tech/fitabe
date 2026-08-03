@@ -9,7 +9,6 @@ use App\Models\Contact;
 use App\Models\Parametres;
 use App\Support\Parametre;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -46,18 +45,7 @@ class DashboardController extends Controller
         $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
         $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
 
-        if ($dateDebut && $dateFin) {
-            $now = Carbon::now();
-            $debut = Carbon::parse($dateDebut);
-            $fin = Carbon::parse($dateFin);
-            $voteMode = match (true) {
-                $now < $debut => 'off',
-                $now >= $fin => 'cloture',
-                default => 'active',
-            };
-        } else {
-            $voteMode = 'off';
-        }
+        $voteMode = \App\Support\Parametre::voteMode();
         $prixDuVote = Parametre::getInt('prix_ovation', 100);
 
         $totalVotes = $votesParCategorie->sum('total');

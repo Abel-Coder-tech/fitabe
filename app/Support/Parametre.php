@@ -29,4 +29,30 @@ class Parametre
     {
         Cache::forget('parametres');
     }
+
+    // Détermine le mode de vote : statut manuel prioritaire, sinon calculé depuis les dates
+    public static function voteMode(): string
+    {
+        $statut = \App\Models\Parametres::where('cle', 'statut_vote')->value('valeur');
+
+        if (in_array($statut, ['active', 'cloture', 'off'], true)) {
+            return $statut;
+        }
+
+        $debut = \App\Models\Parametres::where('cle', 'date_debut_vote')->value('valeur');
+        $fin = \App\Models\Parametres::where('cle', 'date_fin_vote')->value('valeur');
+
+        if (!$debut || !$fin) {
+            return 'off';
+        }
+
+        $now = \Carbon\Carbon::now();
+        $d = \Carbon\Carbon::parse($debut);
+        $f = \Carbon\Carbon::parse($fin);
+
+        if ($now < $d) return 'off';
+        if ($now >= $f) return 'cloture';
+
+        return 'active';
+    }
 }

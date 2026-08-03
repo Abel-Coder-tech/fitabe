@@ -21,20 +21,7 @@ class VoteController extends Controller
         protected ResultatService $resultatService
     ) {}
 
-    // Helper : détermine le mode vote à partir des dates uniquement
-    private function computeVoteMode($dateDebut, $dateFin)
-    {
-        if (!$dateDebut || !$dateFin) {
-            return 'off';
-        }
-        $now = Carbon::now();
-        $debut = Carbon::parse($dateDebut);
-        $fin = Carbon::parse($dateFin);
-
-        if ($now < $debut) return 'off';
-        if ($now >= $fin) return 'cloture';
-        return 'active';
-    }
+    // Helper : détermine le mode vote (statut manuel prioritaire, sinon dates) — voir Parametre::voteMode()
 
     // Page publique de vote avec candidats et paramètres
     public function index(Request $request)
@@ -43,7 +30,7 @@ class VoteController extends Controller
         $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
         $dateFinale = Parametres::where('cle', 'date_finale')->value('valeur');
 
-        $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
+        $voteMode = Parametre::voteMode();
 
         $finalePassee = $dateFinale && Carbon::now()->gte(Carbon::parse($dateFinale));
 
@@ -92,7 +79,7 @@ class VoteController extends Controller
     {
         $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
         $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
-        $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
+        $voteMode = Parametre::voteMode();
         if ($voteMode !== 'active') {
             return response()->json(['success' => false, 'message' => 'Le vote est fermé.'], 403);
         }

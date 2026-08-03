@@ -11,20 +11,7 @@ use Carbon\Carbon;
 
 class VoteController extends Controller
 {
-    // Helper : détermine le mode vote à partir des dates uniquement
-    private function computeVoteMode($dateDebut, $dateFin)
-    {
-        if (!$dateDebut || !$dateFin) {
-            return 'off';
-        }
-        $now = Carbon::now();
-        $debut = Carbon::parse($dateDebut);
-        $fin = Carbon::parse($dateFin);
-
-        if ($now < $debut) return 'off';
-        if ($now >= $fin) return 'cloture';
-        return 'active';
-    }
+    // Helper : détermine le mode vote (statut manuel prioritaire, sinon dates) — voir Parametre::voteMode()
 
     // Affiche la liste des votes avec les paramètres
     public function index()
@@ -37,7 +24,7 @@ class VoteController extends Controller
         $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
         $dateFinale = Parametres::where('cle', 'date_finale')->value('valeur');
 
-        $voteMode = $this->computeVoteMode($dateDebut, $dateFin);
+        $voteMode = Parametre::voteMode();
 
         return view('admin.votes.index', compact(
             'votes', 'voteMode', 'prixDuVote', 'afficherCompteur',
