@@ -53,5 +53,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<script>
+(function() {
+    var messages = {
+        valueMissing: function() { return 'Ce champ est obligatoire.'; },
+        typeMismatch: function(el) {
+            if (el.type === 'email') return 'Veuillez entrer une adresse email valide.';
+            if (el.type === 'url') return 'Veuillez entrer une URL valide.';
+            return 'Veuillez saisir une valeur valide.';
+        },
+        tooShort: function(el) { return 'Ce champ doit contenir au moins ' + el.minLength + ' caractères.'; },
+        tooLong: function(el) { return 'Ce champ ne doit pas dépasser ' + el.maxLength + ' caractères.'; },
+        rangeUnderflow: function(el) { return 'La valeur doit être supérieure ou égale à ' + el.min + '.'; },
+        rangeOverflow: function(el) { return 'La valeur ne doit pas dépasser ' + el.max + '.'; },
+        stepMismatch: function() { return 'Veuillez saisir une valeur valide pour ce champ.'; },
+        patternMismatch: function() { return 'Le format saisi est invalide.'; },
+        badInput: function() { return 'Veuillez saisir une valeur valide.'; },
+        customError: function(el) { return el.validationMessage; }
+    };
+    document.addEventListener('invalid', function(e) {
+        var el = e.target;
+        if (!el || !el.willValidate) return;
+        for (var key in messages) {
+            if (el.validity[key]) {
+                el.setCustomValidity(messages[key](el));
+                break;
+            }
+        }
+    }, true);
+    document.addEventListener('input', function(e) {
+        if (e.target.setCustomValidity) e.target.setCustomValidity('');
+    }, true);
+    document.addEventListener('change', function(e) {
+        if (e.target.setCustomValidity) e.target.setCustomValidity('');
+    }, true);
+})();
+</script>
 </body>
 </html>

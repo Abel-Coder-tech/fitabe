@@ -51,6 +51,16 @@ class ResultatController extends Controller
             'note_technique' => 'nullable|numeric|min:0|max:20',
             'note_originalite' => 'nullable|numeric|min:0|max:20',
             'note_presence' => 'nullable|numeric|min:0|max:20',
+        ], [
+            'note_technique.numeric' => 'La note technique doit être un nombre.',
+            'note_technique.min' => 'La note technique doit être comprise entre 0 et 20.',
+            'note_technique.max' => 'La note technique doit être comprise entre 0 et 20.',
+            'note_originalite.numeric' => 'La note d\'originalité doit être un nombre.',
+            'note_originalite.min' => 'La note d\'originalité doit être comprise entre 0 et 20.',
+            'note_originalite.max' => 'La note d\'originalité doit être comprise entre 0 et 20.',
+            'note_presence.numeric' => 'La note de présence doit être un nombre.',
+            'note_presence.min' => 'La note de présence doit être comprise entre 0 et 20.',
+            'note_presence.max' => 'La note de présence doit être comprise entre 0 et 20.',
         ]);
 
         $resultat->note_technique = $validated['note_technique'];

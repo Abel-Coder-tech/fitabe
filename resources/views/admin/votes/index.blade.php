@@ -354,11 +354,23 @@
                 headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
                 body: formData,
             });
-            const data = await res.json();
-            if (data.success) {
+            let data = {};
+            try { data = await res.json(); } catch (e) { data = {}; }
+            if (res.ok && data.success) {
                 toast.style.display = 'block'; toast.style.background = '#198754';
                 toast.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> Paramètres mis à jour';
                 setTimeout(function() { toast.style.display = 'none'; }, 3000);
+            } else {
+                var msg = 'Erreur lors de la mise à jour.';
+                if (data.errors) {
+                    var firstKey = Object.keys(data.errors)[0];
+                    msg = data.errors[firstKey][0];
+                } else if (data.message) {
+                    msg = data.message;
+                }
+                toast.style.display = 'block'; toast.style.background = '#dc3545';
+                toast.innerHTML = '<i class="bi bi-x-circle-fill me-1"></i> ' + msg;
+                setTimeout(function() { toast.style.display = 'none'; }, 5000);
             }
         } catch (err) {
             toast.style.display = 'block'; toast.style.background = '#dc3545';

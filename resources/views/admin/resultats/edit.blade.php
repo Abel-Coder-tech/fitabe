@@ -24,16 +24,19 @@
                     <label class="form-label fw-semibold small">Technique <small class="text-muted">/20</small></label>
                     <input type="number" name="note_technique" class="form-control form-control-sm @error('note_technique') is-invalid @enderror"
                            value="{{ old('note_technique', $resultat->note_technique) }}" step="0.5" min="0" max="20">
+                    @error('note_technique')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-4">
                     <label class="form-label fw-semibold small">Originalité <small class="text-muted">/20</small></label>
                     <input type="number" name="note_originalite" class="form-control form-control-sm @error('note_originalite') is-invalid @enderror"
                            value="{{ old('note_originalite', $resultat->note_originalite) }}" step="0.5" min="0" max="20">
+                    @error('note_originalite')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-4">
                     <label class="form-label fw-semibold small">Présence <small class="text-muted">/20</small></label>
                     <input type="number" name="note_presence" class="form-control form-control-sm @error('note_presence') is-invalid @enderror"
                            value="{{ old('note_presence', $resultat->note_presence) }}" step="0.5" min="0" max="20">
+                    @error('note_presence')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
             </div>
 

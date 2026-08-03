@@ -35,6 +35,16 @@ class NewPasswordController extends Controller
             'token' => ['required'],
             'email' => ['required', 'email'],
             'password' => ['required', 'confirmed', Rules\Password::min(8)->mixedCase()->numbers()->uncompromised()],
+        ], [
+            'token.required' => 'Le jeton de réinitialisation est invalide.',
+            'email.required' => 'Votre adresse email est requise.',
+            'email.email' => 'Veuillez entrer une adresse email valide.',
+            'password.required' => 'Le nouveau mot de passe est requis.',
+            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+            'password.min' => 'Le mot de passe doit contenir au moins :min caractères.',
+            'password.mixed' => 'Le mot de passe doit contenir au moins une majuscule et une minuscule.',
+            'password.numbers' => 'Le mot de passe doit contenir au moins un chiffre.',
+            'password.uncompromised' => 'Ce mot de passe a été trouvé dans une fuite de données. Choisissez-en un autre.',
         ]);
 
         // Here we will attempt to reset the user's password. If it is successful we

@@ -28,7 +28,10 @@ class ProgrammeController extends Controller
             'date_programme.required' => 'La date du programme est requise.',
             'date_programme.date' => 'La date doit être une date valide.',
             'lieu.max' => 'Le lieu ne doit pas dépasser :max caractères.',
-            'ordre.integer' => 'L\'ordre doit être un nombre entier.',
+            'ordre_affichage.integer' => 'L\'ordre d\'affichage doit être un nombre entier.',
+            'icone.max' => 'L\'icône ne doit pas dépasser :max caractères.',
+            'couleur_bordure.max' => 'La couleur de bordure ne doit pas dépasser :max caractères.',
+            'categorie.max' => 'La catégorie ne doit pas dépasser :max caractères.',
         ];
 
         $validated = $request->validate([
@@ -70,7 +73,10 @@ class ProgrammeController extends Controller
             'date_programme.required' => 'La date du programme est requise.',
             'date_programme.date' => 'La date doit être une date valide.',
             'lieu.max' => 'Le lieu ne doit pas dépasser :max caractères.',
-            'ordre.integer' => 'L\'ordre doit être un nombre entier.',
+            'ordre_affichage.integer' => 'L\'ordre d\'affichage doit être un nombre entier.',
+            'icone.max' => 'L\'icône ne doit pas dépasser :max caractères.',
+            'couleur_bordure.max' => 'La couleur de bordure ne doit pas dépasser :max caractères.',
+            'categorie.max' => 'La catégorie ne doit pas dépasser :max caractères.',
         ];
 
         $validated = $request->validate([

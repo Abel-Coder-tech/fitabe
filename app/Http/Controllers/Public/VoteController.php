@@ -89,6 +89,13 @@ class VoteController extends Controller
         $validated = $request->validate([
             'candidat_id' => 'required|exists:candidates,id',
             'quantite' => 'required|integer|min:1|max:1000',
+        ], [
+            'candidat_id.required' => 'Veuillez sélectionner un candidat.',
+            'candidat_id.exists' => 'Ce candidat n\'existe pas.',
+            'quantite.required' => 'Veuillez indiquer un nombre d\'ovations.',
+            'quantite.integer' => 'Le nombre d\'ovations doit être un nombre entier.',
+            'quantite.min' => 'Le nombre d\'ovations doit être d\'au moins 1.',
+            'quantite.max' => 'Le nombre d\'ovations ne doit pas dépasser 1000.',
         ]);
 
         $validated['candidate_id'] = $validated['candidat_id'];
@@ -156,6 +163,14 @@ class VoteController extends Controller
             'date_finale' => 'nullable|date|after_or_equal:date_fin_vote',
             'afficher_compteur' => 'nullable|in:0,1',
             'annee_resultats' => 'nullable|string|max:4',
+        ], [
+            'date_debut_vote.date' => 'La date de début doit être une date valide.',
+            'date_fin_vote.date' => 'La date de fin doit être une date valide.',
+            'date_fin_vote.after_or_equal' => 'La date de fin doit être postérieure ou égale à la date de début.',
+            'date_finale.date' => 'La date de la Grande Finale doit être une date valide.',
+            'date_finale.after_or_equal' => 'La date de la Grande Finale doit être postérieure ou égale à la date de fin.',
+            'afficher_compteur.in' => 'La valeur du compteur est invalide.',
+            'annee_resultats.max' => 'L\'année des résultats doit contenir au maximum 4 caractères.',
         ]);
 
         Parametres::updateOrCreate(['cle' => 'date_debut_vote'], ['valeur' => $data['date_debut_vote'] ?? '']);
