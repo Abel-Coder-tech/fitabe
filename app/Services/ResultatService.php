@@ -14,43 +14,46 @@ class ResultatService
     // Maximum de points publics (ovations)
     public const SCORE_PUBLIC_MAX = 15;
 
-    // Génère les résultats pour une édition (top 3 par catégorie)
+    // Génère les résultats pour une édition (les 3 finalistes par catégorie, triés par ovations à la génération)
     public function generer(string $anneeEdition): void
     {
+        // Conserve l'état de publication avant de repartir d'une page blanche
+        $avaitDesPublies = Resultat::byEdition($anneeEdition)->where('publie', true)->exists();
+        Resultat::byEdition($anneeEdition)->delete();
+
         $categories = Candidats::select('categorie')->distinct()->pluck('categorie');
 
         foreach ($categories as $categorie) {
-            $top = Candidats::byCategory($categorie)
+            $finalistes = Candidats::byCategory($categorie)
                 ->orderedByVotes()
                 ->take(3)
                 ->get();
 
-            foreach ($top as $index => $candidat) {
-                $prix = $index + 1;
-
-                Resultat::updateOrCreate(
-                    [
-                        'annee_edition' => $anneeEdition,
-                        'categorie' => $categorie,
-                        'prix' => $prix,
-                    ],
-                    [
-                        'candidat_nom' => $candidat->display_name,
-                        'candidat_photo' => $candidat->photo,
-                        'nombre_votes' => $candidat->nombre_votes,
-                        'note_jury' => null,
-                        'note_technique' => null,
-                        'note_originalite' => null,
-                        'note_presence' => null,
-                        'note_perfection' => null,
-                        'score_public' => null,
-                        'score_final' => null,
-                    ]
-                );
+            foreach ($finalistes as $index => $candidat) {
+                Resultat::create([
+                    'annee_edition' => $anneeEdition,
+                    'categorie' => $categorie,
+                    'prix' => $index + 1,
+                    'candidat_nom' => $candidat->display_name,
+                    'candidat_photo' => $candidat->photo,
+                    'nombre_votes' => $candidat->nombre_votes,
+                    'note_jury' => null,
+                    'note_technique' => null,
+                    'note_originalite' => null,
+                    'note_presence' => null,
+                    'note_perfection' => null,
+                    'score_public' => null,
+                    'score_final' => null,
+                ]);
             }
         }
 
         $this->calculerScoresPublics($anneeEdition);
+        $this->reclasser($anneeEdition);
+
+        if ($avaitDesPublies) {
+            Resultat::byEdition($anneeEdition)->update(['publie' => true]);
+        }
     }
 
     // Calcule les scores publics (ovations) pour une édition : 15 pts max à partir de 2500 votes, sinon proportionnel
@@ -67,6 +70,28 @@ class ResultatService
             $r->score_public = $scorePublic;
             $r->recalculerScoreFinal();
             $r->save();
+        }
+    }
+
+    // Réattribue les prix (1er, 2ème, 3ème...) par catégorie en fonction du score final le plus élevé.
+    // Les candidats sans score final complet passent après les candidats classés.
+    public function reclasser(string $anneeEdition): void
+    {
+        $resultats = Resultat::byEdition($anneeEdition)->get();
+
+        foreach ($resultats->groupBy('categorie') as $items) {
+            $sorted = $items
+                ->sortByDesc(fn (Resultat $r) => $r->score_final ?? -1)
+                ->thenByDesc(fn (Resultat $r) => (int) $r->nombre_votes)
+                ->values();
+
+            foreach ($sorted as $index => $r) {
+                $nouveauPrix = $index + 1;
+                if ((int) $r->prix !== $nouveauPrix) {
+                    $r->prix = $nouveauPrix;
+                    $r->save();
+                }
+            }
         }
     }
 }

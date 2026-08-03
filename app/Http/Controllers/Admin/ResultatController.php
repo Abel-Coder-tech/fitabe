@@ -74,8 +74,11 @@ class ResultatController extends Controller
         $resultat->recalculerScoreFinal();
         $resultat->save();
 
+        // Réattribue les prix en fonction du score final le plus élevé de la catégorie
+        $this->resultatService->reclasser($resultat->annee_edition);
+
         return to_route('admin.resultats.show', $resultat->annee_edition)
-            ->with('success', 'Notes jury mises à jour.');
+            ->with('success', 'Notes jury mises à jour. Le classement a été recalculé selon le score final le plus élevé.');
     }
 
     // Régénère tous les résultats pour une édition

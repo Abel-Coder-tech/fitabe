@@ -120,11 +120,11 @@
         flex-direction: column;
     }
     .result-cover {
-        flex: 0 0 60%;
-        max-height: 60%;
+        height: 240px;
         background: linear-gradient(135deg, #3E1E05, #9B4D07);
         position: relative;
         overflow: hidden;
+        flex-shrink: 0;
     }
     .result-cover img {
         width: 100%;
@@ -132,9 +132,8 @@
         object-fit: cover;
     }
     .result-body {
-        flex: 0 0 40%;
-        max-height: 40%;
-        padding: 0.4rem 0.5rem;
+        flex: 1;
+        padding: 0.6rem 0.65rem 0.7rem;
     }
 
     .filter-btn {
@@ -429,7 +428,7 @@
                 <h4 class="alert-heading mb-2"><i class="bi bi-trophy-fill"></i> Ovations clôturées</h4>
                 <p class="mb-0">Les ovations sont maintenant terminées.
                     @if($resultatsPublies) Consultez les résultats ci-dessous.
-                    @else Les résultats seront bientôt publiés. Revenez plus tard.
+                    @else Les résultats seront bientôt publiés. Découvrez en attendant les candidats ci-dessous.
                     @endif
                 </p>
             </div>
@@ -442,9 +441,9 @@
                     <i class="bi bi-tag-fill me-1" style="color: #9B4D07;"></i>
                     {{ $categorie }}
                 </h5>
-                <div class="row g-4 mb-5">
+                <div class="row g-3 g-md-4 align-items-stretch justify-content-center justify-content-lg-start mb-5">
                     @foreach($items as $r)
-                    <div class="col-sm-6 col-lg-3">
+                    <div class="col-10 col-md-6 col-lg-3">
                         <div class="card candidate-card result-card h-100 shadow-sm">
                             <div class="result-cover">
                                 @if($r->candidat_photo)
