@@ -9,54 +9,122 @@
     <a href="{{ route('admin.candidats.create') }}" class="btn btn-primary">Nouveau candidat</a>
 </div>
 
-{{-- Liste des candidats --}}
-<div class="table-responsive">
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Nom</th>
-            <th>Nom de scène</th>
-            <th>N° passage</th>
-            <th>Catégorie</th>
-            <th>Ovations</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @forelse ($candidats as $candidat)
-            <tr>
-                <td data-label="#">{{ $candidat->id }}</td>
-                <td data-label="Nom">{{ $candidat->nom }}</td>
-                <td data-label="Nom de scène">{{ $candidat->nom_scene ?? '-' }}</td>
-                <td data-label="N° passage">{{ $candidat->numero_scene ?? '-' }}</td>
-                <td data-label="Catégorie">{{ $candidat->categorie }}</td>
-                <td data-label="Ovations">{{ $candidat->nombre_votes }}</td>
-                <td data-label="Actions">
-                    <div class="d-flex gap-1">
-                        <button type="button" class="btn btn-sm btn-fitab-info" title="Voir"
-                                data-bs-toggle="modal" data-bs-target="#voirCandidatModal"
-                                onclick="voirCandidat({{ json_encode($candidat) }})">
-                            <i class="bi bi-eye-fill"></i>
-                        </button>
-                        <a href="{{ route('admin.candidats.edit', $candidat) }}" class="btn btn-sm btn-warning" title="Modifier">
-                            <i class="bi bi-pencil-fill"></i>
-                        </a>
-                        <form action="{{ route('admin.candidats.destroy', $candidat) }}" method="POST" class="d-inline" onsubmit="return confirm('Confirmer la suppression ?')">
-                            @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-danger" title="Supprimer"><i class="bi bi-trash-fill"></i></button>
-                        </form>
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show py-2">{{ session('success') }}
+        <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="alert alert-danger py-2">
+        <ul class="mb-0 small">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+{{-- Accordéons par catégorie --}}
+@if ($total === 0)
+    <div class="text-center py-5 text-muted">
+        <i class="bi bi-people fs-1 d-block mb-2" style="color: #CA7B05;"></i>
+        <p class="mb-0">Aucun candidat inscrit pour le moment.</p>
+        <small>Cliquez sur « Nouveau candidat » pour ajouter votre premier candidat.</small>
+    </div>
+@else
+    <div class="accordion" id="candidatsAccordion">
+        @foreach ($categories as $i => $cat)
+            <div class="accordion-item border-0 rounded-4 mb-3 overflow-hidden shadow-sm">
+                <h2 class="accordion-header" id="heading{{ $i }}">
+                    <button class="accordion-button {{ $i > 0 ? 'collapsed' : '' }} fw-semibold"
+                            style="background: linear-gradient(135deg, #3E1E05, #9B4D07); color: #E3D5AD;"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $i }}"
+                            aria-expanded="{{ $i === 0 ? 'true' : 'false' }}" aria-controls="collapse{{ $i }}">
+                        <span class="me-2"><i class="bi bi-tag-fill" style="color: #E3D5AD;"></i> {{ $cat->categorie }}</span>
+                        @php
+                            $count = $cat->candidats->count();
+                            $complet = $count >= $cat->places;
+                        @endphp
+                        <span class="badge ms-auto rounded-pill px-3"
+                              style="{{ $complet ? 'background:#8b1a1a; color:#fff;' : 'background:rgba(227,213,173,0.25); color:#E3D5AD;' }}">
+                            {{ $count }}/{{ $cat->places }} places
+                        </span>
+                    </button>
+                </h2>
+                <div id="collapse{{ $i }}" class="accordion-collapse collapse {{ $i === 0 ? 'show' : '' }}"
+                     aria-labelledby="heading{{ $i }}" data-bs-parent="#candidatsAccordion">
+                    <div class="accordion-body p-0">
+                        <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background:#fdfaf5; border-bottom:1px solid #f0e6d6;">
+                            <span class="small text-muted">
+                                <i class="bi bi-people me-1" style="color:#9B4D07;"></i>
+                                {{ $count }} candidat(s) inscrit(s)
+                            </span>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3"
+                                    onclick="ouvrirPlaces('{{ $cat->categorie }}', {{ $cat->places }})">
+                                <i class="bi bi-sliders me-1"></i> Modifier les places
+                            </button>
+                        </div>
+                        @if ($cat->candidats->isNotEmpty())
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover mb-0">
+                                    <thead style="background:#fff;">
+                                        <tr>
+                                            <th>N° passage</th>
+                                            <th>Nom</th>
+                                            <th>Nom de scène</th>
+                                            <th>Ovations</th>
+                                            <th class="text-end pe-3">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($cat->candidats as $candidat)
+                                            <tr>
+                                                <td>
+                                                    @if ($candidat->numero_scene)
+                                                        <span class="badge px-2 py-1" style="background:#9B4D07; color:#fff;">N°{{ $candidat->numero_scene }}</span>
+                                                    @else
+                                                        <span class="text-muted">—</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $candidat->nom }}</td>
+                                                <td>{{ $candidat->nom_scene ?? '-' }}</td>
+                                                <td>{{ $candidat->nombre_votes }}</td>
+                                                <td class="text-end pe-3">
+                                                    <div class="d-flex gap-1 justify-content-end">
+                                                        <button type="button" class="btn btn-sm btn-fitab-info" title="Voir"
+                                                                data-bs-toggle="modal" data-bs-target="#voirCandidatModal"
+                                                                onclick="voirCandidat({{ json_encode($candidat) }})">
+                                                            <i class="bi bi-eye-fill"></i>
+                                                        </button>
+                                                        <a href="{{ route('admin.candidats.edit', $candidat) }}" class="btn btn-sm btn-warning" title="Modifier">
+                                                            <i class="bi bi-pencil-fill"></i>
+                                                        </a>
+                                                        <form action="{{ route('admin.candidats.destroy', $candidat) }}" method="POST" class="d-inline" onsubmit="return confirm('Confirmer la suppression ?')">
+                                                            @csrf @method('DELETE')
+                                                            <button class="btn btn-sm btn-danger" title="Supprimer"><i class="bi bi-trash-fill"></i></button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @else
+                            <div class="text-center py-4 text-muted">
+                                <p class="mb-2">Aucun candidat dans cette catégorie.</p>
+                                <a href="{{ route('admin.candidats.create') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                    <i class="bi bi-plus-lg me-1"></i> Ajouter un candidat
+                                </a>
+                            </div>
+                        @endif
                     </div>
-                </td>
-            </tr>
-        @empty
-            <tr><td colspan="7" class="text-center py-4 text-muted">Aucun candidat.</td></tr>
-        @endforelse
-    </tbody>
-</table>
-</div>
-{{-- Pagination --}}
-{{ $candidats->links() }}
+                </div>
+            </div>
+        @endforeach
+    </div>
+@endif
 
 {{-- Modal Voir Candidat --}}
 <div class="modal fade" id="voirCandidatModal" tabindex="-1" aria-labelledby="voirCandidatLabel" aria-hidden="true">
@@ -95,6 +163,34 @@
     </div>
 </div>
 
+{{-- Modal Modifier les places --}}
+<div class="modal fade" id="placesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 380px;">
+        <div class="modal-content" style="border-radius: 16px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #3E1E05, #9B4D07); border: none;">
+                <h6 class="modal-title fw-bold text-white" id="placesModalLabel">
+                    <i class="bi bi-sliders me-2"></i>Modifier les places
+                </h6>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <form method="POST" action="{{ route('admin.candidats.places') }}" novalidate>
+                @csrf
+                <div class="modal-body p-4">
+                    <input type="hidden" name="categorie" id="placesCategorie">
+                    <label class="form-label fw-semibold small" for="placesInput">Nombre de places (numéros de scène)</label>
+                    <input type="number" name="places" id="placesInput" min="1" max="100" class="form-control">
+                    <small class="text-muted d-block mt-2">Chaque candidat occupe un numéro de scène entre 1 et ce nombre.</small>
+                </div>
+                <div class="modal-footer border-0 pt-0 pb-4 px-4">
+                    <button type="submit" class="btn text-white fw-semibold border-0 rounded-pill px-4" style="background:#9B4D07;">
+                        <i class="bi bi-check-lg me-1"></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 <script>
 function voirCandidat(c) {
@@ -107,6 +203,13 @@ function voirCandidat(c) {
     document.getElementById('voirBio').textContent = c.biographie || '—';
     document.getElementById('voirBadge').textContent = c.categorie || '';
     document.getElementById('voirEditLink').href = '{{ url("admin/candidats") }}/' + c.id + '/edit';
+}
+
+function ouvrirPlaces(categorie, places) {
+    document.getElementById('placesCategorie').value = categorie;
+    document.getElementById('placesInput').value = places;
+    document.getElementById('placesModalLabel').textContent = 'Modifier les places — ' + categorie;
+    new bootstrap.Modal(document.getElementById('placesModal')).show();
 }
 </script>
 @endpush

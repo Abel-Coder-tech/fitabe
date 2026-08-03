@@ -23,6 +23,15 @@ class Candidats extends Model
         'stylisme/modélisme',
     ];
 
+    public const CATEGORY_COLORS = [
+        'théâtre' => '#C0392B',
+        'danse' => '#8E44AD',
+        'musique' => '#1F6FB2',
+        'percussion' => '#E67E22',
+        'arts visuels' => '#16A085',
+        'stylisme/modélisme' => '#B8860B',
+    ];
+
     Protected $fillable = [
         'nom', 'nom_scene', 'categorie', 'numero_scene', 'photo', 'biographie', 'nombre_votes', 'note_jury',
     ];
@@ -79,5 +88,16 @@ class Candidats extends Model
     public function scopeOrderedByVotes(Builder $query)
     {
         return $query->orderByDesc('nombre_votes');
+    }
+
+    public function scopeOrderedByScene(Builder $query)
+    {
+        return $query->orderBy('numero_scene');
+    }
+
+    // Nombre de places configuré pour la catégorie du candidat
+    public function getPlacesAttribute(): int
+    {
+        return PlacesCategorie::pour($this->categorie);
     }
 }

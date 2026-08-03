@@ -32,7 +32,8 @@
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Numéro de scène</label>
-            <input type="number" name="numero_scene" class="form-control @error('numero_scene') is-invalid @enderror" value="{{ old('numero_scene') }}">
+            <input type="number" name="numero_scene" id="numero_scene" class="form-control @error('numero_scene') is-invalid @enderror" value="{{ old('numero_scene') }}">
+            <small class="text-muted d-block mt-1" id="sceneHint"></small>
             @error('numero_scene') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
     </div>
@@ -50,3 +51,29 @@
     <a href="{{ route('admin.candidats.index') }}" class="btn btn-secondary">Annuler</a>
 </form>
 @endsection
+
+@push('scripts')
+<script>
+(function() {
+    const places = @json($placesParCategorie ?? []);
+    const catSelect = document.querySelector('select[name="categorie"]');
+    const sceneInput = document.getElementById('numero_scene');
+    const hint = document.getElementById('sceneHint');
+
+    function majHint() {
+        const cat = catSelect ? catSelect.value : '';
+        if (!cat) {
+            hint.textContent = '';
+            sceneInput.max = '';
+            return;
+        }
+        const max = places[cat] ?? 100;
+        hint.textContent = 'Numéros de scène disponibles : 1 à ' + max + ' pour « ' + cat + ' ».';
+        sceneInput.max = max;
+    }
+
+    if (catSelect) catSelect.addEventListener('change', majHint);
+    majHint();
+})();
+</script>
+@endpush

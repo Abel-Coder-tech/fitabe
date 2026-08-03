@@ -496,7 +496,7 @@
                                     <img src="{{ $candidat->photo_url }}" class="photo-principale" alt="{{ $candidat->display_name }}" loading="lazy">
                                 @endif
                                 @if($candidat->categorie)
-                                    @php $catColor = \App\Models\Candidats::CATEGORIES[$candidat->categorie] ?? '#9B4D07'; @endphp
+                                    @php $catColor = \App\Models\Candidats::CATEGORY_COLORS[$candidat->categorie] ?? '#9B4D07'; @endphp
                                     <span class="categorie-badge" style="background: {{ $catColor }};">{{ $candidat->categorie }}</span>
                                 @endif
                                 @if($candidat->numero_scene)
@@ -506,8 +506,8 @@
                             <div class="card-body d-flex flex-column text-center">
                                 <h6 class="fw-bold mb-1" style="color: var(--vote-brown); font-size: 0.9rem; line-height: 1.2;">{{ $candidat->display_name }}</h6>
                                 @if($candidat->biographie)
-                                    <p class="mb-1 text-center" style="font-size: 0.75rem; color: #777; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-                                        {{ Str::limit($candidat->biographie, 80) }}
+                                    <p class="mb-1 text-center" style="font-size: 0.75rem; color: #777; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
+                                        {{ $candidat->biographie }}
                                     </p>
                                 @endif
                                 @if($afficherCompteur)
@@ -526,7 +526,7 @@
                                                     data-photo="{{ $candidat->photo_url }}"
                                                     data-votes="{{ $candidat->votes_sum_quantite ?? 0 }}"
                                                     data-categorie="{{ $candidat->categorie ?? '' }}"
-                                                    data-bio="{{ Str::limit($candidat->biographie ?? '', 120) }}"
+                                                    data-bio="{{ $candidat->biographie ?? '' }}"
                                                     data-numero="{{ $candidat->numero_scene }}">
                                                 Ovationner <i class="bi bi-check-circle ms-1"></i>
                                             </button>

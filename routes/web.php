@@ -48,6 +48,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // Contenu éditorial — accessible à tous les rôles
     Route::resource('candidats', CandidatController::class);
     Route::post('candidats/note-jury', [CandidatController::class, 'updateNoteJury'])->name('candidats.note-jury');
+    Route::post('candidats/places', [CandidatController::class, 'updatePlaces'])->name('candidats.places');
     Route::resource('programmes', ProgrammeController::class);
     Route::resource('partenaires', PartenaireController::class);
     Route::resource('soutiens', SoutienController::class);
