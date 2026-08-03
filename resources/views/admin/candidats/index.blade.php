@@ -2,6 +2,16 @@
 
 @section('title', 'Candidats')
 
+@push('styles')
+<style>
+    .candidat-btn::after { display: none; }
+    .candidat-btn { transition: background-color .2s ease; }
+    .candidat-btn:not(.collapsed) { background-color: #fff !important; }
+    .candidat-chevron { color: #9B4D07; transition: transform .3s ease; font-size: .9rem; }
+    .candidat-btn.collapsed .candidat-chevron { transform: rotate(-90deg); }
+</style>
+@endpush
+
 @section('content')
 {{-- En-tête --}}
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -35,20 +45,26 @@
 @else
     <div class="accordion" id="candidatsAccordion">
         @foreach ($categories as $i => $cat)
-            <div class="accordion-item border-0 rounded-4 mb-3 overflow-hidden shadow-sm">
+            @php
+                $catColor = \App\Models\Candidats::CATEGORY_COLORS[$cat->categorie] ?? '#9B4D07';
+                $count = $cat->candidats->count();
+                $complet = $count >= $cat->places;
+            @endphp
+            <div class="accordion-item border-0 mb-3 rounded-3 overflow-hidden shadow-sm"
+                 style="border-left: 4px solid {{ $catColor }} !important; border-radius: 8px !important;">
                 <h2 class="accordion-header" id="heading{{ $i }}">
-                    <button class="accordion-button {{ $i > 0 ? 'collapsed' : '' }} fw-semibold"
-                            style="background: linear-gradient(135deg, #3E1E05, #9B4D07); color: #E3D5AD;"
+                    <button class="accordion-button {{ $i > 0 ? 'collapsed' : '' }} fw-bold py-3 candidat-btn"
+                            style="background: #fff; color: #3E1E05; box-shadow: none; padding-left: 48px; position: relative;"
                             type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $i }}"
                             aria-expanded="{{ $i === 0 ? 'true' : 'false' }}" aria-controls="collapse{{ $i }}">
-                        <span class="me-2"><i class="bi bi-tag-fill" style="color: #E3D5AD;"></i> {{ $cat->categorie }}</span>
-                        @php
-                            $count = $cat->candidats->count();
-                            $complet = $count >= $cat->places;
-                        @endphp
-                        <span class="badge ms-auto rounded-pill px-3"
-                              style="{{ $complet ? 'background:#8b1a1a; color:#fff;' : 'background:rgba(227,213,173,0.25); color:#E3D5AD;' }}">
-                            {{ $count }}/{{ $cat->places }} places
+                        <i class="bi bi-tag-fill" style="color: {{ $catColor }}; position: absolute; left: 16px; top: 50%; transform: translateY(-50%);"></i>
+                        <span>{{ $cat->categorie }}</span>
+                        <span class="ms-auto d-flex align-items-center gap-3">
+                            <span class="badge rounded-pill px-3"
+                                  style="{{ $complet ? 'background:#8b1a1a; color:#fff;' : 'background:' . $catColor . '1F; color:' . $catColor . ';' }}">
+                                {{ $count }}/{{ $cat->places }} places
+                            </span>
+                            <i class="bi bi-chevron-down candidat-chevron"></i>
                         </span>
                     </button>
                 </h2>
