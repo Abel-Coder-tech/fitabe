@@ -18,7 +18,7 @@
         {{-- Formulaire de notation --}}
         <form method="POST" action="{{ route('admin.resultats.update', $resultat) }}">
             @csrf @method('PUT')
-            <p class="small text-muted mb-3">Pondérations selon le règlement : technique 30 %, originalité 25 %, présence 30 %, ovation 15 %.</p>
+            <p class="small text-muted mb-3">Notation sur 100 points : ovation 15 pts · technique 20 pts · originalité 20 pts · présence 20 pts · perfection 25 pts.</p>
             <div class="row g-2 mb-3">
                 <div class="col-4">
                     <label class="form-label fw-semibold small">Technique <small class="text-muted">/20</small></label>
@@ -38,20 +38,27 @@
                            value="{{ old('note_presence', $resultat->note_presence) }}" step="0.5" min="0" max="20">
                     @error('note_presence')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
+                <div class="col-4">
+                    <label class="form-label fw-semibold small">Perfection <small class="text-muted">/25</small></label>
+                    <input type="number" name="note_perfection" class="form-control form-control-sm @error('note_perfection') is-invalid @enderror"
+                           value="{{ old('note_perfection', $resultat->note_perfection) }}" step="0.5" min="0" max="25">
+                    @error('note_perfection')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
             </div>
 
             {{-- Aperçu du score final --}}
-            @if ($resultat->note_technique !== null && $resultat->note_originalite !== null && $resultat->note_presence !== null && $resultat->score_public !== null)
+            @if ($resultat->score_public !== null && $resultat->note_technique !== null && $resultat->note_originalite !== null && $resultat->note_presence !== null && $resultat->note_perfection !== null)
                 <div class="p-3 rounded-3 mb-3" style="background: #fdfaf5; border: 1px solid #E3D5AD;">
                     <small class="text-muted d-block">Aperçu du score final</small>
                     <div class="d-flex justify-content-between mt-1 small">
-                        <span>Technique (30%) : <strong>{{ $resultat->note_technique }}</strong></span>
-                        <span>Originalité (25%) : <strong>{{ $resultat->note_originalite }}</strong></span>
-                        <span>Présence (30%) : <strong>{{ $resultat->note_presence }}</strong></span>
-                        <span>Ovation (15%) : <strong>{{ $resultat->score_public }}</strong></span>
+                        <span>Ovation (/15) : <strong>{{ $resultat->score_public }}</strong></span>
+                        <span>Technique (/20) : <strong>{{ $resultat->note_technique }}</strong></span>
+                        <span>Originalité (/20) : <strong>{{ $resultat->note_originalite }}</strong></span>
+                        <span>Présence (/20) : <strong>{{ $resultat->note_presence }}</strong></span>
+                        <span>Perfection (/25) : <strong>{{ $resultat->note_perfection }}</strong></span>
                     </div>
                     <div class="mt-2 text-end">
-                        <span class="fw-bold" style="color: #9B4D07;">Final : {{ $resultat->score_final }}</span>
+                        <span class="fw-bold" style="color: #9B4D07;">Jury : {{ $resultat->note_jury }}/80 · Final : {{ $resultat->score_final }}/100</span>
                     </div>
                 </div>
             @endif

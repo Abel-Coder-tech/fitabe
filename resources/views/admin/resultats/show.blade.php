@@ -62,11 +62,12 @@
                             <th>#</th>
                             <th>Candidat</th>
                             <th>Ovations</th>
-                            <th>Technique</th>
-                            <th>Originalité</th>
-                            <th>Présence</th>
-                            <th>Score Public</th>
-                            <th>Score Final</th>
+                            <th>Technique <small class="text-muted">/20</small></th>
+                            <th>Originalité <small class="text-muted">/20</small></th>
+                            <th>Présence <small class="text-muted">/20</small></th>
+                            <th>Perfection <small class="text-muted">/25</small></th>
+                            <th>Score Public <small class="text-muted">/15</small></th>
+                            <th>Score Final <small class="text-muted">/100</small></th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -86,6 +87,7 @@
                                 <td>{{ $r->note_technique ?? '-' }}</td>
                                 <td>{{ $r->note_originalite ?? '-' }}</td>
                                 <td>{{ $r->note_presence ?? '-' }}</td>
+                                <td>{{ $r->note_perfection ?? '-' }}</td>
                                 <td>{{ $r->score_public ?? '-' }}</td>
                                 <td><strong>{{ $r->score_final ?? '-' }}</strong></td>
                                 <td>

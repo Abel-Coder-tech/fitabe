@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class ResultatService
 {
+    // Seuil de votes pour obtenir le maximum de points publics (15)
+    public const SEUIL_VOTES = 2500;
+
+    // Maximum de points publics (ovations)
+    public const SCORE_PUBLIC_MAX = 15;
+
     // Génère les résultats pour une édition (top 3 par catégorie)
     public function generer(string $anneeEdition): void
     {
@@ -36,6 +42,7 @@ class ResultatService
                         'note_technique' => null,
                         'note_originalite' => null,
                         'note_presence' => null,
+                        'note_perfection' => null,
                         'score_public' => null,
                         'score_final' => null,
                     ]
@@ -46,28 +53,20 @@ class ResultatService
         $this->calculerScoresPublics($anneeEdition);
     }
 
-    // Calcule les scores publics (normalisés sur 20) pour une édition
+    // Calcule les scores publics (ovations) pour une édition : 15 pts max à partir de 2500 votes, sinon proportionnel
     public function calculerScoresPublics(string $anneeEdition): void
     {
-        $categories = Resultat::byEdition($anneeEdition)->select('categorie')->distinct()->pluck('categorie');
+        $resultats = Resultat::byEdition($anneeEdition)->get();
 
-        foreach ($categories as $categorie) {
-            $maxVotes = Resultat::byEdition($anneeEdition)
-                ->byCategorie($categorie)
-                ->max('nombre_votes');
+        foreach ($resultats as $r) {
+            $votes = (int) $r->nombre_votes;
+            $scorePublic = $votes >= self::SEUIL_VOTES
+                ? self::SCORE_PUBLIC_MAX
+                : round(($votes / self::SEUIL_VOTES) * self::SCORE_PUBLIC_MAX, 2);
 
-            if ($maxVotes <= 0) continue;
-
-            $resultats = Resultat::byEdition($anneeEdition)
-                ->byCategorie($categorie)
-                ->get();
-
-            foreach ($resultats as $r) {
-                $scorePublic = round(($r->nombre_votes / $maxVotes) * 20, 2);
-                $r->score_public = $scorePublic;
-                $r->recalculerScoreFinal();
-                $r->save();
-            }
+            $r->score_public = $scorePublic;
+            $r->recalculerScoreFinal();
+            $r->save();
         }
     }
 }

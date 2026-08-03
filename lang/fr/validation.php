@@ -168,6 +168,7 @@ return [
         'note_technique' => 'note technique',
         'note_originalite' => 'note d\'originalité',
         'note_presence' => 'note de présence scénique',
+        'note_perfection' => 'note de perfection',
         'note_scene' => 'note de présence scénique',
         'note_jury' => 'note du jury',
         'role' => 'rôle',

@@ -465,13 +465,13 @@
                                     @if($r->note_jury !== null)
                                     <div class="d-flex justify-content-between px-1">
                                         <span style="color: #9B4D07;">Note jury</span>
-                                        <span class="fw-bold" style="color: #3E1E05;">{{ $r->note_jury }}/20</span>
+                                        <span class="fw-bold" style="color: #3E1E05;">{{ $r->note_jury }}/80</span>
                                     </div>
                                     @endif
                                 </div>
                                 <div class="mt-auto">
                                     <span class="badge fw-semibold px-2 py-1" style="background: #9B4D07; color: #fff; font-size: 0.85rem;">
-                                        {{ $r->score_final ?? $r->score_public ?? '-' }}/20
+                                        {{ $r->score_final ?? $r->score_public ?? '-' }}/100
                                     </span>
                                     <small class="d-block text-muted" style="font-size: 0.65rem;">Score final</small>
                                 </div>

@@ -11,7 +11,7 @@ class Resultat extends Model
     protected $fillable = [
         'annee_edition', 'categorie', 'prix',
         'candidat_nom', 'candidat_photo', 'nombre_votes',
-        'note_jury', 'note_technique', 'note_originalite', 'note_presence',
+        'note_jury', 'note_technique', 'note_originalite', 'note_presence', 'note_perfection',
         'score_public', 'score_final', 'publie',
     ];
 
@@ -57,20 +57,21 @@ class Resultat extends Model
         return $query->whereIn('prix', [1, 2, 3])->orderBy('prix');
     }
 
-    // Calcule le score final selon le règlement : technique 30%, originalité 25%, présence 30%, ovation 15%
+    // Calcule le score final selon le règlement : ovations /15 + technique /20 + originalité /20 + présence /20 + perfection /25 = 100
     public function recalculerScoreFinal(): void
     {
-        if ($this->note_technique !== null && $this->note_originalite !== null && $this->note_presence !== null && $this->score_public !== null) {
-            $this->score_final = round(
-                ($this->note_technique * 0.30) + ($this->note_originalite * 0.25) + ($this->note_presence * 0.30) + ($this->score_public * 0.15),
-                2
-            );
+        if (
+            $this->score_public !== null
+            && $this->note_technique !== null
+            && $this->note_originalite !== null
+            && $this->note_presence !== null
+            && $this->note_perfection !== null
+        ) {
             $this->note_jury = round(
-                ($this->note_technique * 0.30 + $this->note_originalite * 0.25 + $this->note_presence * 0.30) / 0.85,
+                $this->note_technique + $this->note_originalite + $this->note_presence + $this->note_perfection,
                 2
             );
-        } elseif ($this->note_jury !== null && $this->score_public !== null) {
-            $this->score_final = round(($this->note_jury * 0.6) + ($this->score_public * 0.4), 2);
+            $this->score_final = round($this->score_public + $this->note_jury, 2);
         }
     }
 }

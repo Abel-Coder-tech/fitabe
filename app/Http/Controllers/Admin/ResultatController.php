@@ -51,6 +51,7 @@ class ResultatController extends Controller
             'note_technique' => 'nullable|numeric|min:0|max:20',
             'note_originalite' => 'nullable|numeric|min:0|max:20',
             'note_presence' => 'nullable|numeric|min:0|max:20',
+            'note_perfection' => 'nullable|numeric|min:0|max:25',
         ], [
             'note_technique.numeric' => 'La note technique doit être un nombre.',
             'note_technique.min' => 'La note technique doit être comprise entre 0 et 20.',
@@ -61,11 +62,15 @@ class ResultatController extends Controller
             'note_presence.numeric' => 'La note de présence doit être un nombre.',
             'note_presence.min' => 'La note de présence doit être comprise entre 0 et 20.',
             'note_presence.max' => 'La note de présence doit être comprise entre 0 et 20.',
+            'note_perfection.numeric' => 'La note de perfection doit être un nombre.',
+            'note_perfection.min' => 'La note de perfection doit être comprise entre 0 et 25.',
+            'note_perfection.max' => 'La note de perfection doit être comprise entre 0 et 25.',
         ]);
 
         $resultat->note_technique = $validated['note_technique'];
         $resultat->note_originalite = $validated['note_originalite'];
         $resultat->note_presence = $validated['note_presence'];
+        $resultat->note_perfection = $validated['note_perfection'];
         $resultat->recalculerScoreFinal();
         $resultat->save();
 
