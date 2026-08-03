@@ -74,15 +74,17 @@ class ResultatService
     }
 
     // Réattribue les prix (1er, 2ème, 3ème...) par catégorie en fonction du score final le plus élevé.
-    // Les candidats sans score final complet passent après les candidats classés.
+    // Les candidats sans score final complet (null) passent après les candidats classés.
     public function reclasser(string $anneeEdition): void
     {
         $resultats = Resultat::byEdition($anneeEdition)->get();
 
         foreach ($resultats->groupBy('categorie') as $items) {
             $sorted = $items
-                ->sortByDesc(fn (Resultat $r) => $r->score_final ?? -1)
-                ->thenByDesc(fn (Resultat $r) => (int) $r->nombre_votes)
+                ->sortBy([
+                    ['score_final', 'desc'],
+                    ['nombre_votes', 'desc'],
+                ])
                 ->values();
 
             foreach ($sorted as $index => $r) {
