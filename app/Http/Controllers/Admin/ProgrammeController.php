@@ -28,10 +28,15 @@ class ProgrammeController extends Controller
             'date_programme.required' => 'La date du programme est requise.',
             'date_programme.date' => 'La date doit être une date valide.',
             'lieu.max' => 'Le lieu ne doit pas dépasser :max caractères.',
-            'ordre_affichage.integer' => 'L\'ordre d\'affichage doit être un nombre entier.',
+            'ordre.integer' => 'L\'ordre d\'affichage doit être un nombre entier.',
+            'ordre.min' => 'L\'ordre d\'affichage doit être un nombre positif ou nul.',
             'icone.max' => 'L\'icône ne doit pas dépasser :max caractères.',
             'couleur_bordure.max' => 'La couleur de bordure ne doit pas dépasser :max caractères.',
             'categorie.max' => 'La catégorie ne doit pas dépasser :max caractères.',
+            'dates_date.*.date' => 'Chaque sous-date doit être une date valide.',
+            'dates_titre.*.max' => 'Le titre d\'une sous-date ne doit pas dépasser :max caractères.',
+            'dates_lieu.*.max' => 'Le lieu d\'une sous-date ne doit pas dépasser :max caractères.',
+            'dates_ordre.*.integer' => 'L\'ordre d\'une sous-date doit être un nombre entier.',
         ];
 
         $validated = $request->validate([
@@ -42,9 +47,17 @@ class ProgrammeController extends Controller
             'date_programme' => 'required|date',
             'lieu' => 'nullable|string|max:255',
             'categorie' => 'nullable|string|max:100',
-            'ordre_affichage' => 'nullable|integer|min:0',
+            'ordre' => 'nullable|integer|min:0',
             'est_actif' => 'nullable|boolean',
+            'dates_date' => 'nullable|array',
+            'dates_date.*' => 'nullable|date',
+            'dates_titre.*' => 'nullable|string|max:200',
+            'dates_lieu.*' => 'nullable|string|max:255',
+            'dates_ordre.*' => 'nullable|integer|min:0',
         ], $messages);
+
+        $validated['ordre_affichage'] = $validated['ordre'] ?? 0;
+        unset($validated['ordre']);
 
         $programme = Programmes::create($validated);
 
@@ -73,10 +86,15 @@ class ProgrammeController extends Controller
             'date_programme.required' => 'La date du programme est requise.',
             'date_programme.date' => 'La date doit être une date valide.',
             'lieu.max' => 'Le lieu ne doit pas dépasser :max caractères.',
-            'ordre_affichage.integer' => 'L\'ordre d\'affichage doit être un nombre entier.',
+            'ordre.integer' => 'L\'ordre d\'affichage doit être un nombre entier.',
+            'ordre.min' => 'L\'ordre d\'affichage doit être un nombre positif ou nul.',
             'icone.max' => 'L\'icône ne doit pas dépasser :max caractères.',
             'couleur_bordure.max' => 'La couleur de bordure ne doit pas dépasser :max caractères.',
             'categorie.max' => 'La catégorie ne doit pas dépasser :max caractères.',
+            'dates_date.*.date' => 'Chaque sous-date doit être une date valide.',
+            'dates_titre.*.max' => 'Le titre d\'une sous-date ne doit pas dépasser :max caractères.',
+            'dates_lieu.*.max' => 'Le lieu d\'une sous-date ne doit pas dépasser :max caractères.',
+            'dates_ordre.*.integer' => 'L\'ordre d\'une sous-date doit être un nombre entier.',
         ];
 
         $validated = $request->validate([
@@ -87,9 +105,17 @@ class ProgrammeController extends Controller
             'date_programme' => 'required|date',
             'lieu' => 'nullable|string|max:255',
             'categorie' => 'nullable|string|max:100',
-            'ordre_affichage' => 'nullable|integer|min:0',
+            'ordre' => 'nullable|integer|min:0',
             'est_actif' => 'nullable|boolean',
+            'dates_date' => 'nullable|array',
+            'dates_date.*' => 'nullable|date',
+            'dates_titre.*' => 'nullable|string|max:200',
+            'dates_lieu.*' => 'nullable|string|max:255',
+            'dates_ordre.*' => 'nullable|integer|min:0',
         ], $messages);
+
+        $validated['ordre_affichage'] = $validated['ordre'] ?? 0;
+        unset($validated['ordre']);
 
         $programme->update($validated);
         $this->syncDates($programme, $request);

@@ -27,7 +27,33 @@ class ParametreController extends Controller
 
     public function updateAll(Request $request)
     {
-        $data = $request->input('parametres', []);
+        $validated = $request->validate([
+            'parametres' => 'nullable|array',
+            'parametres.contact_telephone' => 'nullable|string|max:30',
+            'parametres.contact_email' => 'nullable|email|max:150',
+            'parametres.hero_titre' => 'nullable|string|max:255',
+            'parametres.hero_sous_titre' => 'nullable|string|max:255',
+            'parametres.texte_info_vote' => 'nullable|string|max:2000',
+            'parametres.texte_mediatheque' => 'nullable|string|max:2000',
+            'parametres.social_facebook' => 'nullable|url|max:255',
+            'parametres.social_instagram' => 'nullable|url|max:255',
+            'parametres.social_youtube' => 'nullable|url|max:255',
+            'parametres.social_tiktok' => 'nullable|url|max:255',
+        ], [
+            'parametres.contact_email.email' => 'L\'email de contact doit être une adresse valide.',
+            'parametres.contact_email.max' => 'L\'email de contact ne doit pas dépasser :max caractères.',
+            'parametres.contact_telephone.max' => 'Le téléphone de contact ne doit pas dépasser :max caractères.',
+            'parametres.hero_titre.max' => 'Le titre héros ne doit pas dépasser :max caractères.',
+            'parametres.hero_sous_titre.max' => 'Le sous-titre héros ne doit pas dépasser :max caractères.',
+            'parametres.texte_info_vote.max' => 'Le texte d\'information ovation ne doit pas dépasser :max caractères.',
+            'parametres.texte_mediatheque.max' => 'La description médiathèque ne doit pas dépasser :max caractères.',
+            'parametres.social_facebook.url' => 'Le lien Facebook doit être une URL valide.',
+            'parametres.social_instagram.url' => 'Le lien Instagram doit être une URL valide.',
+            'parametres.social_youtube.url' => 'Le lien YouTube doit être une URL valide.',
+            'parametres.social_tiktok.url' => 'Le lien TikTok doit être une URL valide.',
+        ]);
+
+        $data = $validated['parametres'] ?? [];
 
         foreach ($data as $cle => $valeur) {
             if (in_array($cle, $this->allowed)) {
