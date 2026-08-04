@@ -175,20 +175,25 @@
                 <i class="bi bi-bar-chart-fill" style="color: #9B4D07;"></i>
             </div>
             <div class="card-body px-4 py-3">
-                {{-- Filtre liste déroulante --}}
-                <div class="d-flex align-items-center gap-2 mb-3">
+                {{-- Filtre liste déroulante (filtrage serveur, recharge la page) --}}
+                <form method="GET" action="{{ route('admin.dashboard') }}" class="d-flex align-items-center gap-2 mb-3">
                     <span class="fw-semibold small" style="color: #9B4D07;">Catégorie :</span>
-                    <select class="form-select form-select-sm" id="categorieFilter" onchange="fitabFiltrerCategorie()" style="max-width: 220px; border-color: #E3D5AD; border-radius: 8px;">
-                        <option value="all">Tous</option>
+                    <select name="categorie" class="form-select form-select-sm" id="categorieFilter"
+                            onchange="this.form.submit()"
+                            style="max-width: 220px; border-color: #E3D5AD; border-radius: 8px;">
+                        <option value="all" @selected($categorieFiltre === 'all')>Tous</option>
                         @foreach($categories as $cat)
-                            <option value="{{ $cat->clef }}">{{ $cat->nom }}</option>
+                            <option value="{{ $cat->clef }}" @selected($categorieFiltre === $cat->clef)>{{ $cat->nom }}</option>
                         @endforeach
                     </select>
-                </div>
+                    <noscript>
+                        <button type="submit" class="btn btn-sm fw-semibold text-white border-0" style="background: #9B4D07; border-radius: 8px;">Filtrer</button>
+                    </noscript>
+                </form>
                 {{-- Liste --}}
                 <div id="resultsList">
                     @forelse($candidatsAvecVotes as $candidat)
-                        <div class="result-item d-flex align-items-center justify-content-between py-2 px-2 border-bottom" style="border-color: #f0e6d6 !important;" data-cat="{{ $candidat->categorie_clef }}">
+                        <div class="result-item d-flex align-items-center justify-content-between py-2 px-2 border-bottom" style="border-color: #f0e6d6 !important;">
                             <div class="d-flex align-items-center gap-2 min-w-0">
                                 <span class="fw-semibold small text-truncate" style="color: #3E1E05;">{{ $candidat->display_name }}</span>
                                 <span class="badge rounded-pill fw-normal" style="background: #9B4D07; font-size: 0.6rem; flex-shrink: 0;">{{ $candidat->categorie }}</span>
@@ -197,14 +202,10 @@
                         </div>
                     @empty
                         <div class="text-center text-muted py-4">
-                            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
-                            <small>Aucun candidat inscrit.</small>
+                            <i class="bi bi-folder2-open fs-3 d-block mb-2"></i>
+                            <small>{{ $categorieFiltre !== 'all' ? 'Aucun candidat dans cette catégorie.' : 'Aucun candidat inscrit.' }}</small>
                         </div>
                     @endforelse
-                    <div id="noCandidatsMsg" class="text-center text-muted py-4" style="display: none;">
-                        <i class="bi bi-folder2-open fs-3 d-block mb-2"></i>
-                        <small>Aucun candidat dans cette catégorie.</small>
-                    </div>
                 </div>
             </div>
         </div>
@@ -364,24 +365,5 @@
         </div>
     </div>
 </div>
-
-<script>
-function fitabFiltrerCategorie() {
-    var select = document.getElementById('categorieFilter');
-    var cat = select.value;
-    var items = document.querySelectorAll('#resultsList .result-item');
-    var visibles = 0;
-    items.forEach(function(el) {
-        var show = (cat === 'all' || el.dataset.cat === cat);
-        el.style.display = show ? '' : 'none';
-        if (show) visibles++;
-    });
-    var empty = document.getElementById('noCandidatsMsg');
-    if (empty) empty.style.display = visibles ? 'none' : '';
-}
-document.addEventListener('DOMContentLoaded', function() {
-    fitabFiltrerCategorie();
-});
-</script>
 
 @endsection

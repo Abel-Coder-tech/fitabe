@@ -30,6 +30,8 @@ class DashboardController extends Controller
             ->sortByDesc('total')
             ->values();
 
+        $categorieFiltre = trim((string) request('categorie', 'all'));
+
         $candidatsAvecVotes = Candidats::query()
             ->withSum(['votes' => fn ($q) => $q->confirme()], 'quantite')
             ->orderByDesc('votes_sum_quantite')
@@ -37,6 +39,13 @@ class DashboardController extends Controller
             ->each(function ($candidat) {
                 $candidat->categorie_clef = static::categorieClef($candidat->categorie);
             });
+
+        // Filtre serveur par catégorie (clés normalisées, insensible à la casse/aux séparateurs)
+        if ($categorieFiltre !== '' && $categorieFiltre !== 'all') {
+            $candidatsAvecVotes = $candidatsAvecVotes
+                ->filter(fn ($candidat) => $candidat->categorie_clef === $categorieFiltre)
+                ->values();
+        }
 
         $dernieresTransactions = Votes::with('candidat')
             ->confirme()
@@ -71,7 +80,7 @@ class DashboardController extends Controller
             'votesParCategorie', 'totalVotes',
             'dernieresTransactions', 'messagesRecents',
             'voteMode', 'prixDuVote', 'dateFin',
-            'candidatsAvecVotes', 'categories'
+            'candidatsAvecVotes', 'categories', 'categorieFiltre'
         ));
     }
 
