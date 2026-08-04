@@ -8,6 +8,7 @@ use App\Models\Candidats;
 use App\Models\Contact;
 use App\Models\Parametres;
 use App\Support\Parametre;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -32,7 +33,10 @@ class DashboardController extends Controller
         $candidatsAvecVotes = Candidats::query()
             ->withSum(['votes' => fn ($q) => $q->confirme()], 'quantite')
             ->orderByDesc('votes_sum_quantite')
-            ->get();
+            ->get()
+            ->each(function ($candidat) {
+                $candidat->categorie_clef = static::categorieClef($candidat->categorie);
+            });
 
         $dernieresTransactions = Votes::with('candidat')
             ->confirme()
@@ -49,10 +53,18 @@ class DashboardController extends Controller
         $prixDuVote = Parametre::getInt('prix_ovation', 100);
 
         $totalVotes = $votesParCategorie->sum('total');
-        $categories = Candidats::select('categorie')
+        $categories = Candidats::query()
+            ->select('categorie')
             ->distinct()
-            ->orderBy('categorie')
-            ->pluck('categorie');
+            ->pluck('categorie')
+            ->filter(fn ($cat) => ! empty($cat))
+            ->map(fn ($cat) => (object) [
+                'nom' => $cat,
+                'clef' => static::categorieClef($cat),
+            ])
+            ->unique('clef')
+            ->sortBy('nom')
+            ->values();
 
         return view('admin.dashboard.index', compact(
             'votesConfirmes', 'messagesNonLus', 'totalRecettes',
@@ -61,5 +73,15 @@ class DashboardController extends Controller
             'voteMode', 'prixDuVote', 'dateFin',
             'candidatsAvecVotes', 'categories'
         ));
+    }
+
+    /**
+     * Normalise le nom d'une catégorie en une clé stable, insensible à la
+     * casse, aux espaces, accents et séparateurs (ex. « Stylisme / Modélisme »
+     * et « stylisme/modélisme » donnent tous deux « stylismemodelisme »).
+     */
+    private static function categorieClef(?string $categorie): string
+    {
+        return strtolower(preg_replace('/[^a-z0-9]+/i', '', Str::ascii((string) $categorie)));
     }
 }

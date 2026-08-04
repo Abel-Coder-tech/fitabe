@@ -178,17 +178,17 @@
                 {{-- Filtre liste déroulante --}}
                 <div class="d-flex align-items-center gap-2 mb-3">
                     <span class="fw-semibold small" style="color: #9B4D07;">Catégorie :</span>
-                    <select class="form-select form-select-sm" id="categorieFilter" onchange="var cat=this.value;document.querySelectorAll('.result-item').forEach(function(e){e.style.display=(cat==='all'||e.dataset.cat===cat)?'':'none';})" style="max-width: 220px; border-color: #E3D5AD; border-radius: 8px;">
+                    <select class="form-select form-select-sm" id="categorieFilter" onchange="fitabFiltrerCategorie()" style="max-width: 220px; border-color: #E3D5AD; border-radius: 8px;">
                         <option value="all">Tous</option>
                         @foreach($categories as $cat)
-                            <option value="{{ Str::slug($cat) }}">{{ $cat }}</option>
+                            <option value="{{ $cat->clef }}">{{ $cat->nom }}</option>
                         @endforeach
                     </select>
                 </div>
                 {{-- Liste --}}
                 <div id="resultsList">
                     @forelse($candidatsAvecVotes as $candidat)
-                        <div class="result-item d-flex align-items-center justify-content-between py-2 px-2 border-bottom" style="border-color: #f0e6d6 !important;" data-cat="{{ Str::slug($candidat->categorie ?? '') }}">
+                        <div class="result-item d-flex align-items-center justify-content-between py-2 px-2 border-bottom" style="border-color: #f0e6d6 !important;" data-cat="{{ $candidat->categorie_clef }}">
                             <div class="d-flex align-items-center gap-2 min-w-0">
                                 <span class="fw-semibold small text-truncate" style="color: #3E1E05;">{{ $candidat->display_name }}</span>
                                 <span class="badge rounded-pill fw-normal" style="background: #9B4D07; font-size: 0.6rem; flex-shrink: 0;">{{ $candidat->categorie }}</span>
@@ -201,6 +201,10 @@
                             <small>Aucun candidat inscrit.</small>
                         </div>
                     @endforelse
+                    <div id="noCandidatsMsg" class="text-center text-muted py-4" style="display: none;">
+                        <i class="bi bi-folder2-open fs-3 d-block mb-2"></i>
+                        <small>Aucun candidat dans cette catégorie.</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -362,12 +366,21 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var e = document.getElementById('categorieFilter');
-    var cat = e.value;
-    document.querySelectorAll('.result-item').forEach(function(el) {
-        el.style.display = (cat === 'all' || el.dataset.cat === cat) ? '' : 'none';
+function fitabFiltrerCategorie() {
+    var select = document.getElementById('categorieFilter');
+    var cat = select.value;
+    var items = document.querySelectorAll('#resultsList .result-item');
+    var visibles = 0;
+    items.forEach(function(el) {
+        var show = (cat === 'all' || el.dataset.cat === cat);
+        el.style.display = show ? '' : 'none';
+        if (show) visibles++;
     });
+    var empty = document.getElementById('noCandidatsMsg');
+    if (empty) empty.style.display = visibles ? 'none' : '';
+}
+document.addEventListener('DOMContentLoaded', function() {
+    fitabFiltrerCategorie();
 });
 </script>
 
