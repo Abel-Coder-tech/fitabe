@@ -42,12 +42,6 @@
                                         <small class="text-muted">{{ $vote->quantite }} ovation(s) • {{ number_format($vote->montant, 0, ',', ' ') }} FCFA</small>
                                     </div>
                                 </div>
-                                @if($vote->transaction_id)
-                                    <hr style="border-color: #E3D5AD;">
-                                    <div class="small text-muted">
-                                        <div>Transaction : <strong style="color: #3E1E05;">{{ $vote->transaction_id }}</strong></div>
-                                    </div>
-                                @endif
                             </div>
                         </div>
                     @endif

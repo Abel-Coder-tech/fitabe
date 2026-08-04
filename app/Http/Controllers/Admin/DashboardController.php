@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Votes;
+use App\Models\VoteLog;
 use App\Models\Candidats;
 use App\Models\Contact;
 use App\Models\Parametres;
@@ -56,11 +57,14 @@ class DashboardController extends Controller
 
         $messagesRecents = Contact::latest()->take(5)->get();
 
-        $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
-        $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+        $dateDebut = Parametre::debutEffectif();
+        $dateFin = Parametre::finEffective() ?: Parametres::where('cle', 'date_fin_vote')->value('valeur');
+        $dateDebutPlanifie = Parametres::where('cle', 'date_debut_vote')->value('valeur');
 
         $voteMode = \App\Support\Parametre::voteMode();
         $prixDuVote = Parametre::getInt('prix_ovation', 100);
+
+        $logsPaiements = VoteLog::query()->latest('created_at')->take(6)->get();
 
         $totalVotes = $votesParCategorie->sum('total');
         $categories = Candidats::query()
@@ -80,7 +84,8 @@ class DashboardController extends Controller
             'votesConfirmes', 'messagesNonLus', 'totalRecettes',
             'votesParCategorie', 'totalVotes',
             'dernieresTransactions', 'messagesRecents',
-            'voteMode', 'prixDuVote', 'dateFin',
+            'voteMode', 'prixDuVote', 'dateFin', 'dateDebut', 'dateDebutPlanifie',
+            'logsPaiements',
             'candidatsAvecVotes', 'categories', 'categorieFiltre'
         ));
     }

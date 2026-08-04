@@ -7,6 +7,7 @@ use App\Models\Candidats;
 use App\Models\Parametres;
 use App\Models\Resultat;
 use App\Models\Votes;
+use App\Models\VoteLog;
 use App\Services\ResultatService;
 use App\Support\Parametre;
 use Illuminate\Http\Request;
@@ -26,8 +27,9 @@ class VoteController extends Controller
     // Page publique de vote avec candidats et paramètres
     public function index(Request $request)
     {
-        $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
-        $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+        // Fenêtre effective : si l'admin a démarré manuellement, c'est cette heure qui fait foi
+        $dateDebut = Parametre::debutEffectif();
+        $dateFin = Parametre::finEffective();
         $dateFinale = Parametres::where('cle', 'date_finale')->value('valeur');
 
         $voteMode = Parametre::voteMode();
@@ -126,32 +128,110 @@ class VoteController extends Controller
         $data = $request->all();
 
         if (!isset($data['id']) || !isset($data['status'])) {
+            VoteLog::create([
+                'type' => 'webhook',
+                'statut' => 'erreur',
+                'categorie' => 'payload_incomplet',
+                'message' => 'Webhook reçu sans id ou status.',
+                'contexte' => json_encode(['payload' => $data], JSON_UNESCAPED_UNICODE),
+            ]);
+
             return response()->json(['error' => 'Invalid payload'], 400);
         }
 
-        if (in_array($data['status'], ['approved', 'completed', 'accepted'], true)) {
-            $transactionId = $data['id'];
-            $voteId = $data['custom_metadata']['vote_id'] ?? $data['external_id'] ?? null;
+        $transactionId = (string) $data['id'];
+        $status = (string) $data['status'];
 
-            $vote = $voteId
-                ? Votes::find($voteId)
-                : Votes::where('transaction_id', $transactionId)->first();
+        // Paiements non confirmants : on logue mais rien à traiter
+        if (!in_array($status, ['approved', 'completed', 'accepted'], true)) {
+            VoteLog::create([
+                'type' => 'webhook',
+                'statut' => 'ignore',
+                'categorie' => 'statut_non_confirmant',
+                'message' => "Statut reçu non confirmant : {$status}",
+                'transaction_id' => $transactionId,
+                'contexte' => json_encode(self::contexteFedapay($data), JSON_UNESCAPED_UNICODE),
+            ]);
 
-            if ($vote && $vote->statut === 'en_attente') {
-                $telephone = $data['phone'] ?? $data['customer']['phone_number'] ?? $data['customer']['phone'] ?? null;
-                $email = $data['customer']['email'] ?? null;
-                $moyenPaiement = $data['payment_method'] ?? $data['payment_method']['type'] ?? null;
-
-                $vote->marquerConfirme($transactionId, 'fedapay', $telephone, $email, $moyenPaiement);
-
-                Log::info('Fedapay webhook : vote confirmé', [
-                    'vote_id' => $vote->id,
-                    'transaction_id' => $transactionId,
-                ]);
-            }
+            return response()->json(['status' => 'ok']);
         }
 
+        $voteId = $data['custom_metadata']['vote_id'] ?? $data['external_id'] ?? null;
+
+        $vote = $voteId
+            ? Votes::find($voteId)
+            : Votes::where('transaction_id', $transactionId)->first();
+
+        if (!$vote) {
+            // Paiement approuvé mais vote introuvable → ovation non comptée
+            VoteLog::create([
+                'type' => 'webhook',
+                'statut' => 'erreur',
+                'categorie' => 'vote_non_trouve',
+                'message' => 'Paiement approuvé mais vote introuvable : ovation non comptée.',
+                'transaction_id' => $transactionId,
+                'vote_id' => $voteId ? (int) $voteId : null,
+                'contexte' => json_encode(self::contexteFedapay($data), JSON_UNESCAPED_UNICODE),
+            ]);
+
+            Log::warning('Fedapay webhook : vote introuvable', ['transaction_id' => $transactionId, 'vote_id' => $voteId]);
+
+            return response()->json(['status' => 'ok']);
+        }
+
+        if ($vote->statut !== 'en_attente') {
+            VoteLog::create([
+                'type' => 'webhook',
+                'statut' => 'ignore',
+                'categorie' => 'deja_confirme',
+                'message' => "Webhook reçu alors que le vote est déjà « {$vote->statut} ».",
+                'transaction_id' => $transactionId,
+                'vote_id' => $vote->id,
+                'montant' => $vote->montant,
+                'contexte' => json_encode(self::contexteFedapay($data), JSON_UNESCAPED_UNICODE),
+            ]);
+
+            return response()->json(['status' => 'ok']);
+        }
+
+        $telephone = $data['phone'] ?? $data['customer']['phone_number'] ?? $data['customer']['phone'] ?? null;
+        $email = $data['customer']['email'] ?? null;
+        $moyenPaiement = $data['payment_method'] ?? $data['payment_method']['type'] ?? null;
+
+        $vote->marquerConfirme($transactionId, 'fedapay', $telephone, $email, $moyenPaiement);
+
+        VoteLog::create([
+            'type' => 'webhook',
+            'statut' => 'ok',
+            'categorie' => 'confirme',
+            'message' => 'Vote confirmé via webhook Fedapay.',
+            'transaction_id' => $transactionId,
+            'vote_id' => $vote->id,
+            'montant' => $vote->montant,
+            'contexte' => json_encode(self::contexteFedapay($data), JSON_UNESCAPED_UNICODE),
+        ]);
+
+        Log::info('Fedapay webhook : vote confirmé', [
+            'vote_id' => $vote->id,
+            'transaction_id' => $transactionId,
+        ]);
+
         return response()->json(['status' => 'ok']);
+    }
+
+    private static function contexteFedapay(array $data): array
+    {
+        return [
+            'id' => $data['id'] ?? null,
+            'status' => $data['status'] ?? null,
+            'amount' => $data['amount'] ?? null,
+            'currency' => $data['currency'] ?? null,
+            'phone' => $data['phone'] ?? $data['customer']['phone_number'] ?? $data['customer']['phone'] ?? null,
+            'email' => $data['customer']['email'] ?? null,
+            'payment_method' => $data['payment_method'] ?? null,
+            'external_id' => $data['external_id'] ?? null,
+            'created_at' => $data['created_at'] ?? null,
+        ];
     }
 
     // Met à jour les paramètres de vote et génère les résultats si clôture
@@ -173,23 +253,31 @@ class VoteController extends Controller
             'annee_resultats.max' => 'L\'année des résultats doit contenir au maximum 4 caractères.',
         ]);
 
+        $ancienDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
+        $ancienFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+
         Parametres::updateOrCreate(['cle' => 'date_debut_vote'], ['valeur' => $data['date_debut_vote'] ?? '']);
         Parametres::updateOrCreate(['cle' => 'date_fin_vote'], ['valeur' => $data['date_fin_vote'] ?? '']);
         Parametres::updateOrCreate(['cle' => 'date_finale'], ['valeur' => $data['date_finale'] ?? '']);
         Parametres::updateOrCreate(['cle' => 'afficher_compteur'], ['valeur' => $data['afficher_compteur'] ?? '0']);
 
+        // Si les dates planifiées changent, le démarrage manuel éventuel est réinitialisé :
+        // la nouvelle planification reprend la main (mode automatique)
+        if (($data['date_debut_vote'] ?? '') !== ($ancienDebut ?? '') || ($data['date_fin_vote'] ?? '') !== ($ancienFin ?? '')) {
+            Parametres::updateOrCreate(['cle' => 'debut_effectif'], ['valeur' => '']);
+            Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => '']);
+        }
+
+        Parametre::flush();
+
         $now = Carbon::now();
         $debut = $data['date_debut_vote'] ? Carbon::parse($data['date_debut_vote']) : null;
         $fin = $data['date_fin_vote'] ? Carbon::parse($data['date_fin_vote']) : null;
 
+        // Génère les résultats si la période de vote est déjà passée
         if ($fin && $now > $fin) {
-            Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'cloture']);
             $annee = $request->input('annee_resultats', date('Y'));
             $this->resultatService->generer($annee);
-        } elseif ($debut && $now >= $debut && $fin && $now < $fin) {
-            Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'active']);
-        } else {
-            Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'off']);
         }
 
         return response()->json(['success' => true]);
@@ -210,11 +298,52 @@ class VoteController extends Controller
                 $paymentMethod = $request->query('payment_method');
                 $phone = $request->query('phone');
 
-                if ($transactionId && in_array($status, ['approved', 'completed', 'accepted'], true) && $vote->statut === 'en_attente') {
-                    $vote->marquerConfirme($transactionId, 'fedapay', $phone);
+                if ($transactionId && in_array($status, ['approved', 'completed', 'accepted'], true)) {
+                    if ($vote->statut === 'en_attente') {
+                        $vote->marquerConfirme($transactionId, 'fedapay', $phone);
+                        VoteLog::create([
+                            'type' => 'callback',
+                            'statut' => 'ok',
+                            'categorie' => 'confirme_callback',
+                            'message' => 'Vote confirmé via le retour Fedapay (page de remerciement).',
+                            'transaction_id' => $transactionId,
+                            'vote_id' => $vote->id,
+                            'montant' => $vote->montant,
+                        ]);
+                    } else {
+                        VoteLog::create([
+                            'type' => 'callback',
+                            'statut' => 'ignore',
+                            'categorie' => 'deja_confirme',
+                            'message' => "Retour Fedapay reçu alors que le vote est déjà « {$vote->statut} ».",
+                            'transaction_id' => $transactionId,
+                            'vote_id' => $vote->id,
+                            'montant' => $vote->montant,
+                        ]);
+                    }
+                } elseif ($transactionId) {
+                    VoteLog::create([
+                        'type' => 'callback',
+                        'statut' => 'ignore',
+                        'categorie' => 'statut_non_confirmant',
+                        'message' => "Retour Fedapay avec statut non confirmant : {$status}",
+                        'transaction_id' => $transactionId,
+                        'vote_id' => $vote->id,
+                        'montant' => $vote->montant,
+                    ]);
                 }
 
                 $statut = $vote->statut;
+            } else {
+                // Paiement annoncé mais vote introuvable depuis la page de retour
+                VoteLog::create([
+                    'type' => 'callback',
+                    'statut' => 'erreur',
+                    'categorie' => 'vote_non_trouve',
+                    'message' => 'Retour Fedapay avec vote introuvable : ovation non comptée.',
+                    'transaction_id' => $request->query('id'),
+                    'vote_id' => (int) $request->query('vote_id'),
+                ]);
             }
         }
 

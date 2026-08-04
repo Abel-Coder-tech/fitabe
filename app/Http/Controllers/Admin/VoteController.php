@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Parametres;
 use App\Models\Votes;
+use App\Models\VoteLog;
 use App\Models\Candidats;
 use App\Support\Parametre;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class VoteController extends Controller
 {
@@ -64,8 +67,29 @@ class VoteController extends Controller
         return to_route('admin.votes.index')->with('success', 'Toutes les ovations ont été supprimées.');
     }
 
-    public function toggle()
+    // Boutons rapides « Mode du site » : action = demarrer | cloturer
+    public function toggle(Request $request)
     {
+        $action = $request->input('action', 'demarrer');
+
+        // Clôture rapide : stoppe immédiatement les votes (prioritaire jusqu'à relance)
+        if ($action === 'cloturer') {
+            Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'cloture']);
+            Parametre::flush();
+
+            try {
+                $annee = date('Y');
+                $service = app(\App\Services\ResultatService::class);
+                $service->generer($annee);
+            } catch (\Throwable $e) {
+                Log::error('Erreur génération résultats: ' . $e->getMessage());
+            }
+
+            return to_route('admin.votes.index')->with('success', 'Vote clôturé. Les résultats ont été générés.');
+        }
+
+        // Démarrage rapide : l'heure de clic devient l'heure de démarrage réelle,
+        // la fin effective est calculée selon la durée planifiée
         $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
         $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
 
@@ -74,23 +98,21 @@ class VoteController extends Controller
                 ->with('error', 'Veuillez d\'abord définir une date de début et de fin dans le menu Ovations avant de démarrer le vote.');
         }
 
-        $now = Carbon::now();
-        $debut = Carbon::parse($dateDebut);
-        $fin = Carbon::parse($dateFin);
-
-        if ($now >= $debut && $now < $fin) {
-            Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'cloture']);
-            try {
-                $annee = date('Y');
-                $service = app(\App\Services\ResultatService::class);
-                $service->generer($annee);
-            } catch (\Throwable $e) {
-                \Illuminate\Support\Facades\Log::error('Erreur génération résultats: ' . $e->getMessage());
-            }
-            return to_route('admin.votes.index')->with('success', 'Vote clôturé. Résultats générés.');
-        }
-
+        Parametres::updateOrCreate(['cle' => 'debut_effectif'], ['valeur' => Carbon::now()->toDateTimeString()]);
         Parametres::updateOrCreate(['cle' => 'statut_vote'], ['valeur' => 'active']);
-        return to_route('admin.votes.index')->with('success', 'Vote démarré.');
+        Parametre::flush();
+
+        $finEffective = Parametre::finEffective();
+
+        return to_route('admin.votes.index')
+            ->with('success', 'Vote démarré. Début effectif : maintenant — fin prévue à ' . ($finEffective ? Carbon::parse($finEffective)->format('d/m/Y H:i') : '?'));
+    }
+
+    // Historique des logs de paiement (webhooks Fedapay + callbacks) et leurs causes
+    public function logs()
+    {
+        $logs = VoteLog::query()->latest('created_at')->paginate(request()->integer('per_page', 20));
+
+        return view('admin.votes.logs', compact('logs'));
     }
 }

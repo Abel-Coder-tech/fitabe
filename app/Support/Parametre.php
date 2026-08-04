@@ -30,29 +30,81 @@ class Parametre
         Cache::forget('parametres');
     }
 
-    // Détermine le mode de vote : statut manuel prioritaire, sinon calculé depuis les dates
+    // Détermine le mode de vote : clôture manuelle prioritaire, sinon
+    // fenêtre effective (début manuel éventuel sinon dates planifiées) avec arrêt auto.
     public static function voteMode(): string
     {
         $statut = \App\Models\Parametres::where('cle', 'statut_vote')->value('valeur');
+        [$debutReel, $finReelle] = static::fenetreEffective();
 
-        if (in_array($statut, ['active', 'cloture', 'off'], true)) {
-            return $statut;
+        if (!$debutReel || !$finReelle) {
+            return in_array($statut, ['active', 'cloture', 'off'], true) ? $statut : 'off';
         }
 
+        $now = \Carbon\Carbon::now();
+
+        // Clôture manuelle prioritaire (le bouton « Clôturer » gagne jusqu'à relance)
+        if ($statut === 'cloture') {
+            return 'cloture';
+        }
+        if ($statut === 'off') {
+            return 'off';
+        }
+
+        // Démarrage manuel : reste actif, mais s'arrête tout seul à la fin effective
+        if ($statut === 'active') {
+            return $now->gte(\Carbon\Carbon::parse($finReelle)) ? 'cloture' : 'active';
+        }
+
+        // Mode automatique (aucune action manuelle) : ouverture à l'heure prévue, arrêt à la fin
+        if ($now->lt(\Carbon\Carbon::parse($debutReel))) {
+            return 'off';
+        }
+        if ($now->gte(\Carbon\Carbon::parse($finReelle))) {
+            return 'cloture';
+        }
+
+        return 'active';
+    }
+
+    // Fenêtre effective : si un démarrage manuel a été enregistré (debut_effectif),
+    // il devient le début et la durée planifiée est reportée ; sinon les dates planifiées.
+    // Retourne [debutReel|null, finReelle|null].
+    public static function fenetreEffective(): array
+    {
         $debut = \App\Models\Parametres::where('cle', 'date_debut_vote')->value('valeur');
         $fin = \App\Models\Parametres::where('cle', 'date_fin_vote')->value('valeur');
 
         if (!$debut || !$fin) {
-            return 'off';
+            return [null, null];
         }
 
-        $now = \Carbon\Carbon::now();
-        $d = \Carbon\Carbon::parse($debut);
-        $f = \Carbon\Carbon::parse($fin);
+        $debutPlanne = \Carbon\Carbon::parse($debut);
+        $finPlannee = \Carbon\Carbon::parse($fin);
+        $debutManuel = \App\Models\Parametres::where('cle', 'debut_effectif')->value('valeur');
 
-        if ($now < $d) return 'off';
-        if ($now >= $f) return 'cloture';
+        if ($debutManuel) {
+            $debutReel = \Carbon\Carbon::parse($debutManuel);
+            $duree = max(0, $debutPlanne->diffInSeconds($finPlannee));
+            $finReelle = $debutReel->copy()->addSeconds($duree);
 
-        return 'active';
+            return [$debutReel->toDateTimeString(), $finReelle->toDateTimeString()];
+        }
+
+        return [$debutPlanne->toDateTimeString(), $finPlannee->toDateTimeString()];
+    }
+
+    // Début effectif des ovations (démarrage manuel sinon début planifié).
+    public static function debutEffectif(): ?string
+    {
+        $manuel = \App\Models\Parametres::where('cle', 'debut_effectif')->value('valeur');
+
+        return $manuel ?: \App\Models\Parametres::where('cle', 'date_debut_vote')->value('valeur') ?: null;
+    }
+
+    // Fin effective des ovations (fin planifiée décalée si démarrage manuel).
+    public static function finEffective(): ?string
+    {
+        return static::fenetreEffective()[1];
     }
 }

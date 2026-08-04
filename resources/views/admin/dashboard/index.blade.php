@@ -230,41 +230,38 @@
                 <i class="bi bi-sliders" style="color: #9B4D07;"></i>
             </div>
             <div class="card-body px-4 py-3">
+                <p class="small text-muted mb-3">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Le démarrage rapide prend effet immédiatement (l'heure de clic devient l'heure de début réelle).
+                    Sans action, les ovations s'ouvrent et se ferment automatiquement aux heures planifiées.
+                </p>
                 <div class="d-flex gap-2 mb-3">
-                    @if($voteMode === 'active')
-                        <form action="{{ route('admin.votes.toggle') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="mode-toggle" style="border-color: #c62828; color: #c62828;"
-                                    onclick="return confirm('Clôturer les ovations ? Les résultats seront générés automatiquement.')">
-                                <i class="bi bi-stop-circle me-1"></i>Clôturer les ovations
-                            </button>
-                        </form>
-                        <span class="mode-toggle active"><i class="bi bi-play-circle me-1"></i>Ovations actives</span>
-                    @else
-                        <form action="{{ route('admin.votes.toggle') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="mode-toggle" style="border-color: #2e7d32; color: #2e7d32;">
-                                <i class="bi bi-play-circle me-1"></i>Démarrer les ovations
-                            </button>
-                        </form>
-                        <span class="mode-toggle {{ $voteMode === 'cloture' ? 'active' : '' }}">
-                            <i class="bi bi-check-circle me-1"></i>Clôturé
-                        </span>
-                    @endif
+                    <form action="{{ route('admin.votes.toggle') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="action" value="demarrer">
+                        <button type="submit" class="mode-toggle" style="border-color: #2e7d32; color: #2e7d32;">
+                            <i class="bi bi-play-circle me-1"></i>Démarrer les ovations
+                        </button>
+                    </form>
+                    <form action="{{ route('admin.votes.toggle') }}" method="POST" onsubmit="return confirm('Clôturer les ovations ? Les résultats seront générés automatiquement.')">
+                        @csrf
+                        <input type="hidden" name="action" value="cloturer">
+                        <button type="submit" class="mode-toggle" style="border-color: #c62828; color: #c62828;">
+                            <i class="bi bi-stop-circle me-1"></i>Clôturer les ovations
+                        </button>
+                    </form>
+                </div>
+                <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-color: #f0f0f0 !important;">
+                    <small class="text-muted">Démarrage effectif</small>
+                    <span class="fw-semibold" style="color: #3E1E05; font-size: 0.85rem;">{{ isset($dateDebut) && $dateDebut ? \Carbon\Carbon::parse($dateDebut)->format('d/m/Y H:i') : '—' }}</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-color: #f0f0f0 !important;">
+                    <small class="text-muted">Clôture prévue</small>
+                    <span class="fw-semibold" style="color: #3E1E05; font-size: 0.85rem;">{{ isset($dateFin) && $dateFin ? \Carbon\Carbon::parse($dateFin)->format('d/m/Y H:i') : '—' }}</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-color: #f0f0f0 !important;">
                     <small class="text-muted">Prix de l'ovation</small>
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="fw-semibold" style="color: #3E1E05;">{{ number_format((int)$prixDuVote, 0, ',', ' ') }} FCFA</span>
-                        <i class="bi bi-pencil" style="color: #9B4D07; font-size: 0.8rem; cursor: pointer;"></i>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-color: #f0f0f0 !important;">
-                    <small class="text-muted">Date de clôture</small>
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="fw-semibold" style="color: #3E1E05; font-size: 0.85rem;">{{ isset($dateFin) && $dateFin ? \Carbon\Carbon::parse($dateFin)->format('d/m/Y H:i') : '—' }}</span>
-                        <i class="bi bi-pencil" style="color: #9B4D07; font-size: 0.8rem; cursor: pointer;"></i>
-                    </div>
+                    <span class="fw-semibold" style="color: #3E1E05;">{{ number_format((int)$prixDuVote, 0, ',', ' ') }} FCFA</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2">
                     <small class="text-muted">Édition</small>
@@ -292,6 +289,31 @@
                 @empty
                     <div class="text-center text-muted py-3">
                         <small>Aucun message.</small>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+
+        {{-- Carte 3 : Logs paiements --}}
+        <div class="card border-0 rounded-4">
+            <div class="card-header bg-transparent border-bottom d-flex align-items-center justify-content-between px-4 py-3">
+                <span class="fw-semibold" style="color: #9B4D07;">Logs paiements (webhooks)</span>
+                <a href="{{ route('admin.votes.logs') }}" class="small text-decoration-none" style="color: #9B4D07;">Voir tout →</a>
+            </div>
+            <div class="card-body px-4 py-2">
+                @forelse($logsPaiements as $log)
+                    <div class="d-flex align-items-start gap-2 py-2 border-bottom" style="border-color: #f5f5f5 !important;">
+                        <span class="badge rounded-pill mt-1 flex-shrink-0" style="font-size: 0.6rem; {{ $log->statut === 'ok' ? 'background: #e8f5e9; color: #2e7d32;' : ($log->statut === 'erreur' ? 'background: #fce4ec; color: #c62828;' : 'background: #fff3e0; color: #e65100;') }}">
+                            {{ $log->statut === 'ok' ? 'OK' : ($log->statut === 'erreur' ? 'Erreur' : 'Ignoré') }}
+                        </span>
+                        <div class="flex-grow-1 min-w-0">
+                            <div class="small" style="color: #3E1E05;">{{ $log->message }}</div>
+                            <small class="text-muted">{{ $log->created_at->format('d/m/Y H:i') }}{{ $log->transaction_id ? ' · ' . $log->transaction_id : '' }}</small>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-muted py-3">
+                        <small>Aucun log de paiement.</small>
                     </div>
                 @endforelse
             </div>
