@@ -104,6 +104,6 @@
 
 {{-- Pagination --}}
 <div class="d-flex justify-content-center mt-4">
-    {{ $programmes->links() }}
+    {{ $programmes->links('partials.pagination', ['label' => 'programme(s)']) }}
 </div>
 @endsection

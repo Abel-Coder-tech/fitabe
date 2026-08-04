@@ -332,7 +332,7 @@
     </table>
 </div>
 
-<div class="mt-3">{{ $votes->links() }}</div>
+<div class="mt-3">{{ $votes->links('partials.pagination', ['label' => 'ovation(s)']) }}</div>
 
 @push('scripts')
 <script>

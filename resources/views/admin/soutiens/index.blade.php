@@ -79,6 +79,6 @@
 </div>
 
 <div class="d-flex justify-content-center mt-4">
-    {{ $soutiens->links() }}
+    {{ $soutiens->links('partials.pagination', ['label' => 'soutien(s)']) }}
 </div>
 @endsection

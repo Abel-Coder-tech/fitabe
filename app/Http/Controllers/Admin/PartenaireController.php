@@ -11,7 +11,7 @@ class PartenaireController extends Controller
     // Affiche la liste paginée des partenaires
     public function index()
     {
-        $partenaires = Partenaires::ordered()->paginate(20);
+        $partenaires = Partenaires::ordered()->paginate(request()->integer('per_page', 10));
         return view('admin.partenaires.index', compact('partenaires'));
     }
 

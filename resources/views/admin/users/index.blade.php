@@ -61,5 +61,5 @@
 </table>
 </div>
 {{-- Pagination --}}
-{{ $users->links() }}
+{{ $users->links('partials.pagination', ['label' => 'utilisateur(s)']) }}
 @endsection

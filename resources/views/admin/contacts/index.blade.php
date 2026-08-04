@@ -52,5 +52,5 @@
 </table>
 </div>
 {{-- Pagination --}}
-{{ $contacts->links() }}
+{{ $contacts->links('partials.pagination', ['label' => 'message(s)']) }}
 @endsection

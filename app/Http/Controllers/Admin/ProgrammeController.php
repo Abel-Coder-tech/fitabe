@@ -11,7 +11,7 @@ class ProgrammeController extends Controller
 {
     public function index()
     {
-        $programmes = Programmes::ordered()->withCount('dates')->paginate(20);
+        $programmes = Programmes::ordered()->withCount('dates')->paginate(request()->integer('per_page', 10));
         return view('admin.programmes.index', compact('programmes'));
     }
 

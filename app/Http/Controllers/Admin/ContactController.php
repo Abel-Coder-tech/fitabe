@@ -13,7 +13,7 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $contacts = Contact::orderByDesc('created_at')->paginate(15);
+        $contacts = Contact::orderByDesc('created_at')->paginate(request()->integer('per_page', 10));
         return view('admin.contacts.index', compact('contacts'));
     }
 

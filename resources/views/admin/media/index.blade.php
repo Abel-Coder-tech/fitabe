@@ -53,5 +53,5 @@
 </table>
 </div>
 {{-- Pagination --}}
-{{ $medias->links() }}
+{{ $medias->links('partials.pagination', ['label' => 'média(s)']) }}
 @endsection

@@ -16,7 +16,7 @@ class VoteController extends Controller
     // Affiche la liste des votes avec les paramètres
     public function index()
     {
-        $votes = Votes::with('candidat')->latest()->paginate(20);
+        $votes = Votes::with('candidat')->latest()->paginate(request()->integer('per_page', 10));
 
         $prixDuVote = Parametre::getInt('prix_ovation', 100);
         $afficherCompteur = Parametres::where('cle', 'afficher_compteur')->value('valeur') === '1';

@@ -87,6 +87,6 @@
 
 {{-- Pagination --}}
 <div class="d-flex justify-content-center mt-4">
-    {{ $partenaires->links() }}
+    {{ $partenaires->links('partials.pagination', ['label' => 'partenaire(s)']) }}
 </div>
 @endsection
