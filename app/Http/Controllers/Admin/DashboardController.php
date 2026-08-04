@@ -35,6 +35,7 @@ class DashboardController extends Controller
         $candidatsAvecVotes = Candidats::query()
             ->withSum(['votes' => fn ($q) => $q->confirme()], 'quantite')
             ->orderByDesc('votes_sum_quantite')
+            ->when($categorieFiltre === '' || $categorieFiltre === 'all', fn ($q) => $q->limit(10))
             ->get()
             ->each(function ($candidat) {
                 $candidat->categorie_clef = static::categorieClef($candidat->categorie);
@@ -44,6 +45,7 @@ class DashboardController extends Controller
         if ($categorieFiltre !== '' && $categorieFiltre !== 'all') {
             $candidatsAvecVotes = $candidatsAvecVotes
                 ->filter(fn ($candidat) => $candidat->categorie_clef === $categorieFiltre)
+                ->take(10)
                 ->values();
         }
 
