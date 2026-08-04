@@ -41,7 +41,7 @@
 <div class="modal fade" id="replyModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 rounded-4">
-            <form method="POST" action="{{ route('admin.contacts.reply', $contact) }}">
+            <form method="POST" action="{{ route('admin.contacts.reply', $contact) }}" novalidate>
                 @csrf
                 <div class="modal-header border-0" style="background: linear-gradient(135deg, #3E1E05, #9B4D07);">
                     <h6 class="fw-bold text-white mb-0">Répondre à {{ $contact->nom }}</h6>
@@ -54,8 +54,11 @@
                         {{ Str::limit($contact->message, 200) }}
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small" style="color: #3E1E05;">Votre réponse</label>
-                        <textarea name="reponse" rows="6" class="form-control" placeholder="Écrivez votre réponse..." required></textarea>
+                        <label for="reponse" class="form-label fw-semibold small" style="color: #3E1E05;">Votre réponse</label>
+                        <textarea name="reponse" id="reponse" rows="6" class="form-control @error('reponse') is-invalid @enderror" placeholder="Écrivez votre réponse..." required></textarea>
+                        @error('reponse')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer border-0 pt-0 px-4 pb-4">

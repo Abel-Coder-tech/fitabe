@@ -4,7 +4,7 @@
 
 @section('content')
 {{-- Attribution note jury --}}
-<div class="card border-0 shadow-sm rounded-4 mx-auto" style="max-width: 500px;">
+<div class="card border-0 shadow-sm rounded-4 mx-auto" style="max-width: 760px;">
     <div class="card-body p-4">
         <a href="{{ route('admin.resultats.show', $resultat->annee_edition) }}" class="text-muted text-decoration-none small">
             <i class="bi bi-arrow-left me-1"></i> Retour
@@ -18,47 +18,50 @@
         {{-- Formulaire de notation --}}
         <form method="POST" action="{{ route('admin.resultats.update', $resultat) }}">
             @csrf @method('PUT')
-            <p class="small text-muted mb-3">Notation sur 100 points : ovation 15 pts · technique 20 pts · originalité 20 pts · présence 20 pts · perfection 25 pts.</p>
+            <p class="small text-muted mb-3">
+                Règlement : maitrise technique 30 pts · originalité et créativité 25 pts · présence scénique 20 pts ·
+                authenticité culturelle 10 pts · ovations 10 pts. Total : 95 pts.
+            </p>
             <div class="row g-2 mb-3">
-                <div class="col-4">
-                    <label class="form-label fw-semibold small">Technique <small class="text-muted">/20</small></label>
+                <div class="col-3">
+                    <label class="form-label fw-semibold small text-truncate w-100" title="Maitrise technique">Technique <small class="text-muted">/30</small></label>
                     <input type="number" name="note_technique" class="form-control form-control-sm @error('note_technique') is-invalid @enderror"
-                           value="{{ old('note_technique', $resultat->note_technique) }}" step="0.5" min="0" max="20">
+                           value="{{ old('note_technique', $resultat->note_technique) }}" step="0.5" min="0" max="30">
                     @error('note_technique')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
-                <div class="col-4">
-                    <label class="form-label fw-semibold small">Originalité <small class="text-muted">/20</small></label>
+                <div class="col-3">
+                    <label class="form-label fw-semibold small text-truncate w-100" title="Originalité et créativité">Originalité <small class="text-muted">/25</small></label>
                     <input type="number" name="note_originalite" class="form-control form-control-sm @error('note_originalite') is-invalid @enderror"
-                           value="{{ old('note_originalite', $resultat->note_originalite) }}" step="0.5" min="0" max="20">
+                           value="{{ old('note_originalite', $resultat->note_originalite) }}" step="0.5" min="0" max="25">
                     @error('note_originalite')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
-                <div class="col-4">
-                    <label class="form-label fw-semibold small">Présence <small class="text-muted">/20</small></label>
+                <div class="col-3">
+                    <label class="form-label fw-semibold small text-truncate w-100" title="Présence scénique">Présence <small class="text-muted">/20</small></label>
                     <input type="number" name="note_presence" class="form-control form-control-sm @error('note_presence') is-invalid @enderror"
                            value="{{ old('note_presence', $resultat->note_presence) }}" step="0.5" min="0" max="20">
                     @error('note_presence')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
-                <div class="col-4">
-                    <label class="form-label fw-semibold small">Perfection <small class="text-muted">/25</small></label>
-                    <input type="number" name="note_perfection" class="form-control form-control-sm @error('note_perfection') is-invalid @enderror"
-                           value="{{ old('note_perfection', $resultat->note_perfection) }}" step="0.5" min="0" max="25">
-                    @error('note_perfection')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <div class="col-3">
+                    <label class="form-label fw-semibold small text-truncate w-100" title="Authenticité culturelle">Authenticité <small class="text-muted">/10</small></label>
+                    <input type="number" name="note_authenticite" class="form-control form-control-sm @error('note_authenticite') is-invalid @enderror"
+                           value="{{ old('note_authenticite', $resultat->note_authenticite) }}" step="0.5" min="0" max="10">
+                    @error('note_authenticite')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
             </div>
 
             {{-- Aperçu du score final --}}
-            @if ($resultat->score_public !== null && $resultat->note_technique !== null && $resultat->note_originalite !== null && $resultat->note_presence !== null && $resultat->note_perfection !== null)
+            @if ($resultat->score_public !== null && $resultat->note_technique !== null && $resultat->note_originalite !== null && $resultat->note_presence !== null && $resultat->note_authenticite !== null)
                 <div class="p-3 rounded-3 mb-3" style="background: #fdfaf5; border: 1px solid #E3D5AD;">
                     <small class="text-muted d-block">Aperçu du score final</small>
-                    <div class="d-flex justify-content-between mt-1 small">
-                        <span>Ovation (/15) : <strong>{{ $resultat->score_public_affichage }}</strong></span>
-                        <span>Technique (/20) : <strong>{{ $resultat->note_technique }}</strong></span>
-                        <span>Originalité (/20) : <strong>{{ $resultat->note_originalite }}</strong></span>
+                    <div class="d-flex flex-wrap gap-2 justify-content-between mt-1 small">
+                        <span>Ovation (/10) : <strong>{{ $resultat->score_public_affichage }}</strong></span>
+                        <span>Technique (/30) : <strong>{{ $resultat->note_technique }}</strong></span>
+                        <span>Originalité (/25) : <strong>{{ $resultat->note_originalite }}</strong></span>
                         <span>Présence (/20) : <strong>{{ $resultat->note_presence }}</strong></span>
-                        <span>Perfection (/25) : <strong>{{ $resultat->note_perfection }}</strong></span>
+                        <span>Authenticité (/10) : <strong>{{ $resultat->note_authenticite }}</strong></span>
                     </div>
                     <div class="mt-2 text-end">
-                        <span class="fw-bold" style="color: #9B4D07;">Jury : {{ $resultat->note_jury_affichage }}/80 · Final : {{ $resultat->score_final_affichage }}/100</span>
+                        <span class="fw-bold" style="color: #9B4D07;">Jury : {{ $resultat->note_jury_affichage }}/85 · Final : {{ $resultat->score_final_affichage }}/95</span>
                     </div>
                 </div>
             @endif

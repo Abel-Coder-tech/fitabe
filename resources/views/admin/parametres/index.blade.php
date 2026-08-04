@@ -38,8 +38,9 @@
                     <label class="form-label fw-semibold small">{{ $m['label'] }}</label>
                     <div class="input-group">
                         <span class="input-group-text" style="background: #fdfaf5;"><i class="{{ $m['icon'] }}" style="color: #9B4D07;"></i></span>
-                        <input type="{{ $m['type'] }}" name="parametres[{{ $cle }}]" class="form-control" value="{{ $val }}">
+                        <input type="{{ $m['type'] }}" name="parametres[{{ $cle }}]" class="form-control @error('parametres.' . $cle) is-invalid @enderror" value="{{ $val }}">
                     </div>
+                    @include('partials.field-error', ['field' => 'parametres.' . $cle])
                 </div>
                 @endforeach
             </div>
@@ -59,8 +60,9 @@
                     <label class="form-label fw-semibold small">{{ $m['label'] }}</label>
                     <div class="input-group">
                         <span class="input-group-text" style="background: #fdfaf5;"><i class="{{ $m['icon'] }}" style="color: #9B4D07;"></i></span>
-                        <input type="text" name="parametres[{{ $cle }}]" class="form-control" value="{{ $val }}">
+                        <input type="text" name="parametres[{{ $cle }}]" class="form-control @error('parametres.' . $cle) is-invalid @enderror" value="{{ $val }}">
                     </div>
+                    @include('partials.field-error', ['field' => 'parametres.' . $cle])
                 </div>
                 @endforeach
                 @foreach (['texte_info_vote', 'texte_mediatheque'] as $cle)
@@ -69,8 +71,9 @@
                     <label class="form-label fw-semibold small">{{ $m['label'] }}</label>
                     <div class="input-group">
                         <span class="input-group-text align-items-start pt-2" style="background: #fdfaf5;"><i class="{{ $m['icon'] }}" style="color: #9B4D07;"></i></span>
-                        <textarea name="parametres[{{ $cle }}]" class="form-control" rows="2">{{ $val }}</textarea>
+                        <textarea name="parametres[{{ $cle }}]" class="form-control @error('parametres.' . $cle) is-invalid @enderror" rows="2">{{ $val }}</textarea>
                     </div>
+                    @include('partials.field-error', ['field' => 'parametres.' . $cle])
                 </div>
                 @endforeach
             </div>
@@ -90,7 +93,8 @@
                     <label class="form-label fw-semibold small d-flex align-items-center gap-2">
                         <i class="{{ $m['icon'] }}" style="color: #9B4D07; font-size: 1.1rem;"></i> {{ $m['label'] }}
                     </label>
-                    <input type="url" name="parametres[{{ $cle }}]" class="form-control" value="{{ $val }}" placeholder="https://...">
+                    <input type="url" name="parametres[{{ $cle }}]" class="form-control @error('parametres.' . $cle) is-invalid @enderror" value="{{ $val }}" placeholder="https://...">
+                    @include('partials.field-error', ['field' => 'parametres.' . $cle])
                 </div>
                 @endforeach
             </div>

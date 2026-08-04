@@ -57,7 +57,7 @@
                                             </div>
                                         </td>
                                         <td>{{ $r->nombre_votes }}</td>
-                                        <td><strong>{{ $r->score_final_affichage }}</strong> <small class="text-muted">/100</small></td>
+                                        <td><strong>{{ $r->score_final_affichage }}</strong> <small class="text-muted">/95</small></td>
                                     </tr>
                                 @endforeach
                             </tbody>

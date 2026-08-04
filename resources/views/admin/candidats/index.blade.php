@@ -19,12 +19,6 @@
     <a href="{{ route('admin.candidats.create') }}" class="btn btn-primary">Nouveau candidat</a>
 </div>
 
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show py-2">{{ session('success') }}
-        <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
-    </div>
-@endif
-
 @if ($errors->any())
     <div class="alert alert-danger py-2">
         <ul class="mb-0 small">
@@ -194,7 +188,8 @@
                 <div class="modal-body p-4">
                     <input type="hidden" name="categorie" id="placesCategorie">
                     <label class="form-label fw-semibold small" for="placesInput">Nombre de places (numéros de scène)</label>
-                    <input type="number" name="places" id="placesInput" min="1" max="100" class="form-control">
+                    <input type="number" name="places" id="placesInput" min="1" max="100" class="form-control @error('places') is-invalid @enderror">
+                    @include('partials.field-error', ['field' => 'places'])
                     <small class="text-muted d-block mt-2">Chaque candidat occupe un numéro de scène entre 1 et ce nombre.</small>
                 </div>
                 <div class="modal-footer border-0 pt-0 pb-4 px-4">

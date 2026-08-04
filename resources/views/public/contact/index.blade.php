@@ -19,12 +19,6 @@
         <div class="row g-5 justify-content-center" id="formulaire">
             {{-- COLONNE GAUCHE — FORMULAIRE --}}
             <div class="col-lg-7">
-                @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-                @endif
 
 <div class="card rounded-3 h-100" style="border: 1px solid #E3D5AD;">
     <div class="card-body p-4 p-md-5">

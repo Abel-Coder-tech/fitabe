@@ -11,7 +11,7 @@ class Resultat extends Model
     protected $fillable = [
         'annee_edition', 'categorie', 'prix',
         'candidat_nom', 'candidat_photo', 'nombre_votes',
-        'note_jury', 'note_technique', 'note_originalite', 'note_presence', 'note_perfection',
+        'note_jury', 'note_technique', 'note_originalite', 'note_presence', 'note_authenticite',
         'score_public', 'score_final', 'publie',
     ];
 
@@ -84,7 +84,7 @@ class Resultat extends Model
         return $query->whereIn('prix', [1, 2, 3])->orderBy('prix');
     }
 
-    // Calcule le score final selon le règlement : ovations /15 + technique /20 + originalité /20 + présence /20 + perfection /25 = 100
+    // Calcule le score final selon le règlement : ovations /10 + technique /30 + originalité /25 + présence /20 + authenticité /10 = 95
     public function recalculerScoreFinal(): void
     {
         if (
@@ -92,10 +92,10 @@ class Resultat extends Model
             && $this->note_technique !== null
             && $this->note_originalite !== null
             && $this->note_presence !== null
-            && $this->note_perfection !== null
+            && $this->note_authenticite !== null
         ) {
             $this->note_jury = round(
-                $this->note_technique + $this->note_originalite + $this->note_presence + $this->note_perfection,
+                $this->note_technique + $this->note_originalite + $this->note_presence + $this->note_authenticite,
                 2
             );
             $this->score_final = round($this->score_public + $this->note_jury, 2);

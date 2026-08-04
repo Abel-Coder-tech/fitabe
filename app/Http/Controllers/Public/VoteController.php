@@ -88,6 +88,11 @@ class VoteController extends Controller
 
         $prixDuVote = Parametre::getInt('prix_ovation', 100);
 
+        // Normalise « 01 » -> « 1 » pour que la règle « integer » l'accepte
+        $request->merge([
+            'quantite' => preg_replace('/^0+(?=\d)/', '', (string) $request->input('quantite')),
+        ]);
+
         $validated = $request->validate([
             'candidat_id' => 'required|exists:candidates,id',
             'quantite' => 'required|integer|min:1|max:1000',

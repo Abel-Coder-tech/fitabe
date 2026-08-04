@@ -40,8 +40,8 @@
     </div>
 </div>
 
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show py-2">{{ session('success') }}
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show py-2">{{ session('error') }}
         <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
     </div>
 @endif
@@ -62,12 +62,12 @@
                             <th>#</th>
                             <th>Candidat</th>
                             <th>Ovations</th>
-                            <th>Technique <small class="text-muted">/20</small></th>
-                            <th>Originalité <small class="text-muted">/20</small></th>
+                            <th>Technique <small class="text-muted">/30</small></th>
+                            <th>Originalité <small class="text-muted">/25</small></th>
                             <th>Présence <small class="text-muted">/20</small></th>
-                            <th>Perfection <small class="text-muted">/25</small></th>
-                            <th>Score Public <small class="text-muted">/15</small></th>
-                            <th>Score Final <small class="text-muted">/100</small></th>
+                            <th>Authenticité <small class="text-muted">/10</small></th>
+                            <th>Score Public <small class="text-muted">/10</small></th>
+                            <th>Score Final <small class="text-muted">/95</small></th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -87,7 +87,7 @@
                                 <td>{{ $r->note_technique ?? '-' }}</td>
                                 <td>{{ $r->note_originalite ?? '-' }}</td>
                                 <td>{{ $r->note_presence ?? '-' }}</td>
-                                <td>{{ $r->note_perfection ?? '-' }}</td>
+                                <td>{{ $r->note_authenticite ?? '-' }}</td>
                                 <td>{{ $r->score_public_affichage }}</td>
                                 <td><strong>{{ $r->score_final_affichage }}</strong></td>
                                 <td>

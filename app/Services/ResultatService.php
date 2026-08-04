@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class ResultatService
 {
-    // Seuil de votes pour obtenir le maximum de points publics (15)
+    // Seuil de votes pour obtenir le maximum de points publics (10)
     public const SEUIL_VOTES = 2500;
 
     // Maximum de points publics (ovations)
-    public const SCORE_PUBLIC_MAX = 15;
+    public const SCORE_PUBLIC_MAX = 10;
 
     // Génère les résultats pour une édition (les 3 finalistes par catégorie, triés par ovations à la génération)
     public function generer(string $anneeEdition): void
@@ -41,7 +41,7 @@ class ResultatService
                     'note_technique' => null,
                     'note_originalite' => null,
                     'note_presence' => null,
-                    'note_perfection' => null,
+                    'note_authenticite' => null,
                     'score_public' => null,
                     'score_final' => null,
                 ]);
@@ -56,7 +56,7 @@ class ResultatService
         }
     }
 
-    // Calcule les scores publics (ovations) pour une édition : 15 pts max à partir de 2500 votes, sinon proportionnel
+    // Calcule les scores publics (ovations) pour une édition : 10 pts max à partir de 2500 votes, sinon proportionnel
     public function calculerScoresPublics(string $anneeEdition): void
     {
         $resultats = Resultat::byEdition($anneeEdition)->get();

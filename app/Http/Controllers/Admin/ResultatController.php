@@ -48,29 +48,29 @@ class ResultatController extends Controller
     public function update(Request $request, Resultat $resultat)
     {
         $validated = $request->validate([
-            'note_technique' => 'nullable|numeric|min:0|max:20',
-            'note_originalite' => 'nullable|numeric|min:0|max:20',
+            'note_technique' => 'nullable|numeric|min:0|max:30',
+            'note_originalite' => 'nullable|numeric|min:0|max:25',
             'note_presence' => 'nullable|numeric|min:0|max:20',
-            'note_perfection' => 'nullable|numeric|min:0|max:25',
+            'note_authenticite' => 'nullable|numeric|min:0|max:10',
         ], [
             'note_technique.numeric' => 'La note technique doit être un nombre.',
-            'note_technique.min' => 'La note technique doit être comprise entre 0 et 20.',
-            'note_technique.max' => 'La note technique doit être comprise entre 0 et 20.',
+            'note_technique.min' => 'La note technique doit être comprise entre 0 et 30.',
+            'note_technique.max' => 'La note technique doit être comprise entre 0 et 30.',
             'note_originalite.numeric' => 'La note d\'originalité doit être un nombre.',
-            'note_originalite.min' => 'La note d\'originalité doit être comprise entre 0 et 20.',
-            'note_originalite.max' => 'La note d\'originalité doit être comprise entre 0 et 20.',
+            'note_originalite.min' => 'La note d\'originalité doit être comprise entre 0 et 25.',
+            'note_originalite.max' => 'La note d\'originalité doit être comprise entre 0 et 25.',
             'note_presence.numeric' => 'La note de présence doit être un nombre.',
             'note_presence.min' => 'La note de présence doit être comprise entre 0 et 20.',
             'note_presence.max' => 'La note de présence doit être comprise entre 0 et 20.',
-            'note_perfection.numeric' => 'La note de perfection doit être un nombre.',
-            'note_perfection.min' => 'La note de perfection doit être comprise entre 0 et 25.',
-            'note_perfection.max' => 'La note de perfection doit être comprise entre 0 et 25.',
+            'note_authenticite.numeric' => 'La note d\'authenticité doit être un nombre.',
+            'note_authenticite.min' => 'La note d\'authenticité doit être comprise entre 0 et 10.',
+            'note_authenticite.max' => 'La note d\'authenticité doit être comprise entre 0 et 10.',
         ]);
 
         $resultat->note_technique = $validated['note_technique'];
         $resultat->note_originalite = $validated['note_originalite'];
         $resultat->note_presence = $validated['note_presence'];
-        $resultat->note_perfection = $validated['note_perfection'];
+        $resultat->note_authenticite = $validated['note_authenticite'];
         $resultat->recalculerScoreFinal();
         $resultat->save();
 
