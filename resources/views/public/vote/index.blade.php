@@ -470,7 +470,7 @@
                                 </div>
                                 <div class="mt-auto">
                                     <span class="badge fw-semibold px-2 py-1" style="background: #9B4D07; color: #fff; font-size: 0.85rem;">
-                                        {{ $r->score_final_affichage }}/95
+                                        {{ $r->score_final_affichage }}/100
                                     </span>
                                     <small class="d-block text-muted" style="font-size: 0.65rem;">Score final</small>
                                 </div>

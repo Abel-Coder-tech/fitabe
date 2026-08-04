@@ -20,7 +20,7 @@
             @csrf @method('PUT')
             <p class="small text-muted mb-3">
                 Règlement : maitrise technique 30 pts · originalité et créativité 25 pts · présence scénique 20 pts ·
-                authenticité culturelle 10 pts · ovations 10 pts. Total : 95 pts.
+                authenticité culturelle 10 pts · ovations 15 pts. Total : 100 pts.
             </p>
             <div class="row g-2 mb-3">
                 <div class="col-3">
@@ -54,14 +54,14 @@
                 <div class="p-3 rounded-3 mb-3" style="background: #fdfaf5; border: 1px solid #E3D5AD;">
                     <small class="text-muted d-block">Aperçu du score final</small>
                     <div class="d-flex flex-wrap gap-2 justify-content-between mt-1 small">
-                        <span>Ovation (/10) : <strong>{{ $resultat->score_public_affichage }}</strong></span>
+                        <span>Ovation (/15) : <strong>{{ $resultat->score_public_affichage }}</strong></span>
                         <span>Technique (/30) : <strong>{{ $resultat->note_technique }}</strong></span>
                         <span>Originalité (/25) : <strong>{{ $resultat->note_originalite }}</strong></span>
                         <span>Présence (/20) : <strong>{{ $resultat->note_presence }}</strong></span>
                         <span>Authenticité (/10) : <strong>{{ $resultat->note_authenticite }}</strong></span>
                     </div>
                     <div class="mt-2 text-end">
-                        <span class="fw-bold" style="color: #9B4D07;">Jury : {{ $resultat->note_jury_affichage }}/85 · Final : {{ $resultat->score_final_affichage }}/95</span>
+                        <span class="fw-bold" style="color: #9B4D07;">Jury : {{ $resultat->note_jury_affichage }}/85 · Final : {{ $resultat->score_final_affichage }}/100</span>
                     </div>
                 </div>
             @endif

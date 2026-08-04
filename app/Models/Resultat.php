@@ -84,7 +84,7 @@ class Resultat extends Model
         return $query->whereIn('prix', [1, 2, 3])->orderBy('prix');
     }
 
-    // Calcule le score final selon le règlement : ovations /10 + technique /30 + originalité /25 + présence /20 + authenticité /10 = 95
+    // Calcule le score final selon le règlement : ovations /15 + technique /30 + originalité /25 + présence /20 + authenticité /10 = 100
     public function recalculerScoreFinal(): void
     {
         if (
