@@ -39,6 +39,33 @@ class Resultat extends Model
         };
     }
 
+    // Formate un score sans décimales inutiles (90.00 -> 90, 80.50 -> 80.5)
+    public static function formaterScore(mixed $valeur): string
+    {
+        if ($valeur === null || $valeur === '') {
+            return '-';
+        }
+        return rtrim(rtrim(number_format((float) $valeur, 2, '.', ''), '0'), '.');
+    }
+
+    // Score public affiché (fallback score final -> score public -> '-')
+    public function getScorePublicAffichageAttribute(): string
+    {
+        return static::formaterScore($this->score_public);
+    }
+
+    // Score final affiché (fallback : score public si aucun score final)
+    public function getScoreFinalAffichageAttribute(): string
+    {
+        return static::formaterScore($this->score_final ?? $this->score_public);
+    }
+
+    // Note jury affichée
+    public function getNoteJuryAffichageAttribute(): string
+    {
+        return static::formaterScore($this->note_jury);
+    }
+
     // Scope : filtre par année d'édition
     public function scopeByEdition(Builder $query, string $annee): Builder
     {

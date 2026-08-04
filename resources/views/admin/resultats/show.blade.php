@@ -88,8 +88,8 @@
                                 <td>{{ $r->note_originalite ?? '-' }}</td>
                                 <td>{{ $r->note_presence ?? '-' }}</td>
                                 <td>{{ $r->note_perfection ?? '-' }}</td>
-                                <td>{{ $r->score_public ?? '-' }}</td>
-                                <td><strong>{{ $r->score_final ?? '-' }}</strong></td>
+                                <td>{{ $r->score_public_affichage }}</td>
+                                <td><strong>{{ $r->score_final_affichage }}</strong></td>
                                 <td>
                                     @if(auth()->user()?->role === 'super_admin')
                                     <a href="{{ route('admin.resultats.edit', $r) }}" class="btn btn-sm btn-warning">

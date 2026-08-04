@@ -51,14 +51,14 @@
                 <div class="p-3 rounded-3 mb-3" style="background: #fdfaf5; border: 1px solid #E3D5AD;">
                     <small class="text-muted d-block">Aperçu du score final</small>
                     <div class="d-flex justify-content-between mt-1 small">
-                        <span>Ovation (/15) : <strong>{{ $resultat->score_public }}</strong></span>
+                        <span>Ovation (/15) : <strong>{{ $resultat->score_public_affichage }}</strong></span>
                         <span>Technique (/20) : <strong>{{ $resultat->note_technique }}</strong></span>
                         <span>Originalité (/20) : <strong>{{ $resultat->note_originalite }}</strong></span>
                         <span>Présence (/20) : <strong>{{ $resultat->note_presence }}</strong></span>
                         <span>Perfection (/25) : <strong>{{ $resultat->note_perfection }}</strong></span>
                     </div>
                     <div class="mt-2 text-end">
-                        <span class="fw-bold" style="color: #9B4D07;">Jury : {{ $resultat->note_jury }}/80 · Final : {{ $resultat->score_final }}/100</span>
+                        <span class="fw-bold" style="color: #9B4D07;">Jury : {{ $resultat->note_jury_affichage }}/80 · Final : {{ $resultat->score_final_affichage }}/100</span>
                     </div>
                 </div>
             @endif
