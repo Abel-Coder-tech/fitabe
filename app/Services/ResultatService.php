@@ -77,23 +77,32 @@ class ResultatService
     // Les candidats sans score final complet (null) passent après les candidats classés.
     public function reclasser(string $anneeEdition): void
     {
-        $resultats = Resultat::byEdition($anneeEdition)->get();
+        DB::transaction(function () use ($anneeEdition) {
+            $resultats = Resultat::byEdition($anneeEdition)->get();
 
-        foreach ($resultats->groupBy('categorie') as $items) {
-            $sorted = $items
-                ->sortBy([
-                    ['score_final', 'desc'],
-                    ['nombre_votes', 'desc'],
-                ])
-                ->values();
+            foreach ($resultats->groupBy('categorie') as $items) {
+                $sorted = $items
+                    ->sortBy([
+                        ['score_final', 'desc'],
+                        ['nombre_votes', 'desc'],
+                    ])
+                    ->values();
 
-            foreach ($sorted as $index => $r) {
-                $nouveauPrix = $index + 1;
-                if ((int) $r->prix !== $nouveauPrix) {
-                    $r->prix = $nouveauPrix;
+                // Passe 1 : décale tous les prix vers une plage temporaire unique
+                // pour éviter les violations de la contrainte unique
+                // (annee_edition, categorie, prix) lors des échanges de positions.
+                $decalage = $sorted->count();
+                foreach ($sorted as $r) {
+                    $r->prix = (int) $r->prix + $decalage;
+                    $r->save();
+                }
+
+                // Passe 2 : attribue les prix finaux (1er, 2ème, 3ème...)
+                foreach ($sorted as $index => $r) {
+                    $r->prix = $index + 1;
                     $r->save();
                 }
             }
-        }
+        });
     }
 }
