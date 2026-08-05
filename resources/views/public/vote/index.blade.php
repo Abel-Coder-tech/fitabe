@@ -410,6 +410,12 @@
                 <button class="btn filter-btn" data-filter="{{ Str::slug($cat) }}">{{ $cat }}</button>
             @endforeach
         </div>
+        <div class="mt-3" style="max-width: 520px;">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0" style="color: #9B4D07;"><i class="bi bi-search"></i></span>
+                <input type="search" id="candidatSearch" class="form-control border-start-0" placeholder="Rechercher par nom, nom de scène, numéro, catégorie…" aria-label="Rechercher un candidat">
+            </div>
+        </div>
     </div>
 </section>
 
@@ -490,7 +496,7 @@
         @else
             <div class="row g-3 g-md-4 align-items-stretch justify-content-center justify-content-lg-start" id="candidatsGrid">
                 @foreach($candidats as $candidat)
-                    <div class="col-10 col-md-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}">
+                    <div class="col-10 col-md-6 col-lg-3 candidat-col" data-candidat-id="{{ $candidat->id }}" data-categorie="{{ Str::slug($candidat->categorie ?? '') }}" data-search="{{ Str::lower(Str::transliterate(trim($candidat->nom.' '.($candidat->nom_scene ?? '').' '.($candidat->numero_scene ?? '').' '.($candidat->biographie ?? '').' '.($candidat->categorie ?? '')))) }}">
                         <div class="card candidate-card shadow-sm">
                             <div class="candidat-cover">
                                 @if($candidat->photo)
@@ -997,21 +1003,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const filterBtns = document.querySelectorAll('.filter-btn');
     const colonnes = document.querySelectorAll('.candidat-col');
+    const searchInput = document.getElementById('candidatSearch');
+    let categorieActive = 'all';
+
+    function appliquerFiltres() {
+        const q = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        colonnes.forEach(col => {
+            const categorieOk = categorieActive === 'all' || col.dataset.categorie === categorieActive;
+            const rechercheOk = !q || (col.dataset.search || '').includes(q);
+            col.style.display = (categorieOk && rechercheOk) ? '' : 'none';
+        });
+    }
 
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             filterBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            const filter = this.dataset.filter;
-            colonnes.forEach(col => {
-                if (filter === 'all' || col.dataset.categorie === filter) {
-                    col.style.display = '';
-                } else {
-                    col.style.display = 'none';
-                }
-            });
+            categorieActive = this.dataset.filter;
+            appliquerFiltres();
         });
     });
+
+    if (searchInput) {
+        searchInput.addEventListener('input', appliquerFiltres);
+    }
 
     // ==================== CANDIDAT PARTAGÉ (auto-scroll + highlight) ====================
     @if ($candidatPartage)
@@ -1020,6 +1035,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const card = targetBtn.closest('.candidat-col');
         if (card) {
             const cat = card.dataset.categorie;
+            if (searchInput) searchInput.value = '';
             const filterBtn = document.querySelector('.filter-btn[data-filter="' + cat + '"]');
             if (filterBtn) filterBtn.click();
             setTimeout(function() {
