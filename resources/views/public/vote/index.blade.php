@@ -553,7 +553,11 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                    @endforeach
+            </div>
+            <div id="aucunResultat" class="alert alert-info text-center py-5 d-none" role="alert">
+                <i class="bi bi-search fs-1 d-block mb-3"></i>
+                Aucun candidat ne correspond à votre recherche.
             </div>
         @endif
 </div>
@@ -1004,15 +1008,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterBtns = document.querySelectorAll('.filter-btn');
     const colonnes = document.querySelectorAll('.candidat-col');
     const searchInput = document.getElementById('candidatSearch');
+    const aucunResultat = document.getElementById('aucunResultat');
     let categorieActive = 'all';
 
     function appliquerFiltres() {
         const q = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        let visibles = 0;
         colonnes.forEach(col => {
             const categorieOk = categorieActive === 'all' || col.dataset.categorie === categorieActive;
             const rechercheOk = !q || (col.dataset.search || '').includes(q);
-            col.style.display = (categorieOk && rechercheOk) ? '' : 'none';
+            const visible = categorieOk && rechercheOk;
+            col.style.display = visible ? '' : 'none';
+            if (visible) visibles++;
         });
+        if (aucunResultat) aucunResultat.classList.toggle('d-none', visibles > 0);
     }
 
     filterBtns.forEach(btn => {
