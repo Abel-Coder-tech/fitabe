@@ -27,14 +27,26 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // Page 500 propre et identique pour tous : aucun détail d'erreur affiché.
-        // Les erreurs de validation (422) gardent leur retour inline en rouge sous les champs.
         // La trace complète reste dans storage/logs/laravel.log.
+        // On laisse passer les exceptions qui ont leur propre gestion intégrée :
+        //   - AuthenticationException (visiteur non connecté) -> redirection vers /login
+        //   - ValidationException (formulaire invalide) -> retour inline des erreurs (422)
+        //   - Erreurs HTTP < 500 (404, 403, 419) -> pages d'erreur Laravel par défaut
         $exceptions->render(function (Throwable $e, Request $request) {
-            $status = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
-            if ($status < 500) {
+            if ($e instanceof HttpExceptionInterface) {
+                $status = $e->getStatusCode();
+                if ($status < 500) {
+                    return null;
+                }
+
+                return response()->view('errors.500', [], $status);
+            }
+
+            if ($e instanceof \Illuminate\Auth\AuthenticationException
+                || $e instanceof \Illuminate\Validation\ValidationException) {
                 return null;
             }
 
-            return response()->view('errors.500', [], $status);
+            return response()->view('errors.500', [], 500);
         });
     })->create();
