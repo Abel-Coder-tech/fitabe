@@ -8,11 +8,15 @@ use Illuminate\Http\Request;
 
 class MediaController extends Controller
 {
-    // Affiche la liste paginée des médias
+    // Affiche la liste paginée des médias (photos et vidéos séparées)
     public function index()
     {
-        $medias = Medias::latest()->paginate(request()->integer('per_page', 10));
-        return view('admin.media.index', compact('medias'));
+        $perPage = request()->integer('per_page', 10);
+
+        $photos = Medias::where('type', 'photo')->latest()->paginate($perPage)->withQueryString();
+        $videos = Medias::where('type', 'video')->latest()->paginate($perPage)->withQueryString();
+
+        return view('admin.media.index', compact('photos', 'videos'));
     }
 
     // Affiche le formulaire de création
