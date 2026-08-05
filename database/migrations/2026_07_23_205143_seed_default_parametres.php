@@ -7,8 +7,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        DB::table('parametres')->truncate();
-
         $defaults = [
             ['cle' => 'contact_telephone', 'valeur' => '+229 01 66 16 75 88', 'created_at' => now(), 'updated_at' => now()],
             ['cle' => 'contact_email', 'valeur' => 'strategemediaevents@gmail.com', 'created_at' => now(), 'updated_at' => now()],
@@ -32,6 +30,10 @@ return new class extends Migration
 
     public function down(): void
     {
-        DB::table('parametres')->truncate();
+        DB::table('parametres')->whereIn('cle', [
+            'contact_telephone', 'contact_email', 'social_facebook', 'social_instagram',
+            'social_youtube', 'social_tiktok', 'hero_titre', 'hero_sous_titre',
+            'texte_info_vote', 'texte_mediatheque',
+        ])->delete();
     }
 };
