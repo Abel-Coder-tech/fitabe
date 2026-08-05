@@ -10,7 +10,7 @@ class SoutienController extends Controller
 {
     public function index()
     {
-        $soutiens = Soutien::ordered()->paginate(request()->integer('per_page', 10));
+        $soutiens = Soutien::latest()->paginate(request()->integer('per_page', 10));
         return view('admin.soutiens.index', compact('soutiens'));
     }
 
