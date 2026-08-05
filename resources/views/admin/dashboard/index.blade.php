@@ -385,9 +385,6 @@
                 </tbody>
             </table>
         </div>
-        @if($dernieresTransactions->hasPages() || $dernieresTransactions->total() > 0)
-            {{ $dernieresTransactions->links('partials.pagination', ['label' => 'transaction(s)']) }}
-        @endif
     </div>
 </div>
 

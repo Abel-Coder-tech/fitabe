@@ -53,7 +53,8 @@ class DashboardController extends Controller
         $dernieresTransactions = Votes::with('candidat')
             ->confirme()
             ->latest()
-            ->paginate(request()->integer('per_page', 10));
+            ->take(10)
+            ->get();
 
         $messagesRecents = Contact::latest()->take(5)->get();
 
