@@ -16,7 +16,7 @@
         <p class="text-muted small mb-3">{{ $resultat->categorie }} · {{ $resultat->annee_edition }} · {{ $resultat->nombre_votes }} votes</p>
 
         {{-- Formulaire de notation --}}
-        <form method="POST" action="{{ route('admin.resultats.update', $resultat) }}">
+        <form method="POST" action="{{ route('admin.resultats.update', $resultat) }}" novalidate>
             @csrf @method('PUT')
             <p class="small text-muted mb-3">
                 Règlement : maitrise technique 30 pts · originalité et créativité 25 pts · présence scénique 20 pts ·

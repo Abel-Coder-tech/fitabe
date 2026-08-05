@@ -32,6 +32,11 @@ class CandidatController extends Controller
 
     public function store(Request $request)
     {
+        // Normalise « 01 » -> « 1 » pour les champs numériques (même « integer » refuse « 01 »)
+        $request->merge([
+            'numero_scene' => preg_replace('/^0+(?=\d)/', '', (string) $request->input('numero_scene')),
+        ]);
+
         $validated = $request->validate([
             'nom' => 'required|string|max:150',
             'nom_scene' => 'nullable|string|max:150',
@@ -101,6 +106,11 @@ class CandidatController extends Controller
 
     public function update(Request $request, Candidats $candidat)
     {
+        // Normalise « 01 » -> « 1 » pour les champs numériques (même « integer » refuse « 01 »)
+        $request->merge([
+            'numero_scene' => preg_replace('/^0+(?=\d)/', '', (string) $request->input('numero_scene')),
+        ]);
+
         $validated = $request->validate([
             'nom' => 'required|string|max:150',
             'nom_scene' => 'nullable|string|max:150',
@@ -163,6 +173,11 @@ class CandidatController extends Controller
 
     public function updatePlaces(Request $request)
     {
+        // Normalise « 01 » -> « 1 » pour que la règle « integer » l'accepte
+        $request->merge([
+            'places' => preg_replace('/^0+(?=\d)/', '', (string) $request->input('places')),
+        ]);
+
         $validated = $request->validate([
             'categorie' => ['required', 'string', Rule::in(Candidats::CATEGORIES)],
             'places' => 'required|integer|min:1|max:100',

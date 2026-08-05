@@ -26,25 +26,15 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        // Détails d'erreur visibles uniquement par le super_admin connecté.
-        // Tout le monde (admin inclus) voit la page 500 générique sinon.
+        // Page 500 propre et identique pour tous : aucun détail d'erreur affiché.
+        // Les erreurs de validation (422) gardent leur retour inline en rouge sous les champs.
+        // La trace complète reste dans storage/logs/laravel.log.
         $exceptions->render(function (Throwable $e, Request $request) {
             $status = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
             if ($status < 500) {
                 return null;
             }
 
-            $user = $request->user();
-            if ($user && $user->role === 'super_admin') {
-                return response()->view('errors.admin', [
-                    'message' => $e->getMessage(),
-                    'class'   => get_class($e),
-                    'file'    => $e->getFile(),
-                    'line'    => $e->getLine(),
-                    'trace'   => $e->getTraceAsString(),
-                ], 500);
-            }
-
-            return null;
+            return response()->view('errors.500', [], $status);
         });
     })->create();

@@ -62,12 +62,12 @@
                             <th>#</th>
                             <th>Candidat</th>
                             <th>Ovations</th>
-                            <th>Technique <small class="text-muted">/30</small></th>
-                            <th>Originalité <small class="text-muted">/25</small></th>
-                            <th>Présence <small class="text-muted">/20</small></th>
-                            <th>Authenticité <small class="text-muted">/10</small></th>
-                            <th>Score Public <small class="text-muted">/15</small></th>
-                            <th>Score Final <small class="text-muted">/100</small></th>
+                            <th>Technique </th>
+                            <th>Originalité </th>
+                            <th>Présence </th>
+                            <th>Authenticité </th>
+                            <th>Score Public </th>
+                            <th>Score Final </th>
                             <th>Action</th>
                         </tr>
                     </thead>
