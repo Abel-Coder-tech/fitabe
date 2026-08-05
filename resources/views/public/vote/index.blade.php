@@ -456,6 +456,7 @@
                             <div class="card-body result-body d-flex flex-column px-2 py-2 text-center">
                                 <h6 class="fw-bold mb-0" style="color: var(--vote-brown); font-size: 0.95rem;">{{ $r->candidat_nom }}</h6>
                                 <span class="text-muted" style="font-size: 0.75rem;">{{ $r->categorie }}</span>
+                                <hr class="my-1 w-100" style="border-color: #eadbc3; opacity: 0.5;">
                                 <div class="mt-1 mb-1" style="font-size: 0.78rem;">
                                     <div class="d-flex justify-content-between px-1">
                                         <span style="color: #9B4D07;">Ovations</span>
@@ -468,6 +469,7 @@
                                     </div>
                                     @endif
                                 </div>
+                                <hr class="my-1 w-100" style="border-color: #eadbc3; opacity: 0.5;">
                                 <div class="mt-auto">
                                     <span class="badge fw-semibold px-2 py-1" style="background: #9B4D07; color: #fff; font-size: 0.85rem;">
                                         {{ $r->score_final_affichage }}/100
