@@ -3,7 +3,7 @@
 @section('title', 'Règlement — ' . config('app.name', 'FITAB'))
 
 @section('content')
-@php $derniereMiseAJour = 'juillet 2026'; @endphp
+@php $derniereMiseAJour = 'août 2026'; @endphp
 <section class="py-5" style="background: #f8f6f3; min-height: 60vh;">
     <div class="container">
         <div class="row justify-content-center">
@@ -60,11 +60,15 @@
                                     <tbody>
                                         <tr><td>Maîtrise technique (technique, précision, qualité d'exécution)</td><td>30 %</td></tr>
                                         <tr><td>Originalité et créativité</td><td>25 %</td></tr>
-                                        <tr><td>Présence scénique, Authenticité culturelle et identité artistique</td><td>30 %</td></tr>
-                                        <tr><td>Ovation (100 FCFA)</td><td>15 %</td></tr>
+                                        <tr><td>Présence scénique</td><td>20 %</td></tr>
+                                        <tr><td>Authenticité culturelle et identité artistique</td><td>10 %</td></tr>
+                                        <tr style="background: #f8f6f3;"><td class="fw-bold">Sous-total Jury</td><td class="fw-bold">85 %</td></tr>
+                                        <tr><td>Ovation du public (1 ovation = 100 FCFA)</td><td>15 %</td></tr>
+                                        <tr style="background: #f8f6f3;"><td class="fw-bold">TOTAL</td><td class="fw-bold">100 %</td></tr>
                                     </tbody>
                                 </table>
                             </div>
+                            <p>La note finale de chaque candidat est composée de la note du jury (sur 85 points) et de l'ovation du public (sur 15 points), soit un total de <strong>100 points</strong>.</p>
                             <p>Les délibérations du jury sont confidentielles. Les résultats sont scellés jusqu'à leur annonce officielle lors de chaque phase de compétition. Les décisions du jury sont souveraines et sans appel.</p>
 
                             <h6 class="fw-bold mt-4 mb-2">Article 6 — Système officiel des Ovations</h6>
@@ -76,7 +80,7 @@
                                 <li>Les ovations se clôturent automatiquement le dimanche 22 novembre 2026 à 23h59 (GMT+1)</li>
                                 <li>Le paiement s'effectue via Fedapay (MTN Mobile Money, Moov Flooz, Orange Money)</li>
                                 <li>Toute ovation validée et payée est définitive et non remboursable</li>
-                                <li>Le nombre d'ovations reçues est pris en compte dans l'évaluation finale, selon les modalités définies par le comité artistique du FITAB</li>
+                                <li>Le nombre d'ovations reçues compte pour <strong>15 % de la note finale</strong> (converti en points sur 15)</li>
                                 <li>En cas d'anomalie technique affectant les ovations, l'Organisation se réserve le droit de corriger ou d'annuler les transactions concernées</li>
                             </ul>
 
@@ -141,7 +145,7 @@
                             <p>En cas de désaccord persistant, les parties s'engagent à recourir à une procédure de médiation amiable avant toute action judiciaire. Le présent règlement est régi par le droit en vigueur en République du Bénin.</p>
 
                             <hr class="my-4">
-                            <p>Fait à Porto-Novo, Juillet 2026.</p>
+                            <p>Fait à Porto-Novo, Août 2026.</p>
                             <div class="row">
                                 <div class="col-6">
                                     <p class="mb-1"><strong>Pour STRATÈGE MEDIA EVENTS</strong></p>

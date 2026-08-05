@@ -62,12 +62,12 @@
                             <th>#</th>
                             <th>Candidat</th>
                             <th>Ovations</th>
-                            <th>Technique </th>
-                            <th>Originalité </th>
-                            <th>Présence </th>
-                            <th>Authenticité </th>
-                            <th>Score Public </th>
-                            <th>Score Final </th>
+                            <th>Technique /30</th>
+                            <th>Originalité /25</th>
+                            <th>Présence /20</th>
+                            <th>Authenticité /10</th>
+                            <th>Score Public /15</th>
+                            <th>Score Final /100</th>
                             <th>Action</th>
                         </tr>
                     </thead>

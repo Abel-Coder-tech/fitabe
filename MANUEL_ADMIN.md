@@ -114,12 +114,13 @@ Les résultats sont organisés par année d'édition. Cliquez sur une année pou
 
 ### Notation Jury
 1. Cliquez sur le bouton **Noter** à côté d'un résultat
-2. Saisissez les notes sur 20 :
-   - **Technique** (pondération 30 %)
-   - **Originalité** (pondération 25 %)
-   - **Présence** (pondération 30 %)
-3. Le score public (pondération 15 %) est calculé automatiquement à partir des votes
-4. Le score final est recalculé automatiquement
+2. Saisissez les notes (total jury : 85 points) :
+   - **Technique** (/30)
+   - **Originalité** (/25)
+   - **Présence** (/20)
+   - **Authenticité culturelle** (/10)
+3. Le score public (sur 15) est calculé automatiquement à partir des ovations
+4. Le score final (sur 100 = jury 85 + public 15) est recalculé automatiquement
 
 ### Publication
 - **Publier / Dépublier** — basculez la visibilité des résultats sur le site public

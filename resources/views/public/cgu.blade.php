@@ -60,7 +60,7 @@
                                 <li>Toute ovation validée est définitive et ne peut donner lieu à aucun remboursement, sauf en cas d'erreur technique dûment constatée et validée par l'Organisation</li>
                                 <li>L'utilisateur est seul responsable de la saisie correcte du nombre d'ovations souhaité avant validation</li>
                                 <li>L'Organisation se réserve le droit de suspendre le système d'ovations en cas de suspicion de fraude ou d'anomalie technique</li>
-                                <li>Les ovations constituent un critère de sélection officielle parmi d'autres critères définis par le jury du FITAB</li>
+                                <li>Les ovations constituent un critère de sélection officielle : elles comptent pour <strong>15 % de la note finale</strong>, en complément de la note du jury (85 %)</li>
                             </ul>
 
                             <h6 class="fw-bold mt-4 mb-2">6. Propriété intellectuelle</h6>
