@@ -121,7 +121,7 @@
             align-items: center;
         }
         .public-header .brand-logo img {
-            height: 50px;
+            height: 80px;
             display: block;
         }
 
@@ -302,7 +302,7 @@
                 {{-- À propos --}}
                 <div class="col-12 col-lg-4">
                     <div class="d-flex align-items-center gap-2 mb-3 brand">
-                        <img src="{{ asset('images/logo.png') }}" alt="{{ $site['edition_nom'] }}" height="60"
+                        <img src="{{ asset('images/logo.png') }}" alt="{{ $site['edition_nom'] }}" height="80"
                              onerror="this.style.display='none'">
                     </div>
                     <p class="small lh-lg" style="color: rgba(227,213,173,0.65);">
