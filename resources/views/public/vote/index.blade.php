@@ -409,11 +409,11 @@
             @foreach($categories as $cat)
                 <button class="btn filter-btn" data-filter="{{ Str::slug($cat) }}">{{ $cat }}</button>
             @endforeach
-        </div>
-        <div class="mt-3" style="max-width: 520px;">
-            <div class="input-group">
-                <span class="input-group-text bg-white border-end-0" style="color: #9B4D07;"><i class="bi bi-search"></i></span>
-                <input type="search" id="candidatSearch" class="form-control border-start-0" placeholder="Rechercher par nom, nom de scène, numéro, catégorie…" aria-label="Rechercher un candidat">
+            <div class="ms-lg-auto mt-2 mt-lg-0 w-100 w-lg-auto" style="max-width: 320px; flex-grow: 1; flex-basis: 260px;">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0" style="color: #9B4D07;"><i class="bi bi-search"></i></span>
+                    <input type="search" id="candidatSearch" class="form-control border-start-0" placeholder="Rechercher un candidat…" aria-label="Rechercher un candidat">
+                </div>
             </div>
         </div>
     </div>
