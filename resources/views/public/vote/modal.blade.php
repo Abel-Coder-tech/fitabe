@@ -242,7 +242,7 @@
                                     <button type="button" onclick="changerQte(-1)" id="btnMoins"
                                             class="qte-btn disabled">−</button>
                                     <input type="number" id="quantite" name="quantite"
-                                           value="1" min="1" max="1000"
+                                           value="1" min="1"
                                            class="qte-input"
                                            oninput="saisirQte(this)">
                                     <button type="button" onclick="changerQte(1)" id="btnPlus"

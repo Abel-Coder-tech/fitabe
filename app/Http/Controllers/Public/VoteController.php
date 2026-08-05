@@ -95,14 +95,13 @@ class VoteController extends Controller
 
         $validated = $request->validate([
             'candidat_id' => 'required|exists:candidates,id',
-            'quantite' => 'required|integer|min:1|max:1000',
+            'quantite' => 'required|integer|min:1',
         ], [
             'candidat_id.required' => 'Veuillez sélectionner un candidat.',
             'candidat_id.exists' => 'Ce candidat n\'existe pas.',
             'quantite.required' => 'Veuillez indiquer un nombre d\'ovations.',
             'quantite.integer' => 'Le nombre d\'ovations doit être un nombre entier.',
             'quantite.min' => 'Le nombre d\'ovations doit être d\'au moins 1.',
-            'quantite.max' => 'Le nombre d\'ovations ne doit pas dépasser 1000.',
         ]);
 
         $validated['candidate_id'] = $validated['candidat_id'];

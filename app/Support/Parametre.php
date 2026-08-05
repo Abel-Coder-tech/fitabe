@@ -34,7 +34,7 @@ class Parametre
     // fenêtre effective (début manuel éventuel sinon dates planifiées) avec arrêt auto.
     public static function voteMode(): string
     {
-        $statut = \App\Models\Parametres::where('cle', 'statut_vote')->value('valeur');
+        $statut = self::get('statut_vote');
         [$debutReel, $finReelle] = static::fenetreEffective();
 
         if (!$debutReel || !$finReelle) {
@@ -72,8 +72,8 @@ class Parametre
     // Retourne [debutReel|null, finReelle|null].
     public static function fenetreEffective(): array
     {
-        $debut = \App\Models\Parametres::where('cle', 'date_debut_vote')->value('valeur');
-        $fin = \App\Models\Parametres::where('cle', 'date_fin_vote')->value('valeur');
+        $debut = self::get('date_debut_vote');
+        $fin = self::get('date_fin_vote');
 
         if (!$debut || !$fin) {
             return [null, null];
@@ -81,7 +81,7 @@ class Parametre
 
         $debutPlanne = \Carbon\Carbon::parse($debut);
         $finPlannee = \Carbon\Carbon::parse($fin);
-        $debutManuel = \App\Models\Parametres::where('cle', 'debut_effectif')->value('valeur');
+        $debutManuel = self::get('debut_effectif');
 
         if ($debutManuel) {
             $debutReel = \Carbon\Carbon::parse($debutManuel);
@@ -97,9 +97,9 @@ class Parametre
     // Début effectif des ovations (démarrage manuel sinon début planifié).
     public static function debutEffectif(): ?string
     {
-        $manuel = \App\Models\Parametres::where('cle', 'debut_effectif')->value('valeur');
+        $manuel = self::get('debut_effectif');
 
-        return $manuel ?: \App\Models\Parametres::where('cle', 'date_debut_vote')->value('valeur') ?: null;
+        return $manuel ?: self::get('date_debut_vote') ?: null;
     }
 
     // Fin effective des ovations (fin planifiée décalée si démarrage manuel).
