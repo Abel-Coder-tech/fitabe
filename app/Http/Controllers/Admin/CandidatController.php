@@ -116,7 +116,7 @@ class CandidatController extends Controller
             'nom_scene' => 'nullable|string|max:150',
             'categorie' => ['required', 'string', Rule::in(Candidats::CATEGORIES)],
             'numero_scene' => 'nullable|integer',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024',
             'biographie' => 'nullable|string|max:500',
         ],
         [
@@ -128,7 +128,7 @@ class CandidatController extends Controller
             'numero_scene.integer' => 'Le numéro de scène doit être un entier.',
             'photo.image' => 'Le fichier doit être une image.',
             'photo.mimes' => 'Le fichier doit être au format jpeg, png, jpg ou gif.',
-            'photo.max' => 'La taille maximal de l\'image ne doit pas dépasser 2 Mo.',
+            'photo.max' => 'La taille maximal de l\'image ne doit pas dépasser 1 Mo.',
             'biographie.string' => 'La biographie doit être une chaîne de caractères.',
             'biographie.max' => 'La biographie ne doit pas dépasser 500 caractères.',
         ]);
