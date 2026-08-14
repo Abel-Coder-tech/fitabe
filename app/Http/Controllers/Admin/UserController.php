@@ -85,8 +85,11 @@ class UserController extends Controller
         return to_route('admin.users.index')->with('success', 'Utilisateur mis à jour avec succès.');
     }
 
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
+        if ($user->id === $request->user()->id) {
+            return to_route('admin.users.index')->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
+        }
         if ($user->role === 'super_admin') {
             return to_route('admin.users.index')->with('error', 'Le compte administrateur principal ne peut pas être supprimé.');
         }

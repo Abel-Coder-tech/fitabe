@@ -70,10 +70,12 @@
                                 <i class="bi bi-people me-1" style="color:#9B4D07;"></i>
                                 {{ $count }} candidat(s) inscrit(s)
                             </span>
+                            @if(auth()->user()?->isSuperAdmin())
                             <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3"
                                     onclick="ouvrirPlaces('{{ $cat->categorie }}', {{ $cat->places }})">
                                 <i class="bi bi-sliders me-1"></i> Modifier les places
                             </button>
+                            @endif
                         </div>
                         @if ($cat->candidats->isNotEmpty())
                             <div class="table-responsive">
@@ -110,10 +112,12 @@
                                                         <a href="{{ route('admin.candidats.edit', $candidat) }}" class="btn btn-sm btn-warning" title="Modifier">
                                                             <i class="bi bi-pencil-fill"></i>
                                                         </a>
+                                                        @if(auth()->user()?->isSuperAdmin())
                                                         <form action="{{ route('admin.candidats.destroy', $candidat) }}" method="POST" class="d-inline" onsubmit="return confirm('Confirmer la suppression ?')">
                                                             @csrf @method('DELETE')
                                                             <button class="btn btn-sm btn-danger" title="Supprimer"><i class="bi bi-trash-fill"></i></button>
                                                         </form>
+                                                        @endif
                                                     </div>
                                                 </td>
                                             </tr>

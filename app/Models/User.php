@@ -11,6 +11,10 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    public const ROLE_SUPER_ADMIN = 'super_admin';
+    public const ROLE_EDITOR = 'editor';
+    public const ROLES = [self::ROLE_SUPER_ADMIN, self::ROLE_EDITOR];
+
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, SoftDeletes;
 
@@ -22,6 +26,21 @@ class User extends Authenticatable
         'avatar',
         'preferences',
     ];
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === self::ROLE_SUPER_ADMIN;
+    }
+
+    public function isEditor(): bool
+    {
+        return $this->role === self::ROLE_EDITOR;
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array($this->role, self::ROLES, true);
+    }
 
     // Attributs masqués dans les tableaux/sérialisation
     protected $hidden = [

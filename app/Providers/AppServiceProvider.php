@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Candidats;
+use App\Policies\CandidatPolicy;
 use App\Support\Parametre;
 use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +22,12 @@ class AppServiceProvider extends ServiceProvider
     {
         Carbon::setLocale('fr');
         Paginator::useBootstrapFive();
+
+        // Gates de rôle — utilisables dans les vues (@can) et les contrôleurs (Gate::authorize)
+        Gate::define('admin', fn ($user) => $user->isAdmin());
+        Gate::define('super_admin', fn ($user) => $user->isSuperAdmin());
+
+        Gate::policy(Candidats::class, CandidatPolicy::class);
 
         View::share('site', [
             'contact_telephone' => Parametre::get('contact_telephone'),

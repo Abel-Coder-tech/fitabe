@@ -19,9 +19,14 @@ class Parametre
 
     public static function all(): array
     {
+        // Table absente (installation en cours, tests, premier boot avant migration) :
+        // on renvoie [] sans cacher le résultat pour ne pas figer un état vide.
+        if (!\Illuminate\Support\Facades\Schema::hasTable((new \App\Models\Parametres)->getTable())) {
+            return [];
+        }
+
         return Cache::remember('parametres', 3600, function () {
-            $rows = \App\Models\Parametres::pluck('valeur', 'cle')->toArray();
-            return $rows;
+            return \App\Models\Parametres::pluck('valeur', 'cle')->toArray();
         });
     }
 

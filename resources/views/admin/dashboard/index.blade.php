@@ -139,6 +139,7 @@
         </div>
     </div>
     <div class="col-md-4">
+        @if(auth()->user()?->isSuperAdmin())
         <div class="card stat-card p-3 border-0">
             <div class="d-flex justify-content-between align-items-start mb-2">
                 <span class="small text-muted">Recettes</span>
@@ -149,6 +150,7 @@
             <div class="h2 fw-bold mb-0" style="color: #3E1E05;">{{ number_format($totalRecettes, 0, ',', ' ') }} FCFA</div>
             <small class="text-muted">Recettes totales</small>
         </div>
+        @endif
     </div>
     <div class="col-md-4">
         <div class="card stat-card p-3 border-0">
@@ -294,7 +296,8 @@
             </div>
         </div>
 
-        {{-- Carte 3 : Logs paiements --}}
+        {{-- Carte 3 : Logs paiements (réservé super_admin) --}}
+        @if(auth()->user()?->isSuperAdmin())
         <div class="card border-0 rounded-4">
             <div class="card-header bg-transparent border-bottom d-flex align-items-center justify-content-between px-4 py-3">
                 <span class="fw-semibold" style="color: #9B4D07;">Logs paiements (webhooks)</span>
@@ -318,11 +321,13 @@
                 @endforelse
             </div>
         </div>
+        @endif
 
     </div>
 </div>
 
-{{-- ========== 5. TABLEAU DERNIÈRES TRANSACTIONS ========== --}}
+{{-- ========== 5. TABLEAU DERNIÈRES TRANSACTIONS (réservé super_admin) ========== --}}
+@if(auth()->user()?->isSuperAdmin())
 <div class="card border-0 rounded-4">
     <div class="card-header bg-transparent border-bottom d-flex align-items-center justify-content-between px-4 py-3">
         <span class="fw-semibold" style="color: #9B4D07;">Dernières transactions</span>
@@ -387,5 +392,6 @@
         </div>
     </div>
 </div>
+@endif
 
 @endsection

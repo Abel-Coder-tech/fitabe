@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Candidats;
 use App\Models\PlacesCategorie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class CandidatController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', Candidats::class);
+
         $categories = collect(Candidats::CATEGORIES)->map(fn ($cat) => (object) [
             'categorie' => $cat,
             'places' => PlacesCategorie::pour($cat),
@@ -25,6 +28,8 @@ class CandidatController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Candidats::class);
+
         $placesParCategorie = collect(Candidats::CATEGORIES)->mapWithKeys(fn ($cat) => [$cat => PlacesCategorie::pour($cat)]);
 
         return view('admin.candidats.create', compact('placesParCategorie'));
@@ -32,6 +37,8 @@ class CandidatController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('create', Candidats::class);
+
         // Normalise « 01 » -> « 1 » pour les champs numériques (même « integer » refuse « 01 »)
         $request->merge([
             'numero_scene' => preg_replace('/^0+(?=\d)/', '', (string) $request->input('numero_scene')),
@@ -94,11 +101,15 @@ class CandidatController extends Controller
 
     public function show(Candidats $candidat)
     {
+        $this->authorize('view', $candidat);
+
         return view('admin.candidats.show', compact('candidat'));
     }
 
     public function edit(Candidats $candidat)
     {
+        $this->authorize('update', $candidat);
+
         $placesParCategorie = collect(Candidats::CATEGORIES)->mapWithKeys(fn ($cat) => [$cat => PlacesCategorie::pour($cat)]);
 
         return view('admin.candidats.edit', compact('candidat', 'placesParCategorie'));
@@ -106,6 +117,8 @@ class CandidatController extends Controller
 
     public function update(Request $request, Candidats $candidat)
     {
+        $this->authorize('update', $candidat);
+
         // Normalise « 01 » -> « 1 » pour les champs numériques (même « integer » refuse « 01 »)
         $request->merge([
             'numero_scene' => preg_replace('/^0+(?=\d)/', '', (string) $request->input('numero_scene')),
@@ -167,12 +180,16 @@ class CandidatController extends Controller
 
     public function destroy(Candidats $candidat)
     {
+        $this->authorize('delete', $candidat);
+
         $candidat->forceDelete();
         return to_route('admin.candidats.index')->with('success', 'Candidat supprimé avec succès.');
     }
 
     public function updatePlaces(Request $request)
     {
+        Gate::authorize('super_admin');
+
         // Normalise « 01 » -> « 1 » pour que la règle « integer » l'accepte
         $request->merge([
             'places' => preg_replace('/^0+(?=\d)/', '', (string) $request->input('places')),
@@ -200,6 +217,8 @@ class CandidatController extends Controller
 
     public function updateNoteJury(Request $request)
     {
+        Gate::authorize('super_admin');
+
         $validated = $request->validate([
             'id' => 'required|exists:candidates,id',
             'note' => 'nullable|numeric|min:0|max:20',
