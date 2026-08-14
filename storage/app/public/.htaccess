@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule \.(php|php3|php4|php5|php7|phtml|pl|py|cgi)$ - [F,L]
+</IfModule>
+
+<FilesMatch "\.(php|php3|php4|php5|php7|phtml|pl|py|cgi)$">
+    Require all denied
+</FilesMatch>
+
+Options -ExecCGI -Indexes

@@ -26,7 +26,7 @@
         "alternateName": "Festival International des Talents Artistiques du Bénin",
         "url": "{{ url('/') }}",
         "logo": "{{ asset('images/logo.png') }}",
-        "sameAs": {!! json_encode(array_values(array_filter([$site['social_facebook'], $site['social_instagram'], $site['social_youtube'], $site['social_tiktok']]))) !!}
+        "sameAs": {!! json_encode(array_values(array_filter([$site['social_facebook'], $site['social_instagram'], $site['social_youtube'], $site['social_tiktok']])), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}
     }
     </script>
     <script type="application/ld+json">

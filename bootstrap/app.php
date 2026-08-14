@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->validateCsrfTokens(except: [
-            'vote/webhook/fedapay',
+            'webhook/fedapay',
         ]);
 
         $middleware->alias([

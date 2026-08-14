@@ -129,7 +129,22 @@ class VoteController extends Controller
     // Webhook de confirmation Fedapay (appelé par Fedapay après un paiement)
     public function webhookFedapay(Request $request)
     {
-        $data = $request->all();
+        $payload = (string) $request->getContent();
+        $signature = $request->header('X-FEDAPAY-SIGNATURE');
+
+        if (! $this->verifierSignatureFedapay($payload, $signature)) {
+            VoteLog::create([
+                'type' => 'webhook',
+                'statut' => 'erreur',
+                'categorie' => 'signature_invalide',
+                'message' => 'Webhook FedaPay rejeté : signature absente ou invalide.',
+                'contexte' => json_encode(['header_recu' => $signature], JSON_UNESCAPED_UNICODE),
+            ]);
+
+            return response()->json(['error' => 'Invalid signature'], 401);
+        }
+
+        $data = json_decode($payload, true) ?? [];
 
         if (!isset($data['id']) || !isset($data['status'])) {
             VoteLog::create([
@@ -202,6 +217,23 @@ class VoteController extends Controller
         $email = $data['customer']['email'] ?? null;
         $moyenPaiement = $data['payment_method'] ?? $data['payment_method']['type'] ?? null;
 
+        // Vérifie que le montant payé correspond au montant attendu du vote
+        $montantPaye = $data['amount'] ?? null;
+        if ($montantPaye !== null && (int) $montantPaye !== (int) $vote->montant) {
+            VoteLog::create([
+                'type' => 'webhook',
+                'statut' => 'erreur',
+                'categorie' => 'montant_incoherent',
+                'message' => 'Montant payé différent du montant attendu : ovation non comptée.',
+                'transaction_id' => $transactionId,
+                'vote_id' => $vote->id,
+                'montant' => $vote->montant,
+                'contexte' => json_encode(['montant_paye' => $montantPaye] + self::contexteFedapay($data), JSON_UNESCAPED_UNICODE),
+            ]);
+
+            return response()->json(['status' => 'ok']);
+        }
+
         $vote->marquerConfirme($transactionId, 'fedapay', $telephone, $email, $moyenPaiement);
 
         VoteLog::create([
@@ -236,6 +268,42 @@ class VoteController extends Controller
             'external_id' => $data['external_id'] ?? null,
             'created_at' => $data['created_at'] ?? null,
         ];
+    }
+
+    // Vérifie la signature HMAC-SHA256 envoyée par FedaPay (en-tête X-FEDAPAY-SIGNATURE).
+    // Format : t=<timestamp>,s=<hex hmac-sha256("$timestamp.$payload", webhook_secret)>
+    private function verifierSignatureFedapay(string $payload, ?string $header): bool
+    {
+        $secret = config('services.fedapay.webhook_secret');
+
+        if (! $secret || ! $header) {
+            return false;
+        }
+
+        $timestamp = null;
+        $signature = null;
+
+        foreach (explode(',', $header) as $item) {
+            $parts = explode('=', $item, 2);
+            if (($parts[0] ?? '') === 't' && isset($parts[1]) && is_numeric($parts[1])) {
+                $timestamp = (int) $parts[1];
+            } elseif (($parts[0] ?? '') === 's') {
+                $signature = $parts[1] ?? null;
+            }
+        }
+
+        if (! $timestamp || ! $signature) {
+            return false;
+        }
+
+        // Tolérance anti-rejeu : la signature ne doit pas dater de plus de 5 minutes
+        if (abs(time() - $timestamp) > 300) {
+            return false;
+        }
+
+        $expected = hash_hmac('sha256', "{$timestamp}.{$payload}", $secret);
+
+        return hash_equals($expected, $signature);
     }
 
     // Met à jour les paramètres de vote et génère les résultats si clôture
