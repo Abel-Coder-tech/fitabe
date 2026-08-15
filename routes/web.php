@@ -59,6 +59,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // Votes — réservé super_admin
     Route::get('votes', [VoteController::class, 'index'])->name('votes.index')->middleware('role:super_admin');
     Route::get('votes/logs', [VoteController::class, 'logs'])->name('votes.logs')->middleware('role:super_admin');
+    Route::get('votes/export', [VoteController::class, 'export'])->name('votes.export')->middleware('role:super_admin');
     Route::get('votes/{vote}', [VoteController::class, 'show'])->name('votes.show')->middleware('role:super_admin');
     Route::delete('votes/{vote}', [VoteController::class, 'destroy'])->name('votes.destroy')->middleware('role:super_admin');
     Route::post('votes/clear-all', [VoteController::class, 'clearAll'])->name('votes.clearAll')->middleware('role:super_admin');

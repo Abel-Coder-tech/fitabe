@@ -17,9 +17,9 @@ class VoteController extends Controller
     // Helper : détermine le mode vote (statut manuel prioritaire, sinon dates) — voir Parametre::voteMode()
 
     // Affiche la liste des votes avec les paramètres
-    public function index()
+    public function index(Request $request)
     {
-        $votes = Votes::with('candidat')->latest()->paginate(request()->integer('per_page', 10));
+        $votes = $this->queryFiltree($request)->latest()->paginate($request->integer('per_page', 10));
 
         $prixDuVote = Parametre::getInt('prix_ovation', 100);
         $afficherCompteur = Parametres::where('cle', 'afficher_compteur')->value('valeur') === '1';
@@ -29,10 +29,86 @@ class VoteController extends Controller
 
         $voteMode = Parametre::voteMode();
 
+        $filtres = $this->filtres($request);
+        $operateurs = Votes::query()->select('operateur')->distinct()->whereNotNull('operateur')->orderBy('operateur')->pluck('operateur');
+        $pays = Votes::query()->select('pays')->distinct()->whereNotNull('pays')->orderBy('pays')->pluck('pays');
+
         return view('admin.votes.index', compact(
             'votes', 'voteMode', 'prixDuVote', 'afficherCompteur',
-            'dateDebut', 'dateFin', 'dateFinale'
+            'dateDebut', 'dateFin', 'dateFinale', 'filtres', 'operateurs', 'pays'
         ));
+    }
+
+    // Filtres de la liste (partagés par la page et l'export CSV)
+    protected function filtres(Request $request): array
+    {
+        return [
+            'statut' => trim((string) $request->input('statut')),
+            'operateur' => trim((string) $request->input('operateur')),
+            'pays' => trim((string) $request->input('pays')),
+            'date_debut' => trim((string) $request->input('date_debut')),
+            'date_fin' => trim((string) $request->input('date_fin')),
+        ];
+    }
+
+    protected function queryFiltree(Request $request)
+    {
+        $f = $this->filtres($request);
+
+        return Votes::query()
+            ->with('candidat')
+            ->when($f['statut'] && $f['statut'] !== 'tous', fn ($q) => $q->where('statut', $f['statut']))
+            ->when($f['operateur'] && $f['operateur'] !== 'tous', fn ($q) => $q->where('operateur', $f['operateur']))
+            ->when($f['pays'] && $f['pays'] !== 'tous', fn ($q) => $q->where('pays', $f['pays']))
+            ->when($f['date_debut'], fn ($q) => $q->whereDate('created_at', '>=', $f['date_debut']))
+            ->when($f['date_fin'], fn ($q) => $q->whereDate('created_at', '<=', $f['date_fin']));
+    }
+
+    // Export CSV (respecte les filtres courants)
+    public function export(Request $request)
+    {
+        $query = $this->queryFiltree($request);
+
+        $filename = 'ovations-' . now()->format('Y-m-d-Hi') . '.csv';
+
+        return response()->streamDownload(function () use ($query) {
+            $out = fopen('php://output', 'w');
+            // BOM UTF-8 pour que Excel affiche correctement les accents
+            fwrite($out, "\xEF\xBB\xBF");
+
+            fputcsv($out, [
+                'ID', 'Référence', 'Candidat', 'Client (téléphone)', 'Email', 'Quantité',
+                'Montant (FCFA)', 'Frais (FCFA)', 'Opérateur', 'Moyen de paiement',
+                'Statut', 'Pays', 'Date création', 'Confirmé le',
+            ]);
+
+            $query->chunk(500, function ($votes) use ($out) {
+                foreach ($votes as $v) {
+                    fputcsv($out, [
+                        $v->id,
+                        $v->transaction_id,
+                        $v->candidat?->display_name ?? $v->candidat?->nom ?? 'N/A',
+                        $v->telephone ?? '',
+                        $v->email ?? '',
+                        $v->quantite,
+                        $v->montant ?? '',
+                        $v->frais ?? '',
+                        $v->operateur ?? '',
+                        $v->moyen_paiement ?? '',
+                        match ($v->statut) {
+                            'confirme' => 'Confirmé',
+                            'rejete' => 'Rejeté',
+                            default => 'En attente',
+                        },
+                        $v->pays ?? '',
+                        $v->created_at?->format('d/m/Y H:i') ?? '',
+                        $v->webhook_recu_le?->format('d/m/Y H:i') ?? '',
+                    ]);
+                }
+            });
+
+            fclose($out);
+        }, $filename, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
     // Affiche le détail d'un vote

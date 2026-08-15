@@ -254,6 +254,9 @@
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
     <h1 class="section-title mb-0">Ovations reçues</h1>
     <div class="d-flex gap-2">
+        <a href="{{ route('admin.votes.export', request()->query()) }}" class="btn btn-sm fw-semibold rounded-pill px-3" style="background:rgba(25,135,84,0.1);color:#198754;" title="Exporter les ovations (filtres actuels)">
+            <i class="bi bi-filetype-csv me-1"></i> Export CSV
+        </a>
         <a href="{{ route('admin.votes.logs') }}" class="btn btn-sm fw-semibold rounded-pill px-3" style="background:rgba(155,77,7,0.1);color:#9B4D07;">
             <i class="bi bi-terminal me-1"></i> Logs paiements
         </a>
@@ -268,15 +271,66 @@
     </div>
 </div>
 
+<div class="bg-white rounded-3 shadow-sm p-3 mb-3" style="border:1px solid rgba(202,123,5,0.08);">
+    <form method="GET" action="{{ route('admin.votes.index') }}" class="row g-2 align-items-end">
+        <div class="col-6 col-md-2">
+            <label class="form-label small fw-semibold mb-1" style="color:#9B4D07;">Statut</label>
+            <select name="statut" class="form-select form-select-sm">
+                <option value="tous" @selected(($filtres['statut'] ?? '') === '' || ($filtres['statut'] ?? '') === 'tous')>Tous</option>
+                <option value="confirme" @selected(($filtres['statut'] ?? '') === 'confirme')>Confirmé</option>
+                <option value="en_attente" @selected(($filtres['statut'] ?? '') === 'en_attente')>En attente</option>
+                <option value="rejete" @selected(($filtres['statut'] ?? '') === 'rejete')>Rejeté</option>
+            </select>
+        </div>
+        <div class="col-6 col-md-2">
+            <label class="form-label small fw-semibold mb-1" style="color:#9B4D07;">Opérateur</label>
+            <select name="operateur" class="form-select form-select-sm">
+                <option value="tous">Tous</option>
+                @foreach($operateurs as $op)
+                    <option value="{{ $op }}" @selected(($filtres['operateur'] ?? '') === $op)>{{ $op }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-6 col-md-2">
+            <label class="form-label small fw-semibold mb-1" style="color:#9B4D07;">Pays</label>
+            <select name="pays" class="form-select form-select-sm">
+                <option value="tous">Tous</option>
+                @foreach($pays as $p)
+                    <option value="{{ $p }}" @selected(($filtres['pays'] ?? '') === $p)>{{ $p }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-6 col-md-2">
+            <label class="form-label small fw-semibold mb-1" style="color:#9B4D07;">Du</label>
+            <input type="date" name="date_debut" class="form-control form-control-sm" value="{{ $filtres['date_debut'] ?? '' }}">
+        </div>
+        <div class="col-6 col-md-2">
+            <label class="form-label small fw-semibold mb-1" style="color:#9B4D07;">Au</label>
+            <input type="date" name="date_fin" class="form-control form-control-sm" value="{{ $filtres['date_fin'] ?? '' }}">
+        </div>
+        <div class="col-12 col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-sm save-btn px-3 w-100">
+                <i class="bi bi-funnel me-1"></i> Filtrer
+            </button>
+            <a href="{{ route('admin.votes.index') }}" class="btn btn-sm btn-outline-secondary" title="Réinitialiser">
+                <i class="bi bi-x-lg"></i>
+            </a>
+        </div>
+    </form>
+</div>
+
 <div class="table-responsive bg-white rounded-3 shadow-sm" style="border:1px solid rgba(202,123,5,0.08);">
     <table class="table table-hover align-middle mb-0" style="font-size:0.85rem;">
         <thead style="background:#fdfaf5;color:#3E1E05;">
             <tr>
                 <th class="py-3 ps-3">ID</th>
+                <th class="py-3">Référence</th>
                 <th class="py-3">Candidat</th>
+                <th class="py-3">Client</th>
                 <th class="py-3 text-center">Qté</th>
                 <th class="py-3">Montant</th>
-                <th class="py-3">Paiement</th>
+                <th class="py-3">Frais</th>
+                <th class="py-3">Opérateur</th>
                 <th class="py-3">Statut</th>
                 <th class="py-3">Date</th>
                 <th class="py-3 pe-3 text-end">Actions</th>
@@ -286,12 +340,21 @@
             @forelse ($votes as $vote)
                 <tr>
                     <td class="ps-3 fw-semibold text-muted">{{ $vote->id }}</td>
+                    <td class="text-muted small">
+                        @if($vote->transaction_id)
+                            <span title="{{ $vote->transaction_id }}">{{ \Illuminate\Support\Str::limit($vote->transaction_id, 22) }}</span>
+                        @else
+                            —
+                        @endif
+                    </td>
                     <td>{{ $vote->candidat?->nom ?? 'N/A' }}</td>
+                    <td class="small">{{ $vote->telephone ?? '—' }}</td>
                     <td class="text-center fw-semibold">{{ $vote->quantite ?? 1 }}</td>
                     <td class="fw-semibold" style="color:#3E1E05;">{{ $vote->montant ? number_format($vote->montant, 0, ',', ' ') . ' FCFA' : '-' }}</td>
+                    <td class="small text-muted">{{ $vote->frais !== null ? number_format($vote->frais, 0, ',', ' ') . ' FCFA' : '—' }}</td>
                     <td>
-                        @if($vote->payment_method)
-                            <span class="badge px-2 py-1" style="background:rgba(202,123,5,0.12);color:#9B4D07;font-weight:600;">{{ ucfirst($vote->payment_method) }}</span>
+                        @if($vote->operateur)
+                            <span class="badge px-2 py-1" style="background:rgba(202,123,5,0.12);color:#9B4D07;font-weight:600;">{{ $vote->operateur }}</span>
                         @else
                             <span class="text-muted">—</span>
                         @endif
@@ -330,7 +393,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="9" class="text-center py-4 text-muted">Aucune ovation trouvée.</td>
+                    <td colspan="11" class="text-center py-4 text-muted">Aucune ovation trouvée.</td>
                 </tr>
             @endforelse
         </tbody>

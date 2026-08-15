@@ -166,8 +166,85 @@
     </div>
 </div>
 
-{{-- ========== 3. SECTION PRINCIPALE (DEUX COLONNES) ========== --}}
-<div class="row g-3 mb-4">
+{{-- ========== 2B. SUIVI DES PAIEMENTS (réservé super_admin) ========== --}}
+@if(auth()->user()?->isSuperAdmin())
+<div class="card border-0 rounded-4 mb-4">
+    <div class="card-header bg-transparent border-bottom d-flex align-items-center justify-content-between px-4 py-3">
+        <span class="fw-semibold" style="color: #9B4D07;">Suivi des paiements</span>
+        <div class="d-flex align-items-center gap-3">
+            <span class="small text-muted">Transactions confirmées</span>
+            <a href="{{ route('admin.votes.index') }}" class="small text-decoration-none fw-semibold" style="color: #9B4D07;">Voir les transactions →</a>
+        </div>
+    </div>
+    <div class="card-body px-4 py-3">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <div class="p-3 rounded-3 h-100" style="background: #fdfaf5; border: 1px solid rgba(202,123,5,0.1);">
+                    <small class="text-muted d-block">Encaissé brut</small>
+                    <div class="h4 fw-bold mb-0" style="color: #3E1E05;">{{ number_format($totalRecettes, 0, ',', ' ') }} FCFA</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3 rounded-3 h-100" style="background: #e8f5e9; border: 1px solid rgba(46,125,50,0.15);">
+                    <small class="text-muted d-block">Net après frais</small>
+                    <div class="h4 fw-bold mb-0" style="color: #2e7d32;">{{ number_format($netRecettes, 0, ',', ' ') }} FCFA</div>
+                    <small class="text-muted">dont {{ number_format($totalFrais, 0, ',', ' ') }} FCFA de frais</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3 rounded-3 h-100" style="background: #fff8e1; border: 1px solid rgba(202,123,5,0.15);">
+                    <small class="text-muted d-block">Taux de réussite</small>
+                    <div class="h4 fw-bold mb-0" style="color: #9B4D07;">{{ $tauxReussite }}%</div>
+                    <small class="text-muted">{{ $nbConfirme }} confirmés · {{ $nbRejete }} rejetés · {{ $nbEnAttente }} en attente</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3 rounded-3 h-100" style="background: #fdecea; border: 1px solid rgba(200,40,40,0.15);">
+                    <small class="text-muted d-block">Alertes</small>
+                    <div class="h4 fw-bold mb-0" style="color: #c62828;">{{ $votesBloques + $alertesPaiements }}</div>
+                    <small class="text-muted">{{ $votesBloques }} bloquées · {{ $alertesPaiements }} anomalies (24 h)</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mt-1">
+            <div class="col-lg-5">
+                <span class="small fw-semibold d-block mb-2" style="color: #3E1E05;">Répartition par opérateur</span>
+                @forelse($repartitionOperateurs as $r)
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="badge px-2 py-1 flex-shrink-0" style="background: rgba(202,123,5,0.12); color: #9B4D07; font-weight: 600; width: 92px;">{{ $r->operateur }}</span>
+                        <div class="flex-grow-1" style="height: 8px; background: #f4efe6; border-radius: 4px;">
+                            <div style="height: 100%; width: {{ round($r->nb / $repartitionMax * 100) }}%; background: linear-gradient(90deg, #9B4D07, #CA7B05); border-radius: 4px;"></div>
+                        </div>
+                        <span class="small text-muted flex-shrink-0" style="width: 96px; text-align: right;">{{ number_format($r->total_montant, 0, ',', ' ') }} FCFA</span>
+                    </div>
+                @empty
+                    <div class="text-muted py-2"><small>Aucune transaction confirmée.</small></div>
+                @endforelse
+            </div>
+            <div class="col-lg-7">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="small fw-semibold" style="color: #3E1E05;">Anomalies récentes</span>
+                    <a href="{{ route('admin.votes.logs') }}" class="small text-decoration-none" style="color: #9B4D07;">Logs →</a>
+                </div>
+                @forelse($anomaliesRecentes as $log)
+                    <div class="d-flex align-items-start gap-2 py-2 border-bottom" style="border-color: #f5f5f5 !important;">
+                        <span class="badge rounded-pill mt-1 flex-shrink-0" style="font-size: 0.6rem; background: #fce4ec; color: #c62828;">{{ strtoupper($log->categorie) }}</span>
+                        <div class="flex-grow-1 min-w-0">
+                            <div class="small" style="color: #3E1E05;">{{ $log->message }}</div>
+                            <small class="text-muted">{{ $log->created_at->format('d/m/Y H:i') }}</small>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-muted py-2"><small>Aucune anomalie récente.</small></div>
+                @endforelse
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
+{{-- ========== 3. SECTION PRINCIPALE (DEUX COLONNES) ========== --}}<div class="row g-3 mb-4">
 
     {{-- Colonne gauche : Ovations par catégorie --}}
     <div class="col-lg-7">

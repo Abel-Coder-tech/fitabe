@@ -19,6 +19,29 @@ class DashboardController extends Controller
         $votesConfirmes = Votes::confirme()->sum('quantite');
         $messagesNonLus = Contact::nonLu()->count();
         $totalRecettes = Votes::confirme()->sum('montant');
+        $totalFrais = Votes::confirme()->sum('frais');
+        $netRecettes = max(0, $totalRecettes - $totalFrais);
+
+        // Taux de réussite des transactions (toutes, y compris rejetées/attente)
+        $nbConfirme = Votes::confirme()->count();
+        $nbRejete = Votes::rejete()->count();
+        $nbEnAttente = Votes::enAttente()->count();
+        $totalTransactions = $nbConfirme + $nbRejete + $nbEnAttente;
+        $tauxReussite = $totalTransactions > 0 ? (int) round($nbConfirme / $totalTransactions * 100) : 0;
+
+        // Répartition par opérateur (transactions confirmées)
+        $repartitionOperateurs = Votes::confirme()
+            ->select('operateur', DB::raw('COUNT(*) as nb'), DB::raw('SUM(montant) as total_montant'))
+            ->whereNotNull('operateur')
+            ->groupBy('operateur')
+            ->orderByDesc('nb')
+            ->get();
+        $repartitionMax = $repartitionOperateurs->max('nb') ?: 1;
+
+        // Alertes : votes bloqués en attente depuis > 10 min + anomalies de paiement sur 24 h
+        $votesBloques = Votes::enAttente()->where('created_at', '<', now()->subMinutes(10))->count();
+        $alertesPaiements = VoteLog::where('statut', 'erreur')->where('created_at', '>=', now()->subDay())->count();
+        $anomaliesRecentes = VoteLog::where('statut', 'erreur')->latest()->take(5)->get();
 
         $votesParCategorie = Candidats::select('categorie')
             ->withCount(['votes' => fn ($q) => $q->confirme()])
@@ -83,6 +106,10 @@ class DashboardController extends Controller
 
         return view('admin.dashboard.index', compact(
             'votesConfirmes', 'messagesNonLus', 'totalRecettes',
+            'totalFrais', 'netRecettes',
+            'nbConfirme', 'nbRejete', 'nbEnAttente', 'tauxReussite',
+            'repartitionOperateurs', 'repartitionMax',
+            'votesBloques', 'alertesPaiements', 'anomaliesRecentes',
             'votesParCategorie', 'totalVotes',
             'dernieresTransactions', 'messagesRecents',
             'voteMode', 'prixDuVote', 'dateFin', 'dateDebut', 'dateDebutPlanifie',

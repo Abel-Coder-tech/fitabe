@@ -9,6 +9,7 @@ use App\Models\Resultat;
 use App\Models\Votes;
 use App\Models\VoteLog;
 use App\Services\ResultatService;
+use App\Support\FedaPayInfos;
 use App\Support\Parametre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -161,25 +162,46 @@ class VoteController extends Controller
         $transactionId = (string) $data['id'];
         $status = (string) $data['status'];
 
-        // Paiements non confirmants : on logue mais rien à traiter
-        if (!in_array($status, ['approved', 'completed', 'accepted'], true)) {
-            VoteLog::create([
-                'type' => 'webhook',
-                'statut' => 'ignore',
-                'categorie' => 'statut_non_confirmant',
-                'message' => "Statut reçu non confirmant : {$status}",
-                'transaction_id' => $transactionId,
-                'contexte' => json_encode(self::contexteFedapay($data), JSON_UNESCAPED_UNICODE),
-            ]);
-
-            return response()->json(['status' => 'ok']);
-        }
-
         $voteId = $data['custom_metadata']['vote_id'] ?? $data['external_id'] ?? null;
 
         $vote = $voteId
             ? Votes::find($voteId)
             : Votes::where('transaction_id', $transactionId)->first();
+
+        $statutsConfirmants = ['approved', 'completed', 'accepted'];
+        $statutsEchec = ['declined', 'canceled', 'refunded', 'expired', 'rejected', 'failed'];
+
+        // Paiements non confirmants : un échec définitif rejette l'ovation (pour un
+        // taux de réussite fiable), les autres statuts sont simplement journalisés.
+        if (!in_array($status, $statutsConfirmants, true)) {
+            if (in_array($status, $statutsEchec, true) && $vote && $vote->statut === 'en_attente') {
+                $vote->marquerRejete($transactionId);
+
+                VoteLog::create([
+                    'type' => 'webhook',
+                    'statut' => 'ok',
+                    'categorie' => 'rejete',
+                    'message' => "Paiement {$status} : ovation non comptée.",
+                    'transaction_id' => $transactionId,
+                    'vote_id' => $vote->id,
+                    'montant' => $vote->montant,
+                    'contexte' => json_encode(self::contexteFedapay($data), JSON_UNESCAPED_UNICODE),
+                ]);
+
+                Log::info('Fedapay webhook : vote rejeté', ['vote_id' => $vote->id, 'transaction_id' => $transactionId, 'status' => $status]);
+            } else {
+                VoteLog::create([
+                    'type' => 'webhook',
+                    'statut' => 'ignore',
+                    'categorie' => 'statut_non_confirmant',
+                    'message' => "Statut reçu non confirmant : {$status}",
+                    'transaction_id' => $transactionId,
+                    'contexte' => json_encode(self::contexteFedapay($data), JSON_UNESCAPED_UNICODE),
+                ]);
+            }
+
+            return response()->json(['status' => 'ok']);
+        }
 
         if (!$vote) {
             // Paiement approuvé mais vote introuvable → ovation non comptée
@@ -215,7 +237,20 @@ class VoteController extends Controller
 
         $telephone = $data['phone'] ?? $data['customer']['phone_number'] ?? $data['customer']['phone'] ?? null;
         $email = $data['customer']['email'] ?? null;
-        $moyenPaiement = $data['payment_method'] ?? $data['payment_method']['type'] ?? null;
+        $rawMoyenPaiement = $data['payment_method'] ?? null;
+        $moyenPaiement = is_string($rawMoyenPaiement)
+            ? $rawMoyenPaiement
+            : (is_array($rawMoyenPaiement) ? ($rawMoyenPaiement['type'] ?? null) : null);
+
+        // Opérateur (MTN/Moov/Celtiis/Carte), pays et frais à partir du webhook
+        $mode = is_array($rawMoyenPaiement)
+            ? ($rawMoyenPaiement['mode'] ?? $rawMoyenPaiement['type'] ?? null)
+            : ($rawMoyenPaiement ?? $data['mode'] ?? null);
+        $mode = is_string($mode) ? $mode : null;
+
+        $operateur = FedaPayInfos::operateur($mode);
+        $pays = FedaPayInfos::pays($data['customer']['country'] ?? null, $telephone);
+        $frais = FedaPayInfos::frais($data);
 
         // Vérifie que le montant payé correspond au montant attendu du vote
         $montantPaye = $data['amount'] ?? null;
@@ -234,7 +269,7 @@ class VoteController extends Controller
             return response()->json(['status' => 'ok']);
         }
 
-        $vote->marquerConfirme($transactionId, 'fedapay', $telephone, $email, $moyenPaiement);
+        $vote->marquerConfirme($transactionId, 'fedapay', $telephone, $email, $moyenPaiement, $frais, $operateur, $pays);
 
         VoteLog::create([
             'type' => 'webhook',
@@ -257,14 +292,19 @@ class VoteController extends Controller
 
     private static function contexteFedapay(array $data): array
     {
+        $rawPm = $data['payment_method'] ?? null;
+
         return [
             'id' => $data['id'] ?? null,
             'status' => $data['status'] ?? null,
             'amount' => $data['amount'] ?? null,
             'currency' => $data['currency'] ?? null,
+            'fees' => $data['fees'] ?? null,
+            'mode' => is_array($rawPm) ? ($rawPm['mode'] ?? null) : ($data['mode'] ?? $rawPm),
+            'payment_method' => is_string($rawPm) ? $rawPm : ($rawPm['type'] ?? null),
             'phone' => $data['phone'] ?? $data['customer']['phone_number'] ?? $data['customer']['phone'] ?? null,
             'email' => $data['customer']['email'] ?? null,
-            'payment_method' => $data['payment_method'] ?? null,
+            'country' => $data['customer']['country'] ?? null,
             'external_id' => $data['external_id'] ?? null,
             'created_at' => $data['created_at'] ?? null,
         ];
