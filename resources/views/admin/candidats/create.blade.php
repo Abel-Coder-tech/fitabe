@@ -74,6 +74,35 @@
 
     if (catSelect) catSelect.addEventListener('change', majHint);
     majHint();
+
+    // Photo : taille maximale 0,5 Mo (512 Ko)
+    const MAX_PHOTO = 512 * 1024;
+    const photoInput = document.querySelector('input[name="photo"]');
+    if (photoInput) {
+        const wrapper = photoInput.closest('.mb-3');
+        const feedback = wrapper ? wrapper.querySelector('.invalid-feedback') : null;
+        const MESSAGE = 'La taille maximale de l\'image ne doit pas dépasser 0,5 Mo.';
+
+        function verifierPhoto() {
+            const f = photoInput.files && photoInput.files[0];
+            const tropLourde = !!(f && f.size > MAX_PHOTO);
+            photoInput.classList.toggle('is-invalid', tropLourde);
+            if (feedback) feedback.textContent = tropLourde ? MESSAGE : '';
+        }
+
+        photoInput.addEventListener('change', verifierPhoto);
+
+        const form = photoInput.closest('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const f = photoInput.files && photoInput.files[0];
+                if (f && f.size > MAX_PHOTO) {
+                    e.preventDefault();
+                    verifierPhoto();
+                }
+            });
+        }
+    }
 })();
 </script>
 @endpush

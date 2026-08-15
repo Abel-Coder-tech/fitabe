@@ -153,7 +153,12 @@
             <div class="modal-body p-4">
                 <div class="row g-4">
                     <div class="col-md-4 text-center">
-                        <img id="voirPhoto" src="" alt="" class="rounded-circle mb-3" style="width: 140px; height: 140px; object-fit: cover; border: 4px solid #E3D5AD;">
+                        <a id="voirPhotoLink" href="#" download title="Télécharger la photo" class="d-inline-block text-decoration-none">
+                            <img id="voirPhoto" src="" alt="" class="rounded-circle mb-2" style="width: 140px; height: 140px; object-fit: cover; border: 4px solid #E3D5AD; cursor: pointer;">
+                            <div class="small text-muted">
+                                <i class="bi bi-download me-1" style="color: #9B4D07;"></i>Cliquez sur la photo pour l'enregistrer
+                            </div>
+                        </a>
                         <div id="voirBadge" class="badge px-3 py-1" style="background: #CA7B05; color: #fff;"></div>
                     </div>
                     <div class="col-md-8">
@@ -209,8 +214,16 @@
 @push('scripts')
 <script>
 function voirCandidat(c) {
-    document.getElementById('voirPhoto').src = c.photo_url || '{{ asset("images/hero.jpg") }}';
+    const photo = c.photo_url || '{{ asset("images/hero.jpg") }}';
+    document.getElementById('voirPhoto').src = photo;
     document.getElementById('voirPhoto').alt = c.nom || 'Photo';
+
+    const extMatch = photo.split('?')[0].match(/\.([a-zA-Z0-9]+)$/);
+    const ext = extMatch ? extMatch[1] : 'jpg';
+    const link = document.getElementById('voirPhotoLink');
+    link.href = photo;
+    link.download = (c.nom || 'candidat') + '.' + ext;
+
     document.getElementById('voirNom').textContent = c.nom || '—';
     document.getElementById('voirScene').textContent = c.nom_scene || '—';
     document.getElementById('voirNumero').textContent = c.numero_scene || '—';
