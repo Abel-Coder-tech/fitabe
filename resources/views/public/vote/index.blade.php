@@ -685,6 +685,9 @@ function ouvrirVote(id, nom, photo, votesCount, categorie, bio, numeroScene) {
         etat.paymentMethod = null;
         etat.voteId = null;
 
+        const copierLienTexte = document.getElementById('copierLienTexte');
+        if (copierLienTexte) copierLienTexte.textContent = 'Copier le lien de vote';
+
         document.getElementById('voteCandidatId').value = id;
         const nameEl = document.getElementById('candidatNameDisplay');
         if (nameEl) nameEl.textContent = nom;
@@ -981,6 +984,44 @@ function partagerCandidat(id, nom, photo) {
 
     const shareModal = new bootstrap.Modal(document.getElementById('shareModal'));
     shareModal.show();
+}
+
+// ==================== COPIER LE LIEN DE VOTE ====================
+function copierLienCandidat() {
+    if (!etat.candidatId) return;
+    const url = window.location.origin + '/vote?candidat=' + etat.candidatId;
+    const span = document.getElementById('copierLienTexte');
+    const ack = function() {
+        if (span) {
+            span.textContent = 'Lien copié !';
+            setTimeout(function() { span.textContent = 'Copier le lien de vote'; }, 2000);
+        }
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(ack).catch(function() {
+            copierLienRepli(url, ack);
+        });
+    } else {
+        copierLienRepli(url, ack);
+    }
+}
+
+function copierLienRepli(url, ack) {
+    const tmp = document.createElement('textarea');
+    tmp.value = url;
+    tmp.setAttribute('readonly', '');
+    tmp.style.position = 'fixed';
+    tmp.style.opacity = '0';
+    document.body.appendChild(tmp);
+    tmp.select();
+    try {
+        document.execCommand('copy');
+    } catch (e) {
+        // ignore
+    }
+    document.body.removeChild(tmp);
+    ack();
 }
 
 // ==================== FILTRES CATÉGORIES ====================

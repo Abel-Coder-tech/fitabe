@@ -230,6 +230,15 @@
                                       style="background: #3E1E05; font-weight: 500; font-size: 0.72rem;"></span>
                             </div>
 
+                            {{-- Copier le lien de vote --}}
+                            <div class="mb-2">
+                                <button type="button" id="btnCopierLien" onclick="copierLienCandidat()" title="Copier le lien de vote"
+                                        style="display: inline-flex; align-items: center; gap: 0.3rem; border: none; background: transparent; color: #9B4D07; font-size: 0.75rem; padding: 0; cursor: pointer;">
+                                    <i class="bi bi-link-45deg"></i>
+                                    <span id="copierLienTexte">Copier le lien de vote</span>
+                                </button>
+                            </div>
+
                             {{-- Biographie --}}
                             <div class="candidat-bio" id="candidatBio"></div>
 
