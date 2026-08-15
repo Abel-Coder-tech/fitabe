@@ -209,7 +209,7 @@
 @push('scripts')
 <script>
 function voirCandidat(c) {
-    document.getElementById('voirPhoto').src = c.photo ? '/storage/' + c.photo : '{{ asset("images/default-user.png") }}';
+    document.getElementById('voirPhoto').src = c.photo_url || '{{ asset("images/hero.jpg") }}';
     document.getElementById('voirPhoto').alt = c.nom || 'Photo';
     document.getElementById('voirNom').textContent = c.nom || '—';
     document.getElementById('voirScene').textContent = c.nom_scene || '—';

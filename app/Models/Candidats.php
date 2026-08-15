@@ -36,6 +36,8 @@ class Candidats extends Model
         'nom', 'nom_scene', 'categorie', 'numero_scene', 'photo', 'biographie', 'nombre_votes', 'note_jury',
     ];
 
+    protected $appends = ['photo_url'];
+
     protected function casts(): array
     {
         return [
@@ -62,10 +64,27 @@ class Candidats extends Model
 
     public function getPhotoUrlAttribute(): string
     {
-        if (! $this->photo) {
-            return '';
+        $photo = $this->photo;
+
+        if (! $photo) {
+            return asset('images/hero.jpg');
         }
-        return Storage::url($this->photo);
+
+        // Chemins Windows (antislashs) et préfixes éventuellement déjà posés
+        $photo = str_replace('\\', '/', $photo);
+
+        if (str_starts_with($photo, 'http://') || str_starts_with($photo, 'https://')) {
+            return $photo;
+        }
+
+        $photo = ltrim($photo, '/');
+        $photo = preg_replace('#^storage/#', '', $photo);
+
+        if (! Storage::disk('public')->exists($photo)) {
+            return asset('images/hero.jpg');
+        }
+
+        return Storage::disk('public')->url($photo);
     }
 
     public function getIncrementeVotes(int $quantite): void
