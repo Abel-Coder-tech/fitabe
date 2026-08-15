@@ -50,4 +50,15 @@ class PoliciesGatesTest extends TestCase
         $this->assertTrue(Gate::forUser($super)->allows('delete', $c), 'super_admin doit pouvoir supprimer');
         $this->assertTrue(Gate::forUser($super)->allows('forceDelete', $c), 'super_admin doit pouvoir forceDelete');
     }
+
+    public function test_controleur_base_permet_authorize(): void
+    {
+        $traits = class_uses_recursive(\App\Http\Controllers\Controller::class);
+
+        $this->assertContains(
+            \Illuminate\Foundation\Auth\Access\AuthorizesRequests::class,
+            $traits,
+            'Le contrôleur de base doit utiliser AuthorizesRequests pour que $this->authorize() ne plante pas.'
+        );
+    }
 }
