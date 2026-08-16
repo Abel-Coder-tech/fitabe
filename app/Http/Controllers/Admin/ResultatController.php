@@ -17,16 +17,11 @@ class ResultatController extends Controller
     // Liste les éditions disponibles avec leur statut de publication
     public function index()
     {
-        $editions = Resultat::select('annee_edition')
-            ->distinct()
+        $editions = Resultat::selectRaw('annee_edition, COUNT(*) as total, SUM(CASE WHEN publie = 1 THEN 1 ELSE 0 END) as publies')
+            ->groupBy('annee_edition')
             ->orderBy('annee_edition', 'desc')
-            ->get()
-            ->map(function ($r) {
-                $annee = $r->annee_edition;
-                $r->total = Resultat::byEdition($annee)->count();
-                $r->publies = Resultat::byEdition($annee)->where('publie', true)->count();
-                return $r;
-            });
+            ->get();
+
         return view('admin.resultats.index', compact('editions'));
     }
 

@@ -70,7 +70,6 @@ class Candidats extends Model
             return asset('images/hero.jpg');
         }
 
-        // Chemins Windows (antislashs) et préfixes éventuellement déjà posés
         $photo = str_replace('\\', '/', $photo);
 
         if (str_starts_with($photo, 'http://') || str_starts_with($photo, 'https://')) {
@@ -79,10 +78,6 @@ class Candidats extends Model
 
         $photo = ltrim($photo, '/');
         $photo = preg_replace('#^storage/#', '', $photo);
-
-        if (! Storage::disk('public')->exists($photo)) {
-            return asset('images/hero.jpg');
-        }
 
         return Storage::disk('public')->url($photo);
     }

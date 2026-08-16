@@ -14,10 +14,10 @@ class CandidatsPhotoUrlTest extends TestCase
         $this->assertSame(asset('images/hero.jpg'), $c->photo_url);
     }
 
-    public function test_fichier_manquant_retourne_fallback(): void
+    public function test_fichier_manquant_renvoie_url_storage(): void
     {
         $c = new Candidats(['photo' => 'photos/introuvable.jpg']);
-        $this->assertSame(asset('images/hero.jpg'), $c->photo_url);
+        $this->assertStringContainsString('/storage/photos/introuvable.jpg', $c->photo_url);
     }
 
     public function test_normalise_chemin_et_prefixe(): void

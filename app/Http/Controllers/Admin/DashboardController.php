@@ -16,16 +16,23 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $votesConfirmes = Votes::confirme()->sum('quantite');
-        $messagesNonLus = Contact::nonLu()->count();
-        $totalRecettes = Votes::confirme()->sum('montant');
-        $totalFrais = Votes::confirme()->sum('frais');
-        $netRecettes = max(0, $totalRecettes - $totalFrais);
+        // 1 seule requête pour toutes les stats de votes
+        $stats = Votes::selectRaw('
+            SUM(CASE WHEN statut = "confirme" THEN quantite ELSE 0 END) as confirmes_quantite,
+            SUM(CASE WHEN statut = "confirme" THEN montant ELSE 0 END) as confirmes_montant,
+            SUM(CASE WHEN statut = "confirme" THEN frais ELSE 0 END) as confirmes_frais,
+            COUNT(CASE WHEN statut = "confirme" THEN 1 END) as nb_confirme,
+            COUNT(CASE WHEN statut = "rejete" THEN 1 END) as nb_rejete,
+            COUNT(CASE WHEN statut = "en_attente" THEN 1 END) as nb_attente
+        ')->first();
 
-        // Taux de réussite des transactions (toutes, y compris rejetées/attente)
-        $nbConfirme = Votes::confirme()->count();
-        $nbRejete = Votes::rejete()->count();
-        $nbEnAttente = Votes::enAttente()->count();
+        $votesConfirmes = (int) $stats->confirmes_quantite;
+        $totalRecettes = (float) $stats->confirmes_montant;
+        $totalFrais = (float) $stats->confirmes_frais;
+        $netRecettes = max(0, $totalRecettes - $totalFrais);
+        $nbConfirme = (int) $stats->nb_confirme;
+        $nbRejete = (int) $stats->nb_rejete;
+        $nbEnAttente = (int) $stats->nb_attente;
         $totalTransactions = $nbConfirme + $nbRejete + $nbEnAttente;
         $tauxReussite = $totalTransactions > 0 ? (int) round($nbConfirme / $totalTransactions * 100) : 0;
 
@@ -82,8 +89,8 @@ class DashboardController extends Controller
         $messagesRecents = Contact::latest()->take(5)->get();
 
         $dateDebut = Parametre::debutEffectif();
-        $dateFin = Parametre::finEffective() ?: Parametres::where('cle', 'date_fin_vote')->value('valeur');
-        $dateDebutPlanifie = Parametres::where('cle', 'date_debut_vote')->value('valeur');
+        $dateFin = Parametre::finEffective() ?: Parametre::get('date_fin_vote');
+        $dateDebutPlanifie = Parametre::get('date_debut_vote');
 
         $voteMode = \App\Support\Parametre::voteMode();
         $prixDuVote = Parametre::getInt('prix_ovation', 100);
@@ -104,8 +111,10 @@ class DashboardController extends Controller
             ->sortBy('nom')
             ->values();
 
+        $nonLuCount = \App\Models\Contact::nonLu()->count();
+
         return view('admin.dashboard.index', compact(
-            'votesConfirmes', 'messagesNonLus', 'totalRecettes',
+            'votesConfirmes', 'totalRecettes',
             'totalFrais', 'netRecettes',
             'nbConfirme', 'nbRejete', 'nbEnAttente', 'tauxReussite',
             'repartitionOperateurs', 'repartitionMax',
@@ -114,7 +123,8 @@ class DashboardController extends Controller
             'dernieresTransactions', 'messagesRecents',
             'voteMode', 'prixDuVote', 'dateFin', 'dateDebut', 'dateDebutPlanifie',
             'logsPaiements',
-            'candidatsAvecVotes', 'categories', 'categorieFiltre'
+            'candidatsAvecVotes', 'categories', 'categorieFiltre',
+            'nonLuCount'
         ));
     }
 

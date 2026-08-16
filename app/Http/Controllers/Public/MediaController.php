@@ -5,16 +5,26 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\Medias;
 use App\Models\Resultat;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class MediaController extends Controller
 {
     // Page publique galerie : photos, vidéos et résultats
     public function index()
     {
-        $photos = Medias::where('type', 'photo')->orderBy('id')->get();
-        $videos = Medias::where('type', 'video')->orderBy('id')->get();
-        $annees = Medias::whereNotNull('annee_edition')->distinct()->orderBy('annee_edition', 'desc')->pluck('annee_edition');
-        $medias = Medias::orderBy('id')->paginate(24);
+        $tous = Medias::orderBy('id')->get();
+        $photos = $tous->where('type', 'photo')->values();
+        $videos = $tous->where('type', 'video')->values();
+        $annees = $tous->pluck('annee_edition')->filter()->unique()->sortDesc()->values();
+        $page = (int) request()->get('page', 1);
+        $perPage = 24;
+        $medias = new LengthAwarePaginator(
+            $tous->forPage($page, $perPage),
+            $tous->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url()]
+        );
 
         $photosJson = $photos->map(fn($m) => [
             'url' => $m->thumbnail,

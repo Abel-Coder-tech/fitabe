@@ -7,6 +7,7 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     @vite(['resources/css/app.scss', 'resources/js/app.js'])
     <style>
@@ -303,7 +304,6 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.contacts.index') }}" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-3 {{ $navClass('admin.contacts') }}" style="color: rgba(255,255,255,0.7); transition: all 0.15s;">
                         <i class="bi bi-envelope-fill" style="width: 18px;"></i> Messages
-                        @php $nonLuCount = \App\Models\Contact::nonLu()->count(); @endphp
                         @if($nonLuCount > 0)
                             <span class="badge rounded-pill ms-auto" style="background: #dc3545; font-size: 0.65rem;">{{ $nonLuCount }}</span>
                         @endif
@@ -365,7 +365,6 @@
             <div class="d-flex align-items-center gap-3">
                 <a href="{{ route('admin.contacts.index') }}" class="btn btn-light btn-sm rounded-circle p-2 border-0 position-relative" style="width: 36px; height: 36px;">
                     <i class="bi bi-bell"></i>
-                    @php $nonLuCount = \App\Models\Contact::nonLu()->count(); @endphp
                     @if($nonLuCount > 0)
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background: #dc3545; font-size: 0.6rem; min-width: 18px; height: 18px; line-height: 18px; padding: 0 4px;">{{ $nonLuCount }}</span>
                     @endif

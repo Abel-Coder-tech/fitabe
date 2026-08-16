@@ -22,10 +22,10 @@ class VoteController extends Controller
         $votes = $this->queryFiltree($request)->latest()->paginate($request->integer('per_page', 10));
 
         $prixDuVote = Parametre::getInt('prix_ovation', 100);
-        $afficherCompteur = Parametres::where('cle', 'afficher_compteur')->value('valeur') === '1';
-        $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
-        $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
-        $dateFinale = Parametres::where('cle', 'date_finale')->value('valeur');
+        $afficherCompteur = Parametre::get('afficher_compteur') === '1';
+        $dateDebut = Parametre::get('date_debut_vote');
+        $dateFin = Parametre::get('date_fin_vote');
+        $dateFinale = Parametre::get('date_finale');
 
         $voteMode = Parametre::voteMode();
 
@@ -166,8 +166,8 @@ class VoteController extends Controller
 
         // Démarrage rapide : l'heure de clic devient l'heure de démarrage réelle,
         // la fin effective est calculée selon la durée planifiée
-        $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
-        $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+        $dateDebut = Parametre::get('date_debut_vote');
+        $dateFin = Parametre::get('date_fin_vote');
 
         if (!$dateDebut || !$dateFin) {
             return to_route('admin.votes.index')

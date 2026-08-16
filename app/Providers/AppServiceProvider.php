@@ -23,11 +23,15 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('fr');
         Paginator::useBootstrapFive();
 
-        // Gates de rôle — utilisables dans les vues (@can) et les contrôleurs (Gate::authorize)
         Gate::define('admin', fn ($user) => $user->isAdmin());
         Gate::define('super_admin', fn ($user) => $user->isSuperAdmin());
 
         Gate::policy(Candidats::class, CandidatPolicy::class);
+
+        // Nombre de messages non lus (1 seule requête pour toutes les pages admin)
+        View::composer('layouts.admin', function ($view) {
+            $view->with('nonLuCount', \App\Models\Contact::nonLu()->count());
+        });
 
         View::share('site', [
             'contact_telephone' => Parametre::get('contact_telephone'),

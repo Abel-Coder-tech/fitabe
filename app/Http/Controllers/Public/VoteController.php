@@ -31,7 +31,7 @@ class VoteController extends Controller
         // Fenêtre effective : si l'admin a démarré manuellement, c'est cette heure qui fait foi
         $dateDebut = Parametre::debutEffectif();
         $dateFin = Parametre::finEffective();
-        $dateFinale = Parametres::where('cle', 'date_finale')->value('valeur');
+        $dateFinale = Parametre::get('date_finale');
 
         $voteMode = Parametre::voteMode();
 
@@ -50,9 +50,9 @@ class VoteController extends Controller
             ->get();
 
         $fedapayKey = config('services.fedapay.public_key')
-            ?: Parametres::where('cle', 'fedapay_public_key')->value('valeur');
+            ?: Parametre::get('fedapay_public_key');
         $fedapayMode = config('services.fedapay.mode', 'live');
-        $afficherCompteur = Parametres::where('cle', 'afficher_compteur')->value('valeur') === '1';
+        $afficherCompteur = Parametre::get('afficher_compteur') === '1';
 
         $resultats = collect();
         $resultatsPublies = false;
@@ -80,8 +80,8 @@ class VoteController extends Controller
     // Soumet un vote (vérifie mode, valide, crée)
     public function store(Request $request)
     {
-        $dateDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
-        $dateFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+        $dateDebut = Parametre::get('date_debut_vote');
+        $dateFin = Parametre::get('date_fin_vote');
         $voteMode = Parametre::voteMode();
         if ($voteMode !== 'active') {
             return response()->json(['success' => false, 'message' => 'Le vote est fermé.'], 403);
@@ -365,8 +365,8 @@ class VoteController extends Controller
             'annee_resultats.max' => 'L\'année des résultats doit contenir au maximum 4 caractères.',
         ]);
 
-        $ancienDebut = Parametres::where('cle', 'date_debut_vote')->value('valeur');
-        $ancienFin = Parametres::where('cle', 'date_fin_vote')->value('valeur');
+        $ancienDebut = Parametre::get('date_debut_vote');
+        $ancienFin = Parametre::get('date_fin_vote');
 
         Parametres::updateOrCreate(['cle' => 'date_debut_vote'], ['valeur' => $data['date_debut_vote'] ?? '']);
         Parametres::updateOrCreate(['cle' => 'date_fin_vote'], ['valeur' => $data['date_fin_vote'] ?? '']);

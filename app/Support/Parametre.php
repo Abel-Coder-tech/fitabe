@@ -39,6 +39,7 @@ class Parametre
     // fenêtre effective (début manuel éventuel sinon dates planifiées) avec arrêt auto.
     public static function voteMode(): string
     {
+        return once(function () {
         $statut = self::get('statut_vote');
         [$debutReel, $finReelle] = static::fenetreEffective();
 
@@ -70,6 +71,7 @@ class Parametre
         }
 
         return 'active';
+        });
     }
 
     // Fenêtre effective : si un démarrage manuel a été enregistré (debut_effectif),

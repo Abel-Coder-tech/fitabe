@@ -15,13 +15,16 @@ class CandidatController extends Controller
     {
         $this->authorize('viewAny', Candidats::class);
 
+        $places = PlacesCategorie::allKeyed();
+        $allCandidats = Candidats::orderBy('numero_scene')->get()->groupBy('categorie');
+
         $categories = collect(Candidats::CATEGORIES)->map(fn ($cat) => (object) [
             'categorie' => $cat,
-            'places' => PlacesCategorie::pour($cat),
-            'candidats' => Candidats::byCategory($cat)->orderedByScene()->get(),
+            'places' => $places->get($cat, 1000),
+            'candidats' => $allCandidats->get($cat, collect()),
         ]);
 
-        $total = Candidats::count();
+        $total = $allCandidats->flatten()->count();
 
         return view('admin.candidats.index', compact('categories', 'total'));
     }
@@ -30,7 +33,7 @@ class CandidatController extends Controller
     {
         $this->authorize('create', Candidats::class);
 
-        $placesParCategorie = collect(Candidats::CATEGORIES)->mapWithKeys(fn ($cat) => [$cat => PlacesCategorie::pour($cat)]);
+        $placesParCategorie = PlacesCategorie::allKeyed();
 
         return view('admin.candidats.create', compact('placesParCategorie'));
     }
@@ -70,7 +73,7 @@ class CandidatController extends Controller
         $categorie = $validated['categorie'];
         $places = PlacesCategorie::pour($categorie);
 
-        if (Candidats::byCategory($categorie)->count() >= $places) {
+        if (Candidats::where('categorie', $categorie)->count() >= $places) {
             return back()->withErrors([
                 'categorie' => "La catégorie « {$categorie} » est complète ({$places} places maximum).",
             ])->withInput();
@@ -110,7 +113,7 @@ class CandidatController extends Controller
     {
         $this->authorize('update', $candidat);
 
-        $placesParCategorie = collect(Candidats::CATEGORIES)->mapWithKeys(fn ($cat) => [$cat => PlacesCategorie::pour($cat)]);
+        $placesParCategorie = PlacesCategorie::allKeyed();
 
         return view('admin.candidats.edit', compact('candidat', 'placesParCategorie'));
     }
