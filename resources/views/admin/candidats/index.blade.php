@@ -50,6 +50,7 @@
                     <button class="accordion-button {{ $i > 0 ? 'collapsed' : '' }} fw-bold py-3 candidat-btn"
                             style="background: #fff; color: #3E1E05; box-shadow: none; padding-left: 48px; position: relative;"
                             type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $i }}"
+                            data-categorie="{{ $cat->categorie }}"
                             aria-expanded="{{ $i === 0 ? 'true' : 'false' }}" aria-controls="collapse{{ $i }}">
                         <i class="bi bi-tag-fill" style="color: {{ $catColor }}; position: absolute; left: 16px; top: 50%; transform: translateY(-50%);"></i>
                         <span>{{ $cat->categorie }}</span>
@@ -239,6 +240,44 @@ function ouvrirPlaces(categorie, places) {
     document.getElementById('placesModalLabel').textContent = 'Modifier les places — ' + categorie;
     new bootstrap.Modal(document.getElementById('placesModal')).show();
 }
+
+// ==================== MÉMOIRE DE L'ACCORDÉON ====================
+(function() {
+    const CAT_KEY = 'fitab_admin_candidats_accordion';
+    const accordion = document.getElementById('candidatsAccordion');
+    if (!accordion) return;
+
+    // Sauvegarde la catégorie ouverte à chaque ouverture
+    accordion.addEventListener('show.bs.collapse', function(e) {
+        const btn = accordion.querySelector('[data-bs-target="#' + e.target.id + '"]');
+        if (btn && btn.dataset.categorie) {
+            localStorage.setItem(CAT_KEY, btn.dataset.categorie);
+        }
+    });
+
+    // À l'arrivée sur la page, rouvre la catégorie précédemment sélectionnée
+    const saved = localStorage.getItem(CAT_KEY);
+    if (!saved) return;
+
+    const btn = accordion.querySelector('.candidat-btn[data-categorie="' + saved + '"]');
+    if (!btn) return;
+
+    const target = document.querySelector(btn.getAttribute('data-bs-target'));
+    if (!target || target.classList.contains('show')) return;
+
+    accordion.querySelectorAll('.collapse.show').forEach(function(c) {
+        if (c !== target) {
+            const inst = bootstrap.Collapse.getInstance(c);
+            if (inst) inst.hide();
+        }
+    });
+
+    const inst = bootstrap.Collapse.getInstance(target) || new bootstrap.Collapse(target);
+    inst.show();
+
+    btn.classList.remove('collapsed');
+    btn.setAttribute('aria-expanded', 'true');
+})();
 </script>
 @endpush
 @endsection

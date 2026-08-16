@@ -56,6 +56,7 @@
         transition: all 0.2s;
         background: #fff;
         color: #6c757d;
+        white-space: nowrap;
     }
     .mode-toggle.active {
         border-color: #9B4D07;
@@ -71,6 +72,22 @@
         border-radius: 50%;
         flex-shrink: 0;
         margin-top: 6px;
+    }
+
+    /* ============ RESPONSIVE MOBILE ============ */
+    @media (max-width: 767.98px) {
+        .stat-card .h2 { font-size: 1.3rem; }
+        .quick-icon { width: 40px; height: 40px; font-size: 1.1rem; }
+        .quick-card { padding: 0.6rem !important; }
+        .quick-card .small { font-size: 0.7rem !important; }
+        .paiement-stat { padding: 0.75rem !important; }
+        .paiement-stat .h4 { font-size: 1rem !important; }
+        .paiement-stat small { font-size: 0.7rem; }
+        .op-badge { width: auto !important; min-width: 56px; }
+        .op-amount { width: auto !important; text-align: right !important; font-size: 0.75rem; }
+        .mode-toggle { padding: 0.4rem 0.6rem; font-size: 0.72rem; }
+        .dashboard-card-header { padding: 0.75rem 1rem !important; }
+        .dashboard-card-body { padding: 0.75rem 1rem !important; }
     }
 </style>
 @endpush
@@ -160,7 +177,7 @@
                     <i class="bi bi-envelope-fill"></i>
                 </div>
             </div>
-            <div class="h2 fw-bold mb-0" style="color: #3E1E05;">{{ $messagesNonLus }}</div>
+            <div class="h2 fw-bold mb-0" style="color: #3E1E05;">{{ $nonLuCount }}</div>
             <small class="text-muted">En attente de lecture</small>
         </div>
     </div>
@@ -169,37 +186,34 @@
 {{-- ========== 2B. SUIVI DES PAIEMENTS (réservé super_admin) ========== --}}
 @if(auth()->user()?->isSuperAdmin())
 <div class="card border-0 rounded-4 mb-4">
-    <div class="card-header bg-transparent border-bottom d-flex align-items-center justify-content-between px-4 py-3">
+    <div class="card-header bg-transparent border-bottom d-flex flex-wrap align-items-center justify-content-between gap-2 px-4 py-3">
         <span class="fw-semibold" style="color: #9B4D07;">Suivi des paiements</span>
-        <div class="d-flex align-items-center gap-3">
-            <span class="small text-muted">Transactions confirmées</span>
-            <a href="{{ route('admin.votes.index') }}" class="small text-decoration-none fw-semibold" style="color: #9B4D07;">Voir les transactions →</a>
-        </div>
+        <a href="{{ route('admin.votes.index') }}" class="small text-decoration-none fw-semibold" style="color: #9B4D07;">Voir les transactions →</a>
     </div>
     <div class="card-body px-4 py-3">
-        <div class="row g-3">
-            <div class="col-md-3">
-                <div class="p-3 rounded-3 h-100" style="background: #fdfaf5; border: 1px solid rgba(202,123,5,0.1);">
+        <div class="row g-2 g-sm-3">
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 h-100 paiement-stat" style="background: #fdfaf5; border: 1px solid rgba(202,123,5,0.1);">
                     <small class="text-muted d-block">Encaissé brut</small>
                     <div class="h4 fw-bold mb-0" style="color: #3E1E05;">{{ number_format($totalRecettes, 0, ',', ' ') }} FCFA</div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="p-3 rounded-3 h-100" style="background: #e8f5e9; border: 1px solid rgba(46,125,50,0.15);">
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 h-100 paiement-stat" style="background: #e8f5e9; border: 1px solid rgba(46,125,50,0.15);">
                     <small class="text-muted d-block">Net après frais</small>
                     <div class="h4 fw-bold mb-0" style="color: #2e7d32;">{{ number_format($netRecettes, 0, ',', ' ') }} FCFA</div>
                     <small class="text-muted">dont {{ number_format($totalFrais, 0, ',', ' ') }} FCFA de frais</small>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="p-3 rounded-3 h-100" style="background: #fff8e1; border: 1px solid rgba(202,123,5,0.15);">
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 h-100 paiement-stat" style="background: #fff8e1; border: 1px solid rgba(202,123,5,0.15);">
                     <small class="text-muted d-block">Taux de réussite</small>
                     <div class="h4 fw-bold mb-0" style="color: #9B4D07;">{{ $tauxReussite }}%</div>
                     <small class="text-muted">{{ $nbConfirme }} confirmés · {{ $nbRejete }} rejetés · {{ $nbEnAttente }} en attente</small>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="p-3 rounded-3 h-100" style="background: #fdecea; border: 1px solid rgba(200,40,40,0.15);">
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 h-100 paiement-stat" style="background: #fdecea; border: 1px solid rgba(200,40,40,0.15);">
                     <small class="text-muted d-block">Alertes</small>
                     <div class="h4 fw-bold mb-0" style="color: #c62828;">{{ $votesBloques + $alertesPaiements }}</div>
                     <small class="text-muted">{{ $votesBloques }} bloquées · {{ $alertesPaiements }} anomalies (24 h)</small>
@@ -212,11 +226,11 @@
                 <span class="small fw-semibold d-block mb-2" style="color: #3E1E05;">Répartition par opérateur</span>
                 @forelse($repartitionOperateurs as $r)
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <span class="badge px-2 py-1 flex-shrink-0" style="background: rgba(202,123,5,0.12); color: #9B4D07; font-weight: 600; width: 92px;">{{ $r->operateur }}</span>
+                        <span class="badge px-2 py-1 flex-shrink-0 op-badge" style="background: rgba(202,123,5,0.12); color: #9B4D07; font-weight: 600; width: 92px;">{{ $r->operateur }}</span>
                         <div class="flex-grow-1" style="height: 8px; background: #f4efe6; border-radius: 4px;">
                             <div style="height: 100%; width: {{ round($r->nb / $repartitionMax * 100) }}%; background: linear-gradient(90deg, #9B4D07, #CA7B05); border-radius: 4px;"></div>
                         </div>
-                        <span class="small text-muted flex-shrink-0" style="width: 96px; text-align: right;">{{ number_format($r->total_montant, 0, ',', ' ') }} FCFA</span>
+                        <span class="small text-muted flex-shrink-0 op-amount" style="width: 96px; text-align: right;">{{ number_format($r->total_montant, 0, ',', ' ') }} FCFA</span>
                     </div>
                 @empty
                     <div class="text-muted py-2"><small>Aucune transaction confirmée.</small></div>
@@ -314,7 +328,7 @@
                     Le démarrage rapide prend effet immédiatement (l'heure de clic devient l'heure de début réelle).
                     Sans action, les ovations s'ouvrent et se ferment automatiquement aux heures planifiées.
                 </p>
-                <div class="d-flex gap-2 mb-3">
+                <div class="d-flex flex-wrap gap-2 mb-3">
                     <form action="{{ route('admin.votes.toggle') }}" method="POST">
                         @csrf
                         <input type="hidden" name="action" value="demarrer">
@@ -418,8 +432,8 @@
                         <th class="px-4 py-3 fw-semibold">Candidat</th>
                         <th class="px-4 py-3 fw-semibold">Ovations</th>
                         <th class="px-4 py-3 fw-semibold">Montant</th>
-                        <th class="px-4 py-3 fw-semibold">Passerelle</th>
-                        <th class="px-4 py-3 fw-semibold">Moyen</th>
+                        <th class="px-4 py-3 fw-semibold d-none d-md-table-cell">Passerelle</th>
+                        <th class="px-4 py-3 fw-semibold d-none d-md-table-cell">Moyen</th>
                         <th class="px-4 py-3 fw-semibold">Statut</th>
                     </tr>
                 </thead>
@@ -436,14 +450,14 @@
                             </td>
                             <td class="px-4 py-3"><span class="fw-bold" style="color: #3E1E05;">{{ $vote->quantite }}</span></td>
                             <td class="px-4 py-3 fw-semibold" style="color: #3E1E05;">{{ number_format($vote->montant, 0, ',', ' ') }} FCFA</td>
-                            <td class="px-4 py-3">
+                            <td class="px-4 py-3 d-none d-md-table-cell">
                                 @if($vote->payment_method === 'fedapay')
                                     <span class="badge rounded-pill" style="background: #fff3e0; color: #e65100; font-size: 0.7rem;">Fedapay</span>
                                 @else
                                     <span class="badge rounded-pill bg-light text-muted" style="font-size: 0.7rem;">—</span>
                                 @endif
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="px-4 py-3 d-none d-md-table-cell">
                                 <span class="small text-muted">—</span>
                             </td>
                             <td class="px-4 py-3">
@@ -458,7 +472,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center text-muted py-5">
+                            <td colspan="4" class="text-center text-muted py-5">
                                 <i class="bi bi-credit-card fs-3 d-block mb-2"></i>
                                 <small>Aucune transaction.</small>
                             </td>
