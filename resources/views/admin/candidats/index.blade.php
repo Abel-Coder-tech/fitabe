@@ -15,7 +15,10 @@
 @section('content')
 {{-- En-tête --}}
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>Candidats</h1>
+    <div>
+        <h1 class="mb-0">Candidats</h1>
+        <small class="text-muted">{{ $total }} candidat(s) au total</small>
+    </div>
     <a href="{{ route('admin.candidats.create') }}" class="btn btn-primary">Nouveau candidat</a>
 </div>
 

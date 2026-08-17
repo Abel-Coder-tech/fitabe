@@ -39,7 +39,8 @@
     </div>
     <div class="mb-3">
         <label class="form-label">Photo</label>
-        <input type="file" name="photo" class="form-control @error('photo') is-invalid @enderror">
+        <input type="file" name="photo" id="photoInput" class="form-control @error('photo') is-invalid @enderror">
+        <div class="invalid-feedback" id="photoError"></div>
         @error('photo') <div class="invalid-feedback">{{ $message }}</div> @enderror
     </div>
     <div class="mb-3">
@@ -77,17 +78,19 @@
 
     // Photo : taille maximale 0,5 Mo (512 Ko)
     const MAX_PHOTO = 512 * 1024;
-    const photoInput = document.querySelector('input[name="photo"]');
+    const photoInput = document.getElementById('photoInput');
     if (photoInput) {
-        const wrapper = photoInput.closest('.mb-3');
-        const feedback = wrapper ? wrapper.querySelector('.invalid-feedback') : null;
+        const feedback = document.getElementById('photoError');
         const MESSAGE = 'La taille maximale de l\'image ne doit pas dépasser 0,5 Mo.';
 
         function verifierPhoto() {
             const f = photoInput.files && photoInput.files[0];
             const tropLourde = !!(f && f.size > MAX_PHOTO);
             photoInput.classList.toggle('is-invalid', tropLourde);
-            if (feedback) feedback.textContent = tropLourde ? MESSAGE : '';
+            if (feedback) {
+                feedback.textContent = tropLourde ? MESSAGE : '';
+                feedback.style.display = tropLourde ? 'block' : 'none';
+            }
         }
 
         photoInput.addEventListener('change', verifierPhoto);
