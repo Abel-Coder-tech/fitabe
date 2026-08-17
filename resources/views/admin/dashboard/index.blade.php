@@ -4,90 +4,53 @@
 
 @push('styles')
 <style>
-    .stat-card {
-        border: none;
-        border-radius: 14px;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .stat-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-    }
-    .stat-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-    }
-    .quick-card {
-        border: none;
-        border-radius: 14px;
-        cursor: pointer;
-        transition: all 0.25s;
-    }
-    .quick-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 28px rgba(0,0,0,0.07);
-    }
-    .quick-icon {
-        width: 52px;
-        height: 52px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.3rem;
-    }
-    .progress-bar-cat {
-        height: 8px;
-        border-radius: 4px;
-        background: linear-gradient(90deg, #9B4D07, #CA7B05);
-    }
-    .mode-toggle {
-        border: 2px solid #dee2e6;
-        border-radius: 10px;
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        background: #fff;
-        color: #6c757d;
-        white-space: nowrap;
-    }
-    .mode-toggle.active {
-        border-color: #9B4D07;
-        background: #9B4D07;
-        color: #fff;
-    }
-    .mode-toggle:hover:not(.active) {
-        border-color: #CA7B05;
-    }
-    .msg-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        flex-shrink: 0;
-        margin-top: 6px;
-    }
+    .stat-card { border: none; border-radius: 14px; transition: transform 0.2s, box-shadow 0.2s; }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+    .stat-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .quick-card { border: none; border-radius: 14px; cursor: pointer; transition: all 0.25s; }
+    .quick-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,0.07); }
+    .quick-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+    .mode-toggle { border: 2px solid #dee2e6; border-radius: 10px; padding: 0.5rem 1rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background: #fff; color: #6c757d; white-space: nowrap; }
+    .mode-toggle.active { border-color: #9B4D07; background: #9B4D07; color: #fff; }
+    .mode-toggle:hover:not(.active) { border-color: #CA7B05; }
+    .msg-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
 
-    /* ============ RESPONSIVE MOBILE ============ */
     @media (max-width: 767.98px) {
-        .stat-card .h2 { font-size: 1.3rem; }
-        .quick-icon { width: 40px; height: 40px; font-size: 1.1rem; }
-        .quick-card { padding: 0.6rem !important; }
-        .quick-card .small { font-size: 0.7rem !important; }
-        .paiement-stat { padding: 0.75rem !important; }
-        .paiement-stat .h4 { font-size: 1rem !important; }
-        .paiement-stat small { font-size: 0.7rem; }
-        .op-badge { width: auto !important; min-width: 56px; }
-        .op-amount { width: auto !important; text-align: right !important; font-size: 0.75rem; }
-        .mode-toggle { padding: 0.4rem 0.6rem; font-size: 0.72rem; }
-        .dashboard-card-header { padding: 0.75rem 1rem !important; }
-        .dashboard-card-body { padding: 0.75rem 1rem !important; }
+        /* -- Raccourcis -- */
+        .quick-card { padding: 0.5rem !important; }
+        .quick-icon { width: 36px; height: 36px; font-size: 1rem; border-radius: 10px; }
+        .quick-card .small { font-size: 0.65rem !important; line-height: 1.2; }
+
+        /* -- Stat cards -- */
+        .stat-card .h2 { font-size: 1.1rem !important; }
+        .stat-card .stat-icon { width: 34px; height: 34px; font-size: 0.95rem; border-radius: 10px; }
+        .stat-card .small.text-muted { font-size: 0.7rem; }
+
+        /* -- Suivi paiements -- */
+        .paiement-stat { padding: 0.6rem !important; }
+        .paiement-stat .h4 { font-size: 0.9rem !important; word-break: break-word; }
+        .paiement-stat small { font-size: 0.65rem; line-height: 1.3; }
+        .op-badge { width: auto !important; min-width: 44px; font-size: 0.7rem !important; }
+        .op-amount { width: auto !important; font-size: 0.7rem !important; }
+        .rep-row { gap: 0.4rem !important; }
+
+        /* -- Mode toggle -- */
+        .mode-toggle-wrap .mode-toggle { width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem !important; padding: 0.6rem 0.75rem !important; }
+        .mode-info { display: none; }
+
+        /* -- Cards padding -- */
+        .card-header { padding: 0.6rem 0.75rem !important; }
+        .card-body { padding: 0.6rem 0.75rem !important; }
+
+        /* -- Messages récents -- */
+        .msg-dot { width: 8px; height: 8px; margin-top: 4px; }
+
+        /* -- Categorie filter -- */
+        .cat-filter-form select { max-width: 100% !important; font-size: 0.8rem; }
+
+        /* -- Table: let layout handle card conversion, tighten spacing -- */
+        .tx-table td { padding: 0.5rem 0.6rem !important; }
+        .tx-table td img { width: 28px !important; height: 28px !important; }
     }
 </style>
 @endpush
@@ -225,7 +188,7 @@
             <div class="col-lg-5">
                 <span class="small fw-semibold d-block mb-2" style="color: #3E1E05;">Répartition par opérateur</span>
                 @forelse($repartitionOperateurs as $r)
-                    <div class="d-flex align-items-center gap-2 mb-2">
+                    <div class="d-flex align-items-center gap-2 mb-2 rep-row">
                         <span class="badge px-2 py-1 flex-shrink-0 op-badge" style="background: rgba(202,123,5,0.12); color: #9B4D07; font-weight: 600; width: 92px;">{{ $r->operateur }}</span>
                         <div class="flex-grow-1" style="height: 8px; background: #f4efe6; border-radius: 4px;">
                             <div style="height: 100%; width: {{ round($r->nb / $repartitionMax * 100) }}%; background: linear-gradient(90deg, #9B4D07, #CA7B05); border-radius: 4px;"></div>
@@ -269,7 +232,7 @@
             </div>
             <div class="card-body px-4 py-3">
                 {{-- Filtre liste déroulante (filtrage serveur, recharge la page) --}}
-                <form method="GET" action="{{ route('admin.dashboard') }}" class="d-flex align-items-center gap-2 mb-3">
+                <form method="GET" action="{{ route('admin.dashboard') }}" class="d-flex align-items-center gap-2 mb-3 cat-filter-form">
                     <span class="fw-semibold small" style="color: #9B4D07;">Catégorie :</span>
                     <select name="categorie" class="form-select form-select-sm" id="categorieFilter"
                             onchange="this.form.submit()"
@@ -323,12 +286,12 @@
                 <i class="bi bi-sliders" style="color: #9B4D07;"></i>
             </div>
             <div class="card-body px-4 py-3">
-                <p class="small text-muted mb-3">
+                <p class="small text-muted mb-3 mode-info">
                     <i class="bi bi-info-circle me-1"></i>
                     Le démarrage rapide prend effet immédiatement (l'heure de clic devient l'heure de début réelle).
                     Sans action, les ovations s'ouvrent et se ferment automatiquement aux heures planifiées.
                 </p>
-                <div class="d-flex flex-wrap gap-2 mb-3">
+                <div class="d-flex flex-wrap gap-2 mb-3 mode-toggle-wrap">
                     <form action="{{ route('admin.votes.toggle') }}" method="POST">
                         @csrf
                         <input type="hidden" name="action" value="demarrer">
@@ -426,7 +389,7 @@
     </div>
     <div class="card-body px-0 py-0">
         <div class="table-responsive">
-            <table class="table table-borderless align-middle mb-0">
+            <table class="table table-borderless align-middle mb-0 tx-table">
                 <thead class="text-muted small" style="background: #f9f9fb;">
                     <tr>
                         <th class="px-4 py-3 fw-semibold">Candidat</th>
@@ -440,7 +403,7 @@
                 <tbody>
                     @forelse($dernieresTransactions as $vote)
                         <tr class="border-bottom" style="border-color: #f5f5f5 !important;">
-                            <td class="px-4 py-3">
+                            <td class="px-4 py-3" data-label="Candidat">
                                 <div class="d-flex align-items-center gap-2">
                                     @if($vote->candidat && $vote->candidat->photo)
                                         <img src="{{ $vote->candidat->photo_url }}" alt="" class="rounded-circle" width="32" height="32" style="object-fit:cover;">
@@ -448,19 +411,19 @@
                                     <span class="fw-semibold small" style="color: #3E1E05;">{{ $vote->candidat?->display_name ?? '—' }}</span>
                                 </div>
                             </td>
-                            <td class="px-4 py-3"><span class="fw-bold" style="color: #3E1E05;">{{ $vote->quantite }}</span></td>
-                            <td class="px-4 py-3 fw-semibold" style="color: #3E1E05;">{{ number_format($vote->montant, 0, ',', ' ') }} FCFA</td>
-                            <td class="px-4 py-3 d-none d-md-table-cell">
+                            <td class="px-4 py-3" data-label="Ovations"><span class="fw-bold" style="color: #3E1E05;">{{ $vote->quantite }}</span></td>
+                            <td class="px-4 py-3 fw-semibold" style="color: #3E1E05;" data-label="Montant">{{ number_format($vote->montant, 0, ',', ' ') }} FCFA</td>
+                            <td class="px-4 py-3 d-none d-md-table-cell" data-label="Passerelle">
                                 @if($vote->payment_method === 'fedapay')
                                     <span class="badge rounded-pill" style="background: #fff3e0; color: #e65100; font-size: 0.7rem;">Fedapay</span>
                                 @else
                                     <span class="badge rounded-pill bg-light text-muted" style="font-size: 0.7rem;">—</span>
                                 @endif
                             </td>
-                            <td class="px-4 py-3 d-none d-md-table-cell">
+                            <td class="px-4 py-3 d-none d-md-table-cell" data-label="Moyen">
                                 <span class="small text-muted">—</span>
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="px-4 py-3" data-label="Statut">
                                 @if($vote->statut === 'confirme')
                                     <span class="badge rounded-pill" style="background: #e8f5e9; color: #2e7d32; font-size: 0.7rem;">Confirmé</span>
                                 @elseif($vote->statut === 'en_attente')
