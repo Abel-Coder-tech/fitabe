@@ -221,6 +221,17 @@ class VoteController extends Controller
         }
 
         if ($vote->statut !== 'en_attente') {
+            VoteLog::create([
+                'type' => 'webhook',
+                'statut' => 'ignore',
+                'categorie' => 'deja_confirme',
+                'message' => "Webhook reçu alors que le vote est déjà « {$vote->statut} ».",
+                'transaction_id' => $transactionId,
+                'vote_id' => $vote->id,
+                'montant' => $vote->montant,
+                'contexte' => json_encode(self::contexteFedapay($data), JSON_UNESCAPED_UNICODE),
+            ]);
+
             return response()->json(['status' => 'ok']);
         }
 
@@ -392,7 +403,37 @@ class VoteController extends Controller
 
         if ($request->query('vote_id')) {
             $vote = Votes::with('candidat')->find($request->query('vote_id'));
+
             if ($vote) {
+                $transactionId = $request->query('id');
+                $status = $request->query('status');
+
+                if ($transactionId && in_array($status, ['approved', 'completed', 'accepted'], true)) {
+                    if ($vote->statut === 'en_attente') {
+                        // Vote en attente — le webhook confirmera
+                    } else {
+                        VoteLog::create([
+                            'type' => 'callback',
+                            'statut' => 'ignore',
+                            'categorie' => 'deja_confirme',
+                            'message' => "Retour Fedapay reçu alors que le vote est déjà « {$vote->statut} ».",
+                            'transaction_id' => $transactionId,
+                            'vote_id' => $vote->id,
+                            'montant' => $vote->montant,
+                        ]);
+                    }
+                } elseif ($transactionId) {
+                    VoteLog::create([
+                        'type' => 'callback',
+                        'statut' => 'ignore',
+                        'categorie' => 'statut_non_confirmant',
+                        'message' => "Retour Fedapay avec statut non confirmant : {$status}",
+                        'transaction_id' => $transactionId,
+                        'vote_id' => $vote->id,
+                        'montant' => $vote->montant,
+                    ]);
+                }
+
                 $statut = $vote->statut;
             }
         }
