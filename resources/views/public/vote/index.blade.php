@@ -920,6 +920,7 @@ function ouvrirFedapay(voteId, montant) {
         transaction: {
             amount: montant,
             description: 'Ovation FITAB #' + voteId,
+            custom_metadata: { vote_id: voteId },
         },
         currency: { iso: 'XOF' },
         onComplete: function(data) {
