@@ -12,7 +12,6 @@ use App\Services\ResultatService;
 use App\Support\FedaPayInfos;
 use App\Support\Parametre;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -222,17 +221,6 @@ class VoteController extends Controller
         }
 
         if ($vote->statut !== 'en_attente') {
-            VoteLog::create([
-                'type' => 'webhook',
-                'statut' => 'ignore',
-                'categorie' => 'deja_confirme',
-                'message' => "Webhook reçu alors que le vote est déjà « {$vote->statut} ».",
-                'transaction_id' => $transactionId,
-                'vote_id' => $vote->id,
-                'montant' => $vote->montant,
-                'contexte' => json_encode(self::contexteFedapay($data), JSON_UNESCAPED_UNICODE),
-            ]);
-
             return response()->json(['status' => 'ok']);
         }
 
@@ -407,12 +395,12 @@ class VoteController extends Controller
 
             if ($vote) {
                 $transactionId = $request->query('id');
+                $status = $request->query('status');
+                $paymentMethod = $request->query('payment_method');
                 $phone = $request->query('phone');
 
-                if ($transactionId && $vote->statut === 'en_attente') {
-                    $statutFedaPay = $this->verifierTransactionFedapay($transactionId);
-
-                    if ($statutFedaPay && in_array($statutFedaPay, ['approved', 'completed', 'accepted'], true)) {
+                if ($transactionId && in_array($status, ['approved', 'completed', 'accepted'], true)) {
+                    if ($vote->statut === 'en_attente') {
                         $vote->marquerConfirme($transactionId, 'fedapay', $phone);
                         VoteLog::create([
                             'type' => 'callback',
@@ -423,23 +411,15 @@ class VoteController extends Controller
                             'vote_id' => $vote->id,
                             'montant' => $vote->montant,
                         ]);
-                    } elseif ($statutFedaPay) {
-                        VoteLog::create([
-                            'type' => 'callback',
-                            'statut' => 'ignore',
-                            'categorie' => 'statut_non_confirmant',
-                            'message' => "Statut FedaPay vérifié non confirmant : {$statutFedaPay}",
-                            'transaction_id' => $transactionId,
-                            'vote_id' => $vote->id,
-                            'montant' => $vote->montant,
-                        ]);
+                    } else {
+                        // Vote déjà traité — on ignore silencieusement le double callback
                     }
-                } elseif ($transactionId && $vote->statut !== 'en_attente') {
+                } elseif ($transactionId) {
                     VoteLog::create([
                         'type' => 'callback',
                         'statut' => 'ignore',
-                        'categorie' => 'deja_confirme',
-                        'message' => "Retour Fedapay reçu alors que le vote est déjà « {$vote->statut} ».",
+                        'categorie' => 'statut_non_confirmant',
+                        'message' => "Retour Fedapay avec statut non confirmant : {$status}",
                         'transaction_id' => $transactionId,
                         'vote_id' => $vote->id,
                         'montant' => $vote->montant,
@@ -447,6 +427,16 @@ class VoteController extends Controller
                 }
 
                 $statut = $vote->statut;
+            } else {
+                // Paiement annoncé mais vote introuvable depuis la page de retour
+                VoteLog::create([
+                    'type' => 'callback',
+                    'statut' => 'erreur',
+                    'categorie' => 'vote_non_trouve',
+                    'message' => 'Retour Fedapay avec vote introuvable : ovation non comptée.',
+                    'transaction_id' => $request->query('id'),
+                    'vote_id' => (int) $request->query('vote_id'),
+                ]);
             }
         }
 
@@ -455,37 +445,5 @@ class VoteController extends Controller
         }
 
         return view('public.vote.merci', compact('vote', 'statut'));
-    }
-
-    /**
-     * Vérifie le statut réel d'une transaction via l'API FedaPay.
-     * Renvoie le statut (approved, completed, etc.) ou null en cas d'erreur.
-     */
-    private function verifierTransactionFedapay(string $transactionId): ?string
-    {
-        $secretKey = config('services.fedapay.secret_key');
-        $mode = config('services.fedapay.mode', 'live');
-        $baseUrl = $mode === 'sandbox'
-            ? 'https://sandbox.fedapay.com/v1'
-            : 'https://api.fedapay.com/v1';
-
-        try {
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $secretKey,
-                'Accept' => 'application/json',
-            ])->timeout(10)->get("{$baseUrl}/transactions/{$transactionId}");
-
-            if ($response->successful()) {
-                $data = $response->json('data');
-                return $data['status'] ?? null;
-            }
-        } catch (\Exception $e) {
-            Log::warning('Échec vérification FedaPay', [
-                'transaction_id' => $transactionId,
-                'erreur' => $e->getMessage(),
-            ]);
-        }
-
-        return null;
     }
 }
