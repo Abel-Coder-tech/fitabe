@@ -12,6 +12,7 @@ use App\Services\ResultatService;
 use App\Support\FedaPayInfos;
 use App\Support\Parametre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -406,28 +407,39 @@ class VoteController extends Controller
 
             if ($vote) {
                 $transactionId = $request->query('id');
-                $status = $request->query('status');
+                $phone = $request->query('phone');
 
-                if ($transactionId && in_array($status, ['approved', 'completed', 'accepted'], true)) {
-                    if ($vote->statut === 'en_attente') {
-                        // Vote en attente — le webhook confirmera
-                    } else {
+                if ($transactionId && $vote->statut === 'en_attente') {
+                    $statutFedaPay = $this->verifierTransactionFedapay($transactionId);
+
+                    if ($statutFedaPay && in_array($statutFedaPay, ['approved', 'completed', 'accepted'], true)) {
+                        $vote->marquerConfirme($transactionId, 'fedapay', $phone);
+                        VoteLog::create([
+                            'type' => 'callback',
+                            'statut' => 'ok',
+                            'categorie' => 'confirme_callback',
+                            'message' => 'Vote confirmé via le retour Fedapay (page de remerciement).',
+                            'transaction_id' => $transactionId,
+                            'vote_id' => $vote->id,
+                            'montant' => $vote->montant,
+                        ]);
+                    } elseif ($statutFedaPay) {
                         VoteLog::create([
                             'type' => 'callback',
                             'statut' => 'ignore',
-                            'categorie' => 'deja_confirme',
-                            'message' => "Retour Fedapay reçu alors que le vote est déjà « {$vote->statut} ».",
+                            'categorie' => 'statut_non_confirmant',
+                            'message' => "Statut FedaPay vérifié non confirmant : {$statutFedaPay}",
                             'transaction_id' => $transactionId,
                             'vote_id' => $vote->id,
                             'montant' => $vote->montant,
                         ]);
                     }
-                } elseif ($transactionId) {
+                } elseif ($transactionId && $vote->statut !== 'en_attente') {
                     VoteLog::create([
                         'type' => 'callback',
                         'statut' => 'ignore',
-                        'categorie' => 'statut_non_confirmant',
-                        'message' => "Retour Fedapay avec statut non confirmant : {$status}",
+                        'categorie' => 'deja_confirme',
+                        'message' => "Retour Fedapay reçu alors que le vote est déjà « {$vote->statut} ».",
                         'transaction_id' => $transactionId,
                         'vote_id' => $vote->id,
                         'montant' => $vote->montant,
@@ -443,5 +455,37 @@ class VoteController extends Controller
         }
 
         return view('public.vote.merci', compact('vote', 'statut'));
+    }
+
+    /**
+     * Vérifie le statut réel d'une transaction via l'API FedaPay.
+     * Renvoie le statut (approved, completed, etc.) ou null en cas d'erreur.
+     */
+    private function verifierTransactionFedapay(string $transactionId): ?string
+    {
+        $secretKey = config('services.fedapay.secret_key');
+        $mode = config('services.fedapay.mode', 'live');
+        $baseUrl = $mode === 'sandbox'
+            ? 'https://sandbox.fedapay.com/v1'
+            : 'https://api.fedapay.com/v1';
+
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $secretKey,
+                'Accept' => 'application/json',
+            ])->timeout(10)->get("{$baseUrl}/transactions/{$transactionId}");
+
+            if ($response->successful()) {
+                $data = $response->json('data');
+                return $data['status'] ?? null;
+            }
+        } catch (\Exception $e) {
+            Log::warning('Échec vérification FedaPay', [
+                'transaction_id' => $transactionId,
+                'erreur' => $e->getMessage(),
+            ]);
+        }
+
+        return null;
     }
 }
