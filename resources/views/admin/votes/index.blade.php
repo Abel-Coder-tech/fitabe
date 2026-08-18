@@ -273,16 +273,7 @@
 
 <div class="bg-white rounded-3 shadow-sm p-3 mb-3" style="border:1px solid rgba(202,123,5,0.08);">
     <form method="GET" action="{{ route('admin.votes.index') }}" class="row g-2 align-items-end">
-        <div class="col-6 col-md-2">
-            <label class="form-label small fw-semibold mb-1" style="color:#9B4D07;">Statut</label>
-            <select name="statut" class="form-select form-select-sm">
-                <option value="tous" @selected(($filtres['statut'] ?? '') === '' || ($filtres['statut'] ?? '') === 'tous')>Tous</option>
-                <option value="confirme" @selected(($filtres['statut'] ?? '') === 'confirme')>Confirmé</option>
-                <option value="en_attente" @selected(($filtres['statut'] ?? '') === 'en_attente')>En attente</option>
-                <option value="rejete" @selected(($filtres['statut'] ?? '') === 'rejete')>Rejeté</option>
-            </select>
-        </div>
-        <div class="col-6 col-md-2">
+        <div class="col-6 col-md-4">
             <label class="form-label small fw-semibold mb-1" style="color:#9B4D07;">Opérateur</label>
             <select name="operateur" class="form-select form-select-sm">
                 <option value="tous">Tous</option>
@@ -291,24 +282,16 @@
                 @endforeach
             </select>
         </div>
-        <div class="col-6 col-md-2">
-            <label class="form-label small fw-semibold mb-1" style="color:#9B4D07;">Pays</label>
-            <select name="pays" class="form-select form-select-sm">
+        <div class="col-6 col-md-4">
+            <label class="form-label small fw-semibold mb-1" style="color:#9B4D07;">Candidat</label>
+            <select name="candidat_id" class="form-select form-select-sm">
                 <option value="tous">Tous</option>
-                @foreach($pays as $p)
-                    <option value="{{ $p }}" @selected(($filtres['pays'] ?? '') === $p)>{{ $p }}</option>
+                @foreach($candidatsList as $c)
+                    <option value="{{ $c->id }}" @selected(($filtres['candidat_id'] ?? '') == $c->id)>{{ $c->display_name }}</option>
                 @endforeach
             </select>
         </div>
-        <div class="col-6 col-md-2">
-            <label class="form-label small fw-semibold mb-1" style="color:#9B4D07;">Du</label>
-            <input type="date" name="date_debut" class="form-control form-control-sm" value="{{ $filtres['date_debut'] ?? '' }}">
-        </div>
-        <div class="col-6 col-md-2">
-            <label class="form-label small fw-semibold mb-1" style="color:#9B4D07;">Au</label>
-            <input type="date" name="date_fin" class="form-control form-control-sm" value="{{ $filtres['date_fin'] ?? '' }}">
-        </div>
-        <div class="col-12 col-md-2 d-flex gap-2">
+        <div class="col-12 col-md-4 d-flex gap-2">
             <button type="submit" class="btn btn-sm save-btn px-3 w-100">
                 <i class="bi bi-funnel me-1"></i> Filtrer
             </button>

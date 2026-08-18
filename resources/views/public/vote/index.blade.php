@@ -850,6 +850,17 @@ async function lancerPaiement() {
             body: formData,
         });
 
+        const contentType = response.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+            if (response.status === 419) {
+                throw new Error('Votre session a expiré. Veuillez rafraîchir la page.');
+            } else if (response.status === 429) {
+                throw new Error('Trop de tentatives. Veuillez patienter quelques instants.');
+            } else {
+                throw new Error('Erreur serveur (code ' + response.status + '). Veuillez réessayer.');
+            }
+        }
+
         const data = await response.json();
 
         if (!data.success) {

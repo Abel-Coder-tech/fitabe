@@ -31,11 +31,11 @@ class VoteController extends Controller
 
         $filtres = $this->filtres($request);
         $operateurs = Votes::query()->select('operateur')->distinct()->whereNotNull('operateur')->orderBy('operateur')->pluck('operateur');
-        $pays = Votes::query()->select('pays')->distinct()->whereNotNull('pays')->orderBy('pays')->pluck('pays');
+        $candidatsList = Candidats::orderBy('nom')->select('id', 'nom', 'prenom')->get();
 
         return view('admin.votes.index', compact(
             'votes', 'voteMode', 'prixDuVote', 'afficherCompteur',
-            'dateDebut', 'dateFin', 'dateFinale', 'filtres', 'operateurs', 'pays'
+            'dateDebut', 'dateFin', 'dateFinale', 'filtres', 'operateurs', 'candidatsList'
         ));
     }
 
@@ -43,11 +43,8 @@ class VoteController extends Controller
     protected function filtres(Request $request): array
     {
         return [
-            'statut' => trim((string) $request->input('statut')),
             'operateur' => trim((string) $request->input('operateur')),
-            'pays' => trim((string) $request->input('pays')),
-            'date_debut' => trim((string) $request->input('date_debut')),
-            'date_fin' => trim((string) $request->input('date_fin')),
+            'candidat_id' => $request->input('candidat_id') !== 'tous' ? $request->input('candidat_id') : '',
         ];
     }
 
@@ -57,11 +54,8 @@ class VoteController extends Controller
 
         return Votes::query()
             ->with('candidat')
-            ->when($f['statut'] && $f['statut'] !== 'tous', fn ($q) => $q->where('statut', $f['statut']))
             ->when($f['operateur'] && $f['operateur'] !== 'tous', fn ($q) => $q->where('operateur', $f['operateur']))
-            ->when($f['pays'] && $f['pays'] !== 'tous', fn ($q) => $q->where('pays', $f['pays']))
-            ->when($f['date_debut'], fn ($q) => $q->whereDate('created_at', '>=', $f['date_debut']))
-            ->when($f['date_fin'], fn ($q) => $q->whereDate('created_at', '<=', $f['date_fin']));
+            ->when($f['candidat_id'] && $f['candidat_id'] !== 'tous', fn ($q) => $q->where('candidat_id', $f['candidat_id']));
     }
 
     // Export CSV (respecte les filtres courants)
