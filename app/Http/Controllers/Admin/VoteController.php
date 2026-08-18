@@ -31,7 +31,7 @@ class VoteController extends Controller
 
         $filtres = $this->filtres($request);
         $operateurs = Votes::query()->select('operateur')->distinct()->whereNotNull('operateur')->orderBy('operateur')->pluck('operateur');
-        $candidatsList = Candidats::orderBy('nom')->select('id', 'nom', 'prenom')->get();
+        $candidatsList = Candidats::orderBy('nom')->select('id', 'nom', 'nom_scene')->get();
 
         return view('admin.votes.index', compact(
             'votes', 'voteMode', 'prixDuVote', 'afficherCompteur',
