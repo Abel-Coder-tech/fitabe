@@ -628,7 +628,7 @@
                             <p class="small mb-2">2. Chaque ovation est payante au tarif de <strong>{{ number_format($prixDuVote, 0, ',', ' ') }} FCFA</strong> l'unité.</p>
                             <p class="small mb-2">3. Le nombre d'ovations par personne n'est pas limité.</p>
                             <p class="small mb-2">4. Les ovations sont définitives et non remboursables.</p>
-                            <p class="small mb-2">5. Le paiement s'effectue via Fedapay (MTN Mobile Money, Moov Flooz, Orange Money).</p>
+                            <p class="small mb-2">5. Le paiement s'effectue via Fedapay (MTN Bénin, Moov Money, Celtiis Cash).</p>
                             <p class="small mb-0">6. Toute ovation frauduleuse entraîne l'annulation des ovations concernées.</p>
                         </div>
                     </div>

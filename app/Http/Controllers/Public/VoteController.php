@@ -392,51 +392,8 @@ class VoteController extends Controller
 
         if ($request->query('vote_id')) {
             $vote = Votes::with('candidat')->find($request->query('vote_id'));
-
             if ($vote) {
-                $transactionId = $request->query('id');
-                $status = $request->query('status');
-                $paymentMethod = $request->query('payment_method');
-                $phone = $request->query('phone');
-
-                if ($transactionId && in_array($status, ['approved', 'completed', 'accepted'], true)) {
-                    if ($vote->statut === 'en_attente') {
-                        $vote->marquerConfirme($transactionId, 'fedapay', $phone);
-                        VoteLog::create([
-                            'type' => 'callback',
-                            'statut' => 'ok',
-                            'categorie' => 'confirme_callback',
-                            'message' => 'Vote confirmé via le retour Fedapay (page de remerciement).',
-                            'transaction_id' => $transactionId,
-                            'vote_id' => $vote->id,
-                            'montant' => $vote->montant,
-                        ]);
-                    } else {
-                        // Vote déjà traité — on ignore silencieusement le double callback
-                    }
-                } elseif ($transactionId) {
-                    VoteLog::create([
-                        'type' => 'callback',
-                        'statut' => 'ignore',
-                        'categorie' => 'statut_non_confirmant',
-                        'message' => "Retour Fedapay avec statut non confirmant : {$status}",
-                        'transaction_id' => $transactionId,
-                        'vote_id' => $vote->id,
-                        'montant' => $vote->montant,
-                    ]);
-                }
-
                 $statut = $vote->statut;
-            } else {
-                // Paiement annoncé mais vote introuvable depuis la page de retour
-                VoteLog::create([
-                    'type' => 'callback',
-                    'statut' => 'erreur',
-                    'categorie' => 'vote_non_trouve',
-                    'message' => 'Retour Fedapay avec vote introuvable : ovation non comptée.',
-                    'transaction_id' => $request->query('id'),
-                    'vote_id' => (int) $request->query('vote_id'),
-                ]);
             }
         }
 

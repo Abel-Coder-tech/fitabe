@@ -278,7 +278,7 @@
             <select name="operateur" class="form-select form-select-sm">
                 <option value="tous">Tous</option>
                 @foreach($operateurs as $op)
-                    <option value="{{ $op }}" @selected(($filtres['operateur'] ?? '') === $op)>{{ $op }}</option>
+                    <option value="{{ $op }}" @selected(($filtres['operateur'] ?? '') === $op)>{{ \App\Support\FedaPayInfos::operateurLabel($op) }}</option>
                 @endforeach
             </select>
         </div>
@@ -337,7 +337,7 @@
                     <td class="small text-muted">{{ $vote->frais !== null ? number_format($vote->frais, 0, ',', ' ') . ' FCFA' : '—' }}</td>
                     <td>
                         @if($vote->operateur)
-                            <span class="badge px-2 py-1" style="background:rgba(202,123,5,0.12);color:#9B4D07;font-weight:600;">{{ $vote->operateur }}</span>
+                            <span class="badge px-2 py-1" style="background:rgba(202,123,5,0.12);color:#9B4D07;font-weight:600;">{{ \App\Support\FedaPayInfos::operateurLabel($vote->operateur) }}</span>
                         @else
                             <span class="text-muted">—</span>
                         @endif

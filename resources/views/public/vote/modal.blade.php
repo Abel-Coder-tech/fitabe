@@ -329,7 +329,7 @@
                                          onerror="this.style.display='none'"
                                          style="height: 30px;">
                                     <div class="fw-semibold small mt-1">Fedapay</div>
-                                    <small class="text-muted" style="font-size: 0.65rem;">MTN · Moov · Orange Money</small>
+                                    <small class="text-muted" style="font-size: 0.65rem;">MTN Bénin · Moov Money · Celtiis Cash</small>
                                 </div>
                                 <p class="text-muted small mt-2 mb-2" style="font-size: 0.7rem;">
                                     Paiement sécurisé via Fedapay

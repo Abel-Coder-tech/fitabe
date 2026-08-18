@@ -177,9 +177,9 @@
             </div>
             <div class="col-6 col-md-3">
                 <div class="p-3 rounded-3 h-100 paiement-stat" style="background: #fdecea; border: 1px solid rgba(200,40,40,0.15);">
-                    <small class="text-muted d-block">Alertes</small>
+                    <small class="text-muted d-block">Paiements orphelins</small>
                     <div class="h4 fw-bold mb-0" style="color: #c62828;">{{ $votesBloques + $alertesPaiements }}</div>
-                    <small class="text-muted">{{ $votesBloques }} bloquées · {{ $alertesPaiements }} anomalies (24 h)</small>
+                    <small class="text-muted">{{ $votesBloques }} non finalisés · {{ $alertesPaiements }} erreurs (24 h)</small>
                 </div>
             </div>
         </div>
@@ -189,7 +189,7 @@
                 <span class="small fw-semibold d-block mb-2" style="color: #3E1E05;">Répartition par opérateur</span>
                 @forelse($repartitionOperateurs as $r)
                     <div class="d-flex align-items-center gap-2 mb-2 rep-row">
-                        <span class="badge px-2 py-1 flex-shrink-0 op-badge" style="background: rgba(202,123,5,0.12); color: #9B4D07; font-weight: 600; width: 92px;">{{ $r->operateur }}</span>
+                        <span class="badge px-2 py-1 flex-shrink-0 op-badge" style="background: rgba(202,123,5,0.12); color: #9B4D07; font-weight: 600; width: 92px;">{{ \App\Support\FedaPayInfos::operateurLabel($r->operateur) }}</span>
                         <div class="flex-grow-1" style="height: 8px; background: #f4efe6; border-radius: 4px;">
                             <div style="height: 100%; width: {{ round($r->nb / $repartitionMax * 100) }}%; background: linear-gradient(90deg, #9B4D07, #CA7B05); border-radius: 4px;"></div>
                         </div>

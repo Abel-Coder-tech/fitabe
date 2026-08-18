@@ -78,7 +78,7 @@
                                 <li>1 Ovation = 100 FCFA</li>
                                 <li>Les ovations sont ouvertes dès la publication des artistes sélectionnés (1er août 2026)</li>
                                 <li>Les ovations se clôturent automatiquement le dimanche 22 novembre 2026 à 23h59 (GMT+1)</li>
-                                <li>Le paiement s'effectue via Fedapay (MTN Mobile Money, Moov Flooz, Orange Money)</li>
+                                <li>Le paiement s'effectue via Fedapay (MTN Bénin, Moov Money, Celtiis Cash)</li>
                                 <li>Toute ovation validée et payée est définitive et non remboursable</li>
                                 <li>Le nombre d'ovations reçues compte pour <strong>15 % de la note finale</strong> (converti en points sur 15)</li>
                                 <li>En cas d'anomalie technique affectant les ovations, l'Organisation se réserve le droit de corriger ou d'annuler les transactions concernées</li>

@@ -45,8 +45,10 @@ class DashboardController extends Controller
             ->get();
         $repartitionMax = $repartitionOperateurs->max('nb') ?: 1;
 
-        // Alertes : votes bloqués en attente depuis > 10 min + anomalies de paiement sur 24 h
-        $votesBloques = Votes::enAttente()->where('created_at', '<', now()->subMinutes(10))->count();
+        // Votes non finalisés : en_attente avec un vrai ID FedaPay (pas pending_xxx) + anomalies de paiement sur 24 h
+        $votesBloques = Votes::enAttente()
+            ->where('transaction_id', 'not like', 'pending_%')
+            ->count();
         $alertesPaiements = VoteLog::where('statut', 'erreur')->where('created_at', '>=', now()->subDay())->count();
         $anomaliesRecentes = VoteLog::where('statut', 'erreur')->latest()->take(5)->get();
 
