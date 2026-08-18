@@ -17,7 +17,7 @@ class RecompterVotes extends Command
         $total = 0;
 
         foreach ($candidats as $candidat) {
-            $somme = Votes::where('candidat_id', $candidat->id)
+            $somme = Votes::where('candidate_id', $candidat->id)
                 ->where('statut', 'confirme')
                 ->sum('quantite');
 
