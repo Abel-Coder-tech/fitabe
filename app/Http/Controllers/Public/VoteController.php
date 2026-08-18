@@ -221,17 +221,6 @@ class VoteController extends Controller
         }
 
         if ($vote->statut !== 'en_attente') {
-            VoteLog::create([
-                'type' => 'webhook',
-                'statut' => 'ignore',
-                'categorie' => 'deja_confirme',
-                'message' => "Webhook reçu alors que le vote est déjà « {$vote->statut} ».",
-                'transaction_id' => $transactionId,
-                'vote_id' => $vote->id,
-                'montant' => $vote->montant,
-                'contexte' => json_encode(self::contexteFedapay($data), JSON_UNESCAPED_UNICODE),
-            ]);
-
             return response()->json(['status' => 'ok']);
         }
 
@@ -423,15 +412,7 @@ class VoteController extends Controller
                             'montant' => $vote->montant,
                         ]);
                     } else {
-                        VoteLog::create([
-                            'type' => 'callback',
-                            'statut' => 'ignore',
-                            'categorie' => 'deja_confirme',
-                            'message' => "Retour Fedapay reçu alors que le vote est déjà « {$vote->statut} ».",
-                            'transaction_id' => $transactionId,
-                            'vote_id' => $vote->id,
-                            'montant' => $vote->montant,
-                        ]);
+                        // Vote déjà traité — on ignore silencieusement le double callback
                     }
                 } elseif ($transactionId) {
                     VoteLog::create([
