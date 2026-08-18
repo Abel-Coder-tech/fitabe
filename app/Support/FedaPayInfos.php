@@ -48,21 +48,6 @@ class FedaPayInfos
     }
 
     /**
-     * Label d'affichage propre pour un opérateur donné.
-     * Ex. : 'MTN' → 'MTN MoMo', 'Moov' → 'Moov Money', 'Celtiis' → 'Celtiis Cash'.
-     */
-    public static function operateurLabel(?string $operateur): string
-    {
-        return match (strtolower((string) $operateur)) {
-            'mtn'   => 'MTN Bénin',
-            'moov'  => 'Moov Money',
-            'celtiis' => 'Celtiis Cash',
-            'carte' => 'Carte bancaire',
-            default => ucfirst((string) $operateur ?: 'N/A'),
-        };
-    }
-
-    /**
      * Code pays ISO 3166-1 alpha-2. Priorité au champ pays fourni
      * par FedaPay (customer.country), sinon déduit de l'indicatif du téléphone.
      */

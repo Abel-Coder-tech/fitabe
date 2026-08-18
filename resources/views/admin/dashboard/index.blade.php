@@ -177,7 +177,7 @@
             </div>
             <div class="col-6 col-md-3">
                 <div class="p-3 rounded-3 h-100 paiement-stat" style="background: #fdecea; border: 1px solid rgba(200,40,40,0.15);">
-                    <small class="text-muted d-block">Paiements orphelins</small>
+                    <small class="text-muted d-block">Votes incomplets</small>
                     <div class="h4 fw-bold mb-0" style="color: #c62828;">{{ $votesBloques + $alertesPaiements }}</div>
                     <small class="text-muted">{{ $votesBloques }} non finalisés · {{ $alertesPaiements }} erreurs (24 h)</small>
                 </div>
