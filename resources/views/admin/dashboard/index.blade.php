@@ -162,13 +162,6 @@
                 </div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="p-3 rounded-3 h-100 paiement-stat" style="background: #e8f5e9; border: 1px solid rgba(46,125,50,0.15);">
-                    <small class="text-muted d-block">Net après frais</small>
-                    <div class="h4 fw-bold mb-0" style="color: #2e7d32;">{{ number_format($netRecettes, 0, ',', ' ') }} FCFA</div>
-                    <small class="text-muted">dont {{ number_format($totalFrais, 0, ',', ' ') }} FCFA de frais</small>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
                 <div class="p-3 rounded-3 h-100 paiement-stat" style="background: #fff8e1; border: 1px solid rgba(202,123,5,0.15);">
                     <small class="text-muted d-block">Taux de réussite</small>
                     <div class="h4 fw-bold mb-0" style="color: #9B4D07;">{{ $tauxReussite }}%</div>
