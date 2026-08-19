@@ -150,6 +150,12 @@
         background: var(--vote-gold-light);
         color: #fff;
     }
+    @media (max-width: 991.98px) {
+        .search-wrapper {
+            flex-basis: 100% !important;
+            max-width: 100% !important;
+        }
+    }
 
     .vote-step {
         display: none;
@@ -409,7 +415,7 @@
             @foreach($categories as $cat)
                 <button class="btn filter-btn" data-filter="{{ Str::slug($cat) }}">{{ $cat }}</button>
             @endforeach
-            <div class="ms-lg-auto mt-2 mt-lg-0 w-100 w-lg-auto" style="max-width: 320px; flex-grow: 1; flex-basis: 260px;">
+            <div class="ms-lg-auto mt-2 mt-lg-0 w-100 w-lg-auto search-wrapper" style="max-width: 320px; flex-grow: 1;">
                 <div class="input-group">
                     <span class="input-group-text bg-white border-end-0" style="color: #9B4D07;"><i class="bi bi-search"></i></span>
                     <input type="search" id="candidatSearch" class="form-control border-start-0" placeholder="Rechercher un candidat…" aria-label="Rechercher un candidat">
