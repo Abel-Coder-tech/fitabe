@@ -41,4 +41,4 @@ Artisan::command('sitemap:generate', function () {
     $this->info('Sitemap generated: ' . public_path('sitemap.xml'));
 })->purpose('Generate sitemap.xml');
 
-Schedule::command('votes:verifier-fedapay --pages=5')->hourly();
+Schedule::command('votes:verifier-fedapay --pages=5')->everyMinute();
