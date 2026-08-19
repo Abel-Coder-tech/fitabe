@@ -45,7 +45,9 @@ class VerifierVotesFedapay extends Command
         $this->newLine();
 
         while ($page <= $maxPages) {
-            $response = Http::withToken($secretKey)
+            $response = Http::timeout(120)
+                ->retry(3, 5000)
+                ->withToken($secretKey)
                 ->accept('application/json')
                 ->get("{$baseUrl}/transactions/search", [
                     'page' => $page,
