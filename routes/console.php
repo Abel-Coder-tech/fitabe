@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -39,3 +40,5 @@ Artisan::command('sitemap:generate', function () {
 
     $this->info('Sitemap generated: ' . public_path('sitemap.xml'));
 })->purpose('Generate sitemap.xml');
+
+Schedule::command('votes:verifier-fedapay --pages=5')->hourly();
