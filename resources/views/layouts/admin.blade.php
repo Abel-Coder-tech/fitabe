@@ -226,7 +226,7 @@
     </style>
     @stack('styles')
 </head>
-<body>
+<body style="overflow-x: hidden;">
 
 <div class="d-flex" style="min-height: 100vh;">
 
