@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     @vite(['resources/css/app.scss', 'resources/js/app.js'])
     <style>
+        html, body, .d-flex { overflow-x: hidden; max-width: 100vw; }
         .nav-link.nav-active { background: rgba(255,255,255,0.15); }
 
         /* ============ FITAB Buttons ============ */
@@ -226,9 +227,9 @@
     </style>
     @stack('styles')
 </head>
-<body style="overflow-x: hidden;">
+<body>
 
-<div class="d-flex" style="min-height: 100vh;">
+<div class="d-flex" style="min-height: 100vh; overflow-x: hidden;">
 
     {{-- ============ SIDEBAR OVERLAY ============ --}}
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -349,7 +350,7 @@
     </nav>
 
     {{-- ============ CONTENU PRINCIPAL ============ --}}
-    <div class="d-flex flex-column flex-grow-1" style="min-height: 100vh; background: #fdfaf5;">
+    <div class="d-flex flex-column flex-grow-1" style="min-height: 100vh; background: #fdfaf5; overflow-x: hidden;">
 
         {{-- Topbar --}}
         <div class="bg-white border-bottom px-4 py-3 d-flex align-items-center justify-content-between" style="min-height: 64px;">
