@@ -69,6 +69,14 @@ class VerifierVotesFedapay extends Command
 
             foreach ($transactions as $txn) {
                 $voteId = $txn['custom_metadata']['vote_id'] ?? null;
+
+                if (! $voteId) {
+                    $desc = $txn['description'] ?? '';
+                    if (preg_match('/#(\d+)/', $desc, $m)) {
+                        $voteId = $m[1];
+                    }
+                }
+
                 if (! $voteId) {
                     continue;
                 }
