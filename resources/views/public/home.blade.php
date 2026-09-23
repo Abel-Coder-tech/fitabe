@@ -491,27 +491,27 @@ margin-right: 0;
                 <div class="d-flex flex-wrap justify-content-between gap-3 mb-2 py-3 px-3 rounded-3" style="background: #fdfaf5;">
                     <div class="d-flex align-items-start gap-2 flex-fill" style="min-width: 180px;">
                         <div>
-                            <strong style="color: #3E1E05; font-size: 1.25rem;">Naissance & mission</strong>
-                            <p style="color: #5F2B0C; line-height: 1.8; margin-bottom: 0;">Né en 2023 à Porto-Novo, le Festival International des Talents Artistiques du Bénin - FITAB est la réponse à un paradoxe douloureux : la capitale du Bénin, ville aux trois noms, terre de traditions millénaires, n'avait pas de grand festival. Les talents naissaient, brillaient dans l'ombre, et s'éteignaient sans jamais avoir eu leur scène.</p>
+                            <strong style="color: #3E1E05; font-size: 1.25rem;">Genèse & vocation</strong>
+                            <p style="color: #5F2B0C; line-height: 1.8; margin-bottom: 0;">Le Grand Porto-Novo a désormais son grand rendez-vous des talents. Né en 2023 à Porto-Novo, le Festival International des Talents Artistiques du Bénin (FITAB) est une initiative dédiée à la découverte, à la valorisation et au rayonnement des talents artistiques. Dans une ville au patrimoine culturel exceptionnel, le FITAB répond à une ambition claire : créer un espace structuré où les talents peuvent se révéler, rencontrer leur public, bénéficier de visibilité et accéder progressivement à de nouvelles opportunités.</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-start gap-2 flex-fill" style="min-width: 180px;">
                         <div>
-                            <strong style="color: #3E1E05; font-size: 1.25rem;">Origine</strong>
-                            <p style="color: #5F2B0C; line-height: 1.8; margin-bottom: 0;">Fondé par MISTER OKEKE, Roi du Théâtre Béninois, 1 903 spectacles, 50 ans de scène et EYISSE SOBUR BABATUNDE, le FITAB est né d'une blessure intime : celle d'une légende trop longtemps ignorée. Aujourd'hui, ce festival est l'acte fondateur qu'il aurait voulu trouver à ses débuts.</p>
+                            <strong style="color: #3E1E05; font-size: 1.25rem;">Fondements & identité</strong>
+                            <p style="color: #5F2B0C; line-height: 1.8; margin-bottom: 0;">Une initiative portée par la transmission, l'expérience et l'engagement culturel. Le FITAB a été fondé par MISTER OKÉKÉ, figure majeure du théâtre populaire béninois, et EYISSE SOBUR BABATUNDE - LE STRATÈGE, entrepreneur, formateur et acteur engagé dans les domaines du marketing, de la communication et de la culture. Son développement repose sur une conviction simple : le talent mérite une scène, la créativité mérite une opportunité et chaque génération mérite un espace pour exprimer son potentiel.</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-start gap-2 flex-fill" style="min-width: 180px;">
                         <div>
                             <strong style="color: #3E1E05; font-size: 1.25rem;">Bilan & ambition</strong>
-                            <p style="color: #5F2B0C; line-height: 1.8; margin-bottom: 0;">En 3 éditions, le FITAB a réuni plus de 15 000 spectateurs, décerné 36 trophées en une seule soirée, et imposé Porto-Novo sur la carte culturelle de l'Afrique de l'Ouest. L'Édition 4 vise 30 000 spectateurs, 6 catégories artistiques, un jury international, et une Grande Finale sur l'esplanade de l'Assemblée Nationale.</p>
+                            <p style="color: #5F2B0C; line-height: 1.8; margin-bottom: 0;">Trois éditions pour construire une nouvelle dynamique culturelle. Le FITAB a réuni plus de 15 000 spectateurs et contribué à distinguer de nombreux talents et acteurs du secteur culturel. Pour cette édition : 30 000 spectateurs visés, 6 catégories artistiques, un jury à dimension internationale, une programmation renforcée et une Grande Finale sur l'Esplanade de l'Assemblée nationale de Porto-Novo.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="p-3 rounded-3 border-start" style="border-color: #CA7B05 !important; border-width: 4px !important; background-color: #f5ebe0;">
                     <p class="mb-0 fst-italic" style="color: #5F2B0C; line-height: 1.7;">
-                        « Il n'y a pas de grande nation sans grande culture. Porto-Novo mérite un festival à la hauteur de son âme. »
+                        « Une grande culture se construit en donnant aux talents les moyens de s'exprimer, de progresser et de transmettre. »
                     </p>
                 </div>
             </div>
