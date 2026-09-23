@@ -609,15 +609,18 @@ margin-right: 0;
                 <p style="color: #c8922a; font-size: 0.875rem; margin-bottom: 0.75rem;">Roi du Théâtre Béninois · Cofondateur</p>
                 <hr style="width: 50px; height: 3px; background: #c0392b; border: none; margin: 0 0 1rem 0;">
                 <p style="color: #1a1a1a; line-height: 1.8;">
-                    En près de 50 ans, j'ai joué sur presque toutes les scènes du Bénin. Mais j'ai aussi vécu de l'intérieur la douleur d'un talent ignoré. J'ai vu des artistes prodigieux s'éteindre dans l'ombre, faute d'une scène pour les révéler.
+                    Avec 62 années de carrière, dont plus de 50 consacrées au théâtre populaire béninois, la scène artistique m'a appris une chose essentielle : le talent a besoin d'un espace pour s'exprimer, mais aussi d'un cadre pour grandir, se transmettre et laisser une empreinte.
                 </p>
                 <p style="color: #1a1a1a; line-height: 1.8;">
-                    Le FITAB, c'est ce que j'aurais voulu trouver à mes débuts. C'est ma façon de dire : plus jamais. Plus jamais un talent du Grand Porto-Novo et du Bénin ne disparaîtra sans avoir eu sa chance.
+                    Au fil de mon parcours, j'ai eu le privilège de rencontrer, de former, de partager et d'observer plusieurs générations d'artistes. Cette longue expérience m'a profondément convaincu de l'importance de préparer aujourd'hui la relève culturelle de demain.
+                </p>
+                <p style="color: #1a1a1a; line-height: 1.8;">
+                    Le FITAB s'inscrit naturellement dans cette continuité. Il constitue une plateforme dédiée à la découverte des talents, à la transmission des savoirs et à la valorisation de la créativité béninoise.
                 </p>
                 <div style="border-left: 4px solid #c9a96e; padding-left: 16px;">
                     <div style="color: #c9a96e; font-size: 2.5rem; line-height: 1; font-family: Georgia, serif;">"</div>
                     <p style="color: #1a1a1a; font-style: italic; line-height: 1.7; margin-bottom: 0.25rem;">
-                        Le théâtre n'est pas un métier, c'est une mission. Transmettre aux jeunes générations ce feu sacré est la seule chose qui compte.
+                        Transmettre la culture, c'est préparer ceux qui écriront demain l'histoire de notre scène artistique.
                     </p>
                     <p style="color: #c8922a; font-style: normal; margin-bottom: 0;">— MISTER OKEKE</p>
                 </div>
@@ -638,18 +641,21 @@ margin-right: 0;
             </div>
             <div class="col-lg-6 order-lg-1">
                 <h3 style="color: #1a1a1a; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem;">EYISSE SOBUR BABATUNDE</h3>
-                <p style="color: #c8922a; font-size: 0.875rem; margin-bottom: 0.75rem;">PDG Stratège Media Events · Cofondateur</p>
+                <p style="color: #c8922a; font-size: 0.875rem; margin-bottom: 0.75rem;">PDG, Stratège Media Events · Cofondateur</p>
                 <hr style="width: 50px; height: 3px; background: #c0392b; border: none; margin: 0 0 1rem 0;">
                 <p style="color: #1a1a1a; line-height: 1.8;">
-                    Je suis né dans l'art, j'ai grandi dans la culture. Je connais les jeunes du Grand Porto-Novo de l'intérieur, leur énergie, leur talent brut, leur besoin urgent d'être vus et reconnus.
+                    Je suis né dans l'art et j'ai grandi dans la culture. Fils de Mister Okéké, figure majeure du théâtre populaire béninois, j'ai été très tôt immergé dans cet univers où la scène, la création et la transmission occupent une place essentielle. L'art ne fait donc pas seulement partie de mon parcours : il fait partie de mon histoire et brûle en moi comme une véritable vocation.
                 </p>
                 <p style="color: #1a1a1a; line-height: 1.8;">
-                    Porto-Novo n'est pas une ville ordinaire. C'est une capitale culturelle qui mérite un festival à la hauteur de son histoire. Le FITAB est cet engagement et nous le tenons, édition après édition.
+                    Dans tout le Grand Porto-Novo, une nouvelle génération porte aujourd'hui une énergie créative remarquable. Musiciens, comédiens, danseurs, percussionnistes, stylistes, créateurs et artistes visuels disposent d'un potentiel considérable qui mérite d'être révélé, accompagné et valorisé.
+                </p>
+                <p style="color: #1a1a1a; line-height: 1.8;">
+                    Le FITAB est né de cette conviction : créer un espace où le talent peut rencontrer la scène, le public, les professionnels et les opportunités. Car un talent sans visibilité, sans opportunité et sans accompagnement risque de rester dans l'ombre, alors qu'il pourrait contribuer pleinement à la richesse culturelle et économique de notre société.
                 </p>
                 <div style="border-left: 4px solid #c9a96e; padding-left: 16px;">
                     <div style="color: #c9a96e; font-size: 2.5rem; line-height: 1; font-family: Georgia, serif;">"</div>
                     <p style="color: #1a1a1a; font-style: italic; line-height: 1.7; margin-bottom: 0.25rem;">
-                        La culture est le moteur du développement. Donner une voix aux artistes, c'est investir dans l'avenir de notre nation.
+                        Révéler un talent, c'est ouvrir une porte. L'accompagner, c'est lui donner les moyens d'aller plus loin.
                     </p>
                     <p style="color: #c8922a; font-style: normal; margin-bottom: 0;">— EYISSE SOBUR BABATUNDE</p>
                 </div>
