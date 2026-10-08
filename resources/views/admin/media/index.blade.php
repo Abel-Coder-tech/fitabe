@@ -22,6 +22,7 @@
                 <th>ID</th>
                 <th>Légende</th>
                 <th>Année</th>
+                <th>Position</th>
                 <th>Aperçu</th>
                 <th>Actions</th>
             </tr>
@@ -32,6 +33,7 @@
                     <td data-label="ID">{{ $media->id }}</td>
                     <td data-label="Légende">{{ $media->titre ?? '-' }}</td>
                     <td data-label="Année">{{ $media->annee_edition ?? '-' }}</td>
+                    <td data-label="Position">{{ $media->ordre_affichage > 0 ? $media->ordre_affichage : '-' }}</td>
                     <td data-label="Aperçu">
                         <img src="{{ $media->thumbnail }}" alt="{{ $media->titre }}" width="60" height="60" style="object-fit:cover;border-radius:6px;" class="img-thumbnail">
                     </td>
@@ -46,7 +48,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="5" class="text-center py-4 text-muted">Aucune photo.</td></tr>
+                <tr><td colspan="6" class="text-center py-4 text-muted">Aucune photo.</td></tr>
             @endforelse
         </tbody>
     </table>
@@ -66,6 +68,7 @@
                 <th>ID</th>
                 <th>Légende</th>
                 <th>Année</th>
+                <th>Position</th>
                 <th>Aperçu</th>
                 <th>Actions</th>
             </tr>
@@ -76,6 +79,7 @@
                     <td data-label="ID">{{ $media->id }}</td>
                     <td data-label="Légende">{{ $media->titre ?? '-' }}</td>
                     <td data-label="Année">{{ $media->annee_edition ?? '-' }}</td>
+                    <td data-label="Position">{{ $media->ordre_affichage > 0 ? $media->ordre_affichage : '-' }}</td>
                     <td data-label="Aperçu">
                         @if($media->youtube_id)
                             <img src="{{ $media->thumbnail }}" alt="{{ $media->titre }}" width="90" height="60" style="object-fit:cover;border-radius:6px;" class="img-thumbnail">
@@ -94,7 +98,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="5" class="text-center py-4 text-muted">Aucune vidéo.</td></tr>
+                <tr><td colspan="6" class="text-center py-4 text-muted">Aucune vidéo.</td></tr>
             @endforelse
         </tbody>
     </table>

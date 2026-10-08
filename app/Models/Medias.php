@@ -14,7 +14,15 @@ class Medias extends Model
         'url',
         'lien_youtube',
         'annee_edition',
+        'ordre_affichage',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'ordre_affichage' => 'integer',
+        ];
+    }
 
     // Accesseur : URL de la miniature (YouTube ou locale)
     public function getThumbnailAttribute(): string

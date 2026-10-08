@@ -12,7 +12,7 @@ class MediaController extends Controller
     // Page publique galerie : photos, vidéos et résultats
     public function index()
     {
-        $tous = Medias::orderBy('id')->get();
+        $tous = Medias::orderByRaw('CASE WHEN ordre_affichage > 0 THEN 0 ELSE 1 END, ordre_affichage ASC, id ASC')->get();
         $photos = $tous->where('type', 'photo')->values();
         $videos = $tous->where('type', 'video')->values();
         $annees = $tous->pluck('annee_edition')->filter()->unique()->sortDesc()->values();

@@ -35,6 +35,7 @@ class MediaController extends Controller
             'fichier' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,mp4,mov,avi|max:1024',
             'lien_youtube' => 'nullable|url|max:255',
             'annee_edition' => 'nullable|string|max:4',
+            'ordre_affichage' => 'nullable|integer|min:0',
         ], [
             'type.required' => 'Le type de média est requis.',
             'type.in' => 'Le type doit être photo ou video.',
@@ -43,6 +44,8 @@ class MediaController extends Controller
             'fichier.max' => 'Le fichier ne doit pas dépasser 1 Mo.',
             'lien_youtube.url' => 'Le lien YouTube doit être une URL valide.',
         ]);
+
+        $validated['ordre_affichage'] = $validated['ordre_affichage'] ?? 0;
 
         if ($request->type === 'photo') {
             $request->validate(['fichier' => 'required|file|mimes:jpeg,png,jpg,gif,webp|max:1024'], ['fichier.required' => 'Le fichier photo est requis.']);
@@ -85,6 +88,7 @@ class MediaController extends Controller
             'fichier' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,mp4,mov,avi|max:1024',
             'lien_youtube' => 'nullable|url|max:255',
             'annee_edition' => 'nullable|string|max:10',
+            'ordre_affichage' => 'nullable|integer|min:0',
         ], [
             'type.required' => 'Le type de média est requis.',
             'type.in' => 'Le type doit être photo ou video.',
@@ -92,6 +96,8 @@ class MediaController extends Controller
             'fichier.max' => 'Le fichier ne doit pas dépasser 1 Mo.',
             'lien_youtube.url' => 'Le lien YouTube doit être une URL valide.',
         ]);
+
+        $validated['ordre_affichage'] = $validated['ordre_affichage'] ?? 0;
 
         if ($request->type === 'photo') {
             if ($request->hasFile('fichier')) {
