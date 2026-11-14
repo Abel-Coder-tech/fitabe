@@ -5,12 +5,21 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class PasswordResetTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Évite un appel réseau vers l'API Have I Been Pwned (règle uncompromised).
+        Http::fake(['api.pwnedpasswords.com/*' => Http::response('', 200)]);
+    }
 
     public function test_reset_password_link_screen_can_be_rendered(): void
     {
@@ -59,8 +68,8 @@ class PasswordResetTest extends TestCase
             $response = $this->post('/reset-password', [
                 'token' => $notification->token,
                 'email' => $user->email,
-                'password' => 'password',
-                'password_confirmation' => 'password',
+                'password' => 'Nouveau-MotDePasse-2026!',
+                'password_confirmation' => 'Nouveau-MotDePasse-2026!',
             ]);
 
             $response

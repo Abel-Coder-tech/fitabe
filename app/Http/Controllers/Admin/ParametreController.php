@@ -19,8 +19,9 @@ class ParametreController extends Controller
     public function index()
     {
         $parametres = Parametres::whereIn('cle', $this->allowed)
-            ->orderByRaw("FIELD(cle, '" . implode("','", $this->allowed) . "')")
-            ->get();
+            ->get()
+            ->sortBy(fn (Parametres $parametre) => array_search($parametre->cle, $this->allowed, true))
+            ->values();
 
         return view('admin.parametres.index', compact('parametres'));
     }
@@ -69,6 +70,7 @@ class ParametreController extends Controller
         return to_route('admin.parametres.index')->with('success', 'Paramètres enregistrés.');
     }
 
+    public function create() { return to_route('admin.parametres.index'); }
     public function store(Request $request) { return to_route('admin.parametres.index'); }
     public function show(Parametres $parametre) { return to_route('admin.parametres.index'); }
     public function edit(Parametres $parametre) { return to_route('admin.parametres.index'); }

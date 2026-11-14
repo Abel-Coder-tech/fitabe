@@ -24,12 +24,19 @@ return new class extends Migration
         // La colonne pouvait être un ENUM limité (mtn, moov, carte) : on l'élargit
         // pour accepter tous les modes de paiement renvoyés par FedaPay (om, cm, carte, …).
         if (Schema::hasColumn('votes', 'moyen_paiement')) {
-            DB::statement('ALTER TABLE votes MODIFY moyen_paiement VARCHAR(50) NULL');
+            if (DB::getDriverName() === 'mysql') {
+                DB::statement('ALTER TABLE votes MODIFY moyen_paiement VARCHAR(50) NULL');
+            } else {
+                Schema::table('votes', fn (Blueprint $table) => $table->string('moyen_paiement', 50)->nullable()->change());
+            }
         }
 
         // Recopie héritée : ancienne colonne votant_telephone -> telephone
         if (Schema::hasColumn('votes', 'votant_telephone')) {
-            DB::statement('UPDATE votes SET telephone = votant_telephone WHERE telephone IS NULL AND votant_telephone IS NOT NULL');
+            DB::table('votes')
+                ->whereNull('telephone')
+                ->whereNotNull('votant_telephone')
+                ->update(['telephone' => DB::raw('votant_telephone')]);
         }
     }
 
