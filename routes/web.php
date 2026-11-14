@@ -28,7 +28,7 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 Route::get('/', [AcceuilController::class, 'index'])->name('home');
 Route::get('/vote', [PublicVoteController::class, 'index'])->name('public.vote');
 Route::post('/vote', [PublicVoteController::class, 'store'])->name('public.vote.store')->middleware('throttle:10,1');
-Route::get('/vote/merci', [PublicVoteController::class, 'merci'])->name('public.vote.merci');
+Route::get('/vote/merci', [PublicVoteController::class, 'merci'])->name('public.vote.merci')->middleware('throttle:30,1');
 Route::post('/vote/settings', [PublicVoteController::class, 'updateSettings'])->name('public.vote.settings')->middleware(['auth', 'role:super_admin', 'throttle:30,1']);
 Route::post('/webhook/fedapay', [PublicVoteController::class, 'webhookFedapay'])->name('public.vote.webhook.fedapay');
 Route::get('/medias', [PublicMediaController::class, 'index'])->name('public.medias');

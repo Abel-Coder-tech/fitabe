@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\VoteLog;
 use App\Models\Votes;
+use App\Support\FedaPayInfos;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -12,6 +13,7 @@ class VerifierVotesFedapay extends Command
 {
     protected $signature = 'votes:verifier-fedapay
                             {--dry : Affiche les votes à confirmer sans rien modifier}
+                            {--sans-rejet : Confirme uniquement les paiements prouvés, ne rejette jamais un vote}
                             {--pages=10 : Nombre max de pages API à parcourir (25 résultats/page)}';
 
     protected $description = 'Interroge l\'API FedaPay, croise par vote_id et confirme les paiements approuvés';
@@ -37,6 +39,8 @@ class VerifierVotesFedapay extends Command
         $attente = 0;
         $dejaOk = 0;
         $introuvables = 0;
+        $incoherents = 0;
+        $echecsIgnores = 0;
         $erreurs = 0;
 
         $page = 1;
@@ -89,7 +93,7 @@ class VerifierVotesFedapay extends Command
 
                 $paidCustomer = $txn['metadata']['paid_customer'] ?? null;
                 $email = $paidCustomer['email'] ?? null;
-                $operateur = \App\Support\FedaPayInfos::operateur($mode);
+                $operateur = FedaPayInfos::operateur($mode);
 
                 $vote = Votes::find($voteId);
                 if (! $vote) {
@@ -97,47 +101,92 @@ class VerifierVotesFedapay extends Command
                     continue;
                 }
 
-                if ($vote->statut === 'confirme') {
-                    $dejaOk++;
+                if ($vote->statut !== 'en_attente') {
+                    if ($vote->statut === 'confirme') {
+                        $dejaOk++;
+                    }
                     continue;
                 }
 
-                if ($status === 'approved') {
+                if (in_array($status, FedaPayInfos::STATUTS_CONFIRMANTS, true)) {
+                    $montantPaye = isset($txn['amount']) ? (int) $txn['amount'] : null;
+
+                    // Un paiement confirmé dont le montant ne correspond pas au vote
+                    // ne doit jamais être compté (protection contre les manipulations).
+                    if ($montantPaye !== null && $montantPaye !== (int) $vote->montant) {
+                        $this->line("Vote #{$voteId} — FedaPay {$txnId} — {$montantPaye} FCFA");
+                        $this->warn("  → MONTANT INCOHÉRENT (attendu {$vote->montant}) — non compté");
+
+                        if (! $dry) {
+                            VoteLog::create([
+                                'type' => 'webhook',
+                                'statut' => 'erreur',
+                                'categorie' => 'montant_incoherent',
+                                'message' => "Montant FedaPay ({$montantPaye}) différent du montant du vote ({$vote->montant}) : ovation non comptée.",
+                                'transaction_id' => $txnId,
+                                'vote_id' => $vote->id,
+                                'montant' => $vote->montant,
+                                'contexte' => json_encode([
+                                    'source' => 'artisan_verifier',
+                                    'api_status' => $status,
+                                    'montant_paye' => $montantPaye,
+                                ], JSON_UNESCAPED_UNICODE),
+                            ]);
+                        }
+
+                        $incoherents++;
+                        continue;
+                    }
+
                     $this->line("Vote #{$voteId} — FedaPay {$txnId} — {$txn['amount']} FCFA — {$mode}");
 
                     if ($dry) {
                         $this->info("  → CONFIRMABLE (dry)");
+                        $confirmes++;
                     } else {
-                        $telephone = $vote->client_telephone;
-                        $vote->marquerConfirme($txnId, 'fedapay', $telephone, $email, $mode, $frais, $operateur, null);
+                        $telephone = $vote->telephone;
+                        $confirme = $vote->marquerConfirme($txnId, 'fedapay', $telephone, $email, $mode, $frais, $operateur, null);
 
-                        VoteLog::create([
-                            'type' => 'webhook',
-                            'statut' => 'ok',
-                            'categorie' => 'confirme',
-                            'message' => "Vote confirmé via vérification API FedaPay (commande artisan).",
-                            'transaction_id' => $txnId,
-                            'vote_id' => $vote->id,
-                            'montant' => $vote->montant,
-                            'contexte' => json_encode([
-                                'source' => 'artisan_verifier',
-                                'api_status' => $status,
-                                'fedapay_id' => $txn['id'],
-                            ], JSON_UNESCAPED_UNICODE),
-                        ]);
+                        if ($confirme) {
+                            VoteLog::create([
+                                'type' => 'webhook',
+                                'statut' => 'ok',
+                                'categorie' => 'confirme',
+                                'message' => "Vote confirmé via vérification API FedaPay (commande artisan).",
+                                'transaction_id' => $txnId,
+                                'vote_id' => $vote->id,
+                                'montant' => $vote->montant,
+                                'contexte' => json_encode([
+                                    'source' => 'artisan_verifier',
+                                    'api_status' => $status,
+                                    'fedapay_id' => $txn['id'],
+                                ], JSON_UNESCAPED_UNICODE),
+                            ]);
 
-                        $this->info("  → CONFIRMÉ ✓");
+                            $this->info("  → CONFIRMÉ ✓");
+                            $confirmes++;
+                        } else {
+                            // Un autre traitement (webhook, /merci, autre cron) l'a déjà confirmé.
+                            $dejaOk++;
+                        }
                     }
-                    $confirmes++;
-                } elseif (in_array($status, ['canceled', 'declined', 'failed'], true)) {
+                } elseif (in_array($status, FedaPayInfos::STATUTS_ECHEC, true)) {
                     $error = $txn['last_error_code'] ?? '';
                     $this->line("Vote #{$voteId} — {$status} ({$error})");
 
-                    if (! $dry && $vote->statut !== 'rejete') {
-                        $vote->marquerRejete($txnId);
-                        $this->warn("  → REJETÉ");
+                    if ($this->option('sans-rejet')) {
+                        // Mode prudent utilisé par les tâches planifiées : aucun
+                        // vote n'est rejeté automatiquement, même sur un statut
+                        // d'échec. Un rejet reste une décision manuelle.
+                        $this->warn("  → ÉCHEC (non rejeté : --sans-rejet)");
+                        $echecsIgnores++;
+                    } else {
+                        if (! $dry && $vote->statut !== 'rejete') {
+                            $vote->marquerRejete($txnId);
+                            $this->warn("  → REJETÉ");
+                        }
+                        $rejetes++;
                     }
-                    $rejetes++;
                 } else {
                     $attente++;
                 }
@@ -157,6 +206,8 @@ class VerifierVotesFedapay extends Command
                 ['Confirmés (nouveaux)', $confirmes],
                 ['Déjà confirmés', $dejaOk],
                 ['Rejetés', $rejetes],
+                ['Échecs non rejetés', $echecsIgnores],
+                ['Montants incohérents', $incoherents],
                 ['Toujours en attente', $attente],
                 ['Votes introuvables', $introuvables],
                 ['Erreurs API', $erreurs],

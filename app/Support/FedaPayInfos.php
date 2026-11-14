@@ -8,6 +8,17 @@ namespace App\Support;
  */
 class FedaPayInfos
 {
+    /**
+     * Statuts FedaPay qui signifient que l'argent a bien été encaissé.
+     * « transferred » est le statut final d'une collecte réussie une fois
+     * les fonds reversés au compte marchand : il doit être traité comme
+     * un succès, au même titre que « approved ».
+     */
+    public const STATUTS_CONFIRMANTS = ['approved', 'transferred', 'completed', 'accepted'];
+
+    /** Statuts d'échec définitif : aucune ovation ne doit être comptée. */
+    public const STATUTS_ECHEC = ['declined', 'canceled', 'refunded', 'expired', 'rejected', 'failed'];
+
     private const PAYS_PAR_INDICATIF = [
         '+229' => 'BJ',
         '+228' => 'TG',

@@ -41,4 +41,12 @@ Artisan::command('sitemap:generate', function () {
     $this->info('Sitemap generated: ' . public_path('sitemap.xml'));
 })->purpose('Generate sitemap.xml');
 
-Schedule::command('votes:verifier-fedapay --pages=5')->everyFiveMinutes()->withoutOverlapping();
+Schedule::command('votes:verifier-fedapay --pages=5 --sans-rejet')->everyFiveMinutes()->withoutOverlapping();
+
+// Filet de sécurité : la vérification toutes les 5 minutes ne couvre que les
+// 125 dernières transactions. Ce passage nocturne ratisse beaucoup plus large
+// pour rattraper un paiement dont le webhook s'est perdu.
+Schedule::command('votes:verifier-fedapay --pages=200 --sans-rejet')->dailyAt('03:00')->withoutOverlapping();
+
+// Contrôle quotidien : votes bloqués en attente, dérive des compteurs, erreurs.
+Schedule::command('votes:audit --heures=24')->dailyAt('07:00')->withoutOverlapping();

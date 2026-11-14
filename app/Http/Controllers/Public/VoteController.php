@@ -12,6 +12,7 @@ use App\Services\ResultatService;
 use App\Support\FedaPayInfos;
 use App\Support\Parametre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -168,8 +169,8 @@ class VoteController extends Controller
             ? Votes::find($voteId)
             : Votes::where('transaction_id', $transactionId)->first();
 
-        $statutsConfirmants = ['approved', 'completed', 'accepted'];
-        $statutsEchec = ['declined', 'canceled', 'refunded', 'expired', 'rejected', 'failed'];
+        $statutsConfirmants = FedaPayInfos::STATUTS_CONFIRMANTS;
+        $statutsEchec = FedaPayInfos::STATUTS_ECHEC;
 
         // Paiements non confirmants : un échec définitif rejette l'ovation (pour un
         // taux de réussite fiable), les autres statuts sont simplement journalisés.
@@ -277,6 +278,54 @@ class VoteController extends Controller
         ]);
 
         return response()->json(['status' => 'ok']);
+    }
+
+    /**
+     * Récupère une transaction directement auprès de FedaPay.
+     * Retourne null si la clé manque, l'identifiant est invalide,
+     * ou l'API est momentanément indisponible.
+     */
+    private function transactionFedapay(string $transactionId): ?array
+    {
+        $secretKey = config('services.fedapay.secret_key');
+
+        if (! $secretKey || ! ctype_digit($transactionId)) {
+            return null;
+        }
+
+        $mode = config('services.fedapay.mode', 'live');
+        $baseUrl = $mode === 'sandbox'
+            ? 'https://sandbox-api.fedapay.com/v1'
+            : 'https://api.fedapay.com/v1';
+
+        try {
+            $response = Http::timeout(10)
+                ->retry(1, 500)
+                ->withToken($secretKey)
+                ->acceptJson()
+                ->get("{$baseUrl}/transactions/{$transactionId}");
+        } catch (\Throwable $e) {
+            Log::warning('Fedapay : vérification de transaction impossible', [
+                'transaction_id' => $transactionId,
+                'erreur' => $e->getMessage(),
+            ]);
+
+            return null;
+        }
+
+        if ($response->failed()) {
+            Log::warning('Fedapay : vérification de transaction en échec', [
+                'transaction_id' => $transactionId,
+                'http' => $response->status(),
+            ]);
+
+            return null;
+        }
+
+        $body = $response->json();
+        $transaction = $body['v1/transaction'] ?? $body['transaction'] ?? $body;
+
+        return is_array($transaction) ? $transaction : null;
     }
 
     private static function contexteFedapay(array $data): array
@@ -394,32 +443,96 @@ class VoteController extends Controller
             $vote = Votes::with('candidat')->find($request->query('vote_id'));
 
             if ($vote) {
-                $transactionId = $request->query('id');
-                $status = $request->query('status');
-                $paymentMethod = $request->query('payment_method');
+                $transactionId = (string) $request->query('id', '');
+                $statusAnnonce = (string) $request->query('status', '');
                 $phone = $request->query('phone');
 
-                if ($transactionId && in_array($status, ['approved', 'completed', 'accepted'], true)) {
-                    if ($vote->statut === 'en_attente') {
-                        $vote->marquerConfirme($transactionId, 'fedapay', $phone);
+                // Ne jamais faire confiance aux paramètres de l'URL : ils sont
+                // falsifiables (n'importe qui peut appeler /vote/merci?vote_id=X
+                // &id=Y&status=approved). On redemande le statut réel à FedaPay.
+                if ($vote->statut === 'en_attente' && $transactionId !== '') {
+                    $transaction = $this->transactionFedapay($transactionId);
+
+                    if ($transaction === null) {
                         VoteLog::create([
                             'type' => 'callback',
-                            'statut' => 'ok',
-                            'categorie' => 'confirme_callback',
-                            'message' => 'Vote confirmé via le retour Fedapay (page de remerciement).',
+                            'statut' => 'ignore',
+                            'categorie' => 'verification_api_impossible',
+                            'message' => 'Retour Fedapay non confirmé : vérification API impossible, le vote reste en attente (webhook/cron prendront le relais).',
                             'transaction_id' => $transactionId,
                             'vote_id' => $vote->id,
                             'montant' => $vote->montant,
+                            'contexte' => json_encode(['status_annonce' => $statusAnnonce], JSON_UNESCAPED_UNICODE),
                         ]);
                     } else {
-                        // Vote déjà traité — on ignore silencieusement le double callback
+                        $statutApi = (string) ($transaction['status'] ?? '');
+                        $montantApi = isset($transaction['amount']) ? (int) $transaction['amount'] : null;
+                        $voteIdApi = (int) ($transaction['custom_metadata']['vote_id'] ?? 0);
+
+                        if (! $voteIdApi) {
+                            $description = (string) ($transaction['description'] ?? '');
+                            if (preg_match('/#(\d+)/', $description, $m)) {
+                                $voteIdApi = (int) $m[1];
+                            }
+                        }
+
+                        $client = $transaction['customer'] ?? [];
+                        $telephoneApi = is_array($client)
+                            ? ($client['phone_number'] ?? $client['phone'] ?? null)
+                            : null;
+
+                        if (! in_array($statutApi, FedaPayInfos::STATUTS_CONFIRMANTS, true)) {
+                            VoteLog::create([
+                                'type' => 'callback',
+                                'statut' => 'ignore',
+                                'categorie' => 'statut_non_confirmant',
+                                'message' => "Retour Fedapay avec statut réel non confirmant : {$statutApi}",
+                                'transaction_id' => $transactionId,
+                                'vote_id' => $vote->id,
+                                'montant' => $vote->montant,
+                                'contexte' => json_encode(['status_annonce' => $statusAnnonce, 'status_api' => $statutApi], JSON_UNESCAPED_UNICODE),
+                            ]);
+                        } elseif ($voteIdApi !== (int) $vote->id) {
+                            VoteLog::create([
+                                'type' => 'callback',
+                                'statut' => 'erreur',
+                                'categorie' => 'vote_incoherent',
+                                'message' => "Transaction Fedapay non rattachée au vote #{$vote->id} (vote_id reçu : {$voteIdApi}) : ovation non comptée.",
+                                'transaction_id' => $transactionId,
+                                'vote_id' => $vote->id,
+                                'montant' => $vote->montant,
+                                'contexte' => json_encode(['vote_id_api' => $voteIdApi], JSON_UNESCAPED_UNICODE),
+                            ]);
+                        } elseif ($montantApi !== null && $montantApi !== (int) $vote->montant) {
+                            VoteLog::create([
+                                'type' => 'callback',
+                                'statut' => 'erreur',
+                                'categorie' => 'montant_incoherent',
+                                'message' => 'Montant payé différent du montant attendu : ovation non comptée.',
+                                'transaction_id' => $transactionId,
+                                'vote_id' => $vote->id,
+                                'montant' => $vote->montant,
+                                'contexte' => json_encode(['montant_paye' => $montantApi], JSON_UNESCAPED_UNICODE),
+                            ]);
+                        } elseif ($vote->marquerConfirme($transactionId, 'fedapay', $telephoneApi ?: $phone)) {
+                            VoteLog::create([
+                                'type' => 'callback',
+                                'statut' => 'ok',
+                                'categorie' => 'confirme_callback',
+                                'message' => 'Vote confirmé via le retour Fedapay après vérification API.',
+                                'transaction_id' => $transactionId,
+                                'vote_id' => $vote->id,
+                                'montant' => $vote->montant,
+                                'contexte' => json_encode(['status_api' => $statutApi], JSON_UNESCAPED_UNICODE),
+                            ]);
+                        }
                     }
-                } elseif ($transactionId) {
+                } elseif ($transactionId !== '') {
                     VoteLog::create([
                         'type' => 'callback',
                         'statut' => 'ignore',
                         'categorie' => 'statut_non_confirmant',
-                        'message' => "Retour Fedapay avec statut non confirmant : {$status}",
+                        'message' => "Retour Fedapay ignoré (statut annoncé : {$statusAnnonce}, vote : {$vote->statut}).",
                         'transaction_id' => $transactionId,
                         'vote_id' => $vote->id,
                         'montant' => $vote->montant,
